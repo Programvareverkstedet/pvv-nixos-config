@@ -1,0 +1,11 @@
+{ config, ... }:
+
+{
+
+  imports = [
+    ./synapse.nix
+  ];
+
+  
+
+}
