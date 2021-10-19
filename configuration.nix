@@ -72,6 +72,7 @@ in
     nano
     wget
     tmux
+    kitty.terminfo
   ];
 
   # List services that you want to enable:
