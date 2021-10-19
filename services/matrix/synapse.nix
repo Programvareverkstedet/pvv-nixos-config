@@ -17,7 +17,7 @@ in
 
     settings = {
       server_name = "pvv.ntnu.no";
-      public_baseurl = "matrix.pvv.ntnu.no";
+      public_baseurl = "https://matrix.pvv.ntnu.no";
 
 # LOL postgres too old
 #      database = {
