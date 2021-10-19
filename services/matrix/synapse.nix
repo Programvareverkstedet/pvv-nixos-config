@@ -5,7 +5,7 @@ let
 in
 {
 
-  imports = [ ./matrix-synapse-next.nix ];
+  imports = [ ./synapse-module ];
 
   services.matrix-synapse-next = {
     enable = true;
