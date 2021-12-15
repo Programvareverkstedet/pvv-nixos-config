@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.services.matrix-synapse-next;
@@ -68,6 +68,85 @@ in
       enable_metrics = true;
 
       use_presence = true;
+
+
+      saml2_config = {
+        sp_config.metadata.remote = [
+          { url = "https://idp.pvv.ntnu.no/simplesaml/saml2/idp/metadata.php"; }
+        ];
+
+        description = [ "Matrix Synapse SP" "en" ];
+        name = [ "Matrix Synapse SP" "en" ];
+
+        ui_info = {
+          display_name = [
+            {
+              lang = "en";
+              text = "PVV Matrix login";
+            }
+          ];
+          description = [
+            {
+              lang = "en";
+              text = "Matrix is a modern free and open federated chat protocol";
+            }
+          ];
+          #information_url = [
+          #  {
+          #    lang = "en";
+          #    text = "";
+          #  };
+          #];
+          #privacy_statement_url = [
+          #  {
+          #    lang = "en";
+          #    text = "";
+          #  };
+          #];
+          keywords = [
+            {
+              lang = "en";
+              text = [ "Matrix" "Element" ];
+            }
+          ];
+          #logo = [
+          #  {
+          #    lang = "en";
+          #    text = "";
+          #    width = "";
+          #    height = "";
+          #  }
+          #];
+        };
+
+        organization = {
+          name = "Programvareverkstedet";
+          display_name = [ "Programvareverkstedet" "en" ];
+          url = "https://www.pvv.ntnu.no";
+        };
+        contact_person = [
+          {
+            given_name = "Drift";
+            sur_name = "King";
+            email_adress = [ "drift@pvv.ntnu.no" ];
+            contact_type = "technical";
+          }
+        ];
+
+        user_mapping_provider = {
+          config = {
+            mxid_source_attribute =  "uid"; # What is this supposed to be?
+            mxid_mapping = "hexencode";
+          };
+        };
+
+        #attribute_requirements = [
+        #  {attribute = "userGroup"; value = "medlem";} # Do we have this?
+        #];
+
+      };
+
+      password_config.enable = lib.mkForce false;
 
       signing_key_path = "${cfg.dataDir}/homeserver.signing.key";
       media_store_path =  "${cfg.dataDir}/media";
