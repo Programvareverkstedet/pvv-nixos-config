@@ -1,1 +1,0 @@
-hosts/jokum/configuration.nix
