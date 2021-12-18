@@ -7,8 +7,8 @@ in
       # Include the results of the hardware scan.
       ../../hardware-configuration.nix
 
+      ../../base.nix
       # Users can just import any configuration they want even for non-user things. Improve the users/default.nix to just load some specific attributes if this isn't wanted
-      ../../users
 
       ../../modules/rust-motd.nix
 
@@ -29,15 +29,7 @@ in
   boot.loader.grub.devices = [ "/dev/sda" ];
 
   networking.hostName = "jokum"; # Define your hostname.
-  networking.domain = "pvv.ntnu.no";
 
-  # Set your time zone.
-  time.timeZone = "Europe/Oslo";
-
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.useDHCP = false;
   networking.interfaces.ens18.useDHCP = false;
 
   networking.defaultGateway = "129.241.210.129";
@@ -59,35 +51,11 @@ in
   };
   networking.nameservers = [ "129.241.0.200" "129.241.0.201" ];
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "no";
-  };
-
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.jane = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  # };
-
   # List packages installed in system profile
   environment.systemPackages = with pkgs; [
-    git
-    vim
-    nano
-    wget
-    tmux
-    kitty.terminfo
   ];
 
   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  services.openssh.permitRootLogin = "yes";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

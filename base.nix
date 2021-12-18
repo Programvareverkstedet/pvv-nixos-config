@@ -6,6 +6,7 @@
   ];
 
   networking.domain = "pvv.ntnu.no";
+  networking.useDHCP = false;
 
   time.timeZone = "Europe/Oslo";
 
