@@ -10,15 +10,25 @@
       ../../hardware-configuration.nix
 
       ../../base.nix
+
+      ../../services/minecraft
     ];
 
 
   services.minecraft-server = {
-    enable = true;
+    enable = false;
     eula = true;
-    package = pkgs.unstable.minecraft-server;
-    dataDir =  "/run/minecraft"; #"/fast/minecraft";
-    jvmOpts = "-Xmx8192M -Xms8192M -XX:+UseG1GC -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
+    package = pkgs.callPackage ../../pkgs/minecraft-server-fabric { inherit (pkgs.unstable) minecraft-server; };
+    dataDir =  "/fast/minecraft"; #"/fast/minecraft";
+    jvmOpts = "-Xms10G -Xmx10G -XX:+UnlockExperimentalVMOptions -XX:+UseZGC  -XX:+DisableExplicitGC  -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled";
+
+    declarative = true;
+    serverProperties = {
+      view-distance = 32;
+      gamemode = 1;
+      enable-rcon = true;
+      "rcon.password" = "pvv";
+    };
   };
 
 
