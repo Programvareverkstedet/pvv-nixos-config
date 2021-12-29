@@ -12,8 +12,8 @@
     jvmOpts = "-Xms10G -Xmx10G -XX:+UnlockExperimentalVMOptions -XX:+UseZGC  -XX:+DisableExplicitGC  -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled";
 
     serverProperties = {
-      view-distance = 10;
-      simulation-distance = 10;
+      view-distance = 12;
+      simulation-distance = 12;
 
       enable-command-block = true;
 
@@ -26,7 +26,7 @@
       "rcon.password" = "pvv";
     };
 
-    dataDir = "/fast/minecraft-fabric";
+    dataDir = "/fast/minecraft-pvv";
 
     mods = [
       (pkgs.fetchurl { # Fabric API is a common dependency for fabric based mods
@@ -53,12 +53,12 @@
         url = "https://ci.lucko.me/job/spark/251/artifact/spark-fabric/build/libs/spark-fabric.jar";
         sha256 = "1clvi5v7a14ba23jbka9baz99h6wcfjbadc8kkj712fmy2h0sx07";
       })
-      (pkgs.fetchurl { # Carpetmod gives you tps views in the tab menu,
-        # but also adds a lot of optional serverside vanilla+ features (which we arent using).
-        # So probably want something else
-        url = "https://github.com/gnembon/fabric-carpet/releases/download/1.4.56/fabric-carpet-1.18-1.4.56+v211130.jar";
-        sha256 = "0rvl2yb8xymla8c052j07gqkqfkz4h5pxf6aip2v9v0h8r84p9hf";
-      })
+      #(pkgs.fetchurl { # Carpetmod gives you tps views in the tab menu,
+      #  # but also adds a lot of optional serverside vanilla+ features (which we arent using).
+      #  # So probably want something else
+      #  url = "https://github.com/gnembon/fabric-carpet/releases/download/1.4.56/fabric-carpet-1.18-1.4.56+v211130.jar";
+      #  sha256 = "0rvl2yb8xymla8c052j07gqkqfkz4h5pxf6aip2v9v0h8r84p9hf";
+      #})
     ];
 
     whitelist = {
@@ -83,7 +83,7 @@
       CelestialCry = "9e34d192-364e-4566-883a-afc868c4224d";
       terjesc = "993d70e8-6f9b-4094-813c-050d1a90be62";
       maxelost = "bf465915-871a-4e3e-a80c-061117b86b23";
-      4ce1 = "8a9b4926-0de8-43f0-bcde-df1442dee1d0";
+      "4ce1" = "8a9b4926-0de8-43f0-bcde-df1442dee1d0";
       exponential = "1ebcca9d-0964-48f3-9154-126a9a7e64f6";
       Dodsorbot = "3baa9d58-32e4-465e-80bc-9dcb34e23e1d";
       HFANTOM = "cd74d407-7fb0-4454-b3f4-c0b4341fde18";
@@ -128,7 +128,7 @@
       cybrhuman = "14a67926-cff0-4542-a111-7f557d10cc67";
       stinl = "3a08be01-1e74-4d68-88d1-07d0eb23356f";
       Mirithing = "7b327f51-4f1b-4606-88c7-378eff1b92b1";
-      _dextra = "4b7b4ee7-eb5b-48fd-88c3-1cc68f06acda";
+      "_dextra" = "4b7b4ee7-eb5b-48fd-88c3-1cc68f06acda";
       Soraryuu = "0d5ffe48-e64f-4d6d-9432-f374ea8ec10c";
       klarken1 = "d6967cb8-2bc6-4db7-a093-f0770cce47df";
     };

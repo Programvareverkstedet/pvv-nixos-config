@@ -14,24 +14,6 @@
       ../../services/minecraft
     ];
 
-
-  services.minecraft-server = {
-    enable = false;
-    eula = true;
-    package = pkgs.callPackage ../../pkgs/minecraft-server-fabric { inherit (pkgs.unstable) minecraft-server; };
-    dataDir =  "/fast/minecraft"; #"/fast/minecraft";
-    jvmOpts = "-Xms10G -Xmx10G -XX:+UnlockExperimentalVMOptions -XX:+UseZGC  -XX:+DisableExplicitGC  -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled";
-
-    declarative = true;
-    serverProperties = {
-      view-distance = 32;
-      gamemode = 1;
-      enable-rcon = true;
-      "rcon.password" = "pvv";
-    };
-  };
-
-
   nixpkgs.config.packageOverrides = pkgs: {
     unstable = (import <nixos-unstable>) { };
   };
