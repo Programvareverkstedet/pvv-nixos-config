@@ -12,7 +12,7 @@
     enable = true;
     eula = true;
 
-    package = pkgs.callPackage ../../pkgs/minecraft-server-fabric { inherit (pkgs.unstable) minecraft-server; };
+    package = pkgs.callPackage ../../pkgs/minecraft-server-fabric { minecraft-server = (pkgs.callPackage ../../pkgs/minecraft-server/1_18_1.nix { }); };
     jvmOpts = "-Xms10G -Xmx10G -XX:+UnlockExperimentalVMOptions -XX:+UseZGC  -XX:+DisableExplicitGC  -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled";
 
     serverProperties = {
