@@ -24,7 +24,10 @@ let
               </RollingRandomAccessFile>
           </Appenders>
           <Loggers>
-              <Root level="debug">
+              <Root level="info">
+                  <filters>
+                      <MarkerFilter marker="NETWORK_PACKETS" onMatch="DENY" onMismatch="NEUTRAL" />
+                  </filters>
                   <AppenderRef ref="SysOut"/>
                   <AppenderRef ref="File"/>
                   <AppenderRef ref="ServerGuiConsole"/>

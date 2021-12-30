@@ -4,6 +4,10 @@
 
   imports = [ ./minecraft-server-fabric.nix ];
 
+  environment.systemPackages = with pkgs; [
+    mcron
+  ];
+
   pvv.minecraft-server-fabric = {
     enable = true;
     eula = true;
