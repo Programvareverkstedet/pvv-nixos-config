@@ -9,7 +9,7 @@ in
 
   services.matrix-synapse-next = {
     enable = true;
-    package = pkgs.unstable.matrix-synapse; # Can be stable after 21.11?
+    package = pkgs.matrix-synapse;
 
     dataDir = "/data/synapse";
 
@@ -63,11 +63,15 @@ in
         }
       ];
 
-      enable_registration = true;
 
       enable_metrics = true;
 
       use_presence = true;
+
+
+      password_config.enabled = lib.mkForce false;
+
+      enable_registration = false;
 
 
       saml2_config = {
@@ -145,8 +149,6 @@ in
         #];
 
       };
-
-      password_config.enable = lib.mkForce false;
 
       signing_key_path = "${cfg.dataDir}/homeserver.signing.key";
       media_store_path =  "${cfg.dataDir}/media";
