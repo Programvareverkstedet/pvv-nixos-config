@@ -29,6 +29,8 @@
     kitty.terminfo
   ];
 
+  users.groups."drift".name = "drift";
+
   services.openssh.enable = true;
   services.openssh.permitRootLogin = "yes";
 
