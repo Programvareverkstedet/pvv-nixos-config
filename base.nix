@@ -16,6 +16,9 @@
     keyMap = "no";
   };
 
+  system.autoUpgrade.enable = true;
+  nix.gc.automatic = true;
+
   environment.systemPackages = with pkgs; [
     git
     vim
