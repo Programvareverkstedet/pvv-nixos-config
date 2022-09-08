@@ -204,7 +204,7 @@ in
     };      
   };
 
-  services.redis.enable = true;
+  services.redis.servers.matrix.enable = true;
 
   services.nginx.virtualHosts."matrix.pvv.ntnu.no" = {
     enableACME = true;

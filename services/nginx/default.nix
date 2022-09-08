@@ -2,8 +2,10 @@
 
 {
 
-  security.acme.acceptTerms = true;
-  security.acme.email = "danio@pvv.ntnu.no";
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "danio@pvv.ntnu.no";
+  };
 
   services.nginx = {
     enable = true;
