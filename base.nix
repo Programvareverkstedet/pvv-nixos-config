@@ -20,12 +20,15 @@
   nix.gc.automatic = true;
 
   environment.systemPackages = with pkgs; [
-    git
-    vim
-    nano
-    wget
-    tmux
     file
+    git
+    htop
+    nano
+    nvim
+    tmux
+    vim
+    wget
+
     kitty.terminfo
   ];
 
