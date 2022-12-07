@@ -9,6 +9,9 @@
 
   services.nginx = {
     enable = true;
+
+    defaultListenAddresses = [ "129.241.210.169" "127.0.0.1" "[2001:700:300:1900::169]" ];
+
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
     recommendedGzipSettings = true;

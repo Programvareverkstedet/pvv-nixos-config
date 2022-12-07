@@ -2,77 +2,84 @@
 
 let
   cfg = config.services.matrix-synapse-next;
-in
-{
 
+  imap0Attrs = with lib; f: set:
+    listToAttrs (imap0 (i: attr: nameValuePair attr (f i attr set.${attr})) (attrNames set));
+in {
   imports = [ ./synapse-module ];
+
+  sops.secrets."matrix/synapse/dbconfig" = {
+    owner = config.users.users.matrix-synapse.name;
+    group = config.users.users.matrix-synapse.group;
+  };
 
   services.matrix-synapse-next = {
     enable = true;
-    package = pkgs.matrix-synapse;
 
     dataDir = "/data/synapse";
 
-    enableMainSynapse = true;
+    workers.federationSenders = 1;
+    workers.federationReceivers = 1;
+
+    enableNginx = true;
+
+    extraConfigFiles = [
+      config.sops.secrets."matrix/synapse/dbconfig".path
+    ];
 
     settings = {
       server_name = "pvv.ntnu.no";
       public_baseurl = "https://matrix.pvv.ntnu.no";
 
-# LOL postgres too old
-#      database = {
-#        name = "psycopg2"; #postgres pvv ntnu no 5432
-#        args = {
-#          host = "postgres.pvv.ntnu.no";
-#          user = "synapse";
-#          password = "FOLINghtSonj";
-#          dbname = "synapse";
-#        };
-#      };
+      media_store_path =  "${cfg.dataDir}/media";
 
-      database = {
-        name = "psycopg2";
-        args = {
-          host = "localhost";
-          user = "synapse";
-          password = "synapse";
-          dbname = "synapse";
-        };
-      };
-
-      listeners = [
-        {
-          bind_addresses = ["127.0.1.2"]; port = 8008; tls = false; type = "http";
-          x_forwarded = true;
-          resources = [
-            { names = ["client"]; compress = true;}
-            { names = ["federation"]; compress = false;}
-          ];
-        }
-        {
-          bind_addresses = ["127.0.1.2"]; port = 8010; tls = false; type = "http";
-          resources = [
-            { names = ["metrics"]; compress = false; }
-          ];
-        }
-        {
-          bind_addresses = [ "127.0.1.2"]; port = 9008; tls = false; type = "http";
-          resources = [
-           { names = ["replication"]; compress = false; }
-          ];
-        }
+      autocreate_auto_join_rooms = false;
+      auto_join_rooms = [
+        "#pvv:pvv.ntnu.no" # Main space
+        "#announcements:pvv.ntnu.no"
+        "#general:pvv.ntnu.no"
       ];
 
+      max_upload_size = "150M";
 
       enable_metrics = true;
 
-      use_presence = true;
-
+      enable_registration = false;
 
       password_config.enabled = lib.mkForce false;
 
-      enable_registration = false;
+      trusted_key_servers = [
+        { server_name = "matrix.org"; }
+        { server_name = "dodsorf.as"; }
+      ];
 
+      url_preview_enabled = true;
+      url_preview_ip_range_blacklist = [
+        # synapse example config
+        "127.0.0.0/8"
+        "10.0.0.0/8"
+        "172.16.0.0/12"
+        "192.168.0.0/16"
+        "100.64.0.0/10"
+        "192.0.0.0/24"
+        "169.254.0.0/16"
+        "192.88.99.0/24"
+        "198.18.0.0/15"
+        "192.0.2.0/24"
+        "198.51.100.0/24"
+        "203.0.113.0/24"
+        "224.0.0.0/4"
+        "::1/128"
+        "fe80::/10"
+        "fc00::/7"
+        "2001:db8::/32"
+        "ff00::/8"
+        "fec0::/10"
+
+        # NTNU
+        "129.241.0.0/16"
+        "2001:700:300::/44"
+      ];
 
       saml2_config = {
         sp_config.metadata.remote = [
@@ -129,8 +136,7 @@ in
           url = "https://www.pvv.ntnu.no";
         };
         contact_person = [
-          {
-            given_name = "Drift";
+          { given_name = "Drift";
             sur_name = "King";
             email_adress = [ "drift@pvv.ntnu.no" ];
             contact_type = "technical";
@@ -147,73 +153,46 @@ in
         #attribute_requirements = [
         #  {attribute = "userGroup"; value = "medlem";} # Do we have this?
         #];
-
       };
+    };
+  };
 
-      signing_key_path = "${cfg.dataDir}/homeserver.signing.key";
-      media_store_path =  "${cfg.dataDir}/media";
+  services.redis.servers."".enable = true;
+  
+  services.nginx.virtualHosts."matrix.pvv.ntnu.no" = lib.mkMerge [({
+    locations = let
+      isListenerType = type: listener: lib.lists.any (r: lib.lists.any (n: n == type) r.names) listener.resources;
+      isMetricsListener = l: isListenerType "metrics" l;
 
-      federation_sender_instances = [
-        "federation_sender1"
+      firstMetricsListener = w: lib.lists.findFirst isMetricsListener (throw "No metrics endpoint on worker") w.settings.worker_listeners;
+
+      wAddress = w: lib.lists.findFirst (_: true) (throw "No address in receiver") (firstMetricsListener w).bind_addresses;
+      wPort = w: (firstMetricsListener w).port;
+
+      socketAddress = w: "${wAddress w}:${toString (wPort w)}";
+
+      metricsPath = w: "/metrics/${w.type}/${toString w.index}";
+      proxyPath = w: "http://${socketAddress w}/_synapse/metrics";
+    in lib.mapAttrs' (n: v: lib.nameValuePair (metricsPath v) ({ proxyPass = proxyPath v; }))
+      cfg.workers.instances;
+  })
+  ({
+    locations."/metrics/master/1" = {
+      proxyPass = "http://127.0.0.1:9000/_synapse/metrics";
+    };
+
+    locations."/metrics/" = let
+      endpoints = builtins.map (x: "matrix.pvv.ntnu.no/metrics/${x}") [
+        "master/1"
+        "fed-sender/1"
+        "fed-receiver/1"
       ];
-
-      redis = {
-        enabled = true;
-      };
+    in {
+      alias = pkgs.writeTextDir "/config.json"
+        (builtins.toJSON [
+          { targets = endpoints;
+            labels = { };
+          }]) + "/";
     };
-
-    workers = {
-      "federation_sender1" = {
-        settings = {
-          worker_app = "synapse.app.federation_sender";
-          worker_replication_host = "127.0.1.2";
-          worker_replication_http_port = 9008;
-
-          worker_listeners = [
-            {
-              bind_addresses = ["127.0.1.10"]; port = 8010; tls = false; type = "http";
-              resources = [
-                { names = ["metrics"]; compress = false; }
-              ];
-            }
-          ];
-        };
-      };
-      "federation_reciever1" = {
-        settings = {
-          worker_app = "synapse.app.generic_worker";
-          worker_replication_host = "127.0.1.2";
-          worker_replication_http_port = 9008;
-   
-          worker_listeners = [
-            {
-              bind_addresses = ["127.0.1.11"]; port = 8010; tls = false; type = "http";
-              resources = [
-                { names = ["metrics"]; compress = false; }
-              ];
-            }
-            {
-              bind_addresses = ["127.0.1.11"]; port = 8011; tls = false; type = "http";
-              resources = [
-                { names = ["federation"]; compress = false; }
-              ];
-            }
-          ];
-        };
-      };
-    };      
-  };
-
-  services.redis.servers.matrix.enable = true;
-
-  services.nginx.virtualHosts."matrix.pvv.ntnu.no" = {
-    enableACME = true;
-    forceSSL = true;
-    locations."/" = {
-      proxyPass = "http://127.0.1.2:8008";
-    };
-    locations."/_matrix/federation" = {
-      proxyPass = "http://127.0.1.11:8011";
-    };
-  };
+  })];
 }

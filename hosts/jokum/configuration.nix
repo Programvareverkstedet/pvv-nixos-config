@@ -16,7 +16,6 @@ in
 
       ../../services/matrix
       ../../services/nginx
-      ../../services/postgres
     ];
 
 
@@ -48,12 +47,20 @@ in
         address = "129.241.210.169";
         prefixLength = 25;
       }
+      {
+        address = "129.241.210.213";
+        prefixLength = 25;
+      }
     ];
   };
   networking.interfaces.ens18.ipv6 = {
     addresses = [
       {
         address = "2001:700:300:1900::169";
+        prefixLength = 64;
+      }
+      {
+        address = "2001:700:300:1900::213";
         prefixLength = 64;
       }
     ];
