@@ -35,7 +35,13 @@
 
   users.groups."drift".name = "drift";
 
-  services.openssh.enable = true;
-  services.openssh.permitRootLogin = "yes";
+  services.openssh = {
+    enable = true;
+    permitRootLogin = "yes";
+    extraConfig = ''
+      PubkeyAcceptedAlgorithms=+ssh-rsa
+    '';
+  };
+
 
 }
