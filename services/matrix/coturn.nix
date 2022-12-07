@@ -1,8 +1,6 @@
 { config, lib, pkgs, secrets, ... }:
 
 {
-  imports = [ ./synapse-module ];
-
   sops.secrets."matrix/synapse/turnconfig" = {
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;

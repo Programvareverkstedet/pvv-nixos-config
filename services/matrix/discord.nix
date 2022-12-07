@@ -4,9 +4,6 @@ let
   cfg = config.services.mx-puppet-discord;
 in
 {
-
-  imports = [ ./synapse-module ];
-
   users.groups.keys-matrix-registrations = { };
 
   sops.secrets."matrix/registrations/mx-puppet-discord" = {

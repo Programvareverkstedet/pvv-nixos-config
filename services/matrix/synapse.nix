@@ -6,8 +6,6 @@ let
   imap0Attrs = with lib; f: set:
     listToAttrs (imap0 (i: attr: nameValuePair attr (f i attr set.${attr})) (attrNames set));
 in {
-  imports = [ ./synapse-module ];
-
   sops.secrets."matrix/synapse/dbconfig" = {
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;

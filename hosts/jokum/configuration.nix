@@ -1,13 +1,8 @@
 { config, pkgs, ... }:
-let
-  unstable = import <nixos-unstable> { };
-in
 {
   imports = [
-      <sops-nix/modules/sops>
-
       # Include the results of the hardware scan.
-      ../../hardware-configuration.nix
+      ./hardware-configuration.nix
 
       ../../base.nix
       # Users can just import any configuration they want even for non-user things. Improve the users/default.nix to just load some specific attributes if this isn't wanted
@@ -17,13 +12,6 @@ in
       ../../services/matrix
       ../../services/nginx
     ];
-
-
-  # Allow accessing <nixos-unstable> through pkgs.unstable.*
-  nixpkgs.config.packageOverrides = pkgs: {
-    inherit unstable;
-  };
-
 
   sops.defaultSopsFile = ../../secrets/jokum/jokum.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
@@ -82,4 +70,3 @@ in
   system.stateVersion = "21.05"; # Did you read the comment?
 
 }
-
