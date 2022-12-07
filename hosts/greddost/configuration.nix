@@ -10,17 +10,9 @@
       ../../hardware-configuration.nix
 
       ../../base.nix
+
+      ../../services/minecraft
     ];
-
-
-  services.minecraft-server = {
-    enable = true;
-    eula = true;
-    package = pkgs.unstable.minecraft-server;
-    dataDir =  "/run/minecraft"; #"/fast/minecraft";
-    jvmOpts = "-Xmx8192M -Xms8192M -XX:+UseG1GC -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
-  };
-
 
   nixpkgs.config.packageOverrides = pkgs: {
     unstable = (import <nixos-unstable>) { };
@@ -37,7 +29,26 @@
 
   networking.hostName = "greddost"; # Define your hostname.
 
-  networking.interfaces.ens18.useDHCP = true;
+  networking.interfaces.ens18.useDHCP = false;
+
+  networking.defaultGateway = "129.241.210.129";
+  networking.interfaces.ens18.ipv4 = {
+    addresses = [
+      {
+        address = "129.241.210.174";
+        prefixLength = 25;
+      }
+    ];
+  };
+  networking.interfaces.ens18.ipv6 = {
+    addresses = [
+      {
+        address = "2001:700:300:1900::174";
+        prefixLength = 64;
+      }
+    ];
+  };
+  networking.nameservers = [ "129.241.0.200" "129.241.0.201" ];
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 25565 ];
