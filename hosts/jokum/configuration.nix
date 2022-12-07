@@ -4,6 +4,8 @@ let
 in
 {
   imports = [
+      <sops-nix/modules/sops>
+
       # Include the results of the hardware scan.
       ../../hardware-configuration.nix
 
@@ -22,6 +24,13 @@ in
   nixpkgs.config.packageOverrides = pkgs: {
     inherit unstable;
   };
+
+
+  sops.defaultSopsFile = ../../secrets/jokum/jokum.yaml;
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+  sops.age.generateKey = true;
+  
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;

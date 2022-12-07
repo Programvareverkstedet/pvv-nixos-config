@@ -1,0 +1,17 @@
+keys:
+  - &user_danio age17tagmpwqjk3mdy45rfesrfey6h863x8wfq38wh33tkrlrywxducs0k6tpq
+  - &host_jokum age1n4vc3dhv8puqz6ntwrkkpdfj0q002hexqee48wzahll8cmce2ezssrq608
+creation_rules:
+  # Global secrets
+  - path_regex: secrets/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *user_danio
+      - *host_jokum
+  # Host specific secrets
+  ## Jokum
+  - path_regex: secrets/jokum/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *user_danio
+      - *host_jokum
