@@ -26,7 +26,6 @@
     git
     htop
     nano
-    nvim
     tmux
     vim
     wget
