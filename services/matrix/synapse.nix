@@ -47,6 +47,8 @@ in {
         "#general:pvv.ntnu.no"
       ];
 
+      allow_public_rooms_over_federation = true;
+
       max_upload_size = "150M";
 
       enable_metrics = true;
