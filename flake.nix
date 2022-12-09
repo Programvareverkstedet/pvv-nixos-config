@@ -11,7 +11,14 @@
     matrix-next.url = "github:dali99/nixos-matrix-modules/flake-experiments";
   };
 
-  outputs = { self, nixpkgs, unstable, sops-nix, ... }@inputs: {
+  outputs = { self, nixpkgs, unstable, sops-nix, ... }@inputs: 
+  let
+    systems = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
+    forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
+  in {
     nixosConfigurations = {
       jokum = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -24,5 +31,8 @@
         ];
       };
     };
+    devShells = forAllSystems (system: {
+      default = nixpkgs.legacyPackages.${system}.callPackage ./shell.nix { };
+    });
   };
 }
