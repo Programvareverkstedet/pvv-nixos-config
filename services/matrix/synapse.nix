@@ -11,6 +11,11 @@ in {
     group = config.users.users.matrix-synapse.group;
   };
 
+  sops.secrets."matrix/synapse/signing_key" = {
+    owner = config.users.users.matrix-synapse.name;
+    group = config.users.users.matrix-synapse.group;
+  };
+
   services.matrix-synapse-next = {
     enable = true;
 
@@ -28,6 +33,8 @@ in {
     settings = {
       server_name = "pvv.ntnu.no";
       public_baseurl = "https://matrix.pvv.ntnu.no";
+
+      signing_key_path = config.sops.secrets."matrix/synapse/signing_key".path;
 
       media_store_path =  "${cfg.dataDir}/media";
 
