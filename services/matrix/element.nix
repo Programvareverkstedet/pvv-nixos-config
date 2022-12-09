@@ -27,7 +27,7 @@
           feature_custom_status = false;
         };
         default_theme = "dark";
-        roomDirectory.servers = [
+        room_directory.servers = [
           "pvv.ntnu.no"
           "matrix.omegav.no"
           "matrix.org"
