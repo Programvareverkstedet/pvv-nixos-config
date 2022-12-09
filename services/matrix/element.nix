@@ -29,6 +29,7 @@
         default_theme = "dark";
         roomDirectory.servers = [
           "pvv.ntnu.no"
+          "matrix.omegav.no"
           "matrix.org"
           "libera.chat"
           "gitter.im"
