@@ -16,7 +16,14 @@
     keyMap = "no";
   };
 
-  system.autoUpgrade.enable = true;
+  system.autoUpgrade = {
+    enable = true;
+    flake = "git+https://git.pvv.ntnu.no/Drift/pvv-nixos-config.git?ref=main";
+    flags = [
+      "--update-input" "nixpkgs"
+      "--no-write-lock-file"
+    ];
+  };
   nix.gc.automatic = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
