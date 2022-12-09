@@ -22,7 +22,7 @@
     nixosConfigurations = {
       jokum = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit unstable; };
+        specialArgs = { inherit unstable inputs; };
         modules = [
           ./hosts/jokum/configuration.nix
           sops-nix.nixosModules.sops

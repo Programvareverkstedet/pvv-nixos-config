@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports = [
@@ -28,6 +28,17 @@
   nix.gc.automatic = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  /* This makes commandline tools like
+  ** nix run nixpkgs#hello
+  ** and nix-shell -p hello
+  ** use the same channel the system
+  ** was built with
+  */
+  nix.registry = {
+    nixpkgs.flake = inputs.nixpkgs;
+  };
+  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
   environment.systemPackages = with pkgs; [
     file
