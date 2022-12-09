@@ -23,6 +23,8 @@ in {
 
     workers.federationSenders = 1;
     workers.federationReceivers = 1;
+    workers.initialSyncers = 1;
+    workers.normalSyncers = 1;
 
     enableNginx = true;
 
@@ -191,6 +193,8 @@ in {
         "master/1"
         "fed-sender/1"
         "fed-receiver/1"
+        "init-sync/1"
+        "normal-sync/1"
       ];
     in {
       alias = pkgs.writeTextDir "/config.json"
