@@ -26,6 +26,7 @@
     ];
   };
   nix.gc.automatic = true;
+  nix.gc.options = "--delete-older-than 2d";
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
