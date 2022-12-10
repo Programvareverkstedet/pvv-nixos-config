@@ -195,7 +195,7 @@ in {
         "master/1"
         "fed-sender/1"
         "fed-receiver/1"
-        "init-sync/1"
+        "initial-sync/1"
         "normal-sync/1"
       ];
     in {
