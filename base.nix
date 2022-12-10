@@ -7,6 +7,12 @@
 
   networking.domain = "pvv.ntnu.no";
   networking.useDHCP = false;
+  networking.search = [ "pvv.ntnu.no" "pvv.org" ];
+
+  services.resolved = {
+    enable = true;
+    dnssec = "false"; # Supposdly this keeps breaking and the default is to allow downgrades anyways...
+  };
 
   time.timeZone = "Europe/Oslo";
 
