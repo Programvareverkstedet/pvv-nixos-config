@@ -10,7 +10,7 @@
   services.nginx = {
     enable = true;
 
-    defaultListenAddresses = [ "129.241.210.169" "127.0.0.1" "[2001:700:300:1900::169]" ];
+    defaultListenAddresses = [ "129.241.210.169" "127.0.0.1" "127.0.0.2" "[2001:700:300:1900::169]" "[::1]" ];
 
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
