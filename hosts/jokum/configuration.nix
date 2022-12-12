@@ -9,8 +9,8 @@
 
       ../../misc/rust-motd.nix
 
-      ../../services/matrix
-      ../../services/nginx
+      ./services/matrix
+      ./services/nginx
     ];
 
   sops.defaultSopsFile = ../../secrets/jokum/jokum.yaml;
