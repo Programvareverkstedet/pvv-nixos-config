@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config.services.mx-puppet-discord;
@@ -21,7 +21,9 @@ in
     bridge = {
       bindAddress = "localhost";
       domain = "pvv.ntnu.no";
-      homeserverUrl = config.services.matrix-synapse-next.settings.public_baseurl;
+      # systemd-resolved reads hosts and redirects matrix->jokum->127.0.0.2 which nginx doesnt listen to
+      # this line points the bridge at whatever the ip for the main synapse listener is
+      homeserverUrl = "http://${lib.head (lib.attrNames config.services.nginx.upstreams.synapse_master.servers)}";
     };
     provisioning.whitelist = [ "@dandellion:dodsorf\\.as" "@danio:pvv\\.ntnu\\.no"];
     relay.whitelist = [ ".*" ];
