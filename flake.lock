@@ -2,11 +2,11 @@
   "nodes": {
     "matrix-next": {
       "locked": {
-        "lastModified": 1670913250,
-        "narHash": "sha256-NGC/Ko7nfUJTD5pt9NtIybIxsS48J3a4YwacD7Ibod8=",
+        "lastModified": 1671000263,
+        "narHash": "sha256-WrpqLUbJT6/z1FCpgb/K5Cmv/DKiBJQs9CaIL9g8iQ8=",
         "owner": "dali99",
         "repo": "nixos-matrix-modules",
-        "rev": "e6dfcbe3acc66e333230d9b907f57c474f7258b1",
+        "rev": "a2b4d2e341c57b34628fbe683c930e4d64c7317d",
         "type": "github"
       },
       "original": {
@@ -18,11 +18,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1670790647,
-        "narHash": "sha256-9a8b63M7CHXvbGA1AXGhCkH5BkYAaXiBX3LP8LBlnNA=",
+        "lastModified": 1670946965,
+        "narHash": "sha256-PDJfKgK/aSV3ISnD1TbKpLPW85LO/AQI73yQjbwribA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5f3e18f6cc1df481cba325a0916994e39b55e4e9",
+        "rev": "265caf30fa0a5148395b62777389b57eb0a537fd",
         "type": "github"
       },
       "original": {
@@ -79,11 +79,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1670837426,
-        "narHash": "sha256-VGm7k7R+zxZa5oZXGT/79SUlihzFxeWVcPmIn0k1y+8=",
+        "lastModified": 1670918062,
+        "narHash": "sha256-iOhkyBYUU9Jfkk0lvI4ahpjyrTsLXj9uyJWwmjKg+gg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f277f5a27a877f9ceaaeecc8161c9f6d3b7f4f7c",
+        "rev": "84575b0bd882be979516f4fecfe4d7c8de8f6a92",
         "type": "github"
       },
       "original": {
