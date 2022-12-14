@@ -2,11 +2,11 @@
   "nodes": {
     "matrix-next": {
       "locked": {
-        "lastModified": 1671004624,
-        "narHash": "sha256-JLccJhfUKwuDlYSQYEJFhfA/Fqge+fpBVguntAM44VM=",
+        "lastModified": 1671005757,
+        "narHash": "sha256-z94nOWQ2QIwqi9UUE+nXee9e/STb1L3CkifR0NzufXA=",
         "owner": "dali99",
         "repo": "nixos-matrix-modules",
-        "rev": "476d66f8b5fe3c97326c51d736afc42e1284d8d3",
+        "rev": "bb105192c2f5476661eb600bcbd94b13fda611b6",
         "type": "github"
       },
       "original": {

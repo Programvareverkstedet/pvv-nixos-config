@@ -25,6 +25,7 @@ in {
     workers.federationReceivers = 1;
     workers.initialSyncers = 1;
     workers.normalSyncers = 1;
+    workers.eventPersisters = 1;
 
     enableNginx = true;
 
