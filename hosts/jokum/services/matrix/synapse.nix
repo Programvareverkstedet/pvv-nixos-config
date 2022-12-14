@@ -196,6 +196,7 @@ in {
       endpoints = builtins.map (x: "matrix.pvv.ntnu.no/metrics/${x}") [
         "master/1"
         "fed-sender/1"
+        "fed-sender/2"
         "fed-receiver/1"
         "initial-sync/1"
         "normal-sync/1"
