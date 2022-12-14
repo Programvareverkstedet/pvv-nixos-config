@@ -26,6 +26,7 @@ in {
     workers.initialSyncers = 1;
     workers.normalSyncers = 1;
     workers.eventPersisters = 1;
+    workers.useUserDirectoryWorker = true;
 
     enableNginx = true;
 
@@ -199,6 +200,7 @@ in {
         "initial-sync/1"
         "normal-sync/1"
         "event-persist/1"
+        "user-dir/1"
       ];
     in {
       alias = pkgs.writeTextDir "/config.json"
