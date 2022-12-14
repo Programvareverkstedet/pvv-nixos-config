@@ -198,6 +198,7 @@ in {
         "fed-receiver/1"
         "initial-sync/1"
         "normal-sync/1"
+        "event-persist/1"
       ];
     in {
       alias = pkgs.writeTextDir "/config.json"
