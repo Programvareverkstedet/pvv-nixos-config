@@ -30,6 +30,14 @@
           inputs.matrix-next.nixosModules.synapse
         ];
       };
+      ildkule = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit unstable inputs; };
+        modules = [
+          ./hosts/ildkule/configuration.nix
+          sops-nix.nixosModules.sops
+        ];
+      };
     };
     devShells = forAllSystems (system: {
       default = nixpkgs.legacyPackages.${system}.callPackage ./shell.nix { };
