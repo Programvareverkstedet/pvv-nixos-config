@@ -1,6 +1,7 @@
 keys:
   - &user_danio age17tagmpwqjk3mdy45rfesrfey6h863x8wfq38wh33tkrlrywxducs0k6tpq
   - &user_felixalb age1mrnldl334l2nszuta6ywvewng0fswv2dz9l5g4qcwe3nj4yxf92qjskdx6
+  - &user_oysteikt F7D37890228A907440E1FD4846B9228E814A2AAC
   - &host_jokum age1n4vc3dhv8puqz6ntwrkkpdfj0q002hexqee48wzahll8cmce2ezssrq608
 creation_rules:
   # Global secrets
@@ -9,16 +10,24 @@ creation_rules:
     - age:
       - *user_danio
       - *host_jokum
+      pgp:
+      - *user_oysteikt
   # Host specific secrets
   ## Jokum
   - path_regex: secrets/jokum/[^/]+\.yaml$
+    shamir_threshold: 1
     key_groups:
     - age:
       - *user_danio
       - *host_jokum
+      pgp:
+      - *user_oysteikt
 
   - path_regex: secrets/ildkule/[^/]+\.yaml$
+    shamir_threshold: 1
     key_groups:
     - age:
       - *user_felixalb
       - *user_danio
+      pgp:
+      - *user_oysteikt
