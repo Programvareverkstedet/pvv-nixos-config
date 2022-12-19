@@ -18,6 +18,15 @@
          isDefault = true;
         }
       ];
+      dashboards.settings.providers = [
+        {
+          name = "Node Exporter Full";
+          type = "file";
+          url = "https://grafana.com/api/dashboards/1860/revisions/29/download";
+          options.path = dashboards/node-exporter-full.json;
+        }
+      ];
+
     };
   };
 
