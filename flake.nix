@@ -22,8 +22,9 @@
     nixosConfigurations = {
       jokum = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit unstable inputs; };
+        specialArgs = { inherit inputs; };
         modules = [
+          ./base.nix
           ./hosts/jokum/configuration.nix
           sops-nix.nixosModules.sops
 
@@ -32,8 +33,9 @@
       };
       ildkule = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit unstable inputs; };
+        specialArgs = { inherit inputs; };
         modules = [
+          ./base.nix
           ./hosts/ildkule/configuration.nix
           sops-nix.nixosModules.sops
         ];

@@ -36,16 +36,24 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  /* This makes commandline tools like
-  ** nix run nixpkgs#hello
-  ** and nix-shell -p hello
-  ** use the same channel the system
-  ** was built with
-  */
+  # This makes commandline tools like nix run nixpkgs#hello
+  # and nix-shell -p hello use the same channel the system was built with
   nix.registry = {
     nixpkgs.flake = inputs.nixpkgs;
   };
-  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+  nix.nixPath = [
+    "nixpkgs=${inputs.nixpkgs}"
+    "nixpkgs-overlays=${./overlays-compat}/"
+  ];
+
+  # Allows access to nixpkgs-unstable via pkgs.unstable
+  nixpkgs.overlays = let
+    unstable-overlay = final: prev: {
+      unstable = inputs.unstable.legacyPackages.${prev.system};
+    };
+  in [
+    unstable-overlay
+  ];
 
   environment.systemPackages = with pkgs; [
     file
