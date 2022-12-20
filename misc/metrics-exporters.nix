@@ -14,9 +14,6 @@
         http_listen_port = 28183;
         grpc_listen_port = 0;
       };
-      positions = {
-        filename = "/var/lib/promtail/positions.yaml";
-      };
       clients = [
         {
           url = "http://ildkule.pvv.ntnu.no:3100/loki/api/v1/push";

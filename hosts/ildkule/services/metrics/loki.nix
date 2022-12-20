@@ -7,6 +7,7 @@
       auth_enabled = false;
       server = {
         http_listen_port = 3100;
+        http_listen_address = "127.0.0.1";
         grpc_listen_port = 9096;
       };
 
@@ -16,6 +17,7 @@
           dir = "/var/lib/loki/wal";
         };
         lifecycler = {
+          address = "127.0.0.1";
           ring = {
             kvstore = {
               store = "inmemory";
@@ -24,19 +26,19 @@
           };
           final_sleep = "0s";
         };
-        chunk_idle_period = "10m";
+        chunk_idle_period = "1h";
       };
 
       schema_config = {
         configs = [
           {
-            from = "2022-01-01";
-            store = "boltdb";
+            from = "2022-12-01";
+            store = "boltdb-shipper";
             object_store = "filesystem";
             schema = "v11";
             index = {
               prefix = "index_";
-              period = "48h";
+              period = "24h";
             };
           }
         ];
@@ -44,7 +46,8 @@
 
       storage_config = {
         boltdb_shipper = {
-          active_index_directory = "/var/lib/loki/index";
+          active_index_directory = "/var/lib/loki/boltdb-shipper-index";
+          cache_location = "/var/lib/loki/boltdb-shipper-cache";
           shared_store = "filesystem";
           cache_ttl = "24h";
         };
@@ -76,4 +79,6 @@
       # };
     };
   };
+
+  networking.firewall.allowedTCPPorts = [ config.services.loki.configuration.server.http_listen_port ];
 }

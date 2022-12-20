@@ -17,6 +17,11 @@
           url = ("http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}");
          isDefault = true;
         }
+        {
+          name = "Ildkule loki";
+          type = "loki";
+          url = ("http://${config.services.loki.configuration.server.http_listen_address}:${toString config.services.loki.configuration.server.http_listen_port}");
+        }
       ];
       dashboards.settings.providers = [
         {
@@ -30,7 +35,7 @@
     };
   };
 
-  services.nginx.virtualHosts.${config.services.grafana.domain} = {
+  services.nginx.virtualHosts.${config.services.grafana.settings.server.domain} = {
     locations = {
       "/" = {
         proxyPass = "http://${config.services.grafana.settings.server.http_addr}:${toString config.services.grafana.settings.server.http_port}";
@@ -38,7 +43,6 @@
         extraConfig = ''
           proxy_buffers 8 1024k;
           proxy_buffer_size 1024k;
-          proxy_set_header Host $host;
         '';
       };
     };
