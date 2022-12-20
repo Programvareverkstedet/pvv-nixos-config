@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
-{
+let
+  cfg = config.services.loki;
+in {
   services.loki = {
     enable = true;
     configuration = {
@@ -80,5 +82,5 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ config.services.loki.configuration.server.http_listen_port ];
+  networking.firewall.allowedTCPPorts = [ cfg.configuration.server.http_listen_port ];
 }
