@@ -32,6 +32,12 @@ in {
           url = "https://grafana.com/api/dashboards/1860/revisions/29/download";
           options.path = dashboards/node-exporter-full.json;
         }
+        {
+          name = "Matrix Synapse";
+          type = "file";
+          url = "https://raw.githubusercontent.com/matrix-org/synapse/develop/contrib/grafana/synapse.json";
+          options.path = dashboards/synapse.json;
+        }
       ];
 
     };
