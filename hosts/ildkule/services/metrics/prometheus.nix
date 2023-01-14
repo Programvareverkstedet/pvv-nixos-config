@@ -16,6 +16,7 @@ in {
             targets = [
               "ildkule.pvv.ntnu.no:${toString cfg.exporters.node.port}"
               "microbel.pvv.ntnu.no:9100"
+              "isvegg.pvv.ntnu.no:9100"
               "knakelibrak.pvv.ntnu.no:9100"
             ];
           }
