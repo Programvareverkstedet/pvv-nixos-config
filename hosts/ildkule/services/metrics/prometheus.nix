@@ -23,6 +23,17 @@ in {
         ];
       }
       {
+        job_name = "exim";
+        scrape_interval = "60s";
+        static_configs = [
+          {
+            targets = [
+              "microbel.pvv.ntnu.no:9636"
+            ];
+          }
+        ];
+      }
+      {
         job_name = "synapse";
         scrape_interval = "15s";
         scheme = "https";
