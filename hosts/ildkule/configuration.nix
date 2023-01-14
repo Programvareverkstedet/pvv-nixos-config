@@ -3,9 +3,11 @@
   imports = [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-
       ../../base.nix
-      # Users can just import any configuration they want even for non-user things. Improve the users/default.nix to just load some specific attributes if this isn't wanted
+      ../../misc/metrics-exporters.nix
+
+      ./services/nginx
+      ./services/metrics
     ];
 
   sops.defaultSopsFile = ../../secrets/ildkule/ildkule.yaml;
