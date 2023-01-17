@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, values, ... }:
 
 let
   cfg = config.services.matrix-synapse-next;
@@ -190,6 +190,10 @@ in {
   ({
     locations."/metrics/master/1" = {
       proxyPass = "http://127.0.0.1:9000/_synapse/metrics";
+      extraConfig = ''
+        allow ${values.ildkule.ipv4};
+        deny all;
+      '';
     };
 
     locations."/metrics/" = let
@@ -209,6 +213,10 @@ in {
           { targets = endpoints;
             labels = { };
           }]) + "/";
+      extraConfig = ''
+        allow ${values.ildkule.ipv4};
+        deny all;
+      '';
     };
   })];
 }
