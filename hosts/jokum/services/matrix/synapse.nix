@@ -184,7 +184,15 @@ in {
 
       metricsPath = w: "/metrics/${w.type}/${toString w.index}";
       proxyPath = w: "http://${socketAddress w}/_synapse/metrics";
-    in lib.mapAttrs' (n: v: lib.nameValuePair (metricsPath v) ({ proxyPass = proxyPath v; }))
+    in lib.mapAttrs' (n: v: lib.nameValuePair
+      (metricsPath v) ({
+        proxyPass = proxyPath v;
+        extraConfig = ''
+          allow ${values.ildkule.ipv4};
+          allow [${values.ildkule.ipv6}];
+          deny all;
+        '';
+      }))
       cfg.workers.instances;
   })
   ({
@@ -192,6 +200,7 @@ in {
       proxyPass = "http://127.0.0.1:9000/_synapse/metrics";
       extraConfig = ''
         allow ${values.ildkule.ipv4};
+        allow [${values.ildkule.ipv6}];
         deny all;
       '';
     };
@@ -213,10 +222,6 @@ in {
           { targets = endpoints;
             labels = { };
           }]) + "/";
-      extraConfig = ''
-        allow ${values.ildkule.ipv4};
-        deny all;
-      '';
     };
   })];
 }
