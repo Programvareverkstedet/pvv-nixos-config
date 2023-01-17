@@ -22,7 +22,6 @@
 
   networking.interfaces.ens18.useDHCP = false;
 
-  networking.defaultGateway = "129.241.210.129";
   networking.interfaces.ens18.ipv4 = {
     addresses = [
       {
@@ -39,7 +38,6 @@
       }
     ];
   };
-  networking.nameservers = [ "129.241.0.200" "129.241.0.201" ];
 
   # List packages installed in system profile
   environment.systemPackages = with pkgs; [

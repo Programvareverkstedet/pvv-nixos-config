@@ -1,10 +1,18 @@
-{ config, pkgs, ... }:
+{ config, pkgs, values, ... }:
 
 {
   services.prometheus.exporters.node = {
     enable = true;
     port = 9100;
     enabledCollectors = [ "systemd" ];
+  };
+
+  systemd.services.prometheus-node-exporter.serviceConfig = {
+    IPAddressDeny = "any";
+    IPAddressAllow = [
+      values.ildkule.ipv4
+      values.ildkule.ipv6
+    ];
   };
 
   services.promtail = {

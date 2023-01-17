@@ -8,7 +8,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    matrix-next.url = "github:dali99/nixos-matrix-modules/flake-experiments";
+    matrix-next.url = "github:dali99/nixos-matrix-modules";
   };
 
   outputs = { self, nixpkgs, unstable, sops-nix, ... }@inputs: 
@@ -22,7 +22,7 @@
     nixosConfigurations = {
       jokum = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit unstable inputs; };
+        specialArgs = { inherit unstable inputs; values = import ./values.nix; };
         modules = [
           ./hosts/jokum/configuration.nix
           sops-nix.nixosModules.sops
@@ -32,7 +32,7 @@
       };
       ildkule = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit unstable inputs; };
+        specialArgs = { inherit unstable inputs; values = import ./values.nix; };
         modules = [
           ./hosts/ildkule/configuration.nix
           sops-nix.nixosModules.sops

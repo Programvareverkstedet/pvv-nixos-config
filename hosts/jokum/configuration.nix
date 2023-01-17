@@ -1,12 +1,11 @@
-{ config, pkgs, ... }:
+{ config, pkgs, values, ... }:
 {
   imports = [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
 
       ../../base.nix
-      # Users can just import any configuration they want even for non-user things. Improve the users/default.nix to just load some specific attributes if this isn't wanted
-
+      ../../misc/metrics-exporters.nix
       ../../misc/rust-motd.nix
 
       ./services/matrix
@@ -27,16 +26,14 @@
   networking.hostName = "jokum"; # Define your hostname.
 
   networking.interfaces.ens18.useDHCP = false;
-
-  networking.defaultGateway = "129.241.210.129";
   networking.interfaces.ens18.ipv4 = {
     addresses = [
       {
-        address = "129.241.210.169";
+        address = values.jokum.ipv4;
         prefixLength = 25;
       }
       {
-        address = "129.241.210.213";
+        address = values.turn.ipv4;
         prefixLength = 25;
       }
     ];
@@ -44,16 +41,15 @@
   networking.interfaces.ens18.ipv6 = {
     addresses = [
       {
-        address = "2001:700:300:1900::169";
+        address = values.jokum.ipv6;
         prefixLength = 64;
       }
       {
-        address = "2001:700:300:1900::213";
+        address = values.turn.ipv6;
         prefixLength = 64;
       }
     ];
   };
-  networking.nameservers = [ "129.241.0.200" "129.241.0.201" ];
 
   # List packages installed in system profile
   environment.systemPackages = with pkgs; [
