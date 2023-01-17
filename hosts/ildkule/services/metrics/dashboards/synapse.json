@@ -1003,8 +1003,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -6689,8 +6688,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -9526,8 +9524,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -9626,8 +9623,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -9727,8 +9723,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -12513,8 +12508,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -12818,8 +12812,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -13056,8 +13049,8 @@
     ]
   },
   "time": {
-    "from": "2023-01-15T18:14:06.699Z",
-    "to": "2023-01-15T18:49:32.392Z"
+    "from": "now-6h",
+    "to": "now"
   },
   "timepicker": {
     "now": true,
@@ -13088,6 +13081,6 @@
   "timezone": "",
   "title": "Synapse",
   "uid": "000000012",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
