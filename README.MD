@@ -16,7 +16,7 @@ Det er sikkert lurt å lage en PR først om du ikke er vandt til nix enda.
 Innen 24h skal alle systemene hente ned den nye konfigurasjonen og deploye den.
 
 Du kan tvinge en maskin til å oppdatere seg før dette ved å kjøre:
-`nixos-rebuild switch --update-input nixpkgs --update-input unstable --no-write-lock-file --flake git+https://git.pvv.ntnu.no/Drift/pvv-nixos-config.git --upgrade`
+`nixos-rebuild switch --update-input nixpkgs --update-input unstable --no-write-lock-file --refresh --flake git+https://git.pvv.ntnu.no/Drift/pvv-nixos-config.git --upgrade`
 
 som root på maskinen.
 
