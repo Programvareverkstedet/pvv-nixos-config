@@ -42,6 +42,10 @@
               source_labels = [ "__journal__systemd_unit" ];
               target_label = "unit";
             }
+            {
+              source_labels = [ "__journal_priority_keyword" ];
+              target_label = "level";
+            }
           ];
         }
       ];
