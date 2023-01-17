@@ -189,7 +189,7 @@ in {
         proxyPass = proxyPath v;
         extraConfig = ''
           allow ${values.ildkule.ipv4};
-          allow [${values.ildkule.ipv6}];
+          allow ${values.ildkule.ipv6};
           deny all;
         '';
       }))
@@ -200,7 +200,7 @@ in {
       proxyPass = "http://127.0.0.1:9000/_synapse/metrics";
       extraConfig = ''
         allow ${values.ildkule.ipv4};
-        allow [${values.ildkule.ipv6}];
+        allow ${values.ildkule.ipv6};
         deny all;
       '';
     };
