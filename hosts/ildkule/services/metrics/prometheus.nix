@@ -20,6 +20,7 @@ in {
               "knakelibrak.pvv.ntnu.no:9100"
               "hildring.pvv.ntnu.no:9100"
               "bicep.pvv.ntnu.no:9100"
+              "jokum.pvv.ntnu.no:9100"
             ];
           }
         ];
