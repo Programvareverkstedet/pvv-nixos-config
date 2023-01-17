@@ -8,7 +8,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    matrix-next.url = "github:dali99/nixos-matrix-modules/flake-experiments";
+    matrix-next.url = "github:dali99/nixos-matrix-modules";
   };
 
   outputs = { self, nixpkgs, unstable, sops-nix, ... }@inputs: 
