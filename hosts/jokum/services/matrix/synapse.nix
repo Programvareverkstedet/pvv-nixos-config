@@ -210,7 +210,7 @@ in {
         (lib.mapAttrsToList (_: v: v))
         (map (w: "${w.type}/${toString w.index}"))
         (map (w: "matrix.pvv.ntnu.no/metrics/${w}"))
-      ];
+      ] ++ [ "matrix.pvv.ntnu.no/metrics/master/1" ];
     in {
       alias = pkgs.writeTextDir "/config.json"
         (builtins.toJSON [
