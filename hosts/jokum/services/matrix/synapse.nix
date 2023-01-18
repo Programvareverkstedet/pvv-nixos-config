@@ -206,15 +206,10 @@ in {
     };
 
     locations."/metrics/" = let
-      endpoints = builtins.map (x: "matrix.pvv.ntnu.no/metrics/${x}") [
-        "master/1"
-        "fed-sender/1"
-        "fed-sender/2"
-        "fed-receiver/1"
-        "initial-sync/1"
-        "normal-sync/1"
-        "event-persist/1"
-        "user-dir/1"
+      endpoints = lib.pipe cfg.workers.instances [
+        (lib.mapAttrsToList (_: v: v))
+        (map (w: "${w.type}/${toString w.index}"))
+        (map (w: "matrix.pvv.ntnu.no/metrics/${w}"))
       ];
     in {
       alias = pkgs.writeTextDir "/config.json"
