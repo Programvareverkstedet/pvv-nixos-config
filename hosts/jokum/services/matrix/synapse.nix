@@ -206,22 +206,17 @@ in {
     };
 
     locations."/metrics/" = let
-      # See https://github.com/matrix-org/synapse/blob/develop/docs/metrics-howto.md
-      staticConfigs = lib.pipe cfg.workers.instances [
+      endpoints = lib.pipe cfg.workers.instances [
         (lib.mapAttrsToList (_: v: v))
-        # Add metrics for main process to the list of workers
-        (x: x ++ [{ type = "master"; index = 1; }])
-        (map (w: {
-          targets = [ "matrix.pvv.ntnu.no/metrics/${w.type}/${toString w.index}" ];
-          labels = {
-            instance = "matrix.pvv.ntnu.no";
-            job = w.type;
-            index = toString w.index;
-          };
-        }))
-      ];
+        (map (w: "${w.type}/${toString w.index}"))
+        (map (w: "matrix.pvv.ntnu.no/metrics/${w}"))
+      ] ++ [ "matrix.pvv.ntnu.no/metrics/master/1" ];
     in {
-      alias = (pkgs.writeTextDir "/config.json" (builtins.toJSON staticConfigs)) + "/";
+      alias = pkgs.writeTextDir "/config.json"
+        (builtins.toJSON [
+          { targets = endpoints;
+            labels = { };
+          }]) + "/";
     };
   })];
 }
