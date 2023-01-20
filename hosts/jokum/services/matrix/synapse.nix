@@ -1,7 +1,9 @@
-{ config, lib, pkgs, values, ... }:
+{ config, lib, pkgs, values, inputs, ... }:
 
 let
   cfg = config.services.matrix-synapse-next;
+
+  matrix-lib = inputs.matrix-next.lib;
 
   imap0Attrs = with lib; f: set:
     listToAttrs (imap0 (i: attr: nameValuePair attr (f i attr set.${attr})) (attrNames set));
@@ -172,15 +174,8 @@ in {
   
   services.nginx.virtualHosts."matrix.pvv.ntnu.no" = lib.mkMerge [({
     locations = let
-      isListenerType = type: listener: lib.lists.any (r: lib.lists.any (n: n == type) r.names) listener.resources;
-      isMetricsListener = l: isListenerType "metrics" l;
-
-      firstMetricsListener = w: lib.lists.findFirst isMetricsListener (throw "No metrics endpoint on worker") w.settings.worker_listeners;
-
-      wAddress = w: lib.lists.findFirst (_: true) (throw "No address in receiver") (firstMetricsListener w).bind_addresses;
-      wPort = w: (firstMetricsListener w).port;
-
-      socketAddress = w: "${wAddress w}:${toString (wPort w)}";
+      connectionInfo = w: matrix-lib.workerConnectionResource "metrics" w;
+      socketAddress = w: let c = connectionInfo w; in "${c.host}:${toString (c.port)}";
 
       metricsPath = w: "/metrics/${w.type}/${toString w.index}";
       proxyPath = w: "http://${socketAddress w}/_synapse/metrics";
