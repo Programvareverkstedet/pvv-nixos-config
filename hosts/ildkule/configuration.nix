@@ -33,7 +33,7 @@
   networking.interfaces.ens18.ipv6 = {
     addresses = [
       {
-        address = "2001:700:300:1900::187";
+        address = "2001:700:300:1900::1:187";
         prefixLength = 64;
       }
     ];
