@@ -9,8 +9,9 @@ creation_rules:
   - path_regex: secrets/[^/]+\.yaml$
     key_groups:
     - age:
-      - *user_danio
       - *host_jokum
+      - *user_danio
+      - *user_felixalb
       pgp:
       - *user_oysteikt
   # Host specific secrets
@@ -18,16 +19,17 @@ creation_rules:
   - path_regex: secrets/jokum/[^/]+\.yaml$
     key_groups:
     - age:
-      - *user_danio
       - *host_jokum
+      - *user_danio
+      - *user_felixalb
       pgp:
       - *user_oysteikt
 
   - path_regex: secrets/ildkule/[^/]+\.yaml$
     key_groups:
     - age:
-      - *user_felixalb
-      - *user_danio
       - *host_ildkule
+      - *user_danio
+      - *user_felixalb
       pgp:
       - *user_oysteikt
