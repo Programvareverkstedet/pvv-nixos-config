@@ -37,3 +37,11 @@ for å få tilgang til å lese/skrive hemmeligheter må du spørre noen/noe som 
 om å legge til age eller pgp nøkkelen din i [`.sops.yaml`](https://git.pvv.ntnu.no/Drift/pvv-nixos-config/src/main/.sops.yaml)
 
 Denne kan du generere fra ssh-nøkkelene dine eller lage en egen nøkkel.
+
+### Legge til flere keys
+
+Gjør det som gir mening i .sops.yml
+
+Etter det kjør `sops updatekeys secrets/host/file.yml`
+
+MERK at det ikke er `sops -r` som BARE roterer nøkklene for de som allerede er i secretfila
