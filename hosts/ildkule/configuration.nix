@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, values, ... }:
 {
   imports = [
       # Include the results of the hardware scan.
@@ -25,7 +25,7 @@
   networking.interfaces.ens18.ipv4 = {
     addresses = [
       {
-        address = "129.241.210.187";
+        address = values.ildkule.ipv4;
         prefixLength = 25;
       }
     ];
@@ -33,7 +33,7 @@
   networking.interfaces.ens18.ipv6 = {
     addresses = [
       {
-        address = "2001:700:300:1900::1:187";
+        address = values.ildkule.ipv6;
         prefixLength = 64;
       }
     ];
