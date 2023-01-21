@@ -29,11 +29,11 @@
   networking.interfaces.ens18.ipv4 = {
     addresses = [
       {
-        address = values.jokum.ipv4;
+        address = values.hosts.jokum.ipv4;
         prefixLength = 25;
       }
       {
-        address = values.turn.ipv4;
+        address = values.services.turn.ipv4;
         prefixLength = 25;
       }
     ];
@@ -41,11 +41,11 @@
   networking.interfaces.ens18.ipv6 = {
     addresses = [
       {
-        address = values.jokum.ipv6;
+        address = values.hosts.jokum.ipv6;
         prefixLength = 64;
       }
       {
-        address = values.turn.ipv6;
+        address = values.services.turn.ipv6;
         prefixLength = 64;
       }
     ];

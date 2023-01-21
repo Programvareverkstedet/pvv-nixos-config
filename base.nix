@@ -10,7 +10,7 @@
   networking.search = [ "pvv.ntnu.no" "pvv.org" ];
   networking.nameservers = lib.mkDefault [ "129.241.0.200" "129.241.0.201" ];
   networking.tempAddresses = lib.mkDefault "disabled";
-  networking.defaultGateway = values.gateway;
+  networking.defaultGateway = values.hosts.gateway;
 
   services.resolved = {
     enable = true;

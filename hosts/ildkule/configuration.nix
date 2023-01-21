@@ -25,7 +25,7 @@
   networking.interfaces.ens18.ipv4 = {
     addresses = [
       {
-        address = values.ildkule.ipv4;
+        address = values.hosts.ildkule.ipv4;
         prefixLength = 25;
       }
     ];
@@ -33,7 +33,7 @@
   networking.interfaces.ens18.ipv6 = {
     addresses = [
       {
-        address = values.ildkule.ipv6;
+        address = values.hosts.ildkule.ipv6;
         prefixLength = 64;
       }
     ];
