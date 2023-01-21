@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./prometheus.nix
+    ./prometheus
     ./grafana.nix
     ./loki.nix
   ];
