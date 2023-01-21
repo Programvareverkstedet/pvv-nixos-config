@@ -2,6 +2,7 @@
   imports = [
     ./node.nix
     ./matrix-synapse.nix
+    ./postgres.nix
   ];
   
   services.prometheus = {
