@@ -25,5 +25,9 @@ in rec {
       ipv4 = pvv-ipv4 187;
       ipv6 = pvv-ipv6 "1:187";
     };
+    bicep = {
+      ipv4 = pvv-ipv4 209;
+      ipv6 = pvv-ipv6 209;
+    };
   };
 }
