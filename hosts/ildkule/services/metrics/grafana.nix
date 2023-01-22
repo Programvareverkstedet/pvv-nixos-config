@@ -64,6 +64,12 @@ in {
           url = "https://raw.githubusercontent.com/matrix-org/synapse/develop/contrib/grafana/synapse.json";
           options.path = dashboards/synapse.json;
         }
+        {
+          name = "Postgresql";
+          type = "file";
+          url = "https://grafana.com/api/dashboards/9628/revisions/7/download";
+          options.path = dashboards/postgres.json;
+        }
       ];
 
     };
