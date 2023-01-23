@@ -70,6 +70,12 @@ in {
           url = "https://grafana.com/api/dashboards/9628/revisions/7/download";
           options.path = dashboards/postgres.json;
         }
+        {
+          name = "Go Processes (gogs)";
+          type = "file";
+          url = "https://grafana.com/api/dashboards/240/revisions/3/download";
+          options.path = dashboards/go-processes.json;
+        }
       ];
 
     };
