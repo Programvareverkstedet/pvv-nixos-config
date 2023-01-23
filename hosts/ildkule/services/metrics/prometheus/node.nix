@@ -13,6 +13,7 @@ in {
           "hildring.pvv.ntnu.no:9100"
           "bicep.pvv.ntnu.no:9100"
           "jokum.pvv.ntnu.no:9100"
+          "essendrop.pvv.ntnu.no:9100"
         ];
       }
     ];
