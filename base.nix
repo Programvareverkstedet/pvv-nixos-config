@@ -53,8 +53,11 @@
   environment.systemPackages = with pkgs; [
     file
     git
+    gnupg
     htop
     nano
+    rsync
+    screen
     tmux
     vim
     wget
