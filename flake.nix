@@ -11,7 +11,7 @@
     matrix-next.url = "github:dali99/nixos-matrix-modules";
   };
 
-  outputs = { self, nixpkgs, unstable, sops-nix, ... }@inputs: 
+  outputs = { self, nixpkgs, matrix-next, unstable, sops-nix, ... }@inputs: 
   let
     systems = [
       "x86_64-linux"
@@ -19,26 +19,31 @@
     ];
     forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
   in {
-    nixosConfigurations = {
-      jokum = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit unstable inputs; values = import ./values.nix; };
-        modules = [
-          ./hosts/jokum/configuration.nix
-          sops-nix.nixosModules.sops
+    nixosConfigurations = let
+      nixosConfig = name: config: nixpkgs.lib.nixosSystem (nixpkgs.lib.recursiveUpdate
+        config
+        {
+          system = "x86_64-linux";
+          specialArgs = {
+            inherit unstable inputs;
+            values = import ./values.nix;
+          };
+          modules = [
+            ./hosts/${name}/configuration.nix
+            sops-nix.nixosModules.sops
+            matrix-next.nixosModules.synapse
+          ];
+        });
 
-          inputs.matrix-next.nixosModules.synapse
-        ];
-      };
-      ildkule = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit unstable inputs; values = import ./values.nix; };
-        modules = [
-          ./hosts/ildkule/configuration.nix
-          sops-nix.nixosModules.sops
-        ];
+    in {
+      bekkalokk = nixosConfig "bekkalokk" { };
+      greddost = nixosConfig "greddost" { };
+      ildkule = nixosConfig "ildkule" { };
+      jokum = nixosConfig "jokum" {
+        modules = [ matrix-next.nixosModules.synapse ];
       };
     };
+
     devShells = forAllSystems (system: {
       default = nixpkgs.legacyPackages.${system}.callPackage ./shell.nix { };
     });

@@ -1,9 +1,14 @@
 keys:
+  # Users
   - &user_danio age17tagmpwqjk3mdy45rfesrfey6h863x8wfq38wh33tkrlrywxducs0k6tpq
   - &user_felixalb age1mrnldl334l2nszuta6ywvewng0fswv2dz9l5g4qcwe3nj4yxf92qjskdx6
   - &user_oysteikt F7D37890228A907440E1FD4846B9228E814A2AAC
+
+  # Hosts
   - &host_jokum age1n4vc3dhv8puqz6ntwrkkpdfj0q002hexqee48wzahll8cmce2ezssrq608
   - &host_ildkule age1hn45n46ypyrvypv0mwfnpt9ddrlmw34dwlpf33n8v67jexr3lucq6ahc9x
+  - &host_bekkalokk age13t2nnr6yukmtda6wn2uggfcj0dmwce8347y8w6xzt4yje6wlgscqnahuqm
+
 creation_rules:
   # Global secrets
   - path_regex: secrets/[^/]+\.yaml$
@@ -14,8 +19,18 @@ creation_rules:
       - *user_felixalb
       pgp:
       - *user_oysteikt
+
   # Host specific secrets
-  ## Jokum
+  
+  - path_regex: secrets/bekkalokk/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *host_bekkalokk
+      - *user_danio
+      - *user_felixalb
+      pgp:
+      - *user_oysteikt
+
   - path_regex: secrets/jokum/[^/]+\.yaml$
     key_groups:
     - age:

@@ -17,6 +17,10 @@ in rec {
 
   hosts = {
     gateway = pvv-ipv4 129;
+    bekkalokk = {
+      ipv4 = pvv-ipv4 168;
+      ipv6 = pvv-ipv6 168;
+    };
     jokum = {
       ipv4 = pvv-ipv4 169;
       ipv6 = pvv-ipv6 169; 
