@@ -23,7 +23,7 @@ in {
 
     dataDir = "/data/synapse";
 
-    workers.federationSenders = 2;
+    workers.federationSenders = 3;
     workers.federationReceivers = 1;
     workers.initialSyncers = 1;
     workers.normalSyncers = 1;
