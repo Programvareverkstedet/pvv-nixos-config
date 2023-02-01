@@ -56,6 +56,7 @@ in {
       max_upload_size = "150M";
 
       enable_metrics = true;
+      mau_stats_only = true;
 
       enable_registration = false;
 
