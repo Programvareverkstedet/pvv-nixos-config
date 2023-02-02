@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
-
-{
+let
+  synapse-cfg = config.services.matrix-synapse-next;
+in {
   services.nginx.virtualHosts."chat.pvv.ntnu.no" = {
     enableACME = true;
     forceSSL = true;
@@ -41,7 +42,8 @@
         ];
         enable_presence_by_hs_url = {
           "https://matrix.org" = false;
-          "https://matrix.dodsorf.as" = false;
+          # "https://matrix.dodsorf.as" = false;
+          "${synapse-cfg.settings.public_baseurl}" = synapse-cfg.settings.presence.enabled;
         };
       };
     };
