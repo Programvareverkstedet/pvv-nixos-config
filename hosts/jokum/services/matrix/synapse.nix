@@ -44,6 +44,8 @@ in {
 
       media_store_path =  "${cfg.dataDir}/media";
 
+      presence.enabled = false;
+
       autocreate_auto_join_rooms = false;
       auto_join_rooms = [
         "#pvv:pvv.ntnu.no" # Main space
