@@ -23,11 +23,11 @@ in {
 
     dataDir = "/data/synapse";
 
-    workers.federationSenders = 3;
-    workers.federationReceivers = 1;
+    workers.federationSenders = 2;
+    workers.federationReceivers = 2;
     workers.initialSyncers = 1;
     workers.normalSyncers = 1;
-    workers.eventPersisters = 1;
+    workers.eventPersisters = 2;
     workers.useUserDirectoryWorker = true;
 
     enableNginx = true;
