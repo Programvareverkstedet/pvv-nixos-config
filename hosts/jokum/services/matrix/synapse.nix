@@ -18,6 +18,11 @@ in {
     group = config.users.users.matrix-synapse.group;
   };
 
+  sops.secrets."matrix/synapse/user_registration" = {
+    owner = config.users.users.matrix-synapse.name;
+    group = config.users.users.matrix-synapse.group;
+  };
+
   services.matrix-synapse-next = {
     enable = true;
 
@@ -34,6 +39,7 @@ in {
 
     extraConfigFiles = [
       config.sops.secrets."matrix/synapse/dbconfig".path
+      config.sops.secrets."matrix/synapse/user_registration".path
     ];
 
     settings = {
