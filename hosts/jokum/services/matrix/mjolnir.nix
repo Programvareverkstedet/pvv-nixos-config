@@ -9,7 +9,7 @@
   services.mjolnir = {
     enable = true;
     pantalaimon.enable = false;
-    homeserverUrl = config.services.matrix-synapse-next.settings.public_baseurl;
+    homeserverUrl = http://127.0.0.1:8008;
     accessTokenFile = config.sops.secrets."matrix/mjolnir/access_token".path;
     managementRoom = "!gsdeCoWjvYRBrzuiRq:pvv.ntnu.no";
     protectedRooms = map (a: "https://matrix.to/#/${a}") [
