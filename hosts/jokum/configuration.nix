@@ -1,9 +1,6 @@
 { config, pkgs, values, ... }:
 {
   imports = [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-
       ../../base.nix
       ../../misc/metrics-exporters.nix
       ../../misc/rust-motd.nix
@@ -17,16 +14,16 @@
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
   
-
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  boot.loader.grub.devices = [ "/dev/sda" ];
+  boot.kernel.enable = false;
+  boot.isContainer = true;
+  boot.loader.initScript.enable = true;
 
   networking.hostName = "jokum"; # Define your hostname.
 
-  networking.interfaces.ens18.useDHCP = false;
-  networking.interfaces.ens18.ipv4 = {
+  services.resolved.enable = false;
+
+  networking.interfaces.ens10f1.useDHCP = false;
+  networking.interfaces.ens10f1.ipv4 = {
     addresses = [
       {
         address = values.hosts.jokum.ipv4;
@@ -38,7 +35,7 @@
       }
     ];
   };
-  networking.interfaces.ens18.ipv6 = {
+  networking.interfaces.ens10f1.ipv6 = {
     addresses = [
       {
         address = values.hosts.jokum.ipv6;

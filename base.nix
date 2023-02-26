@@ -13,7 +13,7 @@
   networking.defaultGateway = values.hosts.gateway;
 
   services.resolved = {
-    enable = true;
+    enable = lib.mkDefault true;
     dnssec = "false"; # Supposdly this keeps breaking and the default is to allow downgrades anyways...
   };
 
