@@ -24,7 +24,7 @@
 
   systemd.network.networks."30-ens33" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens33";
-    address = with values.hosts.ildkule; [ (ipv4 + "/25") (ipv6 + "/64") ];
+    address = with values.hosts.bekkalokk; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
   # Do not change, even during upgrades.
