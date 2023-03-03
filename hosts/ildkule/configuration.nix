@@ -20,23 +20,9 @@
 
   networking.hostName = "ildkule"; # Define your hostname.
 
-  networking.interfaces.ens18.useDHCP = false;
-
-  networking.interfaces.ens18.ipv4 = {
-    addresses = [
-      {
-        address = values.hosts.ildkule.ipv4;
-        prefixLength = 25;
-      }
-    ];
-  };
-  networking.interfaces.ens18.ipv6 = {
-    addresses = [
-      {
-        address = values.hosts.ildkule.ipv6;
-        prefixLength = 64;
-      }
-    ];
+  systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
+    matchConfig.Name = "ens18";
+    address = with values.hosts.ildkule; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
   # List packages installed in system profile

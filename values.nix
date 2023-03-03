@@ -34,4 +34,13 @@ in rec {
       ipv6 = pvv-ipv6 209;
     };
   };
+
+  defaultNetworkConfig = {
+    networkConfig.IPv6AcceptRA = "no";
+    gateway = [ hosts.gateway ];
+    dns = [ "129.241.0.200" "129.241.0.201" ];
+    domains = [ "pvv.ntnu.no" "pvv.org" ];
+    DHCP = "no";
+  };
+
 }

@@ -22,30 +22,9 @@
 
   services.resolved.enable = false;
 
-  networking.interfaces.ens10f1.useDHCP = false;
-  networking.interfaces.ens10f1.ipv4 = {
-    addresses = [
-      {
-        address = values.hosts.jokum.ipv4;
-        prefixLength = 25;
-      }
-      {
-        address = values.services.turn.ipv4;
-        prefixLength = 25;
-      }
-    ];
-  };
-  networking.interfaces.ens10f1.ipv6 = {
-    addresses = [
-      {
-        address = values.hosts.jokum.ipv6;
-        prefixLength = 64;
-      }
-      {
-        address = values.services.turn.ipv6;
-        prefixLength = 64;
-      }
-    ];
+  systemd.network.networks."30-ens10f1" = values.defaultNetworkConfig // {
+    matchConfig.Name = "ens10f1";
+    address = with values.hosts.jokum; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
   # List packages installed in system profile
