@@ -16,11 +16,10 @@
   
   boot.kernel.enable = false;
   boot.isContainer = true;
+  networking.useHostResolvConf = false;
   boot.loader.initScript.enable = true;
 
   networking.hostName = "jokum"; # Define your hostname.
-
-  services.resolved.enable = false;
 
   systemd.network.networks."30-ens10f1" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens10f1";
