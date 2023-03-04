@@ -17,6 +17,9 @@
     ];
   };
 
+
+  networking.firewall.allowedTCPPorts = [ 9100 ];
+
   services.promtail = {
     enable = true;
     configuration = {
