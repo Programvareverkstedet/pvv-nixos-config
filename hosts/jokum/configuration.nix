@@ -24,7 +24,8 @@
 
   systemd.network.networks."30-ens10f1" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens10f1";
-    address = with values.hosts.jokum; [ (ipv4 + "/25") (ipv6 + "/64") ];
+    address = with values.hosts.jokum; [ (ipv4 + "/25") (ipv6 + "/64") ]
+      ++ (with values.services.turn; [ (ipv4 + "/25") (ipv6 + "/64") ]);
   };
 
   # List packages installed in system profile
