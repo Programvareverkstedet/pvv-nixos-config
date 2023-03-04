@@ -5,8 +5,8 @@
     ./users
   ];
 
-  # networking.domain = "pvv.ntnu.no";
-  # networking.useDHCP = false;
+  networking.domain = "pvv.ntnu.no";
+  networking.useDHCP = false;
   # networking.search = [ "pvv.ntnu.no" "pvv.org" ];
   # networking.nameservers = lib.mkDefault [ "129.241.0.200" "129.241.0.201" ];
   # networking.tempAddresses = lib.mkDefault "disabled";
