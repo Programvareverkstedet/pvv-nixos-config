@@ -10,6 +10,8 @@
   systemd.services.prometheus-node-exporter.serviceConfig = {
     IPAddressDeny = "any";
     IPAddressAllow = [
+      "127.0.0.1"
+      "::1"
       values.hosts.ildkule.ipv4
       values.hosts.ildkule.ipv6
     ];
