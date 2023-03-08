@@ -52,6 +52,12 @@ in {
 
       presence.enabled = false;
 
+      caches = {
+        per_cache_factors = {
+          _event_auth_cache = 2.0;
+        };
+      };
+
       autocreate_auto_join_rooms = false;
       auto_join_rooms = [
         "#pvv:pvv.ntnu.no" # Main space
