@@ -14,6 +14,7 @@ in {
           "bicep.pvv.ntnu.no:9100"
           "jokum.pvv.ntnu.no:9100"
           "essendrop.pvv.ntnu.no:9100"
+          "andresbu.pvv.ntnu.no:9100"
         ];
       }
     ];
