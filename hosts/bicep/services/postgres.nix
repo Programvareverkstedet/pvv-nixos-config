@@ -72,4 +72,10 @@
 
   networking.firewall.allowedTCPPorts = [ 5432 ];
   networking.firewall.allowedUDPPorts = [ 5432 ];
+
+  services.postgresqlBackup = {
+    enable = true;
+    location = "/var/lib/postgres/backups";
+    backupAll = true;
+  };
 }
