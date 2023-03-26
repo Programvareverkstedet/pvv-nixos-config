@@ -22,7 +22,7 @@
     nixosConfigurations = let
       nixosConfig = name: config: nixpkgs.lib.nixosSystem (nixpkgs.lib.recursiveUpdate
         config
-        {
+        rec {
           system = "x86_64-linux";
           specialArgs = {
             inherit unstable inputs;

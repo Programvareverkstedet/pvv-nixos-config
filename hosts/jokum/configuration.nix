@@ -13,15 +13,13 @@
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
-  
-  boot.kernel.enable = false;
+
   boot.isContainer = true;
   networking.useHostResolvConf = false;
-  boot.loader.initScript.enable = true;
 
   networking.hostName = "jokum"; # Define your hostname.
 
-  systemd.network.networks."30-ens10f1" = values.defaultNetworkConfig // {
+  systemd.network.networks."30-enp6s0f1" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens10f1";
     address = with values.hosts.jokum; [ (ipv4 + "/25") (ipv6 + "/64") ]
       ++ (with values.services.turn; [ (ipv4 + "/25") (ipv6 + "/64") ]);
@@ -40,5 +38,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "21.05"; # Did you read the comment?
-
 }
