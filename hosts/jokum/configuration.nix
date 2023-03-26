@@ -2,19 +2,21 @@
 {
   imports = [
       ../../base.nix
-      ../../misc/metrics-exporters.nix
+#      ../../misc/metrics-exporters.nix
       ../../misc/rust-motd.nix
 
-      ./services/matrix
-      ./services/nginx
+#      ./services/matrix
+#      ./services/nginx
     ];
 
-  sops.defaultSopsFile = ../../secrets/jokum/jokum.yaml;
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-  sops.age.generateKey = true;
+#  sops.defaultSopsFile = ../../secrets/jokum/jokum.yaml;
+#  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+#  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+#  sops.age.generateKey = true;
 
+  boot.kernel.enable = false;
   boot.isContainer = true;
+  boot.loader.initScript.enable = true;
   networking.useHostResolvConf = false;
 
   networking.hostName = "jokum"; # Define your hostname.

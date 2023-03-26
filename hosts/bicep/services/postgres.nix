@@ -2,13 +2,14 @@
 {
   services.postgresql = {
     enable = true;
+    package = pkgs.postgresql_15;
     enableTCPIP = true;
 
-    authentication = pkgs.lib.mkOverride 10 ''
-      local all all trust
-      host all all 127.0.0.0/8 trust
-      host all all ::1/128 trust
-      host all all 241.129.241.128/25
+    dataDir = "/data/postgresql";
+
+    authentication = ''
+      host all all 129.241.210.128/25 md5
+      host all all 2001:700:300:1900::/64 md5
     '';
 
     # Hilsen https://pgconfigurator.cybertec-postgresql.com/
@@ -68,4 +69,7 @@
       wal_recycle = true;
     };
   };
+
+  networking.firewall.allowedTCPPorts = [ 5432 ];
+  networking.firewall.allowedUDPPorts = [ 5432 ];
 }
