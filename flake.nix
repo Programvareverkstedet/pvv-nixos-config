@@ -36,6 +36,7 @@
         });
 
     in {
+      bicep = nixosConfig "bicep" { };
       bekkalokk = nixosConfig "bekkalokk" { };
       greddost = nixosConfig "greddost" { };
       ildkule = nixosConfig "ildkule" { };
