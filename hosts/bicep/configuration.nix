@@ -24,6 +24,10 @@
     matchConfig.Name = "enp6s0f0";
     address = with values.hosts.bicep; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
+  systemd.network.wait-online = {
+    ignoredInterfaces = [ "enp6s0f1" ];
+    anyInterface = true;
+  };
 
   # Do not change, even during upgrades.
   # See https://search.nixos.org/options?show=system.stateVersion
