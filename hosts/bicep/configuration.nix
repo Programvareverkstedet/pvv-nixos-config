@@ -7,6 +7,7 @@
 
     ./services/postgres.nix
     ./services/jokum.nix
+    ./services/jackson.nix
   ];
 
   sops.defaultSopsFile = ../../secrets/bicep/bicep.yaml;
