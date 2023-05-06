@@ -5,6 +5,8 @@
 
     ../../base.nix
 
+    ./services/keycloak.nix
+
     # TODO: set up authentication for the following:
     # ./services/website/website.nix
     # ./services/website/nginx.nix
