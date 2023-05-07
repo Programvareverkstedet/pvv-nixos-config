@@ -11,8 +11,8 @@
     enableReload = true;
 
     defaultListenAddresses = [
-      values.hosts.jokum.ipv4
-      "[${values.hosts.jokum.ipv6}]"
+      values.hosts.bicep.ipv4
+      "[${values.hosts.bicep.ipv6}]"
 
       "127.0.0.1"
       "127.0.0.2"
