@@ -9,16 +9,22 @@ let
     listToAttrs (imap0 (i: attr: nameValuePair attr (f i attr set.${attr})) (attrNames set));
 in {
   sops.secrets."matrix/synapse/dbconfig" = {
+    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    key = "synapse/dbconfig";
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;
   };
 
   sops.secrets."matrix/synapse/signing_key" = {
+    key = "synapse/signing_key";
+    sopsFile = ../../../../secrets/bicep/matrix.yaml;
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;
   };
 
   sops.secrets."matrix/synapse/user_registration" = {
+    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    key = "synapse/signing_key";
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;
   };

@@ -7,6 +7,8 @@ in
   users.groups.keys-matrix-registrations = { };
 
   sops.secrets."matrix/registrations/mx-puppet-discord" = {
+    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    key = "registrations/mx-puppet-discord";
     owner = config.users.users.matrix-synapse.name;
     group = config.users.groups.keys-matrix-registrations.name;
   };

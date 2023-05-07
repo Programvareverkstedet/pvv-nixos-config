@@ -2,10 +2,14 @@
 
 {
   sops.secrets."matrix/synapse/turnconfig" = {
+    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    key = "synapse/turnconfig";
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;
   };
   sops.secrets."matrix/coturn/static-auth-secret" = {
+    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    key = "coturn/static-auth-secret";
     owner = config.users.users.turnserver.name;
     group = config.users.users.turnserver.group;
   };
@@ -114,7 +118,7 @@
   };
   
   networking.firewall = {
-    interfaces.ens18 = let
+    interfaces.enp6s0f0 = let
       range = with config.services.coturn; [ {
       from = min-port;
       to = max-port;

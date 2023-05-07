@@ -49,3 +49,12 @@ creation_rules:
       - *user_felixalb
       pgp:
       - *user_oysteikt
+  
+  - path_regex: secrets/bicep/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *host_bicep
+      - *user_danio
+      - *user_felixalb
+      pgp:
+      - *user_oysteikt

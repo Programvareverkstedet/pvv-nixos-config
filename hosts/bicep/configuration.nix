@@ -4,9 +4,11 @@
     ./hardware-configuration.nix
 
     ../../base.nix
+    ./services/nginx
 
     ./services/postgres.nix
-    ./services/jokum.nix
+
+    ./services/matrix
   ];
 
   sops.defaultSopsFile = ../../secrets/bicep/bicep.yaml;
@@ -22,10 +24,10 @@
 
   systemd.network.networks."30-enp6s0f0" = values.defaultNetworkConfig // {
     matchConfig.Name = "enp6s0f0";
-    address = with values.hosts.bicep; [ (ipv4 + "/25") (ipv6 + "/64") ];
+    address = with values.hosts.bicep; [ (ipv4 + "/25") (ipv6 + "/64") ]
+      ++ (with values.services.turn; [ (ipv4 + "/25") (ipv6 + "/64") ]);
   };
   systemd.network.wait-online = {
-    ignoredInterfaces = [ "enp6s0f1" ];
     anyInterface = true;
   };
 
