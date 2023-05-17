@@ -2,16 +2,17 @@
 {
   users.users.oysteikt = {
     isNormalUser = true;
+    description = "basement dweller";
     extraGroups = [
       "wheel"
       "drift"
     ];
 
-    shell = pkgs.zsh;
     packages = with pkgs; [
       bottom
       exa
       neovim
+      diskonaut
       ripgrep
       tmux
     ];
