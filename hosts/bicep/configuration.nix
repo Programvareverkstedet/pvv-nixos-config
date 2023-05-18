@@ -6,6 +6,7 @@
     ../../base.nix
     ./services/nginx
 
+    ./services/mysql.nix
     ./services/postgres.nix
 
     ./services/matrix
