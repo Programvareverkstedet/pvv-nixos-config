@@ -5,8 +5,10 @@ let
 in rec {
   services = {
     matrix = {
-      ipv4 = hosts.jokum.ipv4;
-      ipv6 = hosts.jokum.ipv6;
+      inherit (hosts.bicep) ipv4 ipv6;
+    };
+    postgres = {
+      inherit (hosts.bicep) ipv4 ipv6;
     };
     # Also on jokum
     turn = {
@@ -23,7 +25,7 @@ in rec {
     };
     jokum = {
       ipv4 = pvv-ipv4 169;
-      ipv6 = pvv-ipv6 169; 
+      ipv6 = pvv-ipv6 169;
     };
     ildkule = {
       ipv4 = pvv-ipv4 187;

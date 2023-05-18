@@ -9,9 +9,9 @@
 
     # TODO: set up authentication for the following:
     # ./services/website/website.nix
-    # ./services/website/nginx.nix
+    ./services/website/nginx.nix
     # ./services/website/gitea.nix
-    # ./services/website/mediawiki.nix
+    ./services/website/mediawiki.nix
   ];
 
   sops.defaultSopsFile = ../../secrets/bekkalokk/bekkalokk.yaml;
