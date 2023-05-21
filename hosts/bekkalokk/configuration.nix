@@ -4,6 +4,7 @@
     ./hardware-configuration.nix
 
     ../../base.nix
+    ../../misc/metrics-exporters.nix
 
     #./services/keycloak.nix
 
