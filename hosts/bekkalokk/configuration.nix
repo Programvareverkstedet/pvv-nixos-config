@@ -5,7 +5,7 @@
 
     ../../base.nix
 
-    ./services/keycloak.nix
+    #./services/keycloak.nix
 
     # TODO: set up authentication for the following:
     # ./services/website/website.nix
@@ -24,8 +24,8 @@
 
   networking.hostName = "bekkalokk";
 
-  systemd.network.networks."30-ens33" = values.defaultNetworkConfig // {
-    matchConfig.Name = "ens33";
+  systemd.network.networks."30-enp2s0" = values.defaultNetworkConfig // {
+    matchConfig.Name = "enp2s0";
     address = with values.hosts.bekkalokk; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
