@@ -15,6 +15,7 @@ in {
           "jokum.pvv.ntnu.no:9100"
           "essendrop.pvv.ntnu.no:9100"
           "andresbu.pvv.ntnu.no:9100"
+          "bekkalokk.pvv.ntnu.no:9100"
         ];
       }
     ];
