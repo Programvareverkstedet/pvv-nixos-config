@@ -8,6 +8,8 @@
     dataDir = "/data/postgresql";
 
     authentication = ''
+      host all all 127.0.0.2/32 md5
+    
       host all all 129.241.210.128/25 md5
       host all all 2001:700:300:1900::/64 md5
     '';
