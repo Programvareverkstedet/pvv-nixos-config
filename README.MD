@@ -6,7 +6,7 @@ Før du endrer på ting husk å ikke putte ting som skal være hemmelig uten å 
 
 Etter å ha klonet prosjektet ned og gjort endringer kan du bygge med:
 
-`nix build .#nixosConfigurations.jokum.config.system.build.toplevel`
+`nix build .#nixosConfigurations.<maskinavn>.config.system.build.toplevel`
 
 Husk å hvertfall stage nye filer om du har laget dem!
 

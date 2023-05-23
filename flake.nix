@@ -31,18 +31,16 @@
           modules = [
             ./hosts/${name}/configuration.nix
             sops-nix.nixosModules.sops
-            matrix-next.nixosModules.synapse
           ];
         });
 
     in {
-      bicep = nixosConfig "bicep" { };
+      bicep = nixosConfig "bicep" {
+        modules = [ matrix-next.nixosModules.synapse ];
+      };
       bekkalokk = nixosConfig "bekkalokk" { };
       greddost = nixosConfig "greddost" { };
       ildkule = nixosConfig "ildkule" { };
-      jokum = nixosConfig "jokum" {
-        modules = [ matrix-next.nixosModules.synapse ];
-      };
     };
 
     devShells = forAllSystems (system: {

@@ -10,7 +10,7 @@ in rec {
     postgres = {
       inherit (hosts.bicep) ipv4 ipv6;
     };
-    # Also on jokum
+    # Also on bicep
     turn = {
       ipv4 = pvv-ipv4 213;
       ipv6 = pvv-ipv6 213;
@@ -22,10 +22,6 @@ in rec {
     bekkalokk = {
       ipv4 = pvv-ipv4 168;
       ipv6 = pvv-ipv6 168;
-    };
-    jokum = {
-      ipv4 = pvv-ipv4 169;
-      ipv6 = pvv-ipv6 169;
     };
     ildkule = {
       ipv4 = pvv-ipv4 187;
