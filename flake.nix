@@ -45,7 +45,7 @@
         ];
       };
       bekkalokk = nixosConfig "bekkalokk" { };
-      greddost = nixosConfig "greddost" { };
+      # greddost = nixosConfig "greddost" { };
       ildkule = nixosConfig "ildkule" { };
     };
 

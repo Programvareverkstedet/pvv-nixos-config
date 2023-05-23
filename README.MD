@@ -4,7 +4,11 @@
 
 Før du endrer på ting husk å ikke putte ting som skal være hemmelig uten å først lese seksjonen for hemmeligheter!
 
-Etter å ha klonet prosjektet ned og gjort endringer kan du bygge med:
+Etter å ha klonet prosjektet ned og gjort endringer kan du evaluere configene med:
+
+`nix flake check --keep-going`
+
+før du bygger en maskin med:
 
 `nix build .#nixosConfigurations.<maskinavn>.config.system.build.toplevel`
 
