@@ -21,7 +21,6 @@
   in {
     nixosConfigurations = let
       nixosConfig = name: config: nixpkgs.lib.nixosSystem (nixpkgs.lib.recursiveUpdate
-        config
         rec {
           system = "x86_64-linux";
           specialArgs = {
@@ -32,11 +31,18 @@
             ./hosts/${name}/configuration.nix
             sops-nix.nixosModules.sops
           ];
-        });
+        }
+        config
+      );
 
     in {
       bicep = nixosConfig "bicep" {
-        modules = [ matrix-next.nixosModules.synapse ];
+        modules = [
+          ./hosts/bicep/configuration.nix
+          sops-nix.nixosModules.sops
+
+          matrix-next.nixosModules.synapse
+        ];
       };
       bekkalokk = nixosConfig "bekkalokk" { };
       greddost = nixosConfig "greddost" { };
