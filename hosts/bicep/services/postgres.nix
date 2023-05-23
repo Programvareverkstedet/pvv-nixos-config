@@ -62,7 +62,6 @@
       # Advanced features
       enable_partitionwise_join = true;
       enable_partitionwise_aggregate = true;
-      jit = true;
       max_slot_wal_keep_size = "1000 MB";
       track_wal_io_timing = true;
       maintenance_io_concurrency = 100;
