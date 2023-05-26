@@ -58,6 +58,7 @@ in {
 
       presence.enabled = false;
 
+      event_cache_size = "20K"; # Default is 10K but I can't find the factor for this cache
       caches = {
         per_cache_factors = {
           _event_auth_cache = 2.0;
