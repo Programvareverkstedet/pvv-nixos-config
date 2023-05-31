@@ -2,7 +2,7 @@
   description = "PVV System flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11-small";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05-small";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable-small";
 
     sops-nix.url = "github:Mic92/sops-nix";
@@ -11,7 +11,7 @@
     matrix-next.url = "github:dali99/nixos-matrix-modules";
   };
 
-  outputs = { self, nixpkgs, matrix-next, unstable, sops-nix, ... }@inputs: 
+  outputs = { self, nixpkgs, matrix-next, unstable, sops-nix, ... }@inputs:
   let
     systems = [
       "x86_64-linux"
@@ -27,10 +27,20 @@
             inherit unstable inputs;
             values = import ./values.nix;
           };
+
           modules = [
             ./hosts/${name}/configuration.nix
             sops-nix.nixosModules.sops
           ];
+
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [
+              (final: prev: {
+                mx-puppet-discord = prev.mx-puppet-discord.override { nodejs_14 = final.nodejs_18; };
+              })
+            ];
+          };
         }
         config
       );

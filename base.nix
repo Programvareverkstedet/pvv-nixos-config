@@ -13,7 +13,7 @@
   # networking.defaultGateway = values.hosts.gateway;
 
   systemd.network.enable = true;
-  
+
   services.resolved = {
     enable = lib.mkDefault true;
     dnssec = "false"; # Supposdly this keeps breaking and the default is to allow downgrades anyways...
@@ -67,14 +67,16 @@
     kitty.terminfo
   ];
 
+  programs.zsh.enable = true;
+
   users.groups."drift".name = "drift";
 
   services.openssh = {
     enable = true;
-    permitRootLogin = "yes";
     extraConfig = ''
       PubkeyAcceptedAlgorithms=+ssh-rsa
     '';
+    settings.PermitRootLogin = "yes";
   };
 
 
