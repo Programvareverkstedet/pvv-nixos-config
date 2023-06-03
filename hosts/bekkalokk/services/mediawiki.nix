@@ -28,7 +28,7 @@ in {
 
     database = {
       type = "postgres";
-      host = values.hosts.postgres.ipv4;
+      host = "postgres.pvv.ntnu.no";
       port = config.services.postgresql.port;
       passwordFile = config.sops.secrets."keys/postgres/mediawiki".path;
       createLocally = false;

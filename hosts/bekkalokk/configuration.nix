@@ -9,10 +9,10 @@
     #./services/keycloak.nix
 
     # TODO: set up authentication for the following:
-    # ./services/website/website.nix
-    ./services/website/nginx.nix
-    # ./services/website/gitea.nix
-    ./services/website/mediawiki.nix
+    # ./services/website.nix
+    ./services/nginx.nix
+    ./services/gitea/default.nix
+    # ./services/mediawiki.nix
   ];
 
   sops.defaultSopsFile = ../../secrets/bekkalokk/bekkalokk.yaml;
