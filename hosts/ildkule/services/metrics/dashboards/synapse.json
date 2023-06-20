@@ -1,4 +1,47 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.2.2"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph (old)",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "heatmap",
+      "name": "Heatmap",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -13,12 +56,24 @@
         "name": "Annotations & Alerts",
         "showIn": 0,
         "type": "dashboard"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "enable": true,
+        "expr": "changes(process_start_time_seconds{instance=\"matrix.org\",job=~\"synapse\"}[$bucket_size]) * on (instance, job) group_left(version) synapse_build_info{instance=\"matrix.org\",job=\"synapse\"}",
+        "iconColor": "purple",
+        "name": "deploys",
+        "titleFormat": "Deployed {{version}}"
       }
     ]
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": null,
   "links": [
     {
       "asDropdown": false,
@@ -143,7 +198,7 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "9.4.2",
+      "pluginVersion": "9.2.2",
       "reverseYBuckets": false,
       "targets": [
         {
@@ -218,7 +273,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "9.4.2",
+      "pluginVersion": "9.2.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -413,7 +468,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "type": "prometheus",
         "uid": "$datasource"
       },
       "fieldConfig": {
@@ -450,7 +504,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "9.4.2",
+      "pluginVersion": "9.2.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -463,30 +517,12 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "rate(process_cpu_seconds_total{instance=\"$instance\",job=~\"$job\",index=~\"$index\"}[30s])",
+          "expr": "rate(process_cpu_seconds_total{instance=\"$instance\",job=~\"$job\",index=~\"$index\"}[$bucket_size])",
           "format": "time_series",
-          "hide": true,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{job}}-{{index}} ",
-          "range": true,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "name": "Expression",
-            "type": "__expr__",
-            "uid": "__expr__"
-          },
-          "downsampler": "max",
-          "expression": "A",
-          "hide": false,
-          "refId": "B",
-          "type": "resample",
-          "upsampler": "fillna",
-          "window": "$bucket_size"
         }
       ],
       "thresholds": [
@@ -507,26 +543,6 @@
         "sort": 0,
         "value_type": "individual"
       },
-      "transformations": [
-        {
-          "id": "labelsToFields",
-          "options": {
-            "keepLabels": [
-              "index",
-              "job"
-            ],
-            "mode": "columns",
-            "valueLabel": "job"
-          }
-        },
-        {
-          "id": "concatenate",
-          "options": {
-            "frameNameLabel": "job",
-            "frameNameMode": "label"
-          }
-        }
-      ],
       "type": "graph",
       "xaxis": {
         "mode": "time",
@@ -598,7 +614,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "9.4.2",
+      "pluginVersion": "9.2.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -668,7 +684,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -680,9 +696,10 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 1,
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -690,7 +707,7 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 10,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
@@ -705,49 +722,18 @@
               "mode": "off"
             }
           },
-          "links": [],
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Max"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#bf1b00",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 2
               }
             ]
           }
-        ]
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 7,
@@ -755,8 +741,7 @@
         "x": 0,
         "y": 19
       },
-      "id": 156,
-      "links": [],
+      "id": 245,
       "options": {
         "legend": {
           "calcs": [],
@@ -765,40 +750,24 @@
           "showLegend": true
         },
         "tooltip": {
-          "mode": "multi",
+          "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.4.2",
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "max(synapse_admin_mau_max{instance=\"$instance\"})",
-          "format": "time_series",
-          "hide": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "Max",
-          "range": true,
-          "refId": "B"
-        },
-        {
-          "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "max(synapse_admin_mau_current{instance=\"$instance\"})",
-          "hide": false,
-          "legendFormat": "Current",
+          "expr": "synapse_build_info{instance=\"$instance\", job=\"synapse\"} - 1",
+          "legendFormat": "version {{version}}",
           "range": true,
-          "refId": "C"
+          "refId": "deployed_synapse_versions"
         }
       ],
-      "title": "MAU Limits",
+      "title": "Deployed Synapse versions over time",
       "type": "timeseries"
     },
     {
@@ -843,7 +812,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "9.4.2",
+      "pluginVersion": "9.2.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -940,6 +909,7 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": {
+            "type": "prometheus",
             "uid": "$datasource"
           },
           "editable": true,
@@ -957,7 +927,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 2
+            "y": 27
           },
           "hiddenSeries": false,
           "id": 5,
@@ -983,7 +953,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1005,11 +975,13 @@
               "datasource": {
                 "uid": "$datasource"
               },
+              "editorMode": "code",
               "expr": "rate(process_cpu_system_seconds_total{instance=\"$instance\",job=~\"$job\",index=~\"$index\"}[$bucket_size])",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{job}}-{{index}} system ",
               "metric": "",
+              "range": true,
               "refId": "B",
               "step": 20
             },
@@ -1095,7 +1067,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "description": "Shows the time in which the given percentage of reactor ticks completed, over the sampled timespan",
           "fieldConfig": {
@@ -1139,8 +1111,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1156,7 +1127,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 2
+            "y": 27
           },
           "id": 105,
           "interval": "",
@@ -1178,7 +1149,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "histogram_quantile(0.999, rate(python_twisted_reactor_tick_time_bucket{index=~\"$index\",instance=\"$instance\",job=~\"$job\"}[$bucket_size]))",
@@ -1190,7 +1161,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "histogram_quantile(0.99, rate(python_twisted_reactor_tick_time_bucket{index=~\"$index\",instance=\"$instance\",job=~\"$job\"}[$bucket_size]))",
@@ -1204,7 +1175,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "histogram_quantile(0.95, rate(python_twisted_reactor_tick_time_bucket{index=~\"$index\",instance=\"$instance\",job=~\"$job\"}[$bucket_size]))",
@@ -1217,7 +1188,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "expr": "histogram_quantile(0.90, rate(python_twisted_reactor_tick_time_bucket{index=~\"$index\",instance=\"$instance\",job=~\"$job\"}[$bucket_size]))",
               "format": "time_series",
@@ -1228,7 +1199,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "expr": "rate(python_twisted_reactor_tick_time_sum{index=~\"$index\",instance=\"$instance\",job=~\"$job\"}[$bucket_size]) / rate(python_twisted_reactor_tick_time_count{index=~\"$index\",instance=\"$instance\",job=~\"$job\"}[$bucket_size])",
               "format": "time_series",
@@ -1263,7 +1234,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 9
+            "y": 34
           },
           "hiddenSeries": false,
           "id": 34,
@@ -1285,7 +1256,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1369,7 +1340,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 9
+            "y": 34
           },
           "hiddenSeries": false,
           "id": 49,
@@ -1391,7 +1362,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1460,6 +1431,7 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": {
+            "type": "prometheus",
             "uid": "$datasource"
           },
           "fieldConfig": {
@@ -1474,7 +1446,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 16
+            "y": 41
           },
           "hiddenSeries": false,
           "id": 53,
@@ -1496,11 +1468,19 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [],
+          "seriesOverrides": [
+            {
+              "$$hashKey": "object:116",
+              "alias": "/^version .*/",
+              "lines": true,
+              "linewidth": 6,
+              "points": false
+            }
+          ],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
@@ -1509,11 +1489,25 @@
               "datasource": {
                 "uid": "$datasource"
               },
+              "editorMode": "code",
               "expr": "min_over_time(up{instance=\"$instance\",job=~\"$job\",index=~\"$index\"}[$bucket_size])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{job}}-{{index}}",
+              "range": true,
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "synapse_build_info{instance=\"$instance\", job=\"synapse\"} - 1",
+              "hide": false,
+              "legendFormat": "version {{version}}",
+              "range": true,
+              "refId": "deployed_synapse_versions"
             }
           ],
           "thresholds": [],
@@ -1566,7 +1560,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 16
+            "y": 41
           },
           "hiddenSeries": false,
           "id": 120,
@@ -1587,7 +1581,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -1684,7 +1678,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 23
+            "y": 48
           },
           "hiddenSeries": false,
           "id": 136,
@@ -1705,7 +1699,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -1770,7 +1764,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1812,8 +1806,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1828,7 +1821,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 23
+            "y": 48
           },
           "id": 207,
           "options": {
@@ -1847,7 +1840,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "synapse_threadpool_working_threads{instance=\"$instance\",job=~\"$job\",index=~\"$index\"}",
@@ -1921,7 +1914,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 3
+            "y": 28
           },
           "heatmap": {},
           "hideZeroBuckets": false,
@@ -1969,7 +1962,7 @@
               "unit": "s"
             }
           },
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "reverseYBuckets": false,
           "targets": [
             {
@@ -2023,7 +2016,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 3
+            "y": 28
           },
           "hiddenSeries": false,
           "id": 33,
@@ -2045,7 +2038,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2115,7 +2108,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 12
+            "y": 37
           },
           "hiddenSeries": false,
           "id": 40,
@@ -2136,7 +2129,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2203,7 +2196,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 12
+            "y": 37
           },
           "hiddenSeries": false,
           "id": 46,
@@ -2224,7 +2217,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2294,7 +2287,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 19
+            "y": 44
           },
           "hiddenSeries": false,
           "id": 44,
@@ -2318,7 +2311,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2377,7 +2370,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "decimals": 1,
           "fill": 1,
@@ -2386,7 +2379,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 19
+            "y": 44
           },
           "hiddenSeries": false,
           "id": 45,
@@ -2410,7 +2403,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2421,8 +2414,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "editorMode": "code",
               "expr": "sum(rate(synapse_storage_events_persisted_events_sep_total{job=~\"$job\",index=~\"$index\", type=\"m.room.member\",instance=\"$instance\", origin_type=\"local\"}[$bucket_size])) by (origin_type, origin_entity)",
@@ -2474,7 +2466,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2488,7 +2480,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 26
+            "y": 51
           },
           "hiddenSeries": false,
           "id": 118,
@@ -2510,7 +2502,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2529,7 +2521,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "histogram_quantile(0.99, sum(rate(synapse_http_server_response_time_seconds_bucket{servlet='RoomSendEventRestServlet',instance=\"$instance\",code=~\"2..\",job=~\"$job\",index=~\"$index\"}[$bucket_size])) without (method))",
@@ -2542,7 +2534,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "expr": "histogram_quantile(0.95, sum(rate(synapse_http_server_response_time_seconds_bucket{servlet='RoomSendEventRestServlet',instance=\"$instance\",code=~\"2..\",job=~\"$job\",index=~\"$index\"}[$bucket_size])) without (method))",
               "format": "time_series",
@@ -2554,7 +2546,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "expr": "histogram_quantile(0.90, sum(rate(synapse_http_server_response_time_seconds_bucket{servlet='RoomSendEventRestServlet',instance=\"$instance\",code=~\"2..\",job=~\"$job\",index=~\"$index\"}[$bucket_size])) without (method))",
               "format": "time_series",
@@ -2565,7 +2557,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "expr": "histogram_quantile(0.50, sum(rate(synapse_http_server_response_time_seconds_bucket{servlet='RoomSendEventRestServlet',instance=\"$instance\",code=~\"2..\",job=~\"$job\",index=~\"$index\"}[$bucket_size])) without (method))",
               "format": "time_series",
@@ -2576,7 +2568,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "sum(rate(synapse_http_server_response_time_seconds_sum{servlet='RoomSendEventRestServlet',instance=\"$instance\",code=~\"2..\",job=~\"$job\",index=~\"$index\"}[$bucket_size])) without (method) / sum(rate(synapse_http_server_response_time_seconds_count{servlet='RoomSendEventRestServlet',instance=\"$instance\",code=~\"2..\",job=~\"$job\",index=~\"$index\"}[$bucket_size])) without (method)",
@@ -2665,8 +2657,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2682,7 +2673,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 26
+            "y": 51
           },
           "id": 222,
           "options": {
@@ -2781,7 +2772,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 4
+            "y": 29
           },
           "hiddenSeries": false,
           "id": 4,
@@ -2806,7 +2797,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2903,7 +2894,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 4
+            "y": 29
           },
           "hiddenSeries": false,
           "id": 32,
@@ -2924,7 +2915,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3002,7 +2993,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 12
+            "y": 37
           },
           "hiddenSeries": false,
           "id": 139,
@@ -3027,7 +3018,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3124,7 +3115,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 12
+            "y": 37
           },
           "hiddenSeries": false,
           "id": 52,
@@ -3149,7 +3140,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3246,7 +3237,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 20
+            "y": 45
           },
           "hiddenSeries": false,
           "id": 7,
@@ -3270,7 +3261,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3347,7 +3338,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 20
+            "y": 45
           },
           "hiddenSeries": false,
           "id": 47,
@@ -3372,7 +3363,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3445,7 +3436,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 28
+            "y": 53
           },
           "hiddenSeries": false,
           "id": 103,
@@ -3466,7 +3457,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3580,7 +3571,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 5
+            "y": 30
           },
           "hiddenSeries": false,
           "id": 99,
@@ -3602,7 +3593,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3673,7 +3664,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 5
+            "y": 30
           },
           "hiddenSeries": false,
           "id": 101,
@@ -3695,7 +3686,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3766,7 +3757,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 14
+            "y": 39
           },
           "hiddenSeries": false,
           "id": 138,
@@ -3786,7 +3777,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -3881,7 +3872,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 6
+            "y": 31
           },
           "hiddenSeries": false,
           "id": 79,
@@ -3903,7 +3894,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3981,7 +3972,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 6
+            "y": 31
           },
           "hiddenSeries": false,
           "id": 83,
@@ -4003,7 +3994,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -4069,6 +4060,7 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": {
+            "type": "prometheus",
             "uid": "$datasource"
           },
           "fieldConfig": {
@@ -4083,7 +4075,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 15
+            "y": 40
           },
           "hiddenSeries": false,
           "id": 109,
@@ -4105,7 +4097,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -4118,11 +4110,13 @@
               "datasource": {
                 "uid": "$datasource"
               },
-              "expr": "sum(rate(synapse_federation_client_sent_pdu_destinations:total_total{instance=\"$instance\"}[$bucket_size]))",
+              "editorMode": "code",
+              "expr": "sum(rate(synapse_federation_client_sent_pdu_destinations_count_total{instance=\"$instance\"}[$bucket_size]))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
               "legendFormat": "pdus",
+              "range": true,
               "refId": "A"
             },
             {
@@ -4187,7 +4181,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 15
+            "y": 40
           },
           "hiddenSeries": false,
           "id": 111,
@@ -4209,7 +4203,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -4265,6 +4259,250 @@
           }
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "description": "Triangular growth may indicate a problem with federation sending from the remote host --- but it may also be the case that everyone is asleep and no messages are being sent.\n\nSee https://matrix-org.github.io/synapse/latest/usage/configuration/config_documentation.html#federation_metrics_domains",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMax": 60,
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "line"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 60
+                  }
+                ]
+              },
+              "unit": "m"
+            },
+            "overrides": [
+              {
+                "__systemRef": "hideSeriesFrom",
+                "matcher": {
+                  "id": "byNames",
+                  "options": {
+                    "mode": "exclude",
+                    "names": [
+                      "libera.chat "
+                    ],
+                    "prefix": "All except:",
+                    "readOnly": true
+                  }
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 49
+          },
+          "id": 243,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "(time() - max without (job, index, host) (avg_over_time(synapse_federation_last_received_pdu_time[10m]))) / 60",
+              "instant": false,
+              "legendFormat": "{{server_name}} ",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Age of last PDU received from nominated hosts",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "description": "Triangular growth may indicate a problem with federation senders on the monitored instance---but it may also be the case that everyone is asleep and no messages are being sent.\n\nSee https://matrix-org.github.io/synapse/latest/usage/configuration/config_documentation.html#federation_metrics_domains",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMax": 60,
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "line"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 60
+                  }
+                ]
+              },
+              "unit": "m"
+            },
+            "overrides": [
+              {
+                "__systemRef": "hideSeriesFrom",
+                "matcher": {
+                  "id": "byNames",
+                  "options": {
+                    "mode": "exclude",
+                    "names": [
+                      "libera.chat"
+                    ],
+                    "prefix": "All except:",
+                    "readOnly": true
+                  }
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 49
+          },
+          "id": 241,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "(time() - max without (job, index, host) (avg_over_time(synapse_federation_last_sent_pdu_time[10m]))) / 60",
+              "instant": false,
+              "legendFormat": "{{server_name}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Age of last PDU sent to nominated hosts",
+          "type": "timeseries"
+        },
+        {
           "aliasColors": {},
           "bars": false,
           "dashLength": 10,
@@ -4283,10 +4521,10 @@
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
-            "h": 8,
+            "h": 9,
             "w": 12,
             "x": 0,
-            "y": 24
+            "y": 57
           },
           "hiddenSeries": false,
           "id": 142,
@@ -4306,7 +4544,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -4394,7 +4632,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 24
+            "y": 57
           },
           "hiddenSeries": false,
           "id": 140,
@@ -4416,7 +4654,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -4563,7 +4801,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 32
+            "y": 66
           },
           "heatmap": {},
           "hideZeroBuckets": false,
@@ -4614,7 +4852,7 @@
               "unit": "s"
             }
           },
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "reverseYBuckets": false,
           "targets": [
             {
@@ -4668,7 +4906,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 33
+            "y": 66
           },
           "hiddenSeries": false,
           "id": 162,
@@ -4691,7 +4929,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -4899,7 +5137,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 41
+            "y": 75
           },
           "heatmap": {},
           "hideZeroBuckets": false,
@@ -4950,7 +5188,7 @@
               "unit": "s"
             }
           },
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "reverseYBuckets": false,
           "targets": [
             {
@@ -4991,7 +5229,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "editable": true,
           "error": false,
@@ -5008,7 +5246,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 42
+            "y": 75
           },
           "hiddenSeries": false,
           "id": 203,
@@ -5030,7 +5268,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -5041,14 +5279,15 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
-              "expr": "synapse_federation_server_oldest_inbound_pdu_in_staging{job=\"$job\",index=~\"$index\",instance=\"$instance\"}",
+              "editorMode": "code",
+              "expr": "synapse_federation_server_oldest_inbound_pdu_in_staging{job=~\"$job\",index=~\"$index\",instance=\"$instance\"}",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "rss {{index}}",
+              "legendFormat": "{{job}}-{{index}}",
+              "range": true,
               "refId": "A",
               "step": 4
             }
@@ -5094,7 +5333,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "editable": true,
           "error": false,
@@ -5111,7 +5350,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 50
+            "y": 84
           },
           "hiddenSeries": false,
           "id": 202,
@@ -5133,7 +5372,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -5144,14 +5383,15 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
-              "expr": "synapse_federation_server_number_inbound_pdu_in_staging{job=\"$job\",index=~\"$index\",instance=\"$instance\"}",
+              "editorMode": "code",
+              "expr": "synapse_federation_server_number_inbound_pdu_in_staging{job=~\"$job\",index=~\"$index\",instance=\"$instance\"}",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "rss {{index}}",
+              "legendFormat": "{{job}}-{{index}}",
+              "range": true,
               "refId": "A",
               "step": 4
             }
@@ -5205,7 +5445,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 51
+            "y": 84
           },
           "hiddenSeries": false,
           "id": 205,
@@ -5225,7 +5465,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -5303,7 +5543,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -5345,8 +5585,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5361,7 +5600,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 7
+            "y": 154
           },
           "id": 239,
           "options": {
@@ -5380,7 +5619,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "expr": "sum(increase(synapse_rate_limit_reject_total{instance=\"$instance\"}[$bucket_size]))",
               "refId": "A"
@@ -5392,7 +5631,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -5434,8 +5673,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5450,7 +5688,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 7
+            "y": 154
           },
           "id": 235,
           "options": {
@@ -5469,7 +5707,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "expr": "sum(increase(synapse_rate_limit_sleep_total{instance=\"$instance\"}[$bucket_size]))",
               "refId": "A"
@@ -5481,7 +5719,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "description": "Why is the data zero (0)? https://github.com/matrix-org/synapse/pull/13541#discussion_r951926322",
           "fieldConfig": {
@@ -5524,8 +5762,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5540,7 +5777,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 15
+            "y": 162
           },
           "id": 237,
           "options": {
@@ -5560,7 +5797,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "expr": "sum(increase(synapse_rate_limit_reject_affected_hosts{instance=\"$instance\"}[$bucket_size]))",
               "refId": "A"
@@ -5572,7 +5809,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "description": "https://github.com/matrix-org/synapse/pull/13541",
           "fieldConfig": {
@@ -5615,8 +5852,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5631,7 +5867,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 15
+            "y": 162
           },
           "id": 233,
           "options": {
@@ -5651,7 +5887,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "expr": "sum(increase(synapse_rate_limit_sleep_affected_hosts{instance=\"$instance\"}[$bucket_size]))",
               "refId": "A"
@@ -5682,7 +5918,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 23
+            "y": 170
           },
           "hiddenSeries": false,
           "id": 229,
@@ -5705,7 +5941,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -5909,7 +6145,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -5951,8 +6187,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -5984,7 +6219,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 23
+            "y": 170
           },
           "id": 231,
           "options": {
@@ -6003,7 +6238,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "expr": "sum(rate(synapse_rate_limit_sleep_total{instance=\"$instance\"}[$bucket_size]))",
               "refId": "A"
@@ -6011,7 +6246,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "50",
@@ -6043,65 +6278,96 @@
       "id": 60,
       "panels": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": {
+            "type": "prometheus",
             "uid": "$datasource"
           },
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "hertz"
             },
             "overrides": []
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 8
+            "y": 155
           },
-          "hiddenSeries": false,
           "id": 51,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "9.4.2",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
+          "pluginVersion": "9.2.2",
           "targets": [
             {
               "datasource": {
                 "uid": "$datasource"
               },
+              "editorMode": "code",
               "expr": "rate(synapse_http_httppusher_http_pushes_processed_total{instance=\"$instance\",job=~\"$job\",index=~\"$index\"}[$bucket_size]) and on (instance, job, index) (synapse_http_httppusher_http_pushes_failed_total + synapse_http_httppusher_http_pushes_processed_total) > 0",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "processed {{job}}",
+              "legendFormat": "processed {{job}}-{{index}}",
+              "range": true,
               "refId": "A",
               "step": 20
             },
@@ -6109,43 +6375,18 @@
               "datasource": {
                 "uid": "$datasource"
               },
+              "editorMode": "code",
               "expr": "rate(synapse_http_httppusher_http_pushes_failed_total{instance=\"$instance\",job=~\"$job\",index=~\"$index\"}[$bucket_size]) and on (instance, job, index) (synapse_http_httppusher_http_pushes_failed_total + synapse_http_httppusher_http_pushes_processed_total) > 0",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "failed {{job}}",
+              "legendFormat": "failed {{job}}-{{index}}",
+              "range": true,
               "refId": "B",
               "step": 20
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "HTTP Push rate",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "hertz",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         },
         {
           "aliasColors": {},
@@ -6168,7 +6409,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 8
+            "y": 155
           },
           "hiddenSeries": false,
           "id": 134,
@@ -6189,7 +6430,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -6271,7 +6512,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "description": "How many entries in current state that we are iterating over while calculating push rules.",
           "fieldConfig": {
@@ -6286,7 +6527,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 9
+            "y": 33
           },
           "hiddenSeries": false,
           "id": 209,
@@ -6308,7 +6549,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "8.4.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -6320,7 +6561,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "sum(rate(synapse_push_bulk_push_rule_evaluator_push_rules_state_size_counter_total{job=\"$job\",index=~\"$index\",instance=\"$instance\"}[$bucket_size]))",
@@ -6372,7 +6613,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "description": "Rate that the cached push rules for a room get invalidated due to underlying push rules being changed. ",
           "fieldConfig": {
@@ -6387,7 +6628,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 9
+            "y": 33
           },
           "hiddenSeries": false,
           "id": 211,
@@ -6409,7 +6650,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "8.4.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -6421,7 +6662,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "exemplar": true,
               "expr": "sum(rate(synapse_push_bulk_push_rule_evaluator_push_rules_invalidation_counter_total{job=\"$job\",index=~\"$index\",instance=\"$instance\"}[$bucket_size]))",
@@ -6473,7 +6714,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "description": "How often the \"delta optimisation\" happens.\n\nThe delta optimisation is when we update the push rules for a room incrementally after a state change where we know the delta between the old state and the new state.\n\nThis can't happen if we don't the delta or we're calculating push rules from scratch.",
           "fieldConfig": {
@@ -6488,7 +6729,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 16
+            "y": 40
           },
           "hiddenSeries": false,
           "id": 213,
@@ -6510,7 +6751,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "8.4.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -6527,7 +6768,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "sum(rate(synapse_util_caches_cache_hits{job=\"$job\",index=~\"$index\",name=\"push_rules_delta_state_cache_metric\",instance=\"$instance\"}[$bucket_size]))/sum(rate(synapse_util_caches_cache{job=\"$job\",index=~\"$index\", name=\"push_rules_delta_state_cache_metric\",instance=\"$instance\"}[$bucket_size]))",
@@ -6542,7 +6783,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "sum(rate(synapse_util_caches_cache{job=\"$job\",index=~\"$index\", name=\"push_rules_delta_state_cache_metric\",instance=\"$instance\"}[$bucket_size]))",
@@ -6596,7 +6837,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "description": "How often we have the correct cached push rules for a room.",
           "fieldConfig": {
@@ -6611,7 +6852,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 16
+            "y": 40
           },
           "hiddenSeries": false,
           "id": 215,
@@ -6633,7 +6874,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "8.4.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -6650,7 +6891,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "sum(rate(synapse_util_caches_cache_hits{job=\"$job\",index=~\"$index\",name=\"room_push_rule_cache\",instance=\"$instance\"}[$bucket_size]))/sum(rate(synapse_util_caches_cache{job=\"$job\",index=~\"$index\", name=\"room_push_rule_cache\",instance=\"$instance\"}[$bucket_size]))",
@@ -6665,7 +6906,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "sum(rate(synapse_util_caches_cache{job=\"$job\",index=~\"$index\", name=\"room_push_rule_cache\",instance=\"$instance\"}[$bucket_size]))",
@@ -6717,7 +6958,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "description": "How often we have existing cached push rules for the room. \n\nNote that these might be outdated and need to be recalculated if the state has changed.",
           "fieldConfig": {
@@ -6732,7 +6973,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 23
+            "y": 47
           },
           "hiddenSeries": false,
           "id": 217,
@@ -6754,7 +6995,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "8.4.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -6771,7 +7012,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "sum(rate(synapse_util_caches_cache_hits{job=\"$job\",index=~\"$index\",name=\"_get_rules_for_room\",instance=\"$instance\"}[$bucket_size]))/sum(rate(synapse_util_caches_cache{job=\"$job\",index=~\"$index\", name=\"_get_rules_for_room\",instance=\"$instance\"}[$bucket_size]))",
@@ -6786,7 +7027,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "sum(rate(synapse_util_caches_cache{job=\"$job\",index=~\"$index\", name=\"_get_rules_for_room\",instance=\"$instance\"}[$bucket_size]))",
@@ -6868,8 +7109,6 @@
                 "mode": "palette-classic"
               },
               "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -6904,8 +7143,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -6921,7 +7159,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 10
+            "y": 35
           },
           "id": 48,
           "links": [],
@@ -6975,7 +7213,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 10
+            "y": 35
           },
           "hiddenSeries": false,
           "id": 104,
@@ -6998,7 +7236,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.0.4",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -7106,7 +7344,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 17
+            "y": 42
           },
           "hiddenSeries": false,
           "id": 10,
@@ -7130,7 +7368,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.0.4",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -7206,7 +7444,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 17
+            "y": 42
           },
           "hiddenSeries": false,
           "id": 11,
@@ -7230,7 +7468,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.0.4",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -7306,7 +7544,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 24
+            "y": 49
           },
           "hiddenSeries": false,
           "id": 180,
@@ -7330,7 +7568,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.0.4",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -7389,8 +7627,7 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "fieldConfig": {
             "defaults": {
@@ -7401,10 +7638,10 @@
           "fill": 6,
           "fillGradient": 0,
           "gridPos": {
-            "h": 7,
+            "h": 9,
             "w": 12,
             "x": 12,
-            "y": 24
+            "y": 49
           },
           "hiddenSeries": false,
           "id": 200,
@@ -7425,7 +7662,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.0.4",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -7436,8 +7673,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "expr": "histogram_quantile(0.99, sum(rate(synapse_storage_schedule_time_bucket{index=~\"$index\",instance=\"$instance\",job=\"$job\"}[$bucket_size])) by (le))",
               "format": "time_series",
@@ -7447,8 +7683,7 @@
             },
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "expr": "histogram_quantile(0.9, sum(rate(synapse_storage_schedule_time_bucket{index=~\"$index\",instance=\"$instance\",job=\"$job\"}[$bucket_size])) by (le))",
               "format": "time_series",
@@ -7458,8 +7693,7 @@
             },
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "expr": "histogram_quantile(0.75, sum(rate(synapse_storage_schedule_time_bucket{index=~\"$index\",instance=\"$instance\",job=\"$job\"}[$bucket_size])) by (le))",
               "format": "time_series",
@@ -7469,8 +7703,7 @@
             },
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "expr": "histogram_quantile(0.5, sum(rate(synapse_storage_schedule_time_bucket{index=~\"$index\",instance=\"$instance\",job=\"$job\"}[$bucket_size])) by (le))",
               "format": "time_series",
@@ -7563,7 +7796,7 @@
             "h": 13,
             "w": 12,
             "x": 0,
-            "y": 11
+            "y": 158
           },
           "hiddenSeries": false,
           "id": 12,
@@ -7586,7 +7819,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -7661,7 +7894,7 @@
             "h": 13,
             "w": 12,
             "x": 12,
-            "y": 11
+            "y": 158
           },
           "hiddenSeries": false,
           "id": 26,
@@ -7684,7 +7917,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -7743,7 +7976,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editable": true,
           "error": false,
@@ -7760,7 +7993,7 @@
             "h": 13,
             "w": 12,
             "x": 0,
-            "y": 24
+            "y": 171
           },
           "hiddenSeries": false,
           "id": 13,
@@ -7783,7 +8016,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -7795,7 +8028,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "exemplar": true,
               "expr": "rate(synapse_util_metrics_block_db_txn_duration_seconds_total{instance=\"$instance\",job=~\"$job\",index=~\"$index\"}[$bucket_size])",
@@ -7864,7 +8097,7 @@
             "h": 13,
             "w": 12,
             "x": 12,
-            "y": 24
+            "y": 171
           },
           "hiddenSeries": false,
           "id": 27,
@@ -7887,7 +8120,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -7962,7 +8195,7 @@
             "h": 13,
             "w": 12,
             "x": 0,
-            "y": 37
+            "y": 184
           },
           "hiddenSeries": false,
           "id": 28,
@@ -7984,7 +8217,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -8059,7 +8292,7 @@
             "h": 13,
             "w": 12,
             "x": 12,
-            "y": 37
+            "y": 184
           },
           "hiddenSeries": false,
           "id": 25,
@@ -8081,7 +8314,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -8149,7 +8382,7 @@
             "h": 15,
             "w": 12,
             "x": 0,
-            "y": 50
+            "y": 197
           },
           "hiddenSeries": false,
           "id": 154,
@@ -8170,7 +8403,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -8270,7 +8503,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 12
+            "y": 36
           },
           "hiddenSeries": false,
           "id": 1,
@@ -8294,7 +8527,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.0.4",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -8372,7 +8605,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 12
+            "y": 36
           },
           "hiddenSeries": false,
           "id": 8,
@@ -8395,7 +8628,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.0.4",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -8472,7 +8705,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 22
+            "y": 46
           },
           "hiddenSeries": false,
           "id": 38,
@@ -8495,7 +8728,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.0.4",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -8568,7 +8801,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 22
+            "y": 46
           },
           "hiddenSeries": false,
           "id": 39,
@@ -8595,7 +8828,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.0.4",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -8655,8 +8888,7 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "fieldConfig": {
             "defaults": {
@@ -8670,7 +8902,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 32
+            "y": 56
           },
           "hiddenSeries": false,
           "id": 65,
@@ -8692,7 +8924,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.0.4",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -8703,8 +8935,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "expr": "rate(synapse_util_caches_cache_evicted_size{instance=\"$instance\",job=~\"$job\",index=~\"$index\"}[$bucket_size])",
               "format": "time_series",
@@ -8782,6 +9013,7 @@
           },
           "fieldConfig": {
             "defaults": {
+              "custom": {},
               "links": []
             },
             "overrides": []
@@ -8792,7 +9024,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 13
+            "y": 29
           },
           "hiddenSeries": false,
           "id": 146,
@@ -8812,7 +9044,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "7.3.7",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -8871,6 +9103,7 @@
           },
           "fieldConfig": {
             "defaults": {
+              "custom": {},
               "links": []
             },
             "overrides": []
@@ -8881,7 +9114,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 13
+            "y": 29
           },
           "hiddenSeries": false,
           "id": 150,
@@ -8901,7 +9134,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "7.3.7",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -8998,6 +9231,7 @@
           },
           "fieldConfig": {
             "defaults": {
+              "custom": {},
               "links": []
             },
             "overrides": []
@@ -9008,7 +9242,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 14
+            "y": 30
           },
           "hiddenSeries": false,
           "id": 91,
@@ -9029,7 +9263,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "7.3.7",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -9094,6 +9328,7 @@
           "error": false,
           "fieldConfig": {
             "defaults": {
+              "custom": {},
               "links": []
             },
             "overrides": []
@@ -9105,7 +9340,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 14
+            "y": 30
           },
           "hiddenSeries": false,
           "id": 21,
@@ -9127,7 +9362,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "7.3.7",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -9190,6 +9425,7 @@
           "description": "'gen 0' shows the number of objects allocated since the last gen0 GC.\n'gen 1' / 'gen 2' show the number of gen0/gen1 GCs since the last gen1/gen2 GC.",
           "fieldConfig": {
             "defaults": {
+              "custom": {},
               "links": []
             },
             "overrides": []
@@ -9200,7 +9436,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 23
+            "y": 39
           },
           "hiddenSeries": false,
           "id": 89,
@@ -9223,7 +9459,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "7.3.7",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -9290,6 +9526,7 @@
           },
           "fieldConfig": {
             "defaults": {
+              "custom": {},
               "links": []
             },
             "overrides": []
@@ -9300,7 +9537,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 23
+            "y": 39
           },
           "hiddenSeries": false,
           "id": 93,
@@ -9321,7 +9558,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "7.3.7",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -9381,6 +9618,7 @@
           },
           "fieldConfig": {
             "defaults": {
+              "custom": {},
               "links": []
             },
             "overrides": []
@@ -9391,7 +9629,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 32
+            "y": 48
           },
           "hiddenSeries": false,
           "id": 95,
@@ -9412,7 +9650,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "7.3.7",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -9477,20 +9715,11 @@
           "dataFormat": "tsbuckets",
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
-              "custom": {
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "scaleDistribution": {
-                  "type": "linear"
-                }
-              }
+              "custom": {}
             },
             "overrides": []
           },
@@ -9498,7 +9727,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 32
+            "y": 48
           },
           "heatmap": {},
           "hideZeroBuckets": true,
@@ -9508,51 +9737,12 @@
             "show": true
           },
           "links": [],
-          "options": {
-            "calculate": false,
-            "calculation": {},
-            "cellGap": 1,
-            "cellValues": {},
-            "color": {
-              "exponent": 0.5,
-              "fill": "#b4ff00",
-              "min": 0,
-              "mode": "scheme",
-              "reverse": false,
-              "scale": "exponential",
-              "scheme": "Spectral",
-              "steps": 128
-            },
-            "exemplars": {
-              "color": "rgba(255,0,255,0.7)"
-            },
-            "filterValues": {
-              "le": 1e-9
-            },
-            "legend": {
-              "show": true
-            },
-            "rowsFrame": {
-              "layout": "auto"
-            },
-            "showValue": "never",
-            "tooltip": {
-              "show": true,
-              "yHistogram": false
-            },
-            "yAxis": {
-              "axisPlacement": "left",
-              "reverse": false,
-              "unit": "s"
-            }
-          },
-          "pluginVersion": "9.4.2",
           "reverseYBuckets": false,
           "targets": [
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "expr": "sum(rate(python_gc_time_bucket[$bucket_size])) by (le)",
               "format": "heatmap",
@@ -9625,7 +9815,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 15
+            "y": 162
           },
           "hiddenSeries": false,
           "id": 43,
@@ -9647,7 +9837,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -9746,8 +9936,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -9763,7 +9952,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 15
+            "y": 162
           },
           "id": 41,
           "links": [],
@@ -9846,8 +10035,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -9863,7 +10051,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 22
+            "y": 169
           },
           "id": 42,
           "links": [],
@@ -9947,8 +10135,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -9964,7 +10151,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 22
+            "y": 169
           },
           "id": 220,
           "links": [],
@@ -10007,7 +10194,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "description": "",
           "fieldConfig": {
@@ -10022,7 +10209,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 29
+            "y": 176
           },
           "hiddenSeries": false,
           "id": 144,
@@ -10042,7 +10229,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -10054,7 +10241,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_PROMETHEUS}"
               },
               "expr": "synapse_replication_tcp_command_queue{instance=\"$instance\",job=~\"$job\",index=~\"$index\"}",
               "interval": "",
@@ -10101,7 +10288,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "fieldConfig": {
             "defaults": {
@@ -10115,7 +10302,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 29
+            "y": 176
           },
           "hiddenSeries": false,
           "id": 115,
@@ -10137,7 +10324,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -10148,8 +10335,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "expr": "rate(synapse_replication_tcp_protocol_close_reason_total{job=~\"$job\",index=~\"$index\",instance=\"$instance\"}[$bucket_size])",
               "format": "time_series",
@@ -10210,7 +10396,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 36
+            "y": 183
           },
           "hiddenSeries": false,
           "id": 113,
@@ -10232,7 +10418,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -10340,7 +10526,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 16
+            "y": 163
           },
           "hiddenSeries": false,
           "id": 67,
@@ -10362,7 +10548,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -10435,7 +10621,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 16
+            "y": 163
           },
           "hiddenSeries": false,
           "id": 71,
@@ -10457,7 +10643,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -10530,7 +10716,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 25
+            "y": 172
           },
           "hiddenSeries": false,
           "id": 121,
@@ -10553,7 +10739,7 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -10647,8 +10833,7 @@
           },
           "dataFormat": "tsbuckets",
           "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "description": "Colour reflects the number of rooms with the given number of forward extremities, or fewer.\n\nThis is only updated once an hour.",
           "fieldConfig": {
@@ -10670,7 +10855,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 17
+            "y": 42
           },
           "heatmap": {},
           "hideZeroBuckets": true,
@@ -10719,13 +10904,12 @@
               "unit": "short"
             }
           },
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "reverseYBuckets": false,
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "expr": "synapse_forward_extremities_bucket{instance=\"$instance\"} and on (index, instance, job) (synapse_storage_events_persisted_events_total > 0)",
               "format": "heatmap",
@@ -10772,7 +10956,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 17
+            "y": 42
           },
           "hiddenSeries": false,
           "id": 124,
@@ -10794,7 +10978,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -10882,7 +11066,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 25
+            "y": 50
           },
           "heatmap": {},
           "hideZeroBuckets": true,
@@ -10931,7 +11115,7 @@
               "unit": "short"
             }
           },
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "reverseYBuckets": false,
           "targets": [
             {
@@ -10983,7 +11167,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 25
+            "y": 50
           },
           "hiddenSeries": false,
           "id": 128,
@@ -11004,7 +11188,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -11122,7 +11306,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 33
+            "y": 58
           },
           "heatmap": {},
           "hideZeroBuckets": true,
@@ -11171,7 +11355,7 @@
               "unit": "short"
             }
           },
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "reverseYBuckets": false,
           "targets": [
             {
@@ -11223,7 +11407,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 33
+            "y": 58
           },
           "hiddenSeries": false,
           "id": 130,
@@ -11244,7 +11428,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -11340,8 +11524,7 @@
           },
           "dataFormat": "tsbuckets",
           "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "description": "Colour reflects the number of state resolution operations performed over the given number of state groups, or fewer.",
           "fieldConfig": {
@@ -11363,7 +11546,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 41
+            "y": 66
           },
           "heatmap": {},
           "hideZeroBuckets": true,
@@ -11412,13 +11595,12 @@
               "unit": "short"
             }
           },
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "reverseYBuckets": false,
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "expr": "rate(synapse_state_number_state_groups_in_resolution_bucket{instance=\"$instance\",job=~\"$job\",index=~\"$index\"}[$bucket_size])",
               "format": "heatmap",
@@ -11451,6 +11633,7 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": {
+            "type": "prometheus",
             "uid": "$datasource"
           },
           "description": "For a given percentage P, the number X where P% of state resolution operations took place over X state groups or fewer.",
@@ -11466,7 +11649,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 41
+            "y": 66
           },
           "hiddenSeries": false,
           "id": 132,
@@ -11488,7 +11671,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -11501,11 +11684,13 @@
               "datasource": {
                 "uid": "$datasource"
               },
+              "editorMode": "code",
               "expr": "histogram_quantile(0.5, rate(synapse_state_number_state_groups_in_resolution_bucket{instance=\"$instance\",job=~\"$job\",index=~\"$index\"}[$bucket_size]))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
               "legendFormat": "50%",
+              "range": true,
               "refId": "A"
             },
             {
@@ -11589,7 +11774,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 49
+            "y": 74
           },
           "hiddenSeries": false,
           "id": 179,
@@ -11609,7 +11794,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -11701,6 +11886,234 @@
         "x": 0,
         "y": 42
       },
+      "id": 158,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 43
+          },
+          "hiddenSeries": false,
+          "id": 156,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.2",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "$$hashKey": "object:632",
+              "alias": "Max",
+              "color": "#bf1b00",
+              "fill": 0,
+              "linewidth": 2
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "max(synapse_admin_mau_max{instance=\"$instance\"})",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Max",
+              "range": true,
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "max(synapse_admin_mau_current{instance=\"$instance\"})",
+              "hide": false,
+              "legendFormat": "Current",
+              "range": true,
+              "refId": "C"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "MAU Limits",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:176",
+              "format": "short",
+              "logBase": 1,
+              "min": "0",
+              "show": true
+            },
+            {
+              "$$hashKey": "object:177",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 43
+          },
+          "hiddenSeries": false,
+          "id": 160,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "expr": "synapse_admin_mau_current_mau_by_service{instance=\"$instance\"}",
+              "interval": "",
+              "legendFormat": "{{ app_service }}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "MAU by Appservice",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        }
+      ],
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "000000001"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "MAU",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "000000001"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 43
+      },
       "id": 177,
       "panels": [
         {
@@ -11710,7 +12123,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "fieldConfig": {
             "defaults": {
@@ -11724,7 +12137,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 18
+            "y": 44
           },
           "hiddenSeries": false,
           "id": 173,
@@ -11745,7 +12158,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -11756,8 +12169,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "editorMode": "code",
               "expr": "rate(synapse_notifier_users_woken_by_stream_total{job=\"$job\",index=~\"$index\",instance=\"$instance\"}[$bucket_size])",
@@ -11810,7 +12222,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "fieldConfig": {
             "defaults": {
@@ -11824,7 +12236,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 18
+            "y": 44
           },
           "hiddenSeries": false,
           "id": 175,
@@ -11845,7 +12257,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -11856,8 +12268,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "editorMode": "code",
               "expr": "rate(synapse_handler_presence_get_updates_total{job=~\"$job\",instance=\"$instance\"}[$bucket_size])",
@@ -11926,7 +12337,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 44
       },
       "id": 170,
       "panels": [
@@ -11945,7 +12356,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 19
+            "y": 45
           },
           "hiddenSeries": false,
           "id": 168,
@@ -11965,7 +12376,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -12033,7 +12444,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 19
+            "y": 45
           },
           "hiddenSeries": false,
           "id": 171,
@@ -12053,7 +12464,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -12129,7 +12540,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 45
       },
       "id": 188,
       "panels": [
@@ -12147,7 +12558,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 20
+            "y": 46
           },
           "hiddenSeries": false,
           "id": 182,
@@ -12167,7 +12578,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -12267,7 +12678,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 20
+            "y": 46
           },
           "hiddenSeries": false,
           "id": 184,
@@ -12287,7 +12698,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -12347,7 +12758,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -12355,7 +12766,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 28
+            "y": 54
           },
           "hiddenSeries": false,
           "id": 186,
@@ -12375,7 +12786,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -12386,8 +12797,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "editorMode": "code",
               "expr": "rate(synapse_handler_presence_notify_reason_total{job=\"$job\",index=~\"$index\",instance=\"$instance\"}[$bucket_size])",
@@ -12452,14 +12862,14 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 46
       },
       "id": 197,
       "panels": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "fieldConfig": {
             "defaults": {
@@ -12501,8 +12911,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -12518,7 +12927,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 21
+            "y": 47
           },
           "id": 191,
           "options": {
@@ -12537,8 +12946,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "editorMode": "code",
               "expr": "rate(synapse_external_cache_set{job=~\"$job\", instance=\"$instance\", index=~\"$index\"}[$bucket_size])",
@@ -12558,7 +12966,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "description": "",
           "fill": 1,
@@ -12567,7 +12975,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 21
+            "y": 47
           },
           "hiddenSeries": false,
           "id": 193,
@@ -12587,7 +12995,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -12598,8 +13006,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "editorMode": "code",
               "expr": "sum without (hit) (rate(synapse_external_cache_get{job=~\"$job\", instance=\"$instance\", index=~\"$index\"}[$bucket_size]))",
@@ -12677,7 +13084,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 29
+            "y": 55
           },
           "heatmap": {},
           "hideZeroBuckets": false,
@@ -12728,7 +13135,7 @@
               "unit": "s"
             }
           },
-          "pluginVersion": "9.4.2",
+          "pluginVersion": "9.2.2",
           "reverseYBuckets": false,
           "targets": [
             {
@@ -12765,7 +13172,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "$datasource"
           },
           "description": "",
           "fieldConfig": {
@@ -12808,8 +13215,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -12821,7 +13227,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 29
+            "y": 55
           },
           "id": 223,
           "options": {
@@ -12840,8 +13246,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "$datasource"
               },
               "editorMode": "code",
               "expr": "rate(synapse_external_cache_get{job=~\"$job\", instance=\"$instance\", index=~\"$index\", hit=\"False\"}[$bucket_size])",
@@ -12868,9 +13273,8 @@
       "type": "row"
     }
   ],
-  "refresh": "",
-  "revision": 1,
-  "schemaVersion": 38,
+  "refresh": false,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "matrix"
@@ -12955,11 +13359,7 @@
         "type": "interval"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "matrix.pvv.ntnu.no",
-          "value": "matrix.pvv.ntnu.no"
-        },
+        "current": {},
         "datasource": {
           "uid": "$datasource"
         },
@@ -12985,15 +13385,7 @@
       {
         "allFormat": "regex wildcard",
         "allValue": "",
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "datasource": {
           "uid": "$datasource"
         },
@@ -13023,15 +13415,7 @@
       {
         "allFormat": "regex wildcard",
         "allValue": ".*",
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "datasource": {
           "uid": "$datasource"
         },
@@ -13061,7 +13445,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -13093,6 +13477,6 @@
   "timezone": "",
   "title": "Synapse",
   "uid": "000000012",
-  "version": 1,
+  "version": 160,
   "weekStart": ""
 }
