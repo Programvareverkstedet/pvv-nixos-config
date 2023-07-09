@@ -10,6 +10,9 @@ in rec {
     postgres = {
       inherit (hosts.bicep) ipv4 ipv6;
     };
+    mysql = {
+      inherit (hosts.bicep) ipv4 ipv6;
+    };
     # Also on bicep
     turn = {
       ipv4 = pvv-ipv4 213;

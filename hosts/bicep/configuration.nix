@@ -9,6 +9,7 @@
 
     ./services/mysql.nix
     ./services/postgres.nix
+    ./services/mysql.nix
 
     ./services/matrix
   ];
