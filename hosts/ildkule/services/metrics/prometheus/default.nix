@@ -1,9 +1,11 @@
 { config, ... }: {
   imports = [
-    ./node.nix
-    ./matrix-synapse.nix
-    ./postgres.nix
     ./gogs.nix
+    ./matrix-synapse.nix
+    # TODO: enable once https://github.com/NixOS/nixpkgs/pull/242365 gets merged
+    # ./mysqld.nix
+    ./node.nix
+    ./postgres.nix
   ];
 
   services.prometheus = {
