@@ -20,7 +20,7 @@
     forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
   in {
     nixosConfigurations = let
-      nixosConfig = name: config: nixpkgs.lib.nixosSystem (nixpkgs.lib.recursiveUpdate
+      nixosConfig = nixpkgs: name: config: nixpkgs.lib.nixosSystem (nixpkgs.lib.recursiveUpdate
         rec {
           system = "x86_64-linux";
           specialArgs = {
@@ -45,8 +45,10 @@
         config
       );
 
+      stableNixosConfig = nixosConfig nixpkgs;
+      unstableNixosConfig = nixosConfig unstable;
     in {
-      bicep = nixosConfig "bicep" {
+      bicep = stableNixosConfig "bicep" {
         modules = [
           ./hosts/bicep/configuration.nix
           sops-nix.nixosModules.sops
@@ -54,9 +56,13 @@
           matrix-next.nixosModules.synapse
         ];
       };
-      bekkalokk = nixosConfig "bekkalokk" { };
-      # greddost = nixosConfig "greddost" { };
-      ildkule = nixosConfig "ildkule" { };
+      bekkalokk = stableNixosConfig "bekkalokk" { };
+      greddost = stableNixosConfig "greddost" { };
+      ildkule = stableNixosConfig "ildkule" { };
+      ildkule-unstable = unstableNixosConfig "ildkule" { };
+      jokum = stableNixosConfig "jokum" {
+        modules = [ matrix-next.nixosModules.synapse ];
+      };
     };
 
     devShells = forAllSystems (system: {
