@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
+let
+  sslCert = config.security.acme.certs."postgres.pvv.ntnu.no";
+in
 {
   services.postgresql = {
     enable = true;
@@ -66,8 +69,22 @@
       track_wal_io_timing = true;
       maintenance_io_concurrency = 100;
       wal_recycle = true;
+
+      # SSL
+      ssl = true;
+      ssl_cert_file = "/run/credentials/postgresql.service/cert";
+      ssl_key_file = "/run/credentials/postgresql.service/key";
     };
   };
+
+  systemd.services.postgresql.serviceConfig = {
+    LoadCredential = [
+      "cert:${sslCert.directory}/cert.pem"
+      "key:${sslCert.directory}/key.pem"
+    ];
+  };
+
+  users.groups.acme.members = [ "postgres" ];
 
   networking.firewall.allowedTCPPorts = [ 5432 ];
   networking.firewall.allowedUDPPorts = [ 5432 ];
