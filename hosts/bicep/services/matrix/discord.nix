@@ -32,6 +32,9 @@ in
   services.mx-puppet-discord.serviceDependencies = [ "matrix-synapse.target" "nginx.service" ];
 
 
-  services.matrix-synapse-next.settings.app_service_config_files = [ config.sops.secrets."matrix/registrations/mx-puppet-discord".path ];
+  services.matrix-synapse-next.settings = {
+    app_service_config_files = [ config.sops.secrets."matrix/registrations/mx-puppet-discord".path ];
+    use_appservice_legacy_authorization = true;
+  };
 
 }
