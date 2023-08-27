@@ -8,10 +8,13 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
+    pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Drift/calendar-bot.git?ref=main&rev=6f125fdb1fd23b5d634cf50235f16f8c5f03e5be";
+    pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
+
     matrix-next.url = "github:dali99/nixos-matrix-modules";
   };
 
-  outputs = { self, nixpkgs, matrix-next, unstable, sops-nix, ... }@inputs:
+  outputs = { self, nixpkgs, matrix-next, pvv-calendar-bot, unstable, sops-nix, ... }@inputs:
   let
     systems = [
       "x86_64-linux"
@@ -40,6 +43,7 @@
               (final: prev: {
                 mx-puppet-discord = prev.mx-puppet-discord.override { nodejs_14 = final.nodejs_18; };
               })
+              pvv-calendar-bot.overlays.${system}.default
             ];
           };
         }
@@ -55,6 +59,7 @@
           sops-nix.nixosModules.sops
 
           matrix-next.nixosModules.synapse
+          pvv-calendar-bot.nixosModules.default
         ];
       };
       bekkalokk = stableNixosConfig "bekkalokk" { };

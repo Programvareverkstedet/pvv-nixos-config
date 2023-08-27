@@ -65,10 +65,33 @@
         "type": "github"
       }
     },
+    "pvv-calendar-bot": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1693093917,
+        "narHash": "sha256-Qz7bHN685zj5mcRnEfCwkCTUiLzy2EtXrREmlEKEf6w=",
+        "ref": "main",
+        "rev": "6f125fdb1fd23b5d634cf50235f16f8c5f03e5be",
+        "revCount": 8,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Drift/calendar-bot.git"
+      },
+      "original": {
+        "ref": "main",
+        "rev": "6f125fdb1fd23b5d634cf50235f16f8c5f03e5be",
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Drift/calendar-bot.git"
+      }
+    },
     "root": {
       "inputs": {
         "matrix-next": "matrix-next",
         "nixpkgs": "nixpkgs",
+        "pvv-calendar-bot": "pvv-calendar-bot",
         "sops-nix": "sops-nix",
         "unstable": "unstable"
       }
