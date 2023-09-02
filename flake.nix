@@ -12,6 +12,11 @@
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
     matrix-next.url = "github:dali99/nixos-matrix-modules";
+
+    grzegorz.url = "github:Programvareverkstedet/grzegorz";
+    grzegorz.inputs.nixpkgs.follows = "unstable";
+    grzegorz-clients.url = "github:Programvareverkstedet/grzegorz-clients";
+    grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, matrix-next, pvv-calendar-bot, unstable, sops-nix, ... }@inputs:
@@ -66,6 +71,16 @@
       ildkule = stableNixosConfig "ildkule" { };
       #ildkule-unstable = unstableNixosConfig "ildkule" { };
       shark = stableNixosConfig "shark" { };
+
+      brzeczyszczykiewicz = stableNixosConfig "brzeczyszczykiewicz" {
+        modules = [
+          ./hosts/brzeczyszczykiewicz/configuration.nix
+          sops-nix.nixosModules.sops
+
+          inputs.grzegorz.nixosModules.grzegorz-kiosk
+          inputs.grzegorz-clients.nixosModules.grzegorz-webui
+        ];
+      };
     };
 
     devShells = forAllSystems (system: {

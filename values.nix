@@ -41,6 +41,10 @@ in rec {
       ipv4 = pvv-ipv4 196;
       ipv6 = pvv-ipv6 196;
     };
+    brzeczyszczykiewicz = {
+      ipv4 = pvv-ipv4 205;
+      ipv6 = pvv-ipv6 "1:50"; # Wtf peder why
+    };
   };
 
   defaultNetworkConfig = {
