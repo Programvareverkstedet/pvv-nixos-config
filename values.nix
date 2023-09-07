@@ -3,6 +3,9 @@ let
   pvv-ipv4 = suffix: "129.241.210.${toString suffix}";
   pvv-ipv6 = suffix: "2001:700:300:1900::${toString suffix}";
 in rec {
+  ipv4-space = pvv-ipv4 "128/25";
+  ipv6-space = pvv-ipv4 "/64";
+
   services = {
     matrix = {
       inherit (hosts.bicep) ipv4 ipv6;
