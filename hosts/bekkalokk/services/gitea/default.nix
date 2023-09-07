@@ -1,7 +1,7 @@
 { config, values, pkgs, ... }:
 let
   cfg = config.services.gitea;
-  domain = "git2.pvv.ntnu.no";
+  domain = "git.pvv.ntnu.no";
   sshPort  = 2222;
 in {
   sops.secrets = {
@@ -33,6 +33,10 @@ in {
         ROOT_URL = "https://${domain}/";
         PROTOCOL = "http+unix";
         SSH_PORT = sshPort;
+	START_SSH_SERVER = true;
+      };
+      indexer = {
+      	REPO_INDEXER_ENABLED = true;
       };
       service.DISABLE_REGISTRATION = true;
       session.COOKIE_SECURE = true;
@@ -41,8 +45,11 @@ in {
         DISABLE_GRAVATAR = true;
         ENABLE_FEDERATED_AVATAR = false;
       };
+      "ui.meta".DESCRIPTION = "Bokstavelig talt programvareverkstedet";
     };
   };
+
+  environment.systemPackages = [ cfg.package ];
 
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
@@ -83,4 +90,13 @@ in {
       Unit = "gitea-import-users.service";
     };
   };
+
+  system.activationScripts.linkGiteaLogo.text = let
+    logo-svg = ../../../../assets/logo_blue_regular.svg;
+    logo-png = ../../../../assets/logo_blue_regular.png;
+  in ''
+    install -Dm444 ${logo-svg} ${cfg.stateDir}/custom/public/img/logo.svg
+    install -Dm444 ${logo-png} ${cfg.stateDir}/custom/public/img/logo.png
+    install -Dm444 ${./loading.apng} ${cfg.stateDir}/custom/public/img/loading.png
+  '';
 }

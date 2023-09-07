@@ -12,7 +12,7 @@ if API_TOKEN is None:
 
 GITEA_API_URL = os.getenv('GITEA_API_URL')
 if GITEA_API_URL is None:
-    GITEA_API_URL = 'https://git2.pvv.ntnu.no/api/v1'
+    GITEA_API_URL = 'https://git.pvv.ntnu.no/api/v1'
 
 BANNED_SHELLS = [
     "/usr/bin/nologin",
@@ -22,44 +22,56 @@ BANNED_SHELLS = [
     "/bin/msgsh",
 ]
 
-existing_users = []
+existing_users = {}
 
 
+# This function should only ever be called when adding users
+# from the passwd file
 def add_user(username, name):
-    if username in existing_users:
-        return
-
     user = {
-            "email": username + '@' + EMAIL_DOMAIN,
             "full_name": name,
-            "login_name": username,
-            "password": secrets.token_urlsafe(32),
-            "source_id": 1,  # 1 = SMTP
             "username": username,
-            "must_change_password": False,
-            "visibility": "private",
+            "login_name": username,
+            "visibility": "public",
+            "source_id": 1,  # 1 = SMTP
     }
 
-    r = requests.post(GITEA_API_URL + '/admin/users', json=user,
-                      headers={'Authorization': 'token ' + API_TOKEN})
-    if r.status_code != 201:
-        print('ERR: Failed to create user ' + username + ': ' + r.text)
-        return
+    if username not in existing_users:
+        user["password"] = secrets.token_urlsafe(32)
+        user["must_change_password"] = False
+        user["visibility"] = "private"
+        user["email"] = username + '@' + EMAIL_DOMAIN
 
-    print('Created user ' + username)
-    existing_users.append(username)
+        r = requests.post(GITEA_API_URL + '/admin/users', json=user,
+                          headers={'Authorization': 'token ' + API_TOKEN})
+        if r.status_code != 201:
+            print('ERR: Failed to create user ' + username + ': ' + r.text)
+            return
+
+        print('Created user ' + username)
+        existing_users[username] = user
+
+    else:
+        r = requests.patch(GITEA_API_URL + f'/admin/users/{username}',
+                           json=user,
+                           headers={'Authorization': 'token ' + API_TOKEN})
+        if r.status_code != 200:
+            print('ERR: Failed to update user ' + username + ': ' + r.text)
+            return
+
+        print('Updated user ' + username)
 
 
 def main():
-
     # Fetch existing users
     r = requests.get(GITEA_API_URL + '/admin/users',
                      headers={'Authorization': 'token ' + API_TOKEN})
+
     if r.status_code != 200:
         raise Exception('Failed to get users: ' + r.text)
 
     for user in r.json():
-        existing_users.append(user['login'])
+        existing_users[user['login']] = user
 
     # Read the file, add each user
     with open("/tmp/passwd-import", 'r') as f:
@@ -73,7 +85,7 @@ def main():
                 continue
 
             username = line.split(':')[0]
-            name = line.split(':')[4]
+            name = line.split(':')[4].split(',')[0]
 
             add_user(username, name)
 
