@@ -69,6 +69,7 @@
       jokum = stableNixosConfig "jokum" {
         modules = [ matrix-next.nixosModules.synapse ];
       };
+      shark = stableNixosConfig "shark" { };
     };
 
     devShells = forAllSystems (system: {

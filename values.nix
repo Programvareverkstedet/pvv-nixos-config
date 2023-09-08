@@ -37,6 +37,10 @@ in rec {
       ipv4 = pvv-ipv4 209;
       ipv6 = pvv-ipv6 209;
     };
+    shark = {
+      ipv4 = pvv-ipv4 196;
+      ipv6 = pvv-ipv6 196;
+    };
   };
 
   defaultNetworkConfig = {
