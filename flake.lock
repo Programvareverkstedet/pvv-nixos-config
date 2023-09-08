@@ -5,11 +5,11 @@
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
-        "lastModified": 1689214560,
-        "narHash": "sha256-2vXE3S68YeWhxRm7SdUD9Ac0xwDl9MHEGaGP8MdZa9c=",
+        "lastModified": 1690488646,
+        "narHash": "sha256-yuceqT8Ev1sdwYvGYHegdTo0yrdRxVYJ2qXSbPtBgTw=",
         "owner": "dali99",
         "repo": "nixos-matrix-modules",
-        "rev": "c158a35ea298ce3ea7cd446e9992154ea4bc6381",
+        "rev": "bf997073d98670528c6230144e208a37d27fc388",
         "type": "github"
       },
       "original": {
@@ -20,11 +20,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1689160739,
-        "narHash": "sha256-16f4JmXP9kvlcLPmlfXCwON2wyxEbZ2GQP8MM9XAzjA=",
+        "lastModified": 1694048570,
+        "narHash": "sha256-PEQptwFCVaJ+jLFJgrZll2shQ9VI/7xVhrCYkJo8iIw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "cad52aa1825058284a9b33ff4e42ce8adff1ac8b",
+        "rev": "4f77ea639305f1de0a14d9d41eef83313360638c",
         "type": "github"
       },
       "original": {
@@ -51,11 +51,11 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1688868408,
-        "narHash": "sha256-RR9N5XTAxSBhK8MCvLq9uxfdkd7etC//seVXldy0k48=",
+        "lastModified": 1693675694,
+        "narHash": "sha256-2pIOyQwGyy2FtFAUIb8YeKVmOCcPOTVphbAvmshudLE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "510d721ce097150ae3b80f84b04b13b039186571",
+        "rev": "5601118d39ca9105f8e7b39d4c221d3388c0419d",
         "type": "github"
       },
       "original": {
@@ -72,19 +72,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1693093917,
-        "narHash": "sha256-Qz7bHN685zj5mcRnEfCwkCTUiLzy2EtXrREmlEKEf6w=",
-        "ref": "main",
-        "rev": "6f125fdb1fd23b5d634cf50235f16f8c5f03e5be",
-        "revCount": 8,
+        "lastModified": 1693136143,
+        "narHash": "sha256-amHprjftc3y/bg8yf4hITCLa+ez5HIi0yGfR7TU6UIc=",
+        "ref": "refs/heads/main",
+        "rev": "a32894b305f042d561500f5799226afd1faf5abb",
+        "revCount": 9,
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Drift/calendar-bot.git"
+        "url": "https://git.pvv.ntnu.no/Projects/calendar-bot.git"
       },
       "original": {
-        "ref": "main",
-        "rev": "6f125fdb1fd23b5d634cf50235f16f8c5f03e5be",
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Drift/calendar-bot.git"
+        "url": "https://git.pvv.ntnu.no/Projects/calendar-bot.git"
       }
     },
     "root": {
@@ -104,11 +102,11 @@
         "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1689149796,
-        "narHash": "sha256-3FCUdayBHcxk6BZOxEIfa5UxbXNQzTc/VlN7ociI2Dw=",
+        "lastModified": 1693898833,
+        "narHash": "sha256-OIrMAGNYNeLs6IvBynxcXub7aSW3GEUvWNsb7zx6zuU=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "88b964df6981e4844c07be8c192aa6bdca768a10",
+        "rev": "faf21ac162173c2deb54e5fdeed002a9bd6e8623",
         "type": "github"
       },
       "original": {
@@ -119,11 +117,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1689179735,
-        "narHash": "sha256-HYU8oAsfjV4xL9CmKDeKBlVfWrx+r4si/8gXuhs5XtM=",
+        "lastModified": 1694068030,
+        "narHash": "sha256-q21JdfZjK4XN5QwWTzCHF/G6uuZtwASNW9/ZBaak65M=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b14fb1c9c33241598f573638ce23e6e46415306b",
+        "rev": "9e26139b45147aadd25ab7ab3bc4a93d6d5e94e7",
         "type": "github"
       },
       "original": {

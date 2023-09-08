@@ -8,7 +8,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Drift/calendar-bot.git?ref=main&rev=6f125fdb1fd23b5d634cf50235f16f8c5f03e5be";
+    pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
     matrix-next.url = "github:dali99/nixos-matrix-modules";
