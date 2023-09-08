@@ -19,7 +19,7 @@
 
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens18";
-    address = with values.hosts.ildkule; [ (ipv4 + "/25") (ipv6 + "/64") ];
+    address = with values.hosts.shark; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
   # List packages installed in system profile
