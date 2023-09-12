@@ -19,7 +19,7 @@ in {
         channel = "!gkNLUIhYVpEyLatcRz:pvv.ntnu.no";
       };
       secretsFile = config.sops.secrets."calendar-bot/matrix_token".path;
-      onCalendar = "0 9 * * *";
+      onCalendar = "*-*-* 09:00:00";
     };
   };
 }
