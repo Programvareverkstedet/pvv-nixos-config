@@ -46,7 +46,6 @@ in {
 
     extraConfigFiles = [
       config.sops.secrets."matrix/synapse/dbconfig".path
-      config.sops.secrets."matrix/synapse/user_registration".path
     ];
 
     settings = {
@@ -81,6 +80,7 @@ in {
       mau_stats_only = true;
 
       enable_registration = false;
+      registration_shared_secret_path = config.sops.secrets."matrix/synapse/user_registration".path;
 
       password_config.enabled = lib.mkForce false;
 
