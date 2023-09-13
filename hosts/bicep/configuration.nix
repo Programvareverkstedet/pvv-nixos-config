@@ -23,7 +23,6 @@
   sops.age.generateKey = true;
 
   boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/disk/by-id/scsi-3600508b1001cb1a8751c137b30610682";
 
   networking.hostName = "bicep";
