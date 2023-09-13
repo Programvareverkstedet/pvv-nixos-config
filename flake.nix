@@ -63,12 +63,8 @@
         ];
       };
       bekkalokk = stableNixosConfig "bekkalokk" { };
-      greddost = stableNixosConfig "greddost" { };
       ildkule = stableNixosConfig "ildkule" { };
-      ildkule-unstable = unstableNixosConfig "ildkule" { };
-      jokum = stableNixosConfig "jokum" {
-        modules = [ matrix-next.nixosModules.synapse ];
-      };
+      #ildkule-unstable = unstableNixosConfig "ildkule" { };
       shark = stableNixosConfig "shark" { };
     };
 
