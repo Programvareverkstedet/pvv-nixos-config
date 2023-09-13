@@ -22,10 +22,10 @@ in
       superuser_reserved_connections = 3;
 
       # Memory Settings
-      shared_buffers = "2048 MB";
+      shared_buffers = "8192 MB";
       work_mem = "32 MB";
-      maintenance_work_mem = "320 MB";
-      effective_cache_size = "6 GB";
+      maintenance_work_mem = "420 MB";
+      effective_cache_size = "22 GB";
       effective_io_concurrency = 100;
       random_page_cost = 1.25;
 
