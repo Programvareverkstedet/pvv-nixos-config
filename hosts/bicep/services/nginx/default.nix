@@ -19,11 +19,27 @@
       "[::1]"
     ];
 
+    appendConfig = ''
+      pcre_jit on;
+      worker_processes 8;
+      worker_rlimit_nofile 8192;
+    '';
+
+    eventsConfig = ''
+      multi_accept on;
+      worker_connections 4096;
+    '';
+
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
     recommendedGzipSettings = true;
+    recommendedBrotliSettings = true;
     recommendedOptimisation = true;
   };
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
+
+  systemd.services.nginx.serviceConfig = {
+    LimitNOFILE = 65536;
+  };
 }
