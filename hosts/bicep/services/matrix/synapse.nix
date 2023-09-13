@@ -13,6 +13,7 @@ in {
     key = "synapse/dbconfig";
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;
+    restartUnits = [ "matrix-synapse.target" ];
   };
 
   sops.secrets."matrix/synapse/signing_key" = {
