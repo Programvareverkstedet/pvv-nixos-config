@@ -8,14 +8,6 @@ let
   imap0Attrs = with lib; f: set:
     listToAttrs (imap0 (i: attr: nameValuePair attr (f i attr set.${attr})) (attrNames set));
 in {
-  sops.secrets."matrix/synapse/dbconfig" = {
-    sopsFile = ../../../../secrets/bicep/matrix.yaml;
-    key = "synapse/dbconfig";
-    owner = config.users.users.matrix-synapse.name;
-    group = config.users.users.matrix-synapse.group;
-    restartUnits = [ "matrix-synapse.target" ];
-  };
-
   sops.secrets."matrix/synapse/signing_key" = {
     key = "synapse/signing_key";
     sopsFile = ../../../../secrets/bicep/matrix.yaml;
@@ -44,10 +36,6 @@ in {
 
     enableNginx = true;
 
-    extraConfigFiles = [
-      config.sops.secrets."matrix/synapse/dbconfig".path
-    ];
-
     settings = {
       server_name = "pvv.ntnu.no";
       public_baseurl = "https://matrix.pvv.ntnu.no";
@@ -55,6 +43,17 @@ in {
       signing_key_path = config.sops.secrets."matrix/synapse/signing_key".path;
 
       media_store_path =  "${cfg.dataDir}/media";
+
+      database = {
+        name = "psycopg2";
+        args = {
+          host = "/var/run/postgresql";
+          dbname = "synapse";
+          user = "matrix-synapse";
+          cp_min = 1;
+          cp_max = 5;
+        };
+      };
 
       presence.enabled = false;
 
