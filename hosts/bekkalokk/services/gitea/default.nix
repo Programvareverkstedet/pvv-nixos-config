@@ -4,6 +4,10 @@ let
   domain = "git.pvv.ntnu.no";
   sshPort  = 2222;
 in {
+  imports = [
+    ./ci.nix
+  ];
+
   sops.secrets = {
     "gitea/database" = {
       owner = "gitea";
