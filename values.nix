@@ -45,6 +45,10 @@ in rec {
       ipv4 = pvv-ipv4 205;
       ipv6 = pvv-ipv6 "1:50"; # Wtf peder why
     };
+    georg = {
+      ipv4 = pvv-ipv4 204;
+      ipv6 = pvv-ipv6 "1:4f"; # Wtf øystein og daniel why
+    };
   };
 
   defaultNetworkConfig = {

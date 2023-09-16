@@ -81,6 +81,15 @@
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
         ];
       };
+      georg = stableNixosConfig "georg" {
+        modules = [
+          ./hosts/georg/configuration.nix
+          sops-nix.nixosModules.sops
+
+          inputs.grzegorz.nixosModules.grzegorz-kiosk
+          inputs.grzegorz-clients.nixosModules.grzegorz-webui
+        ];
+      };
     };
 
     devShells = forAllSystems (system: {
