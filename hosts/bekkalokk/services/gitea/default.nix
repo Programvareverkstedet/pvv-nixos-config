@@ -33,11 +33,9 @@ in {
         ROOT_URL = "https://${domain}/";
         PROTOCOL = "http+unix";
         SSH_PORT = sshPort;
-	START_SSH_SERVER = true;
+	      START_SSH_SERVER = true;
       };
-      indexer = {
-      	REPO_INDEXER_ENABLED = true;
-      };
+      indexer.REPO_INDEXER_ENABLED = true;
       service.DISABLE_REGISTRATION = true;
       session.COOKIE_SECURE = true;
       database.LOG_SQL = false;
@@ -45,6 +43,7 @@ in {
         DISABLE_GRAVATAR = true;
         ENABLE_FEDERATED_AVATAR = false;
       };
+      actions.ENABLED = true;
       "ui.meta".DESCRIPTION = "Bokstavelig talt programvareverkstedet";
     };
   };
