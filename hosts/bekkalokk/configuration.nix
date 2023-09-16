@@ -23,6 +23,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  virtualisation.podman.enable = true;
+
   networking.hostName = "bekkalokk";
 
   systemd.network.networks."30-enp2s0" = values.defaultNetworkConfig // {
