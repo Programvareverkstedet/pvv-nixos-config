@@ -6,6 +6,7 @@
       ../../base.nix
       ../../misc/metrics-exporters.nix
 
+      ./services/nginx.nix
       ./services/kanidm.nix
     ];
 

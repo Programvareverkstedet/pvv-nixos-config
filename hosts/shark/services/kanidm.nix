@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   cfg = config.services.kanidm;
-  domain = "auth.pvv.ntnu.no";
+  domain = "idmtest.pvv.ntnu.no";
   bindaddr_web = "127.0.0.1:8300"; #
   bindaddr_ldaps = "0.0.0.0:636";
 in {
@@ -22,12 +22,10 @@ in {
     };
   };
 
-  systemd.services.kanidm = let
-    certName = config.services.nginx.virtualHosts.${cfg.serverSettings.domain}.useACMEHost;
-  in {
-    requires = [ "acme-finished-${certName}.target" ];
+  systemd.services.kanidm = {
+    requires = [ "acme-finished-${domain}.target" ];
     serviceConfig.LoadCredential = let
-      certDir = config.security.acme.certs.${certName}.directory;
+      certDir = config.security.acme.certs.${domain}.directory;
     in [
       "fullchain.pem:${certDir}/fullchain.pem"
       "key.pem:${certDir}/key.pem"
