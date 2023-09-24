@@ -63,7 +63,7 @@
           ./hosts/bicep/configuration.nix
           sops-nix.nixosModules.sops
 
-          matrix-next.nixosModules.synapse
+          matrix-next.nixosModules.default
           pvv-calendar-bot.nixosModules.default
         ];
       };
