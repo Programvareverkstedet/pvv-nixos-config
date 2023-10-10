@@ -4,7 +4,7 @@ let
   pvv-ipv6 = suffix: "2001:700:300:1900::${toString suffix}";
 in rec {
   ipv4-space = pvv-ipv4 "128/25";
-  ipv6-space = pvv-ipv4 "/64";
+  ipv6-space = pvv-ipv6 "/64";
 
   services = {
     matrix = {
