@@ -16,7 +16,7 @@ hvis du vil være ekstra sikker på at alt bygger så kan du kjøre:
 
 `nix build .` for å bygge alle de viktige maskinene.
 
-NB: Dette kan ta opp til 15 minutter avhengig av hva som ligger i caches
+NB: Dette kan ta opp til 30 minutter avhengig av hva som ligger i caches
 
 Husk å hvertfall stage nye filer om du har laget dem!
 
