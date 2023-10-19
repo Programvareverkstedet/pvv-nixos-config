@@ -1,0 +1,13 @@
+name: "Eval nix flake"
+on:
+  pull_request:
+  push:
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: apt-get update && apt-get -y install sudo
+    - uses: https://github.com/cachix/install-nix-action@v23
+    - run: echo -e "show-trace = true\nmax-jobs = auto\ntrusted-users = root\nexperimental-features = nix-command flakes\nbuild-users-group =" > /etc/nix/nix.conf
+    - run: nix flake check
