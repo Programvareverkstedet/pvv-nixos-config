@@ -10,7 +10,13 @@ Etter å ha klonet prosjektet ned og gjort endringer kan du evaluere configene m
 
 før du bygger en maskin med:
 
-`nix build .#nixosConfigurations.<maskinavn>.config.system.build.toplevel`
+`nix build .#<maskinnavn>`
+
+hvis du vil være ekstra sikker på at alt bygger så kan du kjøre:
+
+`nix build .` for å bygge alle de viktige maskinene.
+
+NB: Dette kan ta opp til 15 minutter avhengig av hva som ligger i caches
 
 Husk å hvertfall stage nye filer om du har laget dem!
 

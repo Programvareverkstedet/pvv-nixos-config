@@ -21,12 +21,21 @@
 
   outputs = { self, nixpkgs, matrix-next, pvv-calendar-bot, unstable, sops-nix, ... }@inputs:
   let
+    nixlib = nixpkgs.lib;
     systems = [
       "x86_64-linux"
       "aarch64-linux"
       "aarch64-darwin"
     ];
-    forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
+    forAllSystems = f: nixlib.genAttrs systems (system: f system);
+    allMachines = nixlib.mapAttrsToList (name: _: name) self.nixosConfigurations;
+    importantMachines = [
+      "bekkalokk"
+      "bicep"
+      "brzeczyszczykiewicz"
+      "georg"
+      "ildkule"
+    ];
   in {
     nixosConfigurations = let
       nixosConfig = nixpkgs: name: config: nixpkgs.lib.nixosSystem (nixpkgs.lib.recursiveUpdate
@@ -95,5 +104,18 @@
     devShells = forAllSystems (system: {
       default = nixpkgs.legacyPackages.${system}.callPackage ./shell.nix { };
     });
+
+    packages = {
+      "x86_64-linux" = let
+        pkgs = nixpkgs.legacyPackages."x86_64-linux";
+      in rec {
+        default = important-machines;
+        important-machines = pkgs.linkFarm "important-machines"
+          (nixlib.getAttrs importantMachines self.packages.x86_64-linux);
+        all-machines = pkgs.linkFarm "all-machines"
+          (nixlib.getAttrs allMachines self.packages.x86_64-linux);
+      } // nixlib.genAttrs allMachines
+        (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
+    };
   };
 }
