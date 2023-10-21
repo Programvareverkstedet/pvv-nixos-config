@@ -25,6 +25,10 @@ in {
   services.matrix-synapse-next = {
     enable = true;
 
+    plugins = [
+      (pkgs.python3Packages.callPackage ./smtp-authenticator { })
+    ];
+
     dataDir = "/data/synapse";
 
     workers.federationSenders = 2;
@@ -81,7 +85,15 @@ in {
       enable_registration = false;
       registration_shared_secret_path = config.sops.secrets."matrix/synapse/user_registration".path;
 
-      password_config.enabled = lib.mkForce false;
+      password_config.enabled = true;
+
+      modules = [
+        { module = "smtp_auth_provider.SMTPAuthProvider";
+          config = {
+            smtp_host = "smtp.pvv.ntnu.no";
+          };
+        }
+      ];
 
       trusted_key_servers = [
         { server_name = "matrix.org"; }
