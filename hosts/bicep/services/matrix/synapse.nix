@@ -22,6 +22,11 @@ in {
     group = config.users.users.matrix-synapse.group;
   };
 
+  sops.secrets."matrix/sliding-sync/env" = {
+    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    key = "sliding-sync/env";
+  };
+
   services.matrix-synapse-next = {
     enable = true;
 
@@ -37,6 +42,8 @@ in {
     workers.normalSyncers = 1;
     workers.eventPersisters = 2;
     workers.useUserDirectoryWorker = true;
+
+    enableSlidingSync = true;
 
     enableNginx = true;
 
@@ -203,6 +210,9 @@ in {
       };
     };
   };
+
+  services.matrix-synapse.sliding-sync.environmentFile = config.sops.secrets."matrix/sliding-sync/env".path;
+
 
   services.redis.servers."".enable = true;
   
