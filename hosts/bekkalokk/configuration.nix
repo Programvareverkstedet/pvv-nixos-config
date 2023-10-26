@@ -5,6 +5,7 @@
 
     ../../base.nix
     ../../misc/metrics-exporters.nix
+    ../../modules/wackattack-ctf-stockfish
 
     #./services/keycloak.nix
 
