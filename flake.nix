@@ -99,6 +99,20 @@
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
         ];
       };
+
+      grevling = stableNixosConfig "grevling" {
+        modules = [
+          ./hosts/grevling/configuration.nix
+          sops-nix.nixosModules.sops
+        ];
+      };
+
+      tuba = stableNixosConfig "grevling" {
+        modules = [
+          ./hosts/tuba/configuration.nix
+          sops-nix.nixosModules.sops
+        ];
+      };
     };
 
     devShells = forAllSystems (system: {

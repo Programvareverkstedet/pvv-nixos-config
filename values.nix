@@ -21,6 +21,12 @@ in rec {
       ipv4 = pvv-ipv4 213;
       ipv6 = pvv-ipv6 213;
     };
+    grevling-tap = {
+      ipv4 = pvv-ipv4 251;
+    };
+    tuba-tap = {
+      ipv4 = pvv-ipv4 252;
+    };
   };
 
   hosts = {
@@ -48,6 +54,14 @@ in rec {
     georg = {
       ipv4 = pvv-ipv4 204;
       ipv6 = pvv-ipv6 "1:4f"; # Wtf øystein og daniel why
+    };
+    grevling = {
+      ipv4 = pvv-ipv4 198;
+      ipv6 = pvv-ipv6 198;
+    };
+    tuba = {
+      ipv4 = pvv-ipv4 199;
+      ipv6 = pvv-ipv6 199;
     };
   };
 
