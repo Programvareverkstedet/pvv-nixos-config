@@ -26,6 +26,12 @@ in rec {
       ipv4 = pvv-ipv4 213;
       ipv6 = pvv-ipv6 213;
     };
+    grevling-tap = {
+      ipv4 = pvv-ipv4 251;
+    };
+    tuba-tap = {
+      ipv4 = pvv-ipv4 252;
+    };
   };
 
   hosts = {
@@ -110,6 +116,14 @@ in rec {
     lupine-5 = {
       ipv4 = pvv-ipv4 228;
       ipv6 = pvv-ipv6 228;
+    };
+    grevling = {
+      ipv4 = pvv-ipv4 198;
+      ipv6 = pvv-ipv6 198;
+    };
+    tuba = {
+      ipv4 = pvv-ipv4 199;
+      ipv6 = pvv-ipv6 199;
     };
   };
 
