@@ -14,7 +14,7 @@
     ./services/gitea/default.nix
     ./services/kerberos
     ./services/webmail
-    # ./services/mediawiki.nix
+    ./services/mediawiki
     ./services/idp-simplesamlphp
   ];
 
