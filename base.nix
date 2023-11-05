@@ -71,6 +71,9 @@
 
   users.groups."drift".name = "drift";
 
+  # Trusted users on the nix builder machines
+  users.groups."nix-builder-users".name = "nix-builder-users";
+
   services.openssh = {
     enable = true;
     extraConfig = ''

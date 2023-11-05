@@ -8,6 +8,9 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+
     pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -19,7 +22,7 @@
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, matrix-next, pvv-calendar-bot, nixpkgs-unstable, sops-nix, ... }@inputs:
+  outputs = { self, nixpkgs, disko, matrix-next, pvv-calendar-bot, nixpkgs-unstable, sops-nix, ... }@inputs:
   let
     nixlib = nixpkgs.lib;
     systems = [
@@ -77,6 +80,15 @@
         ];
       };
       bekkalokk = stableNixosConfig "bekkalokk" { };
+      bob = stableNixosConfig "bob" {
+        modules = [
+          ./hosts/bob/configuration.nix
+          sops-nix.nixosModules.sops
+
+          disko.nixosModules.disko
+          { disko.devices.disk.disk1.device = "/dev/vda"; }
+        ];
+      };
       ildkule = stableNixosConfig "ildkule" { };
       #ildkule-unstable = unstableNixosConfig "ildkule" { };
       shark = stableNixosConfig "shark" { };
