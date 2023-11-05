@@ -22,7 +22,7 @@
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, disko, matrix-next, pvv-calendar-bot, nixpkgs-unstable, sops-nix, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ... }@inputs:
   let
     nixlib = nixpkgs.lib;
     systems = [
@@ -60,7 +60,7 @@
               (final: prev: {
                 mx-puppet-discord = prev.mx-puppet-discord.override { nodejs_14 = final.nodejs_18; };
               })
-              pvv-calendar-bot.overlays.${system}.default
+              inputs.pvv-calendar-bot.overlays.${system}.default
             ];
           };
         }
@@ -75,8 +75,8 @@
           ./hosts/bicep/configuration.nix
           sops-nix.nixosModules.sops
 
-          matrix-next.nixosModules.default
-          pvv-calendar-bot.nixosModules.default
+          inputs.matrix-next.nixosModules.default
+          inputs.pvv-calendar-bot.nixosModules.default
         ];
       };
       bekkalokk = stableNixosConfig "bekkalokk" { };
