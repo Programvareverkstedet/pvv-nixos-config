@@ -1,4 +1,4 @@
-{ config, unstable, ... }: let
+{ config, ... }: let
   cfg = config.services.prometheus;
 in {
   sops.secrets."config/mysqld_exporter" = { };

@@ -2,8 +2,8 @@
   description = "PVV System flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05-small";
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    nixpkgs.url = "nixpkgs/nixos-23.05-small";
+    nixpkgs-unstable.url = "nixpkgs/nixos-unstable-small";
 
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -14,12 +14,12 @@
     matrix-next.url = "github:dali99/nixos-matrix-modules";
 
     grzegorz.url = "github:Programvareverkstedet/grzegorz";
-    grzegorz.inputs.nixpkgs.follows = "unstable";
+    grzegorz.inputs.nixpkgs.follows = "nixpkgs-unstable";
     grzegorz-clients.url = "github:Programvareverkstedet/grzegorz-clients";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, matrix-next, pvv-calendar-bot, unstable, sops-nix, ... }@inputs:
+  outputs = { self, nixpkgs, matrix-next, pvv-calendar-bot, nixpkgs-unstable, sops-nix, ... }@inputs:
   let
     nixlib = nixpkgs.lib;
     systems = [
@@ -42,7 +42,7 @@
         rec {
           system = "x86_64-linux";
           specialArgs = {
-            inherit unstable inputs;
+            inherit nixpkgs-unstable inputs;
             values = import ./values.nix;
           };
 
@@ -65,7 +65,7 @@
       );
 
       stableNixosConfig = nixosConfig nixpkgs;
-      unstableNixosConfig = nixosConfig unstable;
+      unstableNixosConfig = nixosConfig nixpkgs-unstable;
     in {
       bicep = stableNixosConfig "bicep" {
         modules = [
