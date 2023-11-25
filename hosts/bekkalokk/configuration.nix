@@ -13,6 +13,7 @@
     # ./services/website.nix
     ./services/nginx.nix
     ./services/gitea/default.nix
+    ./services/webmail
     # ./services/mediawiki.nix
   ];
 
