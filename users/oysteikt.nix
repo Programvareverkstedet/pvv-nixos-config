@@ -6,6 +6,7 @@
     extraGroups = [
       "wheel"
       "drift"
+      "nix-builder-users"
     ];
 
     packages = with pkgs; [
