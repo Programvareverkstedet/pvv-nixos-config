@@ -6,7 +6,7 @@
       ../../base.nix
       ../../misc/metrics-exporters.nix
 
-      ../../modules/grzegorz.nix
+      ./services/grzegorz.nix
     ];
 
   boot.loader.systemd-boot.enable = true;
