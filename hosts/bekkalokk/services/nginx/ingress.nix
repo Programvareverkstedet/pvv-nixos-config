@@ -2,17 +2,11 @@
 {
   services.nginx.virtualHosts = {
     "www2.pvv.ntnu.no" = {
+      serverAliases = [ "www2.pvv.org" "pvv.ntnu.no" "pvv.org" ];
       addSSL = true;
       enableACME = true;
 
-      # TODO after updating the corresponding DNS record:
-      # serverAliases = [ "www2.pvv.org" "pvv.ntnu.no" "pvv.org" ]
-      serverAliases = [ "www2.pvv.org" ];
-
       locations = {
-        # Redirect the main website
-        "= /".return = "301 https://www.pvv.ntnu.no/";
-
         # Proxy home directories
         "/~" = {
           extraConfig = ''
@@ -39,8 +33,11 @@
         "/diverse/abuse.php".return = "301 https://www.pvv.ntnu.no/pvv/CERT/Abuse";
         "/nerds/".return = "301 https://www.pvv.ntnu.no/pvv/Nerdepizza";
 
-        # TODO: Redirect web main
+        # TODO: Redirect webmail
         "/webmail".return = "301 https://webmail.pvv.ntnu.no/squirrelmail";
+
+        # Redirect everything else to the main website
+        "/".return = "301 https://www.pvv.ntnu.no$request_uri";
       };
     };
   };
