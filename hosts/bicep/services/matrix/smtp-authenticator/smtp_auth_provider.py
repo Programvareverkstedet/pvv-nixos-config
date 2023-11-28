@@ -5,6 +5,7 @@ from smtplib import SMTP_SSL as SMTP
 import synapse
 from synapse import module_api
 
+import re
 
 class SMTPAuthProvider:
     def __init__(self, config: dict, api: module_api):
@@ -26,6 +27,10 @@ class SMTPAuthProvider:
     ):
         if login_type != "m.login.password":
             return None
+
+        # Convert `@username:server` to `username`
+        match = re.match(r'^@([\da-z\-\.=_\/\+]+):[\w\d\.:\[\]]+$', username)
+        username = match.group(1) if match else username
 
         result = False
         with SMTP(self.config["smtp_host"]) as smtp:
