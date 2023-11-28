@@ -216,7 +216,19 @@ in {
 
   services.redis.servers."".enable = true;
   
-  services.nginx.virtualHosts."matrix.pvv.ntnu.no" = lib.mkMerge [({
+  services.nginx.virtualHosts."matrix.pvv.ntnu.no" = lib.mkMerge [
+  ({
+    locations."/.well-known/matrix/server" = {
+      return = ''
+        200 '{"m.server": "matrix.pvv.ntnu.no:443"}'
+      '';
+      extraConfig = ''
+        default_type application/json;
+        add_header Access-Control-Allow-Origin *;
+      '';
+    };
+  })
+  ({
     locations = let
       connectionInfo = w: matrix-lib.workerConnectionResource "metrics" w;
       socketAddress = w: let c = connectionInfo w; in "${c.host}:${toString (c.port)}";
