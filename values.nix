@@ -41,6 +41,9 @@ in rec {
       ipv4 = "129.241.152.254";
       # ipv6 = ;
     };
+    knutsen = {
+      ipv4 = pvv-ipv4 191;
+    };
     shark = {
       ipv4 = pvv-ipv4 196;
       ipv6 = pvv-ipv6 196;
@@ -52,6 +55,10 @@ in rec {
     georg = {
       ipv4 = pvv-ipv4 204;
       ipv6 = pvv-ipv6 "1:4f"; # Wtf øystein og daniel why
+    };
+    buskerud = {
+      ipv4 = pvv-ipv4 231;
+      ipv6 = pvv-ipv6 231;
     };
   };
 

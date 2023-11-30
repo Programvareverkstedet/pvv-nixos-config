@@ -111,6 +111,12 @@
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
         ];
       };
+      buskerud = stableNixosConfig "buskerud" {
+        modules = [
+          ./hosts/buskerud/configuration.nix
+          sops-nix.nixosModules.sops
+        ];
+      };
     };
 
     devShells = forAllSystems (system: {
