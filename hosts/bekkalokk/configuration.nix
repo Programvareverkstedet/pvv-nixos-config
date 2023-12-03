@@ -5,6 +5,7 @@
 
     ../../base.nix
     ../../misc/metrics-exporters.nix
+    ../../modules/kerberos_auth.nix
 
     #./services/keycloak.nix
 
