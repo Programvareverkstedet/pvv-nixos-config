@@ -1,5 +1,9 @@
 { pkgs, config, ... }:
 {
+  imports = [
+    ./ingress.nix
+  ];
+
   security.acme = {
     acceptTerms = true;
     defaults.email = "drift@pvv.ntnu.no";

@@ -10,7 +10,7 @@
 
     # TODO: set up authentication for the following:
     # ./services/website.nix
-    ./services/nginx.nix
+    ./services/nginx
     ./services/gitea/default.nix
     ./services/webmail
     # ./services/mediawiki.nix
