@@ -2,9 +2,13 @@
 {
   containers.bikkje = {
     autoStart = true;
-    interfaces = [ "enp14s0f1" ];
+    interfaces = [ "enp4s0f0" ];
 
     config = { config, pkgs, ... }: {
+      imports = [
+        ../../modules/home-areas.nix
+      ];
+
       environment.systemPackages = with pkgs; [
           zsh
           bash
@@ -87,8 +91,10 @@
         useHostResolvConf = lib.mkForce false;
         hostName = "bikkje";
       };
-      systemd.network.networks."30-enp14s0f1" = values.defaultNetworkConfig // {
-        matchConfig.Name = "enp14s0f1";
+
+      systemd.network.enable = true;
+      systemd.network.networks."30-enp4s0f0" = values.defaultNetworkConfig // {
+        matchConfig.Name = "enp4s0f0";
         address = with values.hosts.bikkje; [ (ipv4 + "/25") (ipv6 + "/64") ];
       };
       
@@ -99,6 +105,5 @@
 
   # TODO
   # - Kerberos Authentication
-  # - Home directory mounts
   # - Mail Transfer Agent
 }
