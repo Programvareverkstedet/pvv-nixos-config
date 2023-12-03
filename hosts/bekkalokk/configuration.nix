@@ -5,6 +5,7 @@
 
     ../../base.nix
     ../../misc/metrics-exporters.nix
+    ../../modules/home-areas.nix
 
     #./services/keycloak.nix
 

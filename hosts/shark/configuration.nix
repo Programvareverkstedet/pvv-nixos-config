@@ -5,6 +5,7 @@
       ./hardware-configuration.nix
       ../../base.nix
       ../../misc/metrics-exporters.nix
+      ../../modules/home-areas.nix
     ];
 
   sops.defaultSopsFile = ../../secrets/shark/shark.yaml;
