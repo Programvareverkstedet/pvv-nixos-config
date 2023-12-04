@@ -11,7 +11,7 @@
 
     packages = with pkgs; [
       bottom
-      exa
+      eza
       neovim
       diskonaut
       ripgrep
