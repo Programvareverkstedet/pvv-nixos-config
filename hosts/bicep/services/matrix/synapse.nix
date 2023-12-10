@@ -29,6 +29,7 @@ in {
 
   services.matrix-synapse-next = {
     enable = true;
+    package = inputs.nixpkgs-matrix-buildenv.legacyPackages.x86_64-linux.matrix-synapse;
 
     plugins = [
       (pkgs.python3Packages.callPackage ./smtp-authenticator { })

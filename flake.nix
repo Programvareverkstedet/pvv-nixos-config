@@ -14,8 +14,9 @@
     pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Last release compatible with 23.05
     matrix-next.url = "github:dali99/nixos-matrix-modules";
+    # https://github.com/NixOS/nixpkgs/pull/273262
+    nixpkgs-matrix-buildenv.url = "github:dali99/nixpkgs/synapse-buildenv";
 
     grzegorz.url = "github:Programvareverkstedet/grzegorz";
     grzegorz.inputs.nixpkgs.follows = "nixpkgs-unstable";
