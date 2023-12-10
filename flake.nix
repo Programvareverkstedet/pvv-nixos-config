@@ -2,7 +2,7 @@
   description = "PVV System flake";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-23.05-small";
+    nixpkgs.url = "nixpkgs/nixos-23.11-small";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable-small";
 
     sops-nix.url = "github:Mic92/sops-nix";
@@ -14,8 +14,9 @@
     pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Last release compatible with 23.05
-    matrix-next.url = "github:dali99/nixos-matrix-modules/e09814657187c8ed1a5fe1646df6d8da1eb2dee9";
+    matrix-next.url = "github:dali99/nixos-matrix-modules";
+    # https://github.com/NixOS/nixpkgs/pull/273262
+    nixpkgs-matrix-buildenv.url = "github:dali99/nixpkgs/synapse-buildenv";
 
     grzegorz.url = "github:Programvareverkstedet/grzegorz";
     grzegorz.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -58,9 +59,6 @@
           pkgs = import nixpkgs {
             inherit system;
             overlays = [
-              (final: prev: {
-                mx-puppet-discord = prev.mx-puppet-discord.override { nodejs_14 = final.nodejs_18; };
-              })
               inputs.pvv-calendar-bot.overlays.${system}.default
             ];
           };

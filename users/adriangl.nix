@@ -9,7 +9,7 @@
     ];
 
     packages = with pkgs; [
-      exa
+      eza
       neovim
     ];
 
