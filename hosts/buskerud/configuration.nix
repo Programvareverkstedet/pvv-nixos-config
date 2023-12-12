@@ -6,7 +6,7 @@
       ../../base.nix
       ../../misc/metrics-exporters.nix
 
-      ./services/openvpn-client.nix
+      # ./services/openvpn-client.nix
     ];
 
   # buskerud does not support efi?
