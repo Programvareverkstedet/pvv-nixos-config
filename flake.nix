@@ -123,12 +123,22 @@
     packages = {
       "x86_64-linux" = let
         pkgs = nixpkgs.legacyPackages."x86_64-linux";
+        pkgs-unstable = nixpkgs-unstable.legacyPackages."x86_64-linux";
       in rec {
         default = important-machines;
         important-machines = pkgs.linkFarm "important-machines"
           (nixlib.getAttrs importantMachines self.packages.x86_64-linux);
         all-machines = pkgs.linkFarm "all-machines"
           (nixlib.getAttrs allMachines self.packages.x86_64-linux);
+	heimdal = pkgs.callPackage hosts/buskerud/containers/salsa/services/heimdal/package.nix {
+          inherit (pkgs.apple_sdk.frameworks)
+            CoreFoundation Security SystemConfiguration;
+	};
+	heimdal-unstable = pkgs-unstable.callPackage hosts/buskerud/containers/salsa/services/heimdal/package.nix {
+          inherit (pkgs.apple_sdk.frameworks)
+            CoreFoundation Security SystemConfiguration;
+	};
+	inherit pkgs pkgs-unstable;
       } // nixlib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
     };
