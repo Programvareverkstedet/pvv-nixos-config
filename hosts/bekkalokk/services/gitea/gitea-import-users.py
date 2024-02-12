@@ -32,7 +32,6 @@ def add_user(username, name):
             "full_name": name,
             "username": username,
             "login_name": username,
-            "visibility": "public",
             "source_id": 1,  # 1 = SMTP
     }
 
