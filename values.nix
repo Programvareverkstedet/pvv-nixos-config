@@ -56,6 +56,10 @@ in rec {
       ipv4 = pvv-ipv4 204;
       ipv6 = pvv-ipv6 "1:4f"; # Wtf øystein og daniel why
     };
+    bikkje = {
+      ipv4 = pvv-ipv4 216;
+      ipv6 = pvv-ipv6 216;
+    };
     buskerud = {
       ipv4 = pvv-ipv4 231;
       ipv6 = pvv-ipv6 231;
