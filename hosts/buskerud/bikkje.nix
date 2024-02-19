@@ -80,9 +80,13 @@
           PubkeyAcceptedAlgorithms=+ssh-rsa
        '';
 
-        settings.GatewayPorts = "yes";
-        banner = builtins.readFile ../../motd;
+        settings = {
+          GatewayPorts = "yes";
+          PermitRootLogin = "yes";
+        };
       };
+
+      users.motd = builtins.readFile ../../misc/motd;
 
       networking = {
         firewall.enable = true;

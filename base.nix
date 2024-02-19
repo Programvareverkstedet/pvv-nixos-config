@@ -73,6 +73,7 @@
 
   # Trusted users on the nix builder machines
   users.groups."nix-builder-users".name = "nix-builder-users";
+  users.motd = builtins.readFile ./misc/motd;
 
   services.openssh = {
     enable = true;
