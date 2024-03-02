@@ -51,6 +51,7 @@ def add_user(username, name):
         existing_users[username] = user
 
     else:
+        user["visibility"] = existing_users[username]["visibility"]
         r = requests.patch(GITEA_API_URL + f'/admin/users/{username}',
                            json=user,
                            headers={'Authorization': 'token ' + API_TOKEN})
