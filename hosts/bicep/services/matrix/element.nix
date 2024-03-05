@@ -24,21 +24,24 @@ in {
         features = {
           feature_latex_maths = true;
           feature_pinning = true;
+          feature_render_reaction_images = true;
           feature_state_counters = true;
-          feature_custom_status = false;
+          # element call group calls
+          feature_group_calls = true;
         };
         default_theme = "dark";
         room_directory.servers = [
           "pvv.ntnu.no"
+          "matrixrooms.info"
           "matrix.omegav.no"
           "matrix.org"
-          "libera.chat"
           "gitter.im"
           "mozilla.org"
           "kde.org"
           "t2bot.io"
           "fosdem.org"
           "dodsorf.as"
+          "nani.wtf"
         ];
         enable_presence_by_hs_url = {
           "https://matrix.org" = false;
