@@ -30,18 +30,20 @@ in {
           feature_group_calls = true;
         };
         default_theme = "dark";
+        # Servers in this list should provide some sort of valuable scoping
+        # matrix.org is not useful compared to matrixrooms.info,
+        # because it has so many general members, rooms of all topics are on it.
+        # Something matrixrooms.info is already providing.
         room_directory.servers = [
           "pvv.ntnu.no"
-          "matrixrooms.info"
-          "matrix.omegav.no"
-          "matrix.org"
-          "gitter.im"
-          "mozilla.org"
-          "kde.org"
-          "t2bot.io"
-          "fosdem.org"
-          "dodsorf.as"
-          "nani.wtf"
+          "matrixrooms.info" # Searches all public room directories
+          "matrix.omegav.no" # Friends
+          "gitter.im" # gitter rooms
+          "mozilla.org" # mozilla and friends
+          "kde.org" # KDE rooms
+          "fosdem.org" # FOSDEM
+          "dodsorf.as" # PVV Member
+          "nani.wtf" # PVV Member
         ];
         enable_presence_by_hs_url = {
           "https://matrix.org" = false;
