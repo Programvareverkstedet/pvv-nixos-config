@@ -15,6 +15,7 @@
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
     matrix-next.url = "github:dali99/nixos-matrix-modules";
+    matrix-next.inputs.nixpkgs.follows = "nixpkgs";
 
     grzegorz.url = "github:Programvareverkstedet/grzegorz";
     grzegorz.inputs.nixpkgs.follows = "nixpkgs-unstable";
