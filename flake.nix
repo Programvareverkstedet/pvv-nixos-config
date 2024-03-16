@@ -31,6 +31,9 @@
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
 
     minecraft-data.url = "git+https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git";
+
+    dibbler.url = "github:Programvareverkstedet/dibbler";
+    dibbler.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ... }@inputs:
@@ -157,6 +160,13 @@
         overlays = [
           inputs.greg-ng.overlays.default
           inputs.gergle.overlays.default
+        ];
+      };
+      skrott = stableNixosConfig "skrott" {
+        modules = [
+          ./hosts/skrott/configuration.nix
+          inputs.dibbler.nixosModules.default
+          sops-nix.nixosModules.sops
         ];
       };
     };
