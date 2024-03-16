@@ -21,6 +21,9 @@
     grzegorz.inputs.nixpkgs.follows = "nixpkgs-unstable";
     grzegorz-clients.url = "github:Programvareverkstedet/grzegorz-clients";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
+
+    dibbler.url = "github:Programvareverkstedet/dibbler";
+    dibbler.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ... }@inputs:
@@ -112,6 +115,13 @@
       buskerud = stableNixosConfig "buskerud" {
         modules = [
           ./hosts/buskerud/configuration.nix
+          sops-nix.nixosModules.sops
+        ];
+      };
+      skrott = stableNixosConfig "skrott" {
+        modules = [
+          ./hosts/skrott/configuration.nix
+          inputs.dibbler.nixosModules.default
           sops-nix.nixosModules.sops
         ];
       };
