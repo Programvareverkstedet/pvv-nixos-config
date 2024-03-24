@@ -53,16 +53,14 @@
           modules = [
             ./hosts/${name}/configuration.nix
             sops-nix.nixosModules.sops
-          ];
+          ] ++ config.modules or [];
 
           pkgs = import nixpkgs {
             inherit system;
-            overlays = [
-              inputs.pvv-calendar-bot.overlays.${system}.default
-            ];
+            overlays = [ ] ++ config.overlays or [ ];
           };
         }
-        config
+        (removeAttrs config [ "modules" "overlays" ])
       );
 
       stableNixosConfig = nixosConfig nixpkgs;
@@ -70,19 +68,16 @@
     in {
       bicep = stableNixosConfig "bicep" {
         modules = [
-          ./hosts/bicep/configuration.nix
-          sops-nix.nixosModules.sops
-
           inputs.matrix-next.nixosModules.default
           inputs.pvv-calendar-bot.nixosModules.default
+        ];
+        overlays = [
+          inputs.pvv-calendar-bot.overlays.x86_64-linux.default
         ];
       };
       bekkalokk = stableNixosConfig "bekkalokk" { };
       bob = stableNixosConfig "bob" {
         modules = [
-          ./hosts/bob/configuration.nix
-          sops-nix.nixosModules.sops
-
           disko.nixosModules.disko
           { disko.devices.disk.disk1.device = "/dev/vda"; }
         ];
@@ -93,28 +88,17 @@
 
       brzeczyszczykiewicz = stableNixosConfig "brzeczyszczykiewicz" {
         modules = [
-          ./hosts/brzeczyszczykiewicz/configuration.nix
-          sops-nix.nixosModules.sops
-
           inputs.grzegorz.nixosModules.grzegorz-kiosk
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
         ];
       };
       georg = stableNixosConfig "georg" {
         modules = [
-          ./hosts/georg/configuration.nix
-          sops-nix.nixosModules.sops
-
           inputs.grzegorz.nixosModules.grzegorz-kiosk
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
         ];
       };
-      buskerud = stableNixosConfig "buskerud" {
-        modules = [
-          ./hosts/buskerud/configuration.nix
-          sops-nix.nixosModules.sops
-        ];
-      };
+      buskerud = stableNixosConfig "buskerud" { };
     };
 
     devShells = forAllSystems (system: {
