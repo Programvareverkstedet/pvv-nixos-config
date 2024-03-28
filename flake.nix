@@ -80,6 +80,7 @@
         overlays = [
           (final: prev: {
             heimdal = unstablePkgs.heimdal;
+            mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
           })
         ];
       };
@@ -123,6 +124,8 @@
           (nixlib.getAttrs allMachines self.packages.x86_64-linux);
 
         simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
+
+        mediawiki-extensions = pkgs.callPackage ./packages/mediawiki-extensions { };
       } // nixlib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
     };
