@@ -60,22 +60,7 @@ in {
     };
 
     extensions = {
-      DeleteBatch = pkgs.fetchzip {
-        url = "https://extdist.wmflabs.org/dist/extensions/DeleteBatch-REL1_39-995ea6f.tar.gz";
-	sha256 = "sha256-0F4GLCy2f5WcWIY2YgF1tVxgYbglR0VOsj/pMrW93b8=";
-      };
-      UserMerge = pkgs.fetchzip {
-        url = "https://extdist.wmflabs.org/dist/extensions/UserMerge-REL1_39-b10d50e.tar.gz";
-	sha256 = "sha256-bXhj1+OlOUJDbvEuc8iwqb1LLEu6cN6+C/7cAvnWPOQ=";
-      };
-      PluggableAuth = pkgs.fetchzip {
-        url = "https://extdist.wmflabs.org/dist/extensions/PluggableAuth-REL1_39-1210fc3.tar.gz";
-	sha256 = "sha256-F6bTMCzkK3kZwZGIsNE87WlZWqXXmTMhEjApO99YKR0=";
-      };
-      SimpleSAMLphp = pkgs.fetchzip {
-        url = "https://extdist.wmflabs.org/dist/extensions/SimpleSAMLphp-REL1_39-dcf0acb.tar.gz";
-        sha256 = "sha256-tCvFmb2+q2rxms+lRo5pgoI3h6GjCwXAR8XisPg03TQ=";
-      };
+      inherit (pkgs.mediawiki-extensions) DeleteBatch UserMerge PluggableAuth SimpleSAMLphp;
     };
 
     extraConfig = let

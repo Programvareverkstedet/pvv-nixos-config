@@ -82,6 +82,7 @@
               inherit (final.darwin.apple_sdk.frameworks) CoreFoundation Security SystemConfiguration;
               autoreconfHook = final.buildPackages.autoreconfHook269;
 	    };
+            mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
           })
         ];
       };
@@ -133,6 +134,8 @@
 	};
 
         simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
+
+        mediawiki-extensions = pkgs.callPackage ./packages/mediawiki-extensions { };
       } // nixlib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
     };
