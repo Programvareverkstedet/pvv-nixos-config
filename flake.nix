@@ -11,6 +11,9 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
+    pvv-nettsiden.url = "git+https://git.pvv.ntnu.no/Projects/nettsiden.git?ref=nixify-ng";
+    pvv-nettsiden.inputs.nixpkgs.follows = "nixpkgs";
+
     pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -26,7 +29,7 @@
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, pvv-nettsiden, sops-nix, disko, ... }@inputs:
   let
     nixlib = nixpkgs.lib;
     systems = [
@@ -87,9 +90,11 @@
             simplesamlphp = final.callPackage ./packages/simplesamlphp { };
           })
           inputs.nix-gitea-themes.overlays.default
+          inputs.pvv-nettsiden.overlays.default
         ];
         modules = [
           inputs.nix-gitea-themes.nixosModules.default
+          inputs.pvv-nettsiden.nixosModules.default
         ];
       };
       bob = stableNixosConfig "bob" {

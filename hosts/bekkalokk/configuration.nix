@@ -9,7 +9,7 @@
     #./services/keycloak.nix
 
     # TODO: set up authentication for the following:
-    # ./services/website.nix
+    ./services/website
     ./services/nginx
     ./services/gitea/default.nix
     ./services/kerberos
