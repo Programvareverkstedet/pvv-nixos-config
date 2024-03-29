@@ -131,6 +131,8 @@
           inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation Security SystemConfiguration;
           autoreconfHook = pkgs.buildPackages.autoreconfHook269;
 	};
+
+        simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
       } // nixlib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
     };
