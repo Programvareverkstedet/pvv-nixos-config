@@ -83,6 +83,7 @@
               autoreconfHook = final.buildPackages.autoreconfHook269;
 	    };
             mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
+            simplesamlphp = final.callPackage ./packages/simplesamlphp { };
           })
         ];
       };
