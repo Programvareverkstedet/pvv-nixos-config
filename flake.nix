@@ -75,7 +75,16 @@
           inputs.pvv-calendar-bot.overlays.x86_64-linux.default
         ];
       };
-      bekkalokk = stableNixosConfig "bekkalokk" { };
+      bekkalokk = stableNixosConfig "bekkalokk" {
+        overlays = [
+          (final: prev: {
+            heimdal = final.callPackage ./packages/heimdal {
+              inherit (final.darwin.apple_sdk.frameworks) CoreFoundation Security SystemConfiguration;
+              autoreconfHook = final.buildPackages.autoreconfHook269;
+	    };
+          })
+        ];
+      };
       bob = stableNixosConfig "bob" {
         modules = [
           disko.nixosModules.disko
@@ -114,6 +123,14 @@
           (nixlib.getAttrs importantMachines self.packages.x86_64-linux);
         all-machines = pkgs.linkFarm "all-machines"
           (nixlib.getAttrs allMachines self.packages.x86_64-linux);
+
+        #######################
+        # TODO: remove this once nixos 24.05 gets released
+        #######################
+        heimdal = pkgs.callPackage ./packages/heimdal {
+          inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation Security SystemConfiguration;
+          autoreconfHook = pkgs.buildPackages.autoreconfHook269;
+	};
       } // nixlib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
     };
