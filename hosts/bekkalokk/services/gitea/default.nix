@@ -1,4 +1,4 @@
-{ config, values, pkgs, ... }:
+{ config, values, pkgs, lib, ... }:
 let
   cfg = config.services.gitea;
   domain = "git.pvv.ntnu.no";
@@ -32,12 +32,18 @@ in {
     };
 
     settings = {
+      dump = {
+        enable = true;
+        interval = "monthly";
+      };
+
       server = {
         DOMAIN   = domain;
         ROOT_URL = "https://${domain}/";
         PROTOCOL = "http+unix";
         SSH_PORT = sshPort;
 	      START_SSH_SERVER = true;
+        LFS_START_SERVER = true;
       };
       indexer.REPO_INDEXER_ENABLED = true;
       service.DISABLE_REGISTRATION = true;
@@ -49,6 +55,35 @@ in {
       };
       actions.ENABLED = true;
       "ui.meta".DESCRIPTION = "Bokstavelig talt programvareverkstedet";
+      "ui.svg".RENDER = true;
+
+      markup = {
+        asciidoc = { 
+          ENABLED = true;
+          NEED_POSTPROCESS = true;
+          FILE_EXTENSIONS = ".adoc,.asciidoc";
+          RENDER_COMMAND = "${lib.getExe pkgs.asciidoctor} --embedded --safe-mode=secure --out-file=- -";
+          IS_INPUT_FILE = false;
+        };
+
+        html = {
+          ENABLED         = true;
+          FILE_EXTENSIONS = ".html,.htm";
+          RENDER_COMMAND  = "cat";
+          # Input is not a standard input but a file
+          IS_INPUT_FILE   = true;
+        };
+        
+        sanitizer.html.1 = {
+          ELEMENT = "div";
+          ALLOW_ATTR = "class";
+        };
+        
+        sanitizer.html.2 = {
+          ELEMENT = "a";
+          ALLOW_ATTR = "class";
+        };
+      };
     };
   };
 
