@@ -1,0 +1,6 @@
+{ ... }:
+{
+  services.openldap = {
+    enable = true;
+  };
+}
