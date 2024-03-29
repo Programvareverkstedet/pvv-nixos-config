@@ -121,6 +121,8 @@
           (nixlib.getAttrs importantMachines self.packages.x86_64-linux);
         all-machines = pkgs.linkFarm "all-machines"
           (nixlib.getAttrs allMachines self.packages.x86_64-linux);
+
+        simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
       } // nixlib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
     };
