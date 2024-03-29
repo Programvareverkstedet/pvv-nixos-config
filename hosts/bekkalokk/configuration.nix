@@ -15,6 +15,7 @@
     ./services/kerberos
     ./services/webmail
     # ./services/mediawiki.nix
+    ./services/idp-simplesamlphp
   ];
 
   sops.defaultSopsFile = ../../secrets/bekkalokk/bekkalokk.yaml;

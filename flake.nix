@@ -81,6 +81,7 @@
           (final: prev: {
             heimdal = unstablePkgs.heimdal;
             mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
+            simplesamlphp = final.callPackage ./packages/simplesamlphp { };
           })
         ];
       };
