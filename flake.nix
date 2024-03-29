@@ -42,6 +42,7 @@
     ];
   in {
     nixosConfigurations = let
+      unstablePkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
       nixosConfig = nixpkgs: name: config: nixpkgs.lib.nixosSystem (nixpkgs.lib.recursiveUpdate
         rec {
           system = "x86_64-linux";
@@ -75,7 +76,13 @@
           inputs.pvv-calendar-bot.overlays.x86_64-linux.default
         ];
       };
-      bekkalokk = stableNixosConfig "bekkalokk" { };
+      bekkalokk = stableNixosConfig "bekkalokk" {
+        overlays = [
+          (final: prev: {
+            heimdal = unstablePkgs.heimdal;
+          })
+        ];
+      };
       bob = stableNixosConfig "bob" {
         modules = [
           disko.nixosModules.disko
