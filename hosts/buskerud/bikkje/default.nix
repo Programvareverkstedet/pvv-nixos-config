@@ -6,7 +6,8 @@
 
     config = { config, pkgs, ... }: {
       imports = [
-        ../../modules/home-areas.nix
+        ../../../modules/home-areas.nix
+        ./services/kerberos
       ];
 
       environment.systemPackages = with pkgs; [
@@ -86,7 +87,7 @@
         };
       };
 
-      users.motd = builtins.readFile ../../misc/motd;
+      users.motd = builtins.readFile ../../../misc/motd;
 
       networking = {
         firewall.enable = true;

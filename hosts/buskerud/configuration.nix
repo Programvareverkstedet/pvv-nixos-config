@@ -5,7 +5,7 @@
     ../../base.nix
     ../../misc/metrics-exporters.nix
 
-    ./bikkje.nix
+    ./bikkje
   ];
 
   # buskerud does not support efi?
