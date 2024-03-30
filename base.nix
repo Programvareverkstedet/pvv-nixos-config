@@ -58,6 +58,7 @@
     gnupg
     htop
     nano
+    ripgrep
     rsync
     screen
     tmux
