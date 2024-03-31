@@ -155,7 +155,8 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "pvv-calendar-bot": "pvv-calendar-bot",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "ssp-theme": "ssp-theme"
       }
     },
     "sops-nix": {
@@ -177,6 +178,22 @@
         "owner": "Mic92",
         "repo": "sops-nix",
         "type": "github"
+      }
+    },
+    "ssp-theme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1509201641,
+        "narHash": "sha256-naNRyPL6PAsZKW2w1Vt9wrHT9inCL/yAFnvpy4glv+c=",
+        "ref": "refs/heads/master",
+        "rev": "bda4314030be5f81aeaf2fb1927aee582f1194d9",
+        "revCount": 5,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Drift/ssp-theme.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Drift/ssp-theme.git"
       }
     }
   },

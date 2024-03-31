@@ -21,9 +21,12 @@
     grzegorz.inputs.nixpkgs.follows = "nixpkgs-unstable";
     grzegorz-clients.url = "github:Programvareverkstedet/grzegorz-clients";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
+
+    ssp-theme.url = "git+https://git.pvv.ntnu.no/Drift/ssp-theme.git";
+    ssp-theme.flake = false;
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ssp-theme, ... }@inputs:
   let
     nixlib = nixpkgs.lib;
     systems = [
@@ -84,6 +87,9 @@
 	    };
             mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
             simplesamlphp = final.callPackage ./packages/simplesamlphp { };
+	    ssp-theme = final.runCommandLocal "ssp-theme" { } ''
+	      ln -s ${ssp-theme} $out
+	    '';
           })
         ];
       };
@@ -119,8 +125,8 @@
     packages = {
       "x86_64-linux" = let
         pkgs = nixpkgs.legacyPackages."x86_64-linux";
-      in rec {
-        default = important-machines;
+      in {
+        default = self.packages.x86_64-linux.important-machines;
         important-machines = pkgs.linkFarm "important-machines"
           (nixlib.getAttrs importantMachines self.packages.x86_64-linux);
         all-machines = pkgs.linkFarm "all-machines"
@@ -137,6 +143,10 @@
         simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
 
         mediawiki-extensions = pkgs.callPackage ./packages/mediawiki-extensions { };
+
+	ssp-theme = pkgs.runCommandLocal "ssp-theme" { } ''
+	  ln -s ${ssp-theme} $out
+	'';
       } // nixlib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
     };
