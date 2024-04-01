@@ -42,6 +42,7 @@
     ];
   in {
     nixosConfigurations = let
+      unstablePkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
       nixosConfig = nixpkgs: name: config: nixpkgs.lib.nixosSystem (nixpkgs.lib.recursiveUpdate
         rec {
           system = "x86_64-linux";
@@ -53,16 +54,14 @@
           modules = [
             ./hosts/${name}/configuration.nix
             sops-nix.nixosModules.sops
-          ];
+          ] ++ config.modules or [];
 
           pkgs = import nixpkgs {
             inherit system;
-            overlays = [
-              inputs.pvv-calendar-bot.overlays.${system}.default
-            ];
+            overlays = [ ] ++ config.overlays or [ ];
           };
         }
-        config
+        (removeAttrs config [ "modules" "overlays" ])
       );
 
       stableNixosConfig = nixosConfig nixpkgs;
@@ -70,19 +69,24 @@
     in {
       bicep = stableNixosConfig "bicep" {
         modules = [
-          ./hosts/bicep/configuration.nix
-          sops-nix.nixosModules.sops
-
           inputs.matrix-next.nixosModules.default
           inputs.pvv-calendar-bot.nixosModules.default
         ];
+        overlays = [
+          inputs.pvv-calendar-bot.overlays.x86_64-linux.default
+        ];
       };
-      bekkalokk = stableNixosConfig "bekkalokk" { };
+      bekkalokk = stableNixosConfig "bekkalokk" {
+        overlays = [
+          (final: prev: {
+            heimdal = unstablePkgs.heimdal;
+            mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
+            simplesamlphp = final.callPackage ./packages/simplesamlphp { };
+          })
+        ];
+      };
       bob = stableNixosConfig "bob" {
         modules = [
-          ./hosts/bob/configuration.nix
-          sops-nix.nixosModules.sops
-
           disko.nixosModules.disko
           { disko.devices.disk.disk1.device = "/dev/vda"; }
         ];
@@ -93,28 +97,17 @@
 
       brzeczyszczykiewicz = stableNixosConfig "brzeczyszczykiewicz" {
         modules = [
-          ./hosts/brzeczyszczykiewicz/configuration.nix
-          sops-nix.nixosModules.sops
-
           inputs.grzegorz.nixosModules.grzegorz-kiosk
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
         ];
       };
       georg = stableNixosConfig "georg" {
         modules = [
-          ./hosts/georg/configuration.nix
-          sops-nix.nixosModules.sops
-
           inputs.grzegorz.nixosModules.grzegorz-kiosk
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
         ];
       };
-      buskerud = stableNixosConfig "buskerud" {
-        modules = [
-          ./hosts/buskerud/configuration.nix
-          sops-nix.nixosModules.sops
-        ];
-      };
+      buskerud = stableNixosConfig "buskerud" { };
     };
 
     devShells = forAllSystems (system: {
@@ -130,6 +123,10 @@
           (nixlib.getAttrs importantMachines self.packages.x86_64-linux);
         all-machines = pkgs.linkFarm "all-machines"
           (nixlib.getAttrs allMachines self.packages.x86_64-linux);
+
+        simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
+
+        mediawiki-extensions = pkgs.callPackage ./packages/mediawiki-extensions { };
       } // nixlib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
     };

@@ -3,6 +3,7 @@
 {
   imports = [
     ./users
+    ./modules/snakeoil-certs.nix
   ];
 
   networking.domain = "pvv.ntnu.no";
@@ -83,5 +84,21 @@
     settings.PermitRootLogin = "yes";
   };
 
+  # nginx return 444 for all nonexistent virtualhosts
 
+  systemd.services.nginx.after = [ "generate-snakeoil-certs.service" ];
+
+  environment.snakeoil-certs = lib.mkIf (config.services.nginx.enable) {
+    "/etc/certs/nginx" = {
+      owner = "nginx";
+      group = "nginx";
+    };
+  };
+
+  services.nginx.virtualHosts."_" = lib.mkIf (config.services.nginx.enable) {
+    sslCertificate = "/etc/certs/nginx.crt";
+    sslCertificateKey = "/etc/certs/nginx.key";
+    addSSL = true;
+    extraConfig = "return 444;";
+  };
 }

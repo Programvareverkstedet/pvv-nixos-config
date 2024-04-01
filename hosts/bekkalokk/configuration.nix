@@ -12,8 +12,10 @@
     # ./services/website.nix
     ./services/nginx
     ./services/gitea/default.nix
+    ./services/kerberos
     ./services/webmail
-    # ./services/mediawiki.nix
+    ./services/mediawiki
+    ./services/idp-simplesamlphp
   ];
 
   sops.defaultSopsFile = ../../secrets/bekkalokk/bekkalokk.yaml;
