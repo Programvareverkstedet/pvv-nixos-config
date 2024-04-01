@@ -4,6 +4,7 @@
   imports = [
     ./users
     ./modules/snakeoil-certs.nix
+    ./modules/debug-locations.nix
   ];
 
   networking.domain = "pvv.ntnu.no";
