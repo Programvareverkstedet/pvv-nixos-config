@@ -17,6 +17,10 @@ creation_rules:
     key_groups:
     - age:
       - *host_jokum
+      - *host_ildkule
+      - *host_bekkalokk
+      - *host_bicep
+
       - *user_danio
       - *user_felixalb
       - *user_eirikwit
