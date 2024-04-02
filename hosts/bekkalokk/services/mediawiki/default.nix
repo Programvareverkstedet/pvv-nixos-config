@@ -64,12 +64,10 @@ in {
       name = "mediawiki";
     };
 
-    # Host through nginx
-    webserver = "none";
-    poolConfig = let
-      listenUser = config.services.nginx.user;
-      listenGroup = config.services.nginx.group;
-    in {
+    webserver = "nginx";
+    nginx.hostName = "wiki.pvv.ntnu.no";
+
+    poolConfig = {
       inherit user group;
       "pm" = "dynamic";
       "pm.max_children" = 32;
@@ -77,8 +75,6 @@ in {
       "pm.start_servers" = 2;
       "pm.min_spare_servers" = 2;
       "pm.max_spare_servers" = 4;
-      "listen.owner" = listenUser;
-      "listen.group" = listenGroup;
 
       "catch_workers_output" = true;
       "php_admin_flag[log_errors]" = true;
@@ -108,9 +104,7 @@ in {
       $wgGroupPermissions['*']['edit'] = false;
       $wgGroupPermissions['*']['read'] = true;
 
-      # Misc. URL rules
-      $wgUsePathInfo = true;
-      $wgScriptExtension = ".php";
+      # Allow subdirectories in article URLs
       $wgNamespacesWithSubpages[NS_MAIN] = true;
 
       # Styling
@@ -159,20 +153,9 @@ in {
   services.nginx.virtualHosts."wiki.pvv.ntnu.no" = {
     forceSSL = true;
     enableACME = true;
-    root = "${config.services.mediawiki.finalPackage}/share/mediawiki";
     locations =  {
-      "/" = {
-	index = "index.php";
-      };
-
-      "~ /(.+\\.php)" = {
-        extraConfig = ''
-          fastcgi_split_path_info ^(.+\.php)(/.+)$;
-          fastcgi_index index.php;
-          fastcgi_pass unix:${config.services.phpfpm.pools.mediawiki.socket};
-          include ${pkgs.nginx}/conf/fastcgi_params;
-          include ${pkgs.nginx}/conf/fastcgi.conf;
-        '';
+      "= /wiki/Main_Page" = lib.mkForce {
+        return = "301 /wiki/Programvareverkstedet";
       };
 
       # based on https://simplesamlphp.org/docs/stable/simplesamlphp-install.html#configuring-nginx
@@ -194,23 +177,22 @@ in {
         '';
       };
 
-      "/images/".alias = "${config.services.mediawiki.uploadsDir}/";
-
       "= /PNG/PVV-logo.svg".alias = ../../../../assets/logo_blue_regular.svg;
       "= /PNG/PVV-logo.png".alias = ../../../../assets/logo_blue_regular.png;
       "= /favicon.ico".alias = pkgs.runCommandLocal "mediawiki-favicon.ico" {
         buildInputs = with pkgs; [ imagemagick ];
       } ''
         convert \
-	  -resize x64 \
-	  -gravity center \
-	  -crop 64x64+0+0 \
-	  ${../../../../assets/logo_blue_regular.png} \
-	  -flatten \
-	  -colors 256 \
-	  -background transparent \
-	  $out
+          -resize x64 \
+          -gravity center \
+          -crop 64x64+0+0 \
+          ${../../../../assets/logo_blue_regular.png} \
+          -flatten \
+          -colors 256 \
+          -background transparent \
+          $out
       '';
     };
+
   };
 }
