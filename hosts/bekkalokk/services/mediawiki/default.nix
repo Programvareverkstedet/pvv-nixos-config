@@ -22,7 +22,7 @@
           --replace '$SAML_ADMIN_NAME' '"Drift"' \
           --replace '$SAML_ADMIN_EMAIL' '"drift@pvv.ntnu.no"' \
           --replace '$SAML_ADMIN_PASSWORD' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/admin_password".path}")' \
-          --replace '$SAML_TRUSTED_DOMAINS' 'array( "wiki2.pvv.ntnu.no" )' \
+          --replace '$SAML_TRUSTED_DOMAINS' 'array( "wiki.pvv.ntnu.no" )' \
           --replace '$SAML_DATABASE_DSN' '"pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=mediawiki_simplesamlphp"' \
           --replace '$SAML_DATABASE_USERNAME' '"mediawiki_simplesamlphp"' \
           --replace '$SAML_DATABASE_PASSWORD' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/postgres_password".path}")' \
@@ -31,7 +31,7 @@
     };
   };
 in {
-  services.idp.sp-remote-metadata = [ "https://wiki2.pvv.ntnu.no/simplesaml/" ];
+  services.idp.sp-remote-metadata = [ "https://wiki.pvv.ntnu.no/simplesaml/" ];
 
   sops.secrets = lib.pipe [
     "mediawiki/password"
@@ -93,7 +93,7 @@ in {
     };
 
     extraConfig = ''
-      $wgServer = "https://wiki2.pvv.ntnu.no";
+      $wgServer = "https://wiki.pvv.ntnu.no";
       $wgLocaltimezone = "Europe/Oslo";
 
       # Only allow login through SSO
@@ -156,7 +156,7 @@ in {
 
   users.groups.mediawiki.members = [ "nginx" ];
 
-  services.nginx.virtualHosts."wiki2.pvv.ntnu.no" = {
+  services.nginx.virtualHosts."wiki.pvv.ntnu.no" = {
     forceSSL = true;
     enableACME = true;
     root = "${config.services.mediawiki.finalPackage}/share/mediawiki";
