@@ -43,6 +43,7 @@ in {
     (map (key: lib.nameValuePair key {
       owner = user;
       group = group;
+      restartUnits = [ "phpfpm-mediawiki.service" ];
     }))
     lib.listToAttrs
   ];
