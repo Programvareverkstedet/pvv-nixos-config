@@ -4,4 +4,5 @@ lib.makeScope pkgs.newScope (self: {
   PluggableAuth = self.callPackage ./pluggable-auth { };
   SimpleSAMLphp = self.callPackage ./simple-saml-php { };
   UserMerge = self.callPackage ./user-merge { };
+  VisualEditor = self.callPackage ./visual-editor { };
 })
