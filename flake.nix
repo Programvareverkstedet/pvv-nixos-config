@@ -17,6 +17,9 @@
     matrix-next.url = "github:dali99/nixos-matrix-modules";
     matrix-next.inputs.nixpkgs.follows = "nixpkgs";
 
+    nix-gitea-themes.url = "git+https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git";
+    nix-gitea-themes.inputs.nixpkgs.follows = "nixpkgs";
+
     grzegorz.url = "github:Programvareverkstedet/grzegorz";
     grzegorz.inputs.nixpkgs.follows = "nixpkgs-unstable";
     grzegorz-clients.url = "github:Programvareverkstedet/grzegorz-clients";
@@ -83,6 +86,10 @@
             mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
             simplesamlphp = final.callPackage ./packages/simplesamlphp { };
           })
+          inputs.nix-gitea-themes.overlays.default
+        ];
+        modules = [
+          inputs.nix-gitea-themes.nixosModules.default
         ];
       };
       bob = stableNixosConfig "bob" {

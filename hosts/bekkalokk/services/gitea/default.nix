@@ -52,6 +52,8 @@ in {
     };
   };
 
+  services.gitea-themes.monokai = pkgs.gitea-theme-monokai;
+
   environment.systemPackages = [ cfg.package ];
 
   services.nginx.virtualHosts."${domain}" = {

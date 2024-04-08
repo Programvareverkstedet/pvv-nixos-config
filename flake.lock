@@ -80,6 +80,26 @@
         "type": "github"
       }
     },
+    "nix-gitea-themes": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1712620227,
+        "narHash": "sha256-+NzOUQ2N/g29365iTmllsPGK15jcFlo4WrxxYGmJqFA=",
+        "ref": "refs/heads/main",
+        "rev": "d4a5263cfa4f43a460dce59d50094f5321ed531e",
+        "revCount": 4,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1710248792,
@@ -152,6 +172,7 @@
         "grzegorz": "grzegorz",
         "grzegorz-clients": "grzegorz-clients",
         "matrix-next": "matrix-next",
+        "nix-gitea-themes": "nix-gitea-themes",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "pvv-calendar-bot": "pvv-calendar-bot",
