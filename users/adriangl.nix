@@ -14,6 +14,7 @@
       htop
       ripgrep
       vim
+      foot.terminfo
     ];
 
     openssh.authorizedKeys.keys = [
