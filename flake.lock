@@ -87,11 +87,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1712620227,
-        "narHash": "sha256-+NzOUQ2N/g29365iTmllsPGK15jcFlo4WrxxYGmJqFA=",
+        "lastModified": 1712621190,
+        "narHash": "sha256-O8xtza+wPplTmSm0EAPk8Ud9sJ6huVNY6jU21FYHCp4=",
         "ref": "refs/heads/main",
-        "rev": "d4a5263cfa4f43a460dce59d50094f5321ed531e",
-        "revCount": 4,
+        "rev": "812c1fc4061d534a8c7d35271ce32b6c76a9f385",
+        "revCount": 5,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git"
       },
