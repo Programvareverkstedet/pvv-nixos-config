@@ -22,7 +22,7 @@ let
       # openssl req -newkey rsa:4096 -new -x509 -days 365 -nodes -out idp.crt -keyout idp.pem
       "metadata/saml20-idp-hosted.php" = pkgs.writeText "saml20-idp-remote.php" ''
         <?php
-	  $metadata['https://idp2.pvv.ntnu.no/'] = array(
+	  $metadata['https://idp.pvv.ntnu.no/'] = array(
 	    'host' => '__DEFAULT__',
 	    'privatekey' => '${config.sops.secrets."idp/privatekey".path}',
 	    'certificate' => '${./idp.crt}',
@@ -89,7 +89,7 @@ let
           --replace '$SAML_ADMIN_NAME' '"Drift"' \
           --replace '$SAML_ADMIN_EMAIL' '"drift@pvv.ntnu.no"' \
           --replace '$SAML_ADMIN_PASSWORD' 'file_get_contents("${config.sops.secrets."idp/admin_password".path}")' \
-          --replace '$SAML_TRUSTED_DOMAINS' 'array( "idp2.pvv.ntnu.no" )' \
+          --replace '$SAML_TRUSTED_DOMAINS' 'array( "idp.pvv.ntnu.no" )' \
           --replace '$SAML_DATABASE_DSN' '"pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=idp"' \
           --replace '$SAML_DATABASE_USERNAME' '"idp"' \
           --replace '$SAML_DATABASE_PASSWORD' 'file_get_contents("${config.sops.secrets."idp/postgres_password".path}")' \
@@ -177,7 +177,7 @@ in
       };
     };
 
-    services.nginx.virtualHosts."idp2.pvv.ntnu.no" = {
+    services.nginx.virtualHosts."idp.pvv.ntnu.no" = {
       forceSSL = true;
       enableACME = true;
       kTLS = true;

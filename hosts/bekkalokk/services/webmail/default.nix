@@ -4,12 +4,12 @@
     ./roundcube.nix
   ];
 
-  services.nginx.virtualHosts."webmail2.pvv.ntnu.no" = {
+  services.nginx.virtualHosts."webmail.pvv.ntnu.no" = {
     forceSSL = true;
     enableACME = true;
     kTLS = true;
     locations."= /" = {
-      return = "301 https://www.pvv.ntnu.no/mail/";
+      return = "302 https://webmail.pvv.ntnu.no/roundcube";
     };
   };
 }

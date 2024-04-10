@@ -35,14 +35,14 @@ in {
               'default-sp' => array(
                   'saml:SP',
                   'entityID' => 'https://${cfg.domainName}/simplesaml/',
-                  'idp' => 'https://idp2.pvv.ntnu.no/',
+                  'idp' => 'https://idp.pvv.ntnu.no/',
               ),
           );
 	'';
       };
     };
 
-    domainName = "www2.pvv.ntnu.no";
+    domainName = "www.pvv.ntnu.no";
 
     settings = let
       includeFromSops = path: format.lib.mkRaw "file_get_contents('${config.sops.secrets."nettsiden/${path}".path}')";
