@@ -35,6 +35,7 @@ in
   services.nginx.virtualHosts."roundcubeplaceholder.example.com" = lib.mkForce { };
 
   services.nginx.virtualHosts.${domain} = {
+    kTLS = true;
     locations."/roundcube" = {
       tryFiles = "$uri $uri/ =404";
       index = "index.php";

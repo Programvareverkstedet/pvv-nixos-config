@@ -88,17 +88,44 @@
 
   systemd.services.nginx.after = [ "generate-snakeoil-certs.service" ];
 
-  environment.snakeoil-certs = lib.mkIf (config.services.nginx.enable) {
+  environment.snakeoil-certs = lib.mkIf config.services.nginx.enable {
     "/etc/certs/nginx" = {
       owner = "nginx";
       group = "nginx";
     };
   };
 
-  services.nginx.virtualHosts."_" = lib.mkIf (config.services.nginx.enable) {
+  services.nginx.virtualHosts."_" = lib.mkIf config.services.nginx.enable {
     sslCertificate = "/etc/certs/nginx.crt";
     sslCertificateKey = "/etc/certs/nginx.key";
     addSSL = true;
     extraConfig = "return 444;";
+
+    recommendedTlsSettings = true;
+    recommendedProxySettings = true;
+    recommendedOptimisation = true;
+    recommendedGzipSettings = true;
+
+    config = ''
+      pcre_jit on;
+      worker_processes auto;
+      worker_rlimit_nofile 100000;
+    '';
+    eventsConfig = ''
+      worker_connections 2048;
+      use epoll;
+      multi_accept on;
+    '';
+  };
+
+  systemd.services.nginx.serviceConfig = {
+    LimitNOFILE = 65536;
+  };
+
+  networking.firewall.allowedTCPPorts = lib.mkIf config.services.nginx.enable [ 80 443 ];
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "drift@pvv.ntnu.no";
   };
 }

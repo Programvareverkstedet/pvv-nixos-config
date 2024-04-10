@@ -5,6 +5,7 @@ in {
   services.nginx.virtualHosts."chat.pvv.ntnu.no" = {
     enableACME = true;
     forceSSL = true;
+    kTLS = true;
 
     root = pkgs.element-web.override {
       conf = {

@@ -24,15 +24,12 @@ in {
   services.grzegorz-webui.hostName = "${config.networking.fqdn}";
   services.grzegorz-webui.apiBase = "http://${toString grg.listenAddr}:${toString grg.listenPort}/api";
 
-  security.acme.acceptTerms = true;
-  security.acme.defaults.email = "pederbs@pvv.ntnu.no";
-
   services.nginx.enable = true;
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   services.nginx.virtualHosts."${config.networking.fqdn}" = {
     forceSSL = true;
     enableACME = true;
+    kTLS = true;
     serverAliases = [
       "${config.networking.hostName}.pvv.org"
     ];
