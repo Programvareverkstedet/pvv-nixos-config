@@ -91,6 +91,7 @@ in {
   services.nginx.virtualHosts.${cfg.settings.server.domain} = {
     enableACME = true;
     forceSSL = true;
+    kTLS = true;
     locations = {
       "/" = {
         proxyPass = "http://127.0.0.1:${toString cfg.settings.server.http_port}";

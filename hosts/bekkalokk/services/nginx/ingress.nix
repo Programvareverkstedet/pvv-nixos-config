@@ -5,6 +5,7 @@
       serverAliases = [ "www2.pvv.org" "pvv.ntnu.no" "pvv.org" ];
       addSSL = true;
       enableACME = true;
+      kTLS = true;
 
       locations = {
         # Proxy home directories

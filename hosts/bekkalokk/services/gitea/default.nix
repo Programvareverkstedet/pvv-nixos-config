@@ -59,9 +59,9 @@ in {
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
     enableACME = true;
+    kTLS = true;
     locations."/" = {
       proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
-      recommendedProxySettings = true;
       extraConfig = ''
         client_max_body_size 512M;
       '';

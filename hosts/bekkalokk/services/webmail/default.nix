@@ -7,7 +7,7 @@
   services.nginx.virtualHosts."webmail2.pvv.ntnu.no" = {
     forceSSL = true;
     enableACME = true;
-    #locations."/" = lib.mkForce { };
+    kTLS = true;
     locations."= /" = {
       return = "301 https://www.pvv.ntnu.no/mail/";
     };

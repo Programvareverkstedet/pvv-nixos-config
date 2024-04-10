@@ -218,6 +218,9 @@ in {
   
   services.nginx.virtualHosts."matrix.pvv.ntnu.no" = lib.mkMerge [
   ({
+    kTLS = true;
+  })
+  ({
     locations."/.well-known/matrix/server" = {
       return = ''
         200 '{"m.server": "matrix.pvv.ntnu.no:443"}'

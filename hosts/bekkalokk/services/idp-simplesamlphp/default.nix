@@ -180,6 +180,7 @@ in
     services.nginx.virtualHosts."idp2.pvv.ntnu.no" = {
       forceSSL = true;
       enableACME = true;
+      kTLS = true;
       root = "${package}/share/php/simplesamlphp/public";
       locations =  {
         # based on https://simplesamlphp.org/docs/stable/simplesamlphp-install.html#configuring-nginx

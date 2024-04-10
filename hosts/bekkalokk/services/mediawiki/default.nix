@@ -152,6 +152,7 @@ in {
   users.groups.mediawiki.members = [ "nginx" ];
 
   services.nginx.virtualHosts."wiki.pvv.ntnu.no" = {
+    kTLS = true;
     forceSSL = true;
     enableACME = true;
     locations =  {
