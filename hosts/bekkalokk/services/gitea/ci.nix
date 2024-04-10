@@ -27,4 +27,5 @@ lib.mkMerge [
   (mkRunner "alpha")
   (mkRunner "beta")
   (mkRunner "epsilon")
+  { virtualisation.podman.enable = true; }
 ]
