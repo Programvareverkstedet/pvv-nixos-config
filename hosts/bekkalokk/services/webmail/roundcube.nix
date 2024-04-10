@@ -3,7 +3,7 @@
 with lib;
 let
   cfg = config.services.roundcube;
-  domain = "webmail2.pvv.ntnu.no";
+  domain = "webmail.pvv.ntnu.no";
 in 
 {
   services.roundcube = {

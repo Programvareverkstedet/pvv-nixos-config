@@ -8,9 +8,8 @@
 
     #./services/keycloak.nix
 
-    # TODO: set up authentication for the following:
     ./services/website
-    ./services/nginx
+    ./services/nginx.nix
     ./services/gitea/default.nix
     ./services/kerberos
     ./services/webmail
@@ -25,8 +24,6 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  virtualisation.podman.enable = true;
 
   networking.hostName = "bekkalokk";
 
