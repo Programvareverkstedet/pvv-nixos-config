@@ -1,8 +1,8 @@
 { config, lib, ... }:
 {
   services.nginx.virtualHosts = {
-    "www2.pvv.ntnu.no" = {
-      serverAliases = [ "www2.pvv.org" "pvv.ntnu.no" "pvv.org" ];
+    "pvv.ntnu.no" = {
+      serverAliases = [ "pvv.org" ];
       addSSL = true;
       enableACME = true;
       kTLS = true;
