@@ -11,7 +11,7 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    pvv-nettsiden.url = "git+https://git.pvv.ntnu.no/Projects/nettsiden.git?ref=nixify-ng";
+    pvv-nettsiden.url = "git+https://git.pvv.ntnu.no/Projects/nettsiden.git";
     pvv-nettsiden.inputs.nixpkgs.follows = "nixpkgs";
 
     pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git";
