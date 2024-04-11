@@ -66,20 +66,7 @@
             inherit system;
             overlays = [
               (import ./overlays/nginx-test.nix
-                # List of all the acme certs from all hosts
-                # Would be nice to dynamically get this per host
-                [
-                  "ildkule.pvv.ntnu.no"
-                  "git.pvv.ntnu.no"
-                  "wiki.pvv.ntnu.no"
-                  "webmail.pvv.ntnu.no"
-                  "postgres.pvv.ntnu.no"
-                  "idp.pvv.ntnu.no"
-                  "matrix.pvv.ntnu.no"
-                  "chat.pvv.ntnu.no"
-                  "brzeczyszczykiewicz.pvv.ntnu.no"
-                  "georg.pvv.ntnu.no"
-                ]
+                (builtins.attrNames self.nixosConfigurations.${name}.config.security.acme.certs)
               )
             ] ++ config.overlays or [ ];
           };
