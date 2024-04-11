@@ -76,7 +76,7 @@ in {
   services.nginx.virtualHosts.${cfg.domainName} = {
     serverAliases = [
       "pvv.ntnu.no"
-      "www.pvv.ntnu.org"
+      "www.pvv.org"
       "pvv.org"
     ];
 
