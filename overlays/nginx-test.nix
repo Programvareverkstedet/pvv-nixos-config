@@ -22,7 +22,7 @@ acme-certs: final: prev:
         ${lib.concatMapStrings (name: "--ro-bind \"${crt}\" \"/var/lib/acme/${name}/fullchain.pem\" \\") acme-certs}
         ${lib.concatMapStrings (name: "--ro-bind \"${key}\" \"/var/lib/acme/${name}/key.pem\" \\") acme-certs}
         ${lib.concatMapStrings (name: "--ro-bind \"${crt}\" \"/var/lib/acme/${name}/chain.pem\" \\") acme-certs}
-        ${lib.getExe final.nginx} -t -c "$out" |& grep "syntax is ok"
+        ${lib.getExe' final.nginx "nginx"} -t -c "$out" |& grep "syntax is ok"
     '';
   };
 }
