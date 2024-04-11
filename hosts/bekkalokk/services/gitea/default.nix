@@ -45,6 +45,7 @@ in {
         DISABLE_GRAVATAR = true;
         ENABLE_FEDERATED_AVATAR = false;
       };
+      metrics.ENABLED = true;
       actions.ENABLED = true;
     };
   };
@@ -59,6 +60,15 @@ in {
       proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
       extraConfig = ''
         client_max_body_size 512M;
+      '';
+    };
+
+    locations."/metrics" = {
+      proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+      extraConfig = ''
+        allow ${values.hosts.ildkule.ipv4};
+        allow ${values.hosts.ildkule.ipv6};
+	deny all;
       '';
     };
   };
