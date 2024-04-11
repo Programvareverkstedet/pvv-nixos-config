@@ -82,7 +82,7 @@ in {
 
     locations = {
       # Proxy home directories
-      "/~" = {
+      "^~ /~" = {
         extraConfig = ''
           proxy_redirect off;
           proxy_pass https://tom.pvv.ntnu.no;
@@ -94,7 +94,7 @@ in {
       };
 
       # Redirect the old webmail/wiki paths from spikkjeposche
-      "/webmail".return = "301 https://webmail.pvv.ntnu.no";
+      "^~ /webmail".return = "301 https://webmail.pvv.ntnu.no";
       "~ /pvv/([^\\n\\r]*)".return = "301 https://wiki.pvv.ntnu.no/wiki/$1";
       "= /pvv".return = "301 https://wiki.pvv.ntnu.no/";
 
@@ -115,7 +115,7 @@ in {
       # Proxy the matrix well-known files
       # Host has be set before proxy_pass
       # The header must be set so nginx on the other side routes it to the right place
-      "/.well-known/matrix/" = {
+      "^~ /.well-known/matrix/" = {
         extraConfig = ''
           proxy_set_header Host matrix.pvv.ntnu.no;
           proxy_pass https://matrix.pvv.ntnu.no/.well-known/matrix/;

@@ -198,6 +198,10 @@ in
             }
           '';
         };
+        "^~ /simplesaml/".extraConfig = ''
+	  rewrite ^/simplesaml/(.*)$ /$1 redirect;
+	  return 404;
+	'';
       };
     };
   };
