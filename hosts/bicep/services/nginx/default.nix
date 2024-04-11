@@ -11,15 +11,5 @@
       "127.0.0.2"
       "[::1]"
     ];
-
-    appendConfig = ''
-      worker_processes 8;
-      worker_rlimit_nofile 8192;
-    '';
-
-    eventsConfig = ''
-      multi_accept on;
-      worker_connections 4096;
-    '';
   };
 }

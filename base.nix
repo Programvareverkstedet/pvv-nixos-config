@@ -101,19 +101,19 @@
     recommendedOptimisation = true;
     recommendedGzipSettings = true;
 
-    appendConfig = lib.mkIf (!config.services.matrix-synapse-next.enable or false) ''
+    appendConfig = ''
       pcre_jit on;
       worker_processes auto;
       worker_rlimit_nofile 100000;
     '';
-    eventsConfig = lib.mkIf (!config.services.matrix-synapse-next.enable or false) ''
+    eventsConfig = ''
       worker_connections 2048;
       use epoll;
       multi_accept on;
     '';
   };
 
-  systemd.services.nginx.serviceConfig = lib.mkIf (!config.services.matrix-synapse-next.enable or false) {
+  systemd.services.nginx.serviceConfig = lib.mkIf config.services.nginx.enable {
     LimitNOFILE = 65536;
   };
 
