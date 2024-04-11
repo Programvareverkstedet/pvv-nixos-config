@@ -101,16 +101,20 @@
     recommendedOptimisation = true;
     recommendedGzipSettings = true;
 
-    appendConfig = ''
+    appendConfig = lib.mkIf (!config.services.matrix-synapse-next.enable or false) ''
       pcre_jit on;
       worker_processes auto;
       worker_rlimit_nofile 100000;
     '';
-    eventsConfig = ''
+    eventsConfig = lib.mkIf (!config.services.matrix-synapse-next.enable or false) ''
       worker_connections 2048;
       use epoll;
       multi_accept on;
     '';
+  };
+
+  systemd.services.nginx.serviceConfig = lib.mkIf (!config.services.matrix-synapse-next.enable or false) {
+    LimitNOFILE = 65536;
   };
 
   services.nginx.virtualHosts."_" = lib.mkIf config.services.nginx.enable {
@@ -118,10 +122,6 @@
     sslCertificateKey = "/etc/certs/nginx.key";
     addSSL = true;
     extraConfig = "return 444;";
-  };
-
-  systemd.services.nginx.serviceConfig = {
-    LimitNOFILE = 65536;
   };
 
   networking.firewall.allowedTCPPorts = lib.mkIf config.services.nginx.enable [ 80 443 ];
