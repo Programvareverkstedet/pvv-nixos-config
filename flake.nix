@@ -64,7 +64,9 @@
 
           pkgs = import nixpkgs {
             inherit system;
-            overlays = [ ] ++ config.overlays or [ ];
+            overlays = [
+              (import ./overlays/nginx-test.nix)
+            ] ++ config.overlays or [ ];
           };
         }
         (removeAttrs config [ "modules" "overlays" ])
