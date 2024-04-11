@@ -8,8 +8,11 @@
     forceSSL = true;
     enableACME = true;
     kTLS = true;
-    locations."= /" = {
-      return = "302 https://webmail.pvv.ntnu.no/roundcube";
+    locations = {
+      "= /".return = "302 https://webmail.pvv.ntnu.no/roundcube";
+      "/afterlogic_lite".return = "302 https://webmail.pvv.ntnu.no/roundcube";
+      "/squirrelmail".return = "302 https://webmail.pvv.ntnu.no/roundcube";
+      "/rainloop".return = "302 https://webmail.pvv.ntnu.no/roundcube";
     };
   };
 }
