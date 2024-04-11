@@ -35,7 +35,7 @@ in {
         ROOT_URL = "https://${domain}/";
         PROTOCOL = "http+unix";
         SSH_PORT = sshPort;
-	      START_SSH_SERVER = true;
+        START_SSH_SERVER = true;
       };
       indexer.REPO_INDEXER_ENABLED = true;
       service.DISABLE_REGISTRATION = true;
@@ -46,11 +46,8 @@ in {
         ENABLE_FEDERATED_AVATAR = false;
       };
       actions.ENABLED = true;
-      "ui.meta".DESCRIPTION = "Bokstavelig talt programvareverkstedet";
     };
   };
-
-  services.gitea-themes.monokai = pkgs.gitea-theme-monokai;
 
   environment.systemPackages = [ cfg.package ];
 
@@ -68,12 +65,28 @@ in {
 
   networking.firewall.allowedTCPPorts = [ sshPort ];
 
-  system.activationScripts.linkGiteaLogo.text = let
-    logo-svg = ../../../../assets/logo_blue_regular.svg;
-    logo-png = ../../../../assets/logo_blue_regular.png;
-  in ''
-    install -Dm444 ${logo-svg} ${cfg.stateDir}/custom/public/img/logo.svg
-    install -Dm444 ${logo-png} ${cfg.stateDir}/custom/public/img/logo.png
-    install -Dm444 ${./loading.apng} ${cfg.stateDir}/custom/public/img/loading.png
-  '';
+  # Extra customization
+
+  services.gitea-themes.monokai = pkgs.gitea-theme-monokai;
+
+  systemd.services.install-gitea-customization = {
+    description = "Install extra customization in gitea's CUSTOM_DIR";
+    wantedBy = [ "gitea.service" ];
+    requiredBy = [ "gitea.service" ];
+
+    serviceConfig =  {
+      Type = "oneshot";
+      User = cfg.user;
+      Group = cfg.group;
+    };
+
+    script = let
+      logo-svg = ../../../../assets/logo_blue_regular.svg;
+      logo-png = ../../../../assets/logo_blue_regular.png;
+    in ''
+      install -Dm444 ${logo-svg} ${cfg.customDir}/public/img/logo.svg
+      install -Dm444 ${logo-png} ${cfg.customDir}/public/img/logo.png
+      install -Dm444 ${./loading.apng} ${cfg.customDir}/public/img/loading.png
+    '';
+  };
 }
