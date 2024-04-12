@@ -27,11 +27,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1696346665,
-        "narHash": "sha256-J6Tf6a/zhFZ8SereluHLrvgPsIVm2CGHHA8wrbhZB3Y=",
+        "lastModified": 1712875951,
+        "narHash": "sha256-4kcRd2Q2XM4r+U2zp+LADjrzazKpWvs0WrMKPktEEkc=",
         "owner": "Programvareverkstedet",
         "repo": "grzegorz",
-        "rev": "9b9c3ac7d408ac7c6d67544b201e6b169afacb03",
+        "rev": "9eaba26b1671e8810cb135997c867ac3550e685a",
         "type": "github"
       },
       "original": {
