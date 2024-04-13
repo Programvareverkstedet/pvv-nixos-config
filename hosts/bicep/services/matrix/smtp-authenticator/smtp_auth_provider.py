@@ -7,6 +7,9 @@ from synapse import module_api
 
 import re
 
+import logging
+logger = logging.getLogger(__name__)
+
 class SMTPAuthProvider:
     def __init__(self, config: dict, api: module_api):
         self.api = api
@@ -43,8 +46,13 @@ class SMTPAuthProvider:
 
         if result == True:
             userid = self.api.get_qualified_user_id(username)
-            if not self.api.check_user_exists(userid):
-                self.api.register_user(username)
+
+            userid = await self.api.check_user_exists(userid)
+            if not userid:
+                logger.info(f"user did not exist, registering {username}")
+                userid = await self.api.register_user(username)
+                logger.info(f"registered userid: {userid}")
             return (userid, None)
         else:
+            logger.info("returning None")
             return None
