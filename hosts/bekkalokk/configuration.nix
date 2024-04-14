@@ -6,8 +6,6 @@
     ../../base.nix
     ../../misc/metrics-exporters.nix
 
-    #./services/keycloak.nix
-
     ./services/website
     ./services/nginx.nix
     ./services/gitea/default.nix
