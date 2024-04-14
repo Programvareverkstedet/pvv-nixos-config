@@ -6,7 +6,7 @@ let
 in
 fetchzip {
   name = "mediawiki-pluggable-auth-source";
-  url = "https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/${project_name}/+archive/${commit}.tar.gz";
+  url = "https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/${project-name}/+archive/${commit}.tar.gz";
   hash = "sha256-mLepavgeaNUGYxrrCKVpybGO2ecjc3B5IU8q+gZTx2U=";
   stripRoot = false;
   passthru = { inherit project-name tracking-branch; };
