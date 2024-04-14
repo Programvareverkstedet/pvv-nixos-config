@@ -140,7 +140,7 @@
 
         simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
 
-        # mediawiki-extensions = pkgs.callPackage ./packages/mediawiki-extensions { };
+        mediawiki-extensions = pkgs.callPackage ./packages/mediawiki-extensions { };
       } // nixlib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
     };
