@@ -18,7 +18,12 @@ in {
     restartUnits = [ "phpfpm-pvv-nettsiden.service" ];
   });
 
-  services.idp.sp-remote-metadata = [ "https://${cfg.domainName}/simplesaml/" ];
+  services.idp.sp-remote-metadata = [
+    "https://www.pvv.ntnu.no/simplesaml/"
+    "https://pvv.ntnu.no/simplesaml/"
+    "https://www.pvv.org/simplesaml/" 
+    "https://pvv.org/simplesaml/" 
+  ];
 
   services.pvv-nettsiden = {
     enable = true;
