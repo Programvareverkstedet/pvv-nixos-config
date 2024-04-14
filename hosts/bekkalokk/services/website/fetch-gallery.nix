@@ -34,8 +34,8 @@ in {
       # Delete files and directories that exists in the gallery that don't exist in the tarball
       filesToRemove=$(uniq -u <(sort <(find . -not -path "./.thumbnails*") <(tar -tf ${transferDir}/gallery.tar.gz | sed 's|/$||')))
       while IFS= read fname; do
-        rm -f $fname ||:
-        rm -f .thumbnails/$fname.png ||:
+        rm -f "$fname" ||:
+        rm -f ".thumbnails/$fname.png" ||:
       done <<< "$filesToRemove"
 
       find . -type d -empty -delete
@@ -44,11 +44,17 @@ in {
       images=$(find . -type f -not -path "./.thumbnails*")
 
       while IFS= read fname; do
-        [ -f ".thumbnails/$fname.png" ] && continue ||:
+        # Skip this file if an up-to-date thumbnail already exists
+        if [ -f ".thumbnails/$fname.png" ] && \
+           [ "$(date -R -r "$fname")" == "$(date -R -r ".thumbnails/$fname.png")" ]
+        then
+          continue
+        fi
 
         echo "Creating thumbnail for $fname"
         mkdir -p $(dirname ".thumbnails/$fname")
-        convert -define jpeg:size=200x200 "$fname" -thumbnail 500 -auto-orient ".thumbnails/$fname.png" ||:
+        convert -define jpeg:size=200x200 "$fname" -thumbnail 300 -auto-orient ".thumbnails/$fname.png" ||:
+	touch -m -d "$(date -R -r "$fname")" ".thumbnails/$fname.png"
       done <<< "$images"
     '';
 
