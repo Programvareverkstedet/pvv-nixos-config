@@ -7,7 +7,6 @@ in {
   in {
     "keys/grafana/secret_key" = { inherit owner group; };
     "keys/grafana/admin_password" = { inherit owner group; };
-    "keys/postgres/grafana" = { inherit owner group; };
   };
 
   services.grafana = {
@@ -18,7 +17,7 @@ in {
       secretFile = path: "$__file{${path}}";
     in {
       server = {
-        domain = "ildkule.pvv.ntnu.no";
+        domain = "grafana.pvv.ntnu.no";
         http_port = 2342;
         http_addr = "127.0.0.1";
       };
@@ -26,13 +25,6 @@ in {
       security = {
         secret_key = secretFile config.sops.secrets."keys/grafana/secret_key".path;
         admin_password = secretFile config.sops.secrets."keys/grafana/admin_password".path;
-      };
-
-      database = {
-        type = "postgres";
-        user = "grafana";
-        host = "${values.hosts.bicep.ipv4}:5432";
-        password = secretFile config.sops.secrets."keys/postgres/grafana".path;
       };
     };
 

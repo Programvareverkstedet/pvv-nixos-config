@@ -2,8 +2,9 @@
 
 {
   imports = [
-    ./prometheus
     ./grafana.nix
     ./loki.nix
+    ./prometheus
+    ./uptime-kuma.nix
   ];
 }
