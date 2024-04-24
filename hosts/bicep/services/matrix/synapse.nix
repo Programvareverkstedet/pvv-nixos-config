@@ -170,6 +170,8 @@ in {
         extraConfig = ''
           allow ${values.hosts.ildkule.ipv4};
           allow ${values.hosts.ildkule.ipv6};
+          allow ${values.hosts.ildkule.ipv4_global};
+          allow ${values.hosts.ildkule.ipv6_global};
           deny all;
         '';
       }))
@@ -181,6 +183,8 @@ in {
       extraConfig = ''
         allow ${values.hosts.ildkule.ipv4};
         allow ${values.hosts.ildkule.ipv6};
+        allow ${values.hosts.ildkule.ipv4_global};
+        allow ${values.hosts.ildkule.ipv6_global};
         deny all;
       '';
     };
