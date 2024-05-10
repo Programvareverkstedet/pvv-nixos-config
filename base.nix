@@ -34,6 +34,8 @@
     flags = [
       "--update-input" "nixpkgs"
       "--update-input" "nixpkgs-unstable"
+      "--update-input" "grzegorz"
+      "--update-input" "grzegorz-clients"
       "--no-write-lock-file"
     ];
   };
