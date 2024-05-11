@@ -14,6 +14,10 @@ in {
       owner = "gitea";
       group = "gitea";
     };
+    "gitea/email-password" = {
+      owner = "gitea";
+      group = "gitea";
+    };
   };
 
   services.gitea = {
@@ -29,6 +33,8 @@ in {
       createDatabase = false;
     };
 
+    mailerPasswordFile = config.sops.secrets."gitea/email-password".path;
+
     settings = {
       server = {
         DOMAIN   = domain;
@@ -36,6 +42,14 @@ in {
         PROTOCOL = "http+unix";
         SSH_PORT = sshPort;
         START_SSH_SERVER = true;
+      };
+      mailer = {
+        ENABLED = true;
+        FROM = "gitea@pvv.ntnu.no";
+        PROTOCOL = "smtp";
+        SMTP_ADDR = "smtp.pvv.ntnu.no";
+        SMTP_PORT = 587;
+        USER = "gitea@pvv.ntnu.no";
       };
       indexer.REPO_INDEXER_ENABLED = true;
       service.DISABLE_REGISTRATION = true;
