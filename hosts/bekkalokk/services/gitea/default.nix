@@ -1,4 +1,4 @@
-{ config, values, pkgs, ... }:
+{ config, values, pkgs, lib, ... }:
 let
   cfg = config.services.gitea;
   domain = "git.pvv.ntnu.no";
@@ -10,6 +10,11 @@ in {
 
   sops.secrets = {
     "gitea/database" = {
+      owner = "gitea";
+      group = "gitea";
+    };
+    # (kerberos password for SMTP and IMAP)
+    "gitea/passwd-password" = {
       owner = "gitea";
       group = "gitea";
     };
@@ -31,6 +36,8 @@ in {
       createDatabase = false;
     };
 
+    mailerPasswordFile = config.sops.secrets."gitea/passwd-password".path;
+
     settings = {
       server = {
         DOMAIN   = domain;
@@ -38,6 +45,14 @@ in {
         PROTOCOL = "http+unix";
         SSH_PORT = sshPort;
 	      START_SSH_SERVER = true;
+      };
+      mailer = lib.mkIf config.services.postfix.enable {
+        ENABLED = true;
+        FROM = "gitea@pvv.ntnu.no";
+        PROTOCOL = "smtp";
+        SMTP_ADDR = "mail.pvv.ntnu.no";
+        SMTP_PORT = 587;
+        USER = "gitea@pvv.ntnu.no";
       };
       indexer.REPO_INDEXER_ENABLED = true;
       service.DISABLE_REGISTRATION = true;
