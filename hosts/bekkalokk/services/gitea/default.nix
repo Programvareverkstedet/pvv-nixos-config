@@ -6,6 +6,7 @@ let
 in {
   imports = [
     ./ci.nix
+    ./import-users.nix
   ];
 
   sops.secrets = {
@@ -13,9 +14,6 @@ in {
       owner = "gitea";
       group = "gitea";
     };
-    "gitea/passwd-ssh-key" = { };
-    "gitea/ssh-known-hosts" = { };
-    "gitea/import-user-env" = { };
   };
 
   services.gitea = {
@@ -37,7 +35,7 @@ in {
         ROOT_URL = "https://${domain}/";
         PROTOCOL = "http+unix";
         SSH_PORT = sshPort;
-	      START_SSH_SERVER = true;
+        START_SSH_SERVER = true;
       };
       indexer.REPO_INDEXER_ENABLED = true;
       service.DISABLE_REGISTRATION = true;
@@ -51,8 +49,6 @@ in {
       "ui.meta".DESCRIPTION = "Bokstavelig talt programvareverkstedet";
     };
   };
-
-  services.gitea-themes.monokai = pkgs.gitea-theme-monokai;
 
   environment.systemPackages = [ cfg.package ];
 
@@ -70,38 +66,28 @@ in {
 
   networking.firewall.allowedTCPPorts = [ sshPort ];
 
-  # Automatically import users
-  systemd.services.gitea-import-users = {
-    enable = true;
-    preStart=''${pkgs.rsync}/bin/rsync -e "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=$CREDENTIALS_DIRECTORY/ssh-known-hosts -i $CREDENTIALS_DIRECTORY/sshkey" -a pvv@smtp.pvv.ntnu.no:/etc/passwd /tmp/passwd-import'';
-    serviceConfig = {
-      ExecStart = pkgs.writers.writePython3 "gitea-import-users" { libraries = [ pkgs.python3Packages.requests ]; } (builtins.readFile ./gitea-import-users.py);
-      LoadCredential=[
-        "sshkey:${config.sops.secrets."gitea/passwd-ssh-key".path}"
-        "ssh-known-hosts:${config.sops.secrets."gitea/ssh-known-hosts".path}"
-      ];
-      DynamicUser="yes";
-      EnvironmentFile=config.sops.secrets."gitea/import-user-env".path;
-    };
-  };
+  # Extra customization
 
-  systemd.timers.gitea-import-users = {
-    requires = [ "gitea.service" ];
-    after = [ "gitea.service" ];
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "*-*-* 02:00:00";
-      Persistent = true;
-      Unit = "gitea-import-users.service";
-    };
-  };
+  services.gitea-themes.monokai = pkgs.gitea-theme-monokai;
 
-  system.activationScripts.linkGiteaLogo.text = let
-    logo-svg = ../../../../assets/logo_blue_regular.svg;
-    logo-png = ../../../../assets/logo_blue_regular.png;
-  in ''
-    install -Dm444 ${logo-svg} ${cfg.stateDir}/custom/public/img/logo.svg
-    install -Dm444 ${logo-png} ${cfg.stateDir}/custom/public/img/logo.png
-    install -Dm444 ${./loading.apng} ${cfg.stateDir}/custom/public/img/loading.png
-  '';
+  systemd.services.install-gitea-customization = {
+    description = "Install extra customization in gitea's CUSTOM_DIR";
+    wantedBy = [ "gitea.service" ];
+    requiredBy = [ "gitea.service" ];
+
+    serviceConfig =  {
+      Type = "oneshot";
+      User = cfg.user;
+      Group = cfg.group;
+    };
+
+    script = let
+      logo-svg = ../../../../assets/logo_blue_regular.svg;
+      logo-png = ../../../../assets/logo_blue_regular.png;
+    in ''
+      install -Dm444 ${logo-svg} ${cfg.customDir}/public/img/logo.svg
+      install -Dm444 ${logo-png} ${cfg.customDir}/public/img/logo.png
+      install -Dm444 ${./loading.apng} ${cfg.customDir}/public/img/loading.png
+    '';
+  };
 }
