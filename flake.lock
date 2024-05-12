@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1712798444,
-        "narHash": "sha256-aAksVB7zMfBQTz0q2Lw3o78HM3Bg2FRziX2D6qnh+sk=",
+        "lastModified": 1715445235,
+        "narHash": "sha256-SUu+oIWn+xqQIOlwfwNfS9Sek4i1HKsrLJchsDReXwA=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "a297cb1cb0337ee10a7a0f9517954501d8f6f74d",
+        "rev": "159d87ea5b95bbdea46f0288a33c5e1570272725",
         "type": "github"
       },
       "original": {
@@ -20,18 +20,58 @@
         "type": "github"
       }
     },
+    "fix-python": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "grzegorz",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1713887124,
+        "narHash": "sha256-hGTSm0p9xXUYDgsAAr/ORZICo6T6u33vLfX3tILikaQ=",
+        "owner": "GuillaumeDesforges",
+        "repo": "fix-python",
+        "rev": "f7f4b33e22414071fc1f9cbf68072c413c3a7fdf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "GuillaumeDesforges",
+        "repo": "fix-python",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1689068808,
+        "narHash": "sha256-6ixXo3wt24N/melDWjq70UuHQLxGV8jZvooRanIHXw0=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "919d646de7be200f3bf08cb76ae1f09402b6f9b4",
+        "type": "github"
+      },
+      "original": {
+        "id": "flake-utils",
+        "type": "indirect"
+      }
+    },
     "grzegorz": {
       "inputs": {
+        "fix-python": "fix-python",
         "nixpkgs": [
           "nixpkgs-unstable"
         ]
       },
       "locked": {
-        "lastModified": 1712875951,
-        "narHash": "sha256-4kcRd2Q2XM4r+U2zp+LADjrzazKpWvs0WrMKPktEEkc=",
+        "lastModified": 1715364232,
+        "narHash": "sha256-ZJC3SkanEgbV7p+LFhP+85CviRWOXJNHzZwR/Stb7hE=",
         "owner": "Programvareverkstedet",
         "repo": "grzegorz",
-        "rev": "9eaba26b1671e8810cb135997c867ac3550e685a",
+        "rev": "3841cda1cdcac470440b06838d56a2eb2256378c",
         "type": "github"
       },
       "original": {
@@ -47,11 +87,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1711853301,
-        "narHash": "sha256-KxRNyW/fgq690bt3B+Nz4EKLoubybcuASYyMa41bAPE=",
+        "lastModified": 1715384651,
+        "narHash": "sha256-7RhckgUTjqeCjWkhiCc1iB+5CBx9fl80d/3O4Jh+5kM=",
         "owner": "Programvareverkstedet",
         "repo": "grzegorz-clients",
-        "rev": "c38f2f22a6d47ae2da015351a45d13cbc1eb48e4",
+        "rev": "738a4f3dd887f7c3612e4e772b83cbfa3cde5693",
         "type": "github"
       },
       "original": {
@@ -87,11 +127,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1712621190,
-        "narHash": "sha256-O8xtza+wPplTmSm0EAPk8Ud9sJ6huVNY6jU21FYHCp4=",
+        "lastModified": 1714416973,
+        "narHash": "sha256-aZUcvXjdETUC6wVQpWDVjLUzwpDAEca8yR0ITDeK39o=",
         "ref": "refs/heads/main",
-        "rev": "812c1fc4061d534a8c7d35271ce32b6c76a9f385",
-        "revCount": 5,
+        "rev": "2b23c0ba8aae68d3cb6789f0f6e4891cef26cc6d",
+        "revCount": 6,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git"
       },
@@ -102,11 +142,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1712848736,
-        "narHash": "sha256-CzZwhqyLlebljv1zFS2KWVH/3byHND0LfaO1jKsGuVo=",
+        "lastModified": 1715410392,
+        "narHash": "sha256-ltp1jQps9tym0uWNl/lTniHSQngCtNIyzlymu+ZSyts=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1d6a23f11e44d0fb64b3237569b87658a9eb5643",
+        "rev": "9f8bf7503bd85d5208575f4bd81c8b1fc999a468",
         "type": "github"
       },
       "original": {
@@ -117,11 +157,11 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1712437997,
-        "narHash": "sha256-g0whLLwRvgO2FsyhY8fNk+TWenS3jg5UdlWL4uqgFeo=",
+        "lastModified": 1714858427,
+        "narHash": "sha256-tCxeDP4C1pWe2rYY3IIhdA40Ujz32Ufd4tcrHPSKx2M=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e38d7cb66ea4f7a0eb6681920615dfcc30fc2920",
+        "rev": "b980b91038fc4b09067ef97bbe5ad07eecca1e76",
         "type": "github"
       },
       "original": {
@@ -133,11 +173,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1712837137,
-        "narHash": "sha256-9joaU/GD35J9Utb0ipelQbOcvsw5eoYTmSarLV3MbNk=",
+        "lastModified": 1715435713,
+        "narHash": "sha256-lb2HqDQGfTdnCCpc1pgF6fkdgIOuBQ0nP8jjVSfLFqg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "681d4a87b26b1dcaae7ffe6cf88c9912c575415f",
+        "rev": "52b40f6c4be12742b1504ca2eb4527e597bf2526",
         "type": "github"
       },
       "original": {
@@ -173,11 +213,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1712834399,
-        "narHash": "sha256-deNJvqboPk3bEoRZ/FyZnxscsf2BpS3/52JM4qXCNSA=",
+        "lastModified": 1715460936,
+        "narHash": "sha256-/glIKG5yngp7Fp/D7rjztA2sMYvuYutzx/s3Lz12c4A=",
         "ref": "refs/heads/master",
-        "rev": "216e153f89f1dbdc4c98a7c1db2a40e52becc901",
-        "revCount": 451,
+        "rev": "13a6df92cec9c358f33fb9485acf599cc1bc9b40",
+        "revCount": 455,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/nettsiden.git"
       },
@@ -208,16 +248,31 @@
         "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1712617241,
-        "narHash": "sha256-a4hbls4vlLRMciv62YrYT/Xs/3Cubce8WFHPUDWwzf8=",
+        "lastModified": 1715244550,
+        "narHash": "sha256-ffOZL3eaZz5Y1nQ9muC36wBCWwS1hSRLhUzlA9hV2oI=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "538c114cfdf1f0458f507087b1dcf018ce1c0c4c",
+        "rev": "0dc50257c00ee3c65fef3a255f6564cfbfe6eb7f",
         "type": "github"
       },
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
         "type": "github"
       }
     }
