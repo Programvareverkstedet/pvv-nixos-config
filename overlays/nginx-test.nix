@@ -1,5 +1,6 @@
 acme-certs: final: prev:
   let
+    problematicHosts = [ "matrix.pvv.ntnu.no" "tom.pvv.ntnu.no" ];
     lib = final.lib;
     crt = "${final.path}/nixos/tests/common/acme/server/acme.test.cert.pem";
     key = "${final.path}/nixos/tests/common/acme/server/acme.test.key.pem";
@@ -9,7 +10,10 @@ acme-certs: final: prev:
       nginxConfig = prev.writers.writeNginxConfig name text;
       nativeBuildInputs = [ final.bubblewrap ];
     } ''
-      ln -s "$nginxConfig" "$out"
+      cat "$nginxConfig" > "$out"
+      substituteInPlace "$out" ${lib.concatMapStrings (host: "--replace ${host} \"localhost\" ") problematicHosts}
+      substituteInPlace "$out" --replace ":443" ":4443"
+      substituteInPlace "$out" --replace ":80" ":8808"
       set +o pipefail
       bwrap \
         --ro-bind "${crt}" "/etc/certs/nginx.crt" \
