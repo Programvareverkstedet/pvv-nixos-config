@@ -65,9 +65,7 @@
           pkgs = import nixpkgs {
             inherit system;
             overlays = [
-              (import ./overlays/nginx-test.nix
-                (builtins.attrNames self.nixosConfigurations.${name}.config.security.acme.certs)
-              )
+              # Global overlays go here
             ] ++ config.overlays or [ ];
           };
         }
