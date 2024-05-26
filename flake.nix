@@ -139,16 +139,15 @@
           (nixlib.getAttrs allMachines self.packages.x86_64-linux);
 
         simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
-      } // nixlib.genAttrs allMachines
-        (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
-    } ;
 
-    legacyPackages = {
-      "x86_64-linux" = let
-        pkgs = nixpkgs.legacyPackages."x86_64-linux";
-      in rec {
-        mediawiki-extensions = pkgs.callPackage ./packages/mediawiki-extensions { };
-      };
+      } //
+      (nixlib.pipe null [
+        (_: pkgs.callPackage ./packages/mediawiki-extensions { })
+        (nixlib.flip builtins.removeAttrs ["override" "overrideDerivation"])
+        (nixlib.mapAttrs' (name: nixlib.nameValuePair "mediawiki-${name}"))
+      ])
+      // nixlib.genAttrs allMachines
+        (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
     };
   };
 }
