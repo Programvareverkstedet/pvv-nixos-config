@@ -140,8 +140,13 @@
 
         simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
 
-        # mediawiki-extensions = pkgs.callPackage ./packages/mediawiki-extensions { };
-      } // nixlib.genAttrs allMachines
+      } //
+      (nixlib.pipe null [
+        (_: pkgs.callPackage ./packages/mediawiki-extensions { })
+        (nixlib.flip builtins.removeAttrs ["override" "overrideDerivation"])
+        (nixlib.mapAttrs' (name: nixlib.nameValuePair "mediawiki-${name}"))
+      ])
+      // nixlib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
     };
   };

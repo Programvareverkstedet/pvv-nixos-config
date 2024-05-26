@@ -1,7 +1,13 @@
 { fetchzip }:
-
+let
+  commit = "a53af3b8269ed19ede3cf1fa811e7ec8cb00af92";
+  project-name = "UserMerge";
+  tracking-branch = "REL1_41";
+in
 fetchzip {
   name = "mediawiki-delete-batch";
-  url = "https://extdist.wmflabs.org/dist/extensions/DeleteBatch-REL1_41-5774fdd.tar.gz";
-  hash = "sha256-ROkn93lf0mNXBvij9X2pMhd8LXZ0azOz7ZRaqZvhh8k=";
+  url = "https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/${project-name}/+archive/${commit}.tar.gz";
+  hash = "sha256-0ofCZhhv4aVTGq469Fdu7k0oVQu3kG3HFa8zaBbUr/M=";
+  stripRoot = false;
+  passthru = { inherit project-name tracking-branch; };
 }
