@@ -6,13 +6,14 @@
     ../../base.nix
     ../../misc/metrics-exporters.nix
 
-    ./services/website
-    ./services/nginx.nix
     ./services/gitea/default.nix
-    ./services/kerberos
-    ./services/webmail
-    ./services/mediawiki
     ./services/idp-simplesamlphp
+    ./services/kerberos
+    ./services/mediawiki
+    ./services/nginx.nix
+    ./services/vaultwarden.nix
+    ./services/webmail
+    ./services/website
   ];
 
   sops.defaultSopsFile = ../../secrets/bekkalokk/bekkalokk.yaml;
