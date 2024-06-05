@@ -27,6 +27,12 @@
     grzegorz.inputs.nixpkgs.follows = "nixpkgs-unstable";
     grzegorz-clients.url = "github:Programvareverkstedet/grzegorz-clients";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
+
+    ozai.url = "git+https://git.pvv.ntnu.no/Projects/ozai.git";
+    ozai.inputs.nixpkgs.follows = "nixpkgs";
+    ozai-webui.url = "git+https://git.pvv.ntnu.no/adriangl/ozai-webui.git";
+    ozai-webui.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, pvv-nettsiden, sops-nix, disko, ... }@inputs:
