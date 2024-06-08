@@ -50,7 +50,7 @@ in {
         boltdb_shipper = {
           active_index_directory = "/var/lib/loki/boltdb-shipper-index";
           cache_location = "/var/lib/loki/boltdb-shipper-cache";
-          shared_store = "filesystem";
+          # shared_store = "filesystem";
           cache_ttl = "24h";
         };
         filesystem = {
@@ -59,14 +59,15 @@ in {
       };
 
       limits_config = {
-        enforce_metric_name = false;
+        allow_structured_metadata = false;
+        # enforce_metric_name = false;
         reject_old_samples = true;
         reject_old_samples_max_age = "72h";
       };
 
       compactor = {
         working_directory = "/var/lib/loki/compactor";
-        shared_store = "filesystem";
+        # shared_store = "filesystem";
       };
 
       # ruler = {
