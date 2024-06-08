@@ -28,7 +28,7 @@ in {
     database = {
       type = "postgres";
       host = "postgres.pvv.ntnu.no";
-      port = config.services.postgresql.port;
+      port = config.services.postgresql.settings.port;
       passwordFile = config.sops.secrets."gitea/database".path;
       createDatabase = false;
     };

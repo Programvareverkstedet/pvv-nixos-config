@@ -3,14 +3,14 @@
   #######################
   # TODO: remove these once nixos 24.05 gets released
   #######################
-  imports = [
-    ./krb5.nix
-    ./pam.nix
-  ];
-  disabledModules = [
-    "config/krb5/default.nix"
-    "security/pam.nix"
-  ];
+  # imports = [
+  #   ./krb5.nix
+  #   ./pam.nix
+  # ];
+  # disabledModules = [
+  #   "config/krb5/default.nix"
+  #   "security/pam.nix"
+  # ];
   #######################
 
   security.krb5 = {
