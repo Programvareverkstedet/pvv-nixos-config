@@ -27,9 +27,15 @@
     grzegorz.inputs.nixpkgs.follows = "nixpkgs-unstable";
     grzegorz-clients.url = "github:Programvareverkstedet/grzegorz-clients";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
+
+    ozai.url = "git+https://git.pvv.ntnu.no/Projects/ozai.git";
+    ozai.inputs.nixpkgs.follows = "nixpkgs";
+    ozai-webui.url = "git+https://git.pvv.ntnu.no/adriangl/ozai-webui.git";
+    ozai-webui.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, pvv-nettsiden, sops-nix, disko, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, pvv-nettsiden, sops-nix, disko, ozai, ozai-webui, ... }@inputs:
   let
     nixlib = nixpkgs.lib;
     systems = [
@@ -121,7 +127,12 @@
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
         ];
       };
-      buskerud = stableNixosConfig "buskerud" { };
+      buskerud = stableNixosConfig "buskerud" {
+        modules = [
+          ozai.nixosModules.ozai
+          ozai-webui.nixosModules.ozai-webui
+        ];
+      };
     };
 
     devShells = forAllSystems (system: {

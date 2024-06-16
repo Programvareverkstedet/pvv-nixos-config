@@ -4,6 +4,8 @@
     ./hardware-configuration.nix
     ../../base.nix
     ../../misc/metrics-exporters.nix
+    
+    ./services/ozai.nix
   ];
 
   # buskerud does not support efi?
