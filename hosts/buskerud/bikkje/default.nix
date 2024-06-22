@@ -29,6 +29,9 @@
           weechatScripts.edit
 
           coreutils-full
+          diffutils
+          findutils
+          ripgrep
           cvs
           gawk
           git
@@ -65,10 +68,18 @@
           perl
           php
           python3
-          #(with python3Packages; [
-          #  numpy
-          #  requests
-          #])
+          (python3.withPackages (ps: with ps; [
+            numpy
+            sympy
+            scipy
+            requests
+            imageio
+            pillow
+            httpx
+            pycryptodome
+            pandas
+            matplotlib
+          ]))
           ruby
           tcl
       ];
