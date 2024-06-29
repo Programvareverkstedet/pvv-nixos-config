@@ -107,15 +107,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1710311999,
-        "narHash": "sha256-s0pT1NyrMgeolUojXXcnXQDymN7m80GTF7itCv0ZH20=",
+        "lastModified": 1717234745,
+        "narHash": "sha256-MFyKRdw4WQD6V3vRGbP6MYbtJhZp712zwzjW6YiOBYM=",
         "owner": "dali99",
         "repo": "nixos-matrix-modules",
-        "rev": "6c9b67974b839740e2a738958512c7a704481157",
+        "rev": "d7dc42c9bbb155c5e4aa2f0985d0df75ce978456",
         "type": "github"
       },
       "original": {
         "owner": "dali99",
+        "ref": "v0.6.0",
         "repo": "nixos-matrix-modules",
         "type": "github"
       }
@@ -142,16 +143,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1715410392,
-        "narHash": "sha256-ltp1jQps9tym0uWNl/lTniHSQngCtNIyzlymu+ZSyts=",
+        "lastModified": 1719520878,
+        "narHash": "sha256-5BXzNOl2RVHcfS/oxaZDKOi7gVuTyWPibQG0DHd5sSc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9f8bf7503bd85d5208575f4bd81c8b1fc999a468",
+        "rev": "a44bedbb48c367f0476e6a3a27bf28f6330faf23",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "nixos-23.11-small",
+        "ref": "nixos-24.05-small",
         "type": "indirect"
       }
     },

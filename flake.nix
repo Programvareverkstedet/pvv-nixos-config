@@ -2,7 +2,7 @@
   description = "PVV System flake";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-23.11-small";
+    nixpkgs.url = "nixpkgs/nixos-24.05-small";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable-small";
 
     sops-nix.url = "github:Mic92/sops-nix";
@@ -17,7 +17,7 @@
     pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
-    matrix-next.url = "github:dali99/nixos-matrix-modules";
+    matrix-next.url = "github:dali99/nixos-matrix-modules/v0.6.0";
     matrix-next.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-gitea-themes.url = "git+https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git";
