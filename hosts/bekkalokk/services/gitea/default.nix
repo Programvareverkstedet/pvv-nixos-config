@@ -1,4 +1,4 @@
-{ config, values, pkgs, ... }:
+{ config, values, pkgs, lib, ... }:
 let
   cfg = config.services.gitea;
   domain = "git.pvv.ntnu.no";
@@ -35,6 +35,7 @@ in {
 
     mailerPasswordFile = config.sops.secrets."gitea/email-password".path;
 
+    # https://docs.gitea.com/administration/config-cheat-sheet
     settings = {
       server = {
         DOMAIN   = domain;
@@ -55,6 +56,36 @@ in {
       service.DISABLE_REGISTRATION = true;
       session.COOKIE_SECURE = true;
       database.LOG_SQL = false;
+      repository = {
+        PREFERRED_LICENSES = lib.concatStringsSep "," [
+          "AGPL-3.0-only"
+          "AGPL-3.0-or-later"
+          "Apache-2.0"
+          "BSD-3-Clause"
+          "CC-BY-4.0"
+          "CC-BY-NC-4.0"
+          "CC-BY-NC-ND-4.0"
+          "CC-BY-NC-SA-4.0"
+          "CC-BY-ND-4.0"
+          "CC-BY-SA-4.0"
+          "CC0-1.0"
+          "GPL-2.0-only"
+          "GPL-3.0-only"
+          "GPL-3.0-or-later"
+          "LGPL-3.0-linking-exception"
+          "LGPL-3.0-only"
+          "LGPL-3.0-or-later"
+          "MIT"
+          "MPL-2.0"
+          "Unlicense"
+        ];
+        DEFAULT_REPO_UNITS = lib.concatStringsSep "," [
+          "repo.code"
+          "repo.issues"
+          "repo.pulls"
+          "repo.releases"
+        ];
+      };
       picture = {
         DISABLE_GRAVATAR = true;
         ENABLE_FEDERATED_AVATAR = false;
