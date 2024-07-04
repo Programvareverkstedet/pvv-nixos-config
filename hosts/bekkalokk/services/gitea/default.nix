@@ -130,9 +130,9 @@ in {
       logo-svg = ../../../../assets/logo_blue_regular.svg;
       logo-png = ../../../../assets/logo_blue_regular.png;
     in ''
-      install -Dm444 ${logo-svg} ${cfg.customDir}/public/img/logo.svg
-      install -Dm444 ${logo-png} ${cfg.customDir}/public/img/logo.png
-      install -Dm444 ${./loading.apng} ${cfg.customDir}/public/img/loading.png
+      install -Dm444 ${logo-svg} ${cfg.customDir}/public/assets/img/logo.svg
+      install -Dm444 ${logo-png} ${cfg.customDir}/public/assets/img/logo.png
+      install -Dm444 ${./loading.apng} ${cfg.customDir}/public/assets/img/loading.png
     '';
   };
 }
