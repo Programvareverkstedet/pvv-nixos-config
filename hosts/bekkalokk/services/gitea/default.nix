@@ -54,7 +54,10 @@ in {
         SUBJECT_PREFIX = "[pvv-git]";
       };
       indexer.REPO_INDEXER_ENABLED = true;
-      service.DISABLE_REGISTRATION = true;
+      service = {
+        DISABLE_REGISTRATION = true;
+        ENABLE_NOTIFY_MAIL = true;
+      };
       session.COOKIE_SECURE = true;
       database.LOG_SQL = false;
       repository = {
