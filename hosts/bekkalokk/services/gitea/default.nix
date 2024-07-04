@@ -43,6 +43,7 @@ in {
         PROTOCOL = "http+unix";
         SSH_PORT = sshPort;
         START_SSH_SERVER = true;
+        START_LFS_SERVER = true;
       };
       mailer = {
         ENABLED = true;
