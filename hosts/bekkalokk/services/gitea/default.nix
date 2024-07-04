@@ -22,7 +22,6 @@ in {
 
   services.gitea = {
     enable = true;
-    stateDir = "/data/gitea";
     appName = "PVV Git";
 
     database = {
