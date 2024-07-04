@@ -51,6 +51,7 @@ in {
         SMTP_ADDR = "smtp.pvv.ntnu.no";
         SMTP_PORT = 587;
         USER = "gitea@pvv.ntnu.no";
+        SUBJECT_PREFIX = "[pvv-git]";
       };
       indexer.REPO_INDEXER_ENABLED = true;
       service.DISABLE_REGISTRATION = true;
