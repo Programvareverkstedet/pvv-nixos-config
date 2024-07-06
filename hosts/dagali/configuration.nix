@@ -1,5 +1,5 @@
 
-{ config, pkgs, values, ... }:
+{ config, pkgs, values, lib, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -7,7 +7,7 @@
     ../../misc/metrics-exporters.nix
 
     ./services/heimdal.nix
-    ./services/openldap.nix
+    #./services/openldap.nix
     ./services/cyrus-sasl.nix
   ];
 
@@ -21,7 +21,11 @@
   services.resolved.enable = false;
 
   networking.hostName = "dagali";
-  networking.search = [ "pvv.ntnu.no" "pvv.org" ];
+  networking.domain = lib.mkForce "pvv.local";
+  networking.hosts = {
+    "129.241.210.185" = [ "dagali.pvv.local" ];
+  };
+  #networking.search = [ "pvv.ntnu.no" "pvv.org" ];
   networking.nameservers = [ "129.241.0.200" "129.241.0.201" ];
   networking.tempAddresses = "disabled";
   networking.networkmanager.enable = true;

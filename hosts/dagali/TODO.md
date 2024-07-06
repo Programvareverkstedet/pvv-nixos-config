@@ -16,11 +16,26 @@
     - [x] `kadmin -l init PVV.NTNU.NO`
     - [x] add oysteikt/admin@PVV.NTNU.NO principal
     - [x] add oysteikt@PVV.NTNU.NO principal
-    - [ ] add krbtgt@PVV.NTNU.NO principal?
+    - [x] add krbtgt/PVV.NTNU.NO@PVV.NTNU.NO principal?
       - why is this needed, and where is it documented?
       - `kadmin check` seems to work under sudo?
-    - Fix FQDN: https://github.com/NixOS/nixpkgs/issues/94011
-                https://github.com/NixOS/nixpkgs/issues/261269
+      - (it is included by default, just included as error message
+         in a weird state)
+
+    - [x] Ensure client is working correctly
+      - [x] Ensure kinit works on darbu
+      - [x] Ensure kpasswd works on darbu
+      - [x] Ensure kadmin get <user> (and other restricted commands) works on darbu
+
+    - [ ] Ensure kdc is working correctly
+      - [x] Ensure kinit works on dagali
+      - [x] Ensure kpasswd works on dagali
+      - [ ] Ensure kadmin get <user> (and other restricte commands) works on dagali
+
+    - [x] Fix FQDN
+      - https://github.com/NixOS/nixpkgs/issues/94011
+      - https://github.com/NixOS/nixpkgs/issues/261269
+      - Possibly fixed by disabling systemd-resolved
 
 - [ ] setup cyrus sasl
   - [x] ensure running with systemd 
