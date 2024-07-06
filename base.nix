@@ -48,9 +48,9 @@
   ** use the same channel the system
   ** was built with
   */
-  nix.registry = {
-    nixpkgs.flake = inputs.nixpkgs;
-  };
+  # nix.registry = {
+  #   nixpkgs.flake = inputs.nixpkgs;
+  # };
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
   environment.systemPackages = with pkgs; [

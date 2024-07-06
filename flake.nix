@@ -122,6 +122,7 @@
         ];
       };
       buskerud = stableNixosConfig "buskerud" { };
+      dagali = unstableNixosConfig "dagali" { };
     };
 
     devShells = forAllSystems (system: {
