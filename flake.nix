@@ -212,6 +212,7 @@
           ];
           overlays = [inputs.dibbler.overlays.default];
         };
+        dagali = stableNixosConfig "dagali" { };
         shark = stableNixosConfig "shark" {};
         wenche = stableNixosConfig "wenche" {};
         temmie = stableNixosConfig "temmie" {};
