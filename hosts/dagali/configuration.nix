@@ -5,6 +5,10 @@
     ./hardware-configuration.nix
     ../../base.nix
     ../../misc/metrics-exporters.nix
+
+    ./services/heimdal.nix
+    ./services/openldap.nix
+    ./services/cyrus-sasl.nix
   ];
 
   # buskerud does not support efi?
@@ -12,6 +16,9 @@
   # boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
+
+  # resolved messes up FQDN coming from nscd
+  services.resolved.enable = false;
 
   networking.hostName = "dagali";
   networking.search = [ "pvv.ntnu.no" "pvv.org" ];
