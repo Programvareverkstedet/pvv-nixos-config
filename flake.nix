@@ -145,6 +145,8 @@
           inputs.gergle.overlays.default
         ];
       };
+
+      dagali = unstableNixosConfig "dagali" { };
     };
 
     nixosModules = {
