@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 {
   services.openldap = let
-    dn = "dc=kerberos,dc=pvv,dc=ntnu,dc=no";
+    dn = "dc=pvv,dc=ntnu,dc=no";
     cfg = config.services.openldap;
 
     heimdal = config.security.krb5.package;
@@ -80,7 +80,7 @@
           objectClass = [ "olcOverlayConfig" "olcSmbK5PwdConfig" ];
           olcOverlay = "{0}smbk5pwd";
           olcSmbK5PwdEnable = [ "krb5" "samba" ];
-          olcSmbK5PwdMustChange = toString (60 * 60 * 24 * 30);
+          olcSmbK5PwdMustChange = toString (60 * 60 * 24 * 10000);
         };
 
         "olcDatabase={1}mdb".attrs = {
@@ -91,7 +91,7 @@
           olcSuffix = dn;
 
           # TODO: PW is supposed to be a secret, but it's probably fine for testing
-          olcRootDN = "cn=admin,${dn}";
+          olcRootDN = "cn=users,${dn}";
 
           # TODO: replace with proper secret
           olcRootPW.path = pkgs.writeText "olcRootPW" "pass";
@@ -101,7 +101,7 @@
 
           olcAccess = [
             ''{0}to attrs=userPassword,shadowLastChange
-                by dn.exact=cn=admin,${dn} write
+                by dn.exact=cn=users,${dn} write
                 by self write
                 by anonymous auth
                 by * none''
@@ -111,7 +111,7 @@
 
             /* allow read on anything else */
             # ''{2}to *
-            #     by cn=admin,${dn} write by dn.exact=gidNumber=0+uidNumber=0+cn=peercred,cn=external write
+            #     by cn=users,${dn} write by dn.exact=gidNumber=0+uidNumber=0+cn=peercred,cn=external write
             #     by * read''
           ];
         };
