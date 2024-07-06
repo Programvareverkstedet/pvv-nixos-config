@@ -1,22 +1,15 @@
 { config, pkgs, lib, ... }:
 let
-
-  realm = "PVV.NTNU.NO";
-
+  realm = "PVV.LOCAL";
   cfg = config.security.krb5;
 in
 {
   security.krb5 = {
     enable = true;
 
-    # NOTE: This has a small edit that moves an include header to $dev/include.
-    #       It is required in order to build smbk5pwd, because of some nested includes.
+    # NOTE: This is required in order to build smbk5pwd, because of some nested includes.
     #       We should open an issue upstream (heimdal, not nixpkgs), but this patch
     #       will do for now.
-    # package = pkgs.callPackage ./package.nix {
-    #   inherit (pkgs.apple_sdk.frameworks)
-    #     CoreFoundation Security SystemConfiguration;
-    # };
     package = pkgs.heimdal.overrideAttrs (prev: {
       postInstall = prev.postInstall + ''
         cp include/heim_threads.h $dev/include
@@ -24,10 +17,12 @@ in
     });
 
     settings = {
-      # logging.kdc = "CONSOLE";
       realms.${realm} = {
-        admin_server = "dagali.pvv.ntnu.no";
-        kdc = [ "localhost" ];
+        kdc = [ "dagali.${lib.toLower realm}" ];
+        admin_server = "dagali.${lib.toLower realm}";
+        kpasswd_server = "dagali.${lib.toLower realm}";
+        default_domain = lib.toLower realm;
+        primary_kdc = "dagali.${lib.toLower realm}";
       };
 
       kadmin.default_keys = lib.concatStringsSep " " [
@@ -42,14 +37,17 @@ in
 
       libdefaults = {
         default_realm = realm;
+        dns_lookup_kdc = false;
+        dns_lookup_realm = false;
       };
 
       domain_realm = {
-        "pvv.ntnu.no" = realm;
-        ".pvv.ntnu.no" = realm;
+        "${lib.toLower realm}" = realm;
+        ".${lib.toLower realm}" = realm;
       };
 
       logging = {
+        # kdc = "CONSOLE";
         kdc = "SYSLOG:DEBUG:AUTH";
         admin_server = "SYSLOG:DEBUG:AUTH";
         default = "SYSLOG:DEBUG:AUTH";
@@ -61,8 +59,22 @@ in
     enable = true;
     settings = {
       realms.${realm} = {
-        dbname = "/var/heimdal/heimdal";
-        mkey = "/var/heimdal/mkey";
+        dbname = "/var/lib/heimdal/heimdal";
+        mkey = "/var/lib/heimdal/m-key";
+        acl = [
+          {
+            principal = "kadmin/admin";
+            access = "all";
+          }
+          {
+            principal = "felixalb/admin";
+            access = "all";
+          }
+          {
+            principal = "oysteikt/admin";
+            access = "all";
+          }
+        ];
       };
       # kadmin.default_keys = lib.concatStringsSep " " [
       #   "aes256-cts-hmac-sha1-96:pw-salt"
@@ -76,5 +88,13 @@ in
 
       # password_quality.min_length = 8;
     };
+  };
+
+  networking.firewall.allowedTCPPorts = [ 88 464 749 ];
+  networking.firewall.allowedUDPPorts = [ 88 464 749 ];
+
+  networking.hosts = {
+    "127.0.0.2" = lib.mkForce [ ];
+    "::1" = lib.mkForce [ ];
   };
 }
