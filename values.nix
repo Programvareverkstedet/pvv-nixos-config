@@ -40,6 +40,10 @@ in rec {
       ipv4 = pvv-ipv4 168;
       ipv6 = pvv-ipv6 168;
     };
+    dagali = {
+      ipv4 = pvv-ipv4 185;
+      ipv6 = pvv-ipv6 185;
+    };
     ildkule = {
       ipv4 = "129.241.153.213";
       ipv4_internal = "192.168.12.209";

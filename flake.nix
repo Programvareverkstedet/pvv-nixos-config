@@ -205,6 +205,8 @@
         ];
       };
 
+      dagali = unstableNixosConfig "dagali" { };
+
       brzeczyszczykiewicz = stableNixosConfig "brzeczyszczykiewicz" {
         modules = [
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
