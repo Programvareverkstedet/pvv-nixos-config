@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i python3 -p "python3.withPackages(ps: with ps; [ beautifulsoup4 requests ])"
+#!nix-shell -i python3 -p "python3.withPackages(ps: with ps; [ beautifulsoup4 requests ])" nix-prefetch-git
 
 import os
 from pathlib import Path
@@ -8,11 +8,13 @@ import subprocess
 from collections import defaultdict
 from pprint import pprint
 from dataclasses import dataclass
+import json
 
 import bs4
 import requests
 
-BASE_URL = "https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions"
+BASE_WEB_URL = "https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions"
+BASE_GIT_URL = "https://gerrit.wikimedia.org/r/mediawiki/extensions/"
 
 @dataclass
 class PluginMetadata:
@@ -45,26 +47,21 @@ def get_metadata(file_content: str) -> dict[str,str] | None:
 
 
 def get_newest_commit(project_name: str, tracking_branch: str) -> str:
-    content = requests.get(f"{BASE_URL}/{project_name}/+log/refs/heads/{tracking_branch}/").text
+    content = requests.get(f"{BASE_WEB_URL}/{project_name}/+log/refs/heads/{tracking_branch}/").text
     soup = bs4.BeautifulSoup(content, features="html.parser")
     a = soup.find('li').findChild('a')
     commit_sha = a['href'].split('/')[-1]
     return commit_sha
 
 
-def get_nix_hash(tar_gz_url: str) -> str:
+def get_nix_hash(url: str, commit: str) -> str:
     out, err = subprocess.Popen(
-        ["nix-prefetch-url", "--unpack", "--type", "sha256", tar_gz_url],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
-    ).communicate()
-    out, err = subprocess.Popen(
-        ["nix", "hash", "to-sri", "--type", "sha256", out.decode().strip()],
+        ["nix-prefetch-git", "--url", url, "--rev", commit, "--fetch-submodules", "--quiet"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
     ).communicate()
 
-    return out.decode().strip()
+    return json.loads(out.decode().strip())['hash']
 
 
 def set_commit_and_hash(file_content: str, commit: str, sha256: str) -> str:
@@ -79,16 +76,16 @@ def update(package_file: Path) -> None:
 
     metadata = get_metadata(file_content)
     if metadata is None:
+        print(f"ERROR: could not find metadata for {package_file}")
         return
     if metadata.commit == "":
         metadata.commit = "<none>"
 
     new_commit = get_newest_commit(metadata.project_name, metadata.tracking_branch)
-    if new_commit == metadata.commit:
-        return
-
-    new_url = f"{BASE_URL}/{metadata.project_name}/+archive/{new_commit}.tar.gz"
-    new_hash = get_nix_hash(new_url)
+    new_hash = get_nix_hash(f"{BASE_GIT_URL}/{metadata.project_name}", new_commit)
+    if new_hash is None or new_hash == "":
+        print(f"ERROR: could not fetch hash for {metadata.project_name}")
+        exit(1)
 
     print(f"Updating {metadata.project_name}: {metadata.commit} -> {new_commit}")
 

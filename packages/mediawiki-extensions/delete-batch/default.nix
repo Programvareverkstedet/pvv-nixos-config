@@ -1,13 +1,14 @@
-{ fetchzip }:
+{ fetchgit }:
 let
-  commit = "c17c919bdb9b67bb69f80df43e9ee9d33b1ecf1b";
-  project-name = "UserMerge";
+  commit = "cad869fbd95637902673f744581b29e0f3e3f61a";
+  project-name = "DeleteBatch";
   tracking-branch = "REL1_41";
 in
-fetchzip {
-  name = "mediawiki-delete-batch";
-  url = "https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/${project-name}/+archive/${commit}.tar.gz";
-  hash = "sha256-+mkzTCo8RVlGoFyfCrSb5YMh4J6Pbi1PZLFu5ps8bWY=";
-  stripRoot = false;
+(fetchgit {
+  name = "mediawiki-delete-batch-source";
+  url = "https://gerrit.wikimedia.org/r/mediawiki/extensions/${project-name}";
+  rev = "refs/heads/${tracking-branch}";
+  hash = "sha256-M1ek1WdO1/uTjeYlrk3Tz+nlb/fFZH+O0Ok7b10iKak=";
+}).overrideAttrs (_: {
   passthru = { inherit project-name tracking-branch; };
-}
+})
