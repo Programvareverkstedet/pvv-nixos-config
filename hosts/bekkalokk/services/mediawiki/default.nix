@@ -86,8 +86,7 @@ in {
     };
 
     extensions = {
-      #inherit (pkgs.mediawiki-extensions) DeleteBatch UserMerge PluggableAuth SimpleSAMLphp VisualEditor;
-      inherit (pkgs.mediawiki-extensions) UserMerge PluggableAuth SimpleSAMLphp VisualEditor;
+      inherit (pkgs.mediawiki-extensions) DeleteBatch UserMerge PluggableAuth SimpleSAMLphp VisualEditor;
     };
 
     extraConfig = ''
