@@ -121,7 +121,6 @@ in {
 
       # Misc
       $wgEmergencyContact = "${cfg.passwordSender}";
-      $wgShowIPinHeader = false;
       $wgUseTeX = false;
       $wgLocalInterwiki = $wgSitename;
 
@@ -136,6 +135,10 @@ in {
           'realNameAttribute' => 'cn',
         ]
       ];
+
+      # Debugging
+      $wgShowExceptionDetails = false;
+      $wgShowIPinHeader = false;
 
       # Fix https://github.com/NixOS/nixpkgs/issues/183097
       $wgDBserver = "${toString cfg.database.host}";
