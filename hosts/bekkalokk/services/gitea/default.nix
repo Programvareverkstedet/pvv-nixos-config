@@ -58,6 +58,7 @@ in {
         DISABLE_REGISTRATION = true;
         ENABLE_NOTIFY_MAIL = true;
       };
+      admin.DEFAULT_EMAIL_NOTIFICATIONS = "onmention";
       session.COOKIE_SECURE = true;
       database.LOG_SQL = false;
       repository = {
