@@ -135,10 +135,25 @@ in {
       $wgEmergencyContact = "${cfg.passwordSender}";
       $wgUseTeX = false;
       $wgLocalInterwiki = $wgSitename;
+      # Fix https://github.com/NixOS/nixpkgs/issues/183097
+      $wgDBserver = "${toString cfg.database.host}";
+      $wgAllowCopyUploads = true;
 
-      # SimpleSAML
+      # Misc program paths
+      $wgFFmpegLocation = '${pkgs.ffmpeg}/bin/ffmpeg';
+      $wgExiftool = '${pkgs.exiftool}/bin/exiftool';
+      $wgExiv2Command = '${pkgs.exiv2}/bin/exiv2';
+      # See https://gist.github.com/sergejmueller/088dce028b6dd120a16e
+      $wgJpegTran = '${pkgs.mozjpeg}/bin/jpegtran';
+      $wgGitBin = '${pkgs.git}/bin/git';
+
+      # Debugging
+      $wgShowExceptionDetails = false;
+      $wgShowIPinHeader = false;
+
+      # EXT:{SimpleSAML,PluggableAuth}
       $wgSimpleSAMLphp_InstallDir = "${simplesamlphp}/share/php/simplesamlphp/";
-      $wgPluggableAuth_Config['Log in using my SAML'] = [
+      $wgPluggableAuth_Config['Log in using SAML'] = [
         'plugin' => 'SimpleSAMLphp',
         'data' => [
           'authSourceId' => 'default-sp',
@@ -148,12 +163,12 @@ in {
         ]
       ];
 
-      # Debugging
-      $wgShowExceptionDetails = false;
-      $wgShowIPinHeader = false;
+      # EXT:Scribunto
+      $wgScribuntoDefaultEngine = 'luastandalone';
+      $wgScribuntoEngineConf['luastandalone']['luaPath'] = '${pkgs.lua}/bin';
 
-      # Fix https://github.com/NixOS/nixpkgs/issues/183097
-      $wgDBserver = "${toString cfg.database.host}";
+      # EXT:WikiEditor
+      $wgWikiEditorRealtimePreview = true;
     '';
   };
 
