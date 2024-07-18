@@ -29,7 +29,7 @@
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, pvv-nettsiden, sops-nix, disko, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ... }@inputs:
   let
     nixlib = nixpkgs.lib;
     systems = [
