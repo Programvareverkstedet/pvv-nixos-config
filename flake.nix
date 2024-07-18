@@ -11,6 +11,9 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
+    nix-topology.url = "github:oddlama/nix-topology";
+    nix-topology.inputs.nixpkgs.follows = "nixpkgs";
+
     pvv-nettsiden.url = "git+https://git.pvv.ntnu.no/Projects/nettsiden.git";
     pvv-nettsiden.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -60,6 +63,7 @@
           modules = [
             ./hosts/${name}/configuration.nix
             sops-nix.nixosModules.sops
+            inputs.nix-topology.nixosModules.default
           ] ++ config.modules or [];
 
           pkgs = import nixpkgs {
@@ -148,6 +152,19 @@
       ])
       // nixlib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
+    };
+
+    topology.x86_64-linux = import inputs.nix-topology {
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        overlays = [inputs.nix-topology.overlays.default];
+      }; # Only this package set must include nix-topology.overlays.default
+      modules = [
+        # Your own file to define global topology. Works in principle like a nixos module but uses different options.
+        ./topology.nix
+        # Inline module to inform topology of your existing NixOS hosts.
+        { nixosConfigurations = self.nixosConfigurations; }
+      ];
     };
   };
 }
