@@ -14,8 +14,6 @@
       "::1"
       values.hosts.ildkule.ipv4
       values.hosts.ildkule.ipv6
-      values.hosts.ildkule.ipv4_global
-      values.hosts.ildkule.ipv6_global
     ];
   };
 
