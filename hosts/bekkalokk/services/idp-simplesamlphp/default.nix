@@ -84,16 +84,16 @@ let
         cp ${./config.php} "$out"
 
         substituteInPlace "$out" \
-          --replace '$SAML_COOKIE_SECURE' 'true' \
-          --replace '$SAML_COOKIE_SALT' 'file_get_contents("${config.sops.secrets."idp/cookie_salt".path}")' \
-          --replace '$SAML_ADMIN_NAME' '"Drift"' \
-          --replace '$SAML_ADMIN_EMAIL' '"drift@pvv.ntnu.no"' \
-          --replace '$SAML_ADMIN_PASSWORD' 'file_get_contents("${config.sops.secrets."idp/admin_password".path}")' \
-          --replace '$SAML_TRUSTED_DOMAINS' 'array( "idp.pvv.ntnu.no" )' \
-          --replace '$SAML_DATABASE_DSN' '"pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=idp"' \
-          --replace '$SAML_DATABASE_USERNAME' '"idp"' \
-          --replace '$SAML_DATABASE_PASSWORD' 'file_get_contents("${config.sops.secrets."idp/postgres_password".path}")' \
-          --replace '$CACHE_DIRECTORY' '/var/cache/idp'
+          --replace-warn '$SAML_COOKIE_SECURE' 'true' \
+          --replace-warn '$SAML_COOKIE_SALT' 'file_get_contents("${config.sops.secrets."idp/cookie_salt".path}")' \
+          --replace-warn '$SAML_ADMIN_NAME' '"Drift"' \
+          --replace-warn '$SAML_ADMIN_EMAIL' '"drift@pvv.ntnu.no"' \
+          --replace-warn '$SAML_ADMIN_PASSWORD' 'file_get_contents("${config.sops.secrets."idp/admin_password".path}")' \
+          --replace-warn '$SAML_TRUSTED_DOMAINS' 'array( "idp.pvv.ntnu.no" )' \
+          --replace-warn '$SAML_DATABASE_DSN' '"pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=idp"' \
+          --replace-warn '$SAML_DATABASE_USERNAME' '"idp"' \
+          --replace-warn '$SAML_DATABASE_PASSWORD' 'file_get_contents("${config.sops.secrets."idp/postgres_password".path}")' \
+          --replace-warn '$CACHE_DIRECTORY' '/var/cache/idp'
       '';
 
       "modules/authpwauth/src/Auth/Source/PwAuth.php" = ./authpwauth.php;
