@@ -17,16 +17,16 @@
         cp ${./simplesaml-config.php} "$out"
 
         substituteInPlace "$out" \
-          --replace '$SAML_COOKIE_SECURE' 'true' \
-          --replace '$SAML_COOKIE_SALT' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/cookie_salt".path}")' \
-          --replace '$SAML_ADMIN_NAME' '"Drift"' \
-          --replace '$SAML_ADMIN_EMAIL' '"drift@pvv.ntnu.no"' \
-          --replace '$SAML_ADMIN_PASSWORD' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/admin_password".path}")' \
-          --replace '$SAML_TRUSTED_DOMAINS' 'array( "wiki.pvv.ntnu.no" )' \
-          --replace '$SAML_DATABASE_DSN' '"pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=mediawiki_simplesamlphp"' \
-          --replace '$SAML_DATABASE_USERNAME' '"mediawiki_simplesamlphp"' \
-          --replace '$SAML_DATABASE_PASSWORD' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/postgres_password".path}")' \
-          --replace '$CACHE_DIRECTORY' '/var/cache/mediawiki/idp'
+          --replace-warn '$SAML_COOKIE_SECURE' 'true' \
+          --replace-warn '$SAML_COOKIE_SALT' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/cookie_salt".path}")' \
+          --replace-warn '$SAML_ADMIN_NAME' '"Drift"' \
+          --replace-warn '$SAML_ADMIN_EMAIL' '"drift@pvv.ntnu.no"' \
+          --replace-warn '$SAML_ADMIN_PASSWORD' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/admin_password".path}")' \
+          --replace-warn '$SAML_TRUSTED_DOMAINS' 'array( "wiki.pvv.ntnu.no" )' \
+          --replace-warn '$SAML_DATABASE_DSN' '"pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=mediawiki_simplesamlphp"' \
+          --replace-warn '$SAML_DATABASE_USERNAME' '"mediawiki_simplesamlphp"' \
+          --replace-warn '$SAML_DATABASE_PASSWORD' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/postgres_password".path}")' \
+          --replace-warn '$CACHE_DIRECTORY' '/var/cache/mediawiki/idp'
       '';
     };
   };
