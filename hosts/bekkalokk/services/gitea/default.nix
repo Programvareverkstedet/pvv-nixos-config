@@ -43,6 +43,7 @@ in {
         SSH_PORT = sshPort;
         START_SSH_SERVER = true;
         START_LFS_SERVER = true;
+        LANDING_PAGE = "explore";
       };
       mailer = {
         ENABLED = true;
