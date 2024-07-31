@@ -20,10 +20,26 @@
   zramSwap.enable = true;
 
   networking.hostName = "ildkule"; # Define your hostname.
-  systemd.network.networks."30-all" = values.defaultNetworkConfig // {
-    matchConfig.Name = "en*";
-    DHCP = "yes";
-    gateway = [ ];
+
+  # Main connection, using the global/floatig IP, for communications with the world
+  systemd.network.networks."30-ntnu-global" = values.openstackGlobalNetworkConfig // {
+    matchConfig.Name = "ens4";
+
+    # Add the global addresses in addition to the local address learned from DHCP
+    addresses = [
+      { addressConfig.Address = "${values.hosts.ildkule.ipv4_global}/32"; }
+      { addressConfig.Address = "${values.hosts.ildkule.ipv6_global}/128"; }
+    ];
+  };
+
+  # Secondary connection only for use within the university network
+  systemd.network.networks."40-ntnu-internal" = values.openstackLocalNetworkConfig // {
+    matchConfig.Name = "ens3";
+    # Add the ntnu-internal addresses in addition to the local address learned from DHCP
+    addresses = [
+      { addressConfig.Address = "${values.hosts.ildkule.ipv4}/32"; }
+      { addressConfig.Address = "${values.hosts.ildkule.ipv6}/128"; }
+    ];
   };
 
   # List packages installed in system profile

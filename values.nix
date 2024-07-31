@@ -73,4 +73,25 @@ in rec {
     DHCP = "no";
   };
 
+  openstackGlobalNetworkConfig = {
+    networkConfig.IPv6AcceptRA = "yes";
+    dns = [ "129.241.0.200" "129.241.0.201" ];
+    domains = [ "pvv.ntnu.no" "pvv.org" ];
+    DHCP = "yes";
+  };
+
+  openstackLocalNetworkConfig = {
+    networkConfig.IPv6AcceptRA = "no";
+    dns = [ "129.241.0.200" "129.241.0.201" ];
+    domains = [ "pvv.ntnu.no" "pvv.org" ];
+    DHCP = "yes";
+
+    # Only use this network for link-local networking, not global/default routes
+    dhcpV4Config.UseRoutes = "no";
+    routes = [
+      { routeConfig = { Destination = "10.0.0.0/8"; Gateway = "_dhcp4"; }; }
+    ];
+
+    linkConfig.RequiredForOnline = "no";
+  };
 }
