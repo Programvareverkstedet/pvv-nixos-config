@@ -4,6 +4,9 @@ keys:
   - &user_felixalb age1mrnldl334l2nszuta6ywvewng0fswv2dz9l5g4qcwe3nj4yxf92qjskdx6
   - &user_oysteikt F7D37890228A907440E1FD4846B9228E814A2AAC
   - &user_eirikwit age1ju7rd26llahz3g8tz7cy5ld52swj8gsmg0flrmrxngc0nj0avq3ssh0sn5
+  - &user_pederbs_sopp age1hmpdk4h69wxpwqk9tkud39f66hprhehxtzhgw97r6dvr7v0mx5jscsuhkn
+  - &user_pederbs_nord age1wrssr4z4g6vl3fd3qme5cewchmmhm0j2xe6wf2meu4r6ycn37anse98mfs
+  - &user_pederbs_bjarte age1zhxul786an743u0fascv4wtc5xduu7qfy803lfs539yzhgmlq5ds2lznt5
 
   # Hosts
   - &host_jokum age1gp8ye4g2mmw3may5xg0zsy7mm04glfz3788mmdx9cvcsdxs9hg0s0cc9kt
@@ -20,6 +23,9 @@ creation_rules:
       - *user_danio
       - *user_felixalb
       - *user_eirikwit
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
       pgp:
       - *user_oysteikt
 
@@ -31,6 +37,9 @@ creation_rules:
       - *host_bekkalokk
       - *user_danio
       - *user_felixalb
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
       pgp:
       - *user_oysteikt
 
@@ -40,6 +49,9 @@ creation_rules:
       - *host_jokum
       - *user_danio
       - *user_felixalb
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
       pgp:
       - *user_oysteikt
 
@@ -49,6 +61,9 @@ creation_rules:
       - *host_ildkule
       - *user_danio
       - *user_felixalb
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
       pgp:
       - *user_oysteikt
   
@@ -58,5 +73,8 @@ creation_rules:
       - *host_bicep
       - *user_danio
       - *user_felixalb
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
       pgp:
       - *user_oysteikt
