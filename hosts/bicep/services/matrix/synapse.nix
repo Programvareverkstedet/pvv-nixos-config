@@ -143,10 +143,10 @@ in {
   services.redis.servers."".enable = true;
   
   services.nginx.virtualHosts."matrix.pvv.ntnu.no" = lib.mkMerge [
-  ({
+  {
     kTLS = true;
-  })
-  ({
+  }
+  {
     locations."/.well-known/matrix/server" = {
       return = ''
         200 '{"m.server": "matrix.pvv.ntnu.no:443"}'
@@ -156,16 +156,16 @@ in {
         add_header Access-Control-Allow-Origin *;
       '';
     };
-  })
-  ({
+  }
+  {
     locations = let
       connectionInfo = w: matrix-lib.workerConnectionResource "metrics" w;
-      socketAddress = w: let c = connectionInfo w; in "${c.host}:${toString (c.port)}";
+      socketAddress = w: let c = connectionInfo w; in "${c.host}:${toString c.port}";
 
       metricsPath = w: "/metrics/${w.type}/${toString w.index}";
       proxyPath = w: "http://${socketAddress w}/_synapse/metrics";
     in lib.mapAttrs' (n: v: lib.nameValuePair
-      (metricsPath v) ({
+      (metricsPath v) {
         proxyPass = proxyPath v;
         extraConfig = ''
           allow ${values.hosts.ildkule.ipv4};
@@ -174,10 +174,10 @@ in {
           allow ${values.hosts.ildkule.ipv6_global};
           deny all;
         '';
-      }))
+      })
       cfg.workers.instances;
-  })
-  ({
+  }
+  {
     locations."/metrics/master/1" = {
       proxyPass = "http://127.0.0.1:9000/_synapse/metrics";
       extraConfig = ''
@@ -202,5 +202,5 @@ in {
             labels = { };
           }]) + "/";
     };
-  })];
+  }];
 }
