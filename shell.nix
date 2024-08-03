@@ -3,6 +3,7 @@ pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
     sops
     gnupg
+    statix
     openstackclient
   ];
 
