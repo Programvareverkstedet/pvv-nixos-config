@@ -29,7 +29,7 @@ php.buildComposerProject rec {
       mkdir -p $(dirname "${target_path}")
       cp -r "${source_path}" "${target_path}"
     ''))
-    (lib.concatStringsSep "\n")
+    lib.concatLines
   ];
 
   postInstall = ''
