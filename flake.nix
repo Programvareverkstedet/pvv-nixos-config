@@ -124,6 +124,11 @@
       buskerud = stableNixosConfig "buskerud" { };
     };
 
+    nixosModules = {
+      snakeoil-certs = ./modules/snakeoil-certs.nix;
+      snappymail = ./modules/snappymail.nix;
+    };
+
     devShells = forAllSystems (system: {
       default = nixpkgs.legacyPackages.${system}.callPackage ./shell.nix { };
     });
