@@ -7,6 +7,7 @@
       ../../misc/metrics-exporters.nix
 
       ../../modules/grzegorz.nix
+      ../../modules/spotifyd.nix
     ];
 
   boot.loader.systemd-boot.enable = true;
