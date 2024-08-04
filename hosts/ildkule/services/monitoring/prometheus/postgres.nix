@@ -38,7 +38,7 @@ in {
   };
 
   systemd.services.prometheus-postgres-exporter-knakelibrak.serviceConfig = let
-    localCfg = config.services.prometheus.exporters.postgres; 
+    localCfg = config.services.prometheus.exporters.postgres;
   in lib.recursiveUpdate config.systemd.services.prometheus-postgres-exporter.serviceConfig {
       EnvironmentFile = config.sops.secrets."keys/postgres/postgres_exporter_knakelibrak_env".path;
       ExecStart = ''

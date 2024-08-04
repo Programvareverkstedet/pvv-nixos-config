@@ -21,8 +21,8 @@ in {
   services.idp.sp-remote-metadata = [
     "https://www.pvv.ntnu.no/simplesaml/"
     "https://pvv.ntnu.no/simplesaml/"
-    "https://www.pvv.org/simplesaml/" 
-    "https://pvv.org/simplesaml/" 
+    "https://www.pvv.org/simplesaml/"
+    "https://pvv.org/simplesaml/"
   ];
 
   services.pvv-nettsiden = {
@@ -43,7 +43,7 @@ in {
                   'idp' => 'https://idp.pvv.ntnu.no/',
               ),
           );
-	'';
+        '';
       };
     };
 

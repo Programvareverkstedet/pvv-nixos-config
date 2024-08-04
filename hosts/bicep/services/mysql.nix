@@ -15,12 +15,12 @@
       mysqld = {
         # PVV allows a lot of connections at the same time
         max_connect_errors = 10000;
-	bind-address = values.services.mysql.ipv4;
-	skip-networking = 0;
+        bind-address = values.services.mysql.ipv4;
+        skip-networking = 0;
 
-	# This was needed in order to be able to use all of the old users
-	# during migration from knakelibrak to bicep in Sep. 2023
-	secure_auth = 0;
+        # This was needed in order to be able to use all of the old users
+        # during migration from knakelibrak to bicep in Sep. 2023
+        secure_auth = 0;
       };
     };
 

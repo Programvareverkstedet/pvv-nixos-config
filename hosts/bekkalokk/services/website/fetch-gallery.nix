@@ -46,7 +46,7 @@ in {
       while IFS= read fname; do
         # Skip this file if an up-to-date thumbnail already exists
         if [ -f ".thumbnails/$fname.png" ] && \
-           [ "$(date -R -r "$fname")" == "$(date -R -r ".thumbnails/$fname.png")" ]
+          [ "$(date -R -r "$fname")" == "$(date -R -r ".thumbnails/$fname.png")" ]
         then
           continue
         fi
@@ -54,7 +54,7 @@ in {
         echo "Creating thumbnail for $fname"
         mkdir -p $(dirname ".thumbnails/$fname")
         convert -define jpeg:size=200x200 "$fname" -thumbnail 300 -auto-orient ".thumbnails/$fname.png" ||:
-	touch -m -d "$(date -R -r "$fname")" ".thumbnails/$fname.png"
+        touch -m -d "$(date -R -r "$fname")" ".thumbnails/$fname.png"
       done <<< "$images"
     '';
 

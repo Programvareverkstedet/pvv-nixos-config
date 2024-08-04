@@ -885,9 +885,9 @@ let
   # Create a limits.conf(5) file.
   makeLimitsConf = limits:
     pkgs.writeText "limits.conf"
-       (concatMapStrings ({ domain, type, item, value }:
-         "${domain} ${type} ${item} ${toString value}\n")
-         limits);
+      (concatMapStrings ({ domain, type, item, value }:
+        "${domain} ${type} ${item} ${toString value}\n")
+        limits);
 
   limitsType = with lib.types; listOf (submodule ({ ... }: {
     options = {
@@ -935,8 +935,8 @@ let
   }));
 
   motd = if config.users.motdFile == null
-         then pkgs.writeText "motd" config.users.motd
-         else config.users.motdFile;
+    then pkgs.writeText "motd" config.users.motd
+    else config.users.motdFile;
 
   makePAMService = name: service:
     { name = "pam.d/${name}";
@@ -976,20 +976,20 @@ in
             item   = "maxlogins";
             value  = "4";
           }
-       ];
+        ];
 
-     description = lib.mdDoc ''
-       Define resource limits that should apply to users or groups.
-       Each item in the list should be an attribute set with a
-       {var}`domain`, {var}`type`,
-       {var}`item`, and {var}`value`
-       attribute.  The syntax and semantics of these attributes
-       must be that described in {manpage}`limits.conf(5)`.
+      description = lib.mdDoc ''
+        Define resource limits that should apply to users or groups.
+        Each item in the list should be an attribute set with a
+        {var}`domain`, {var}`type`,
+        {var}`item`, and {var}`value`
+        attribute.  The syntax and semantics of these attributes
+        must be that described in {manpage}`limits.conf(5)`.
 
-       Note that these limits do not apply to systemd services,
-       whose limits can be changed via {option}`systemd.extraConfig`
-       instead.
-     '';
+        Note that these limits do not apply to systemd services,
+        whose limits can be changed via {option}`systemd.extraConfig`
+        instead.
+      '';
     };
 
     security.pam.services = mkOption {
@@ -1507,8 +1507,8 @@ in
         runuser = { rootOK = true; unixAuth = false; setEnvironment = false; };
 
         /* FIXME: should runuser -l start a systemd session? Currently
-           it complains "Cannot create session: Already running in a
-           session". */
+            it complains "Cannot create session: Already running in a
+            session". */
         runuser-l = { rootOK = true; unixAuth = false; };
       } // optionalAttrs config.security.pam.enableFscrypt {
         # Allow fscrypt to verify login passphrase

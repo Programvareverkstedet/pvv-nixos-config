@@ -112,7 +112,7 @@ class PwAuth extends \SimpleSAML\Module\core\Auth\UserPassBase
             array_shift($groups);
             array_shift($groups);
             array_pop($groups);
-	    
+
             $info = posix_getpwnam($uid);
             $group = $info['gid'];
             if (!in_array($group, $groups)) {

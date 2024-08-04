@@ -26,7 +26,7 @@
 
         "turns:turn.pvv.ntnu.no:5349?transport=tcp"
         "turns:turn.pvv.ntnu.no:5349?transport=udp"
-        
+
         "turns:turn.pvv.ntnu.no:3478?transport=udp"
         "turns:turn.pvv.ntnu.no:3478?transport=tcp"
         "turn:turn.pvv.ntnu.no:3478?transport=udp"
@@ -69,7 +69,7 @@
 
     tls-listening-port = 443;
     alt-tls-listening-port = 5349;
- 
+
     listening-port = 3478;
 
     min-port = 49000;
@@ -116,7 +116,7 @@
       #total-quota=1200
     '';
   };
-  
+
   networking.firewall = {
     interfaces.enp6s0f0 = let
       range = with config.services.coturn; [ {

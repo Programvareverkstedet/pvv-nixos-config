@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.services.roundcube;
   domain = "webmail.pvv.ntnu.no";
-in 
+in
 {
   services.roundcube = {
     enable = true;
