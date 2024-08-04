@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> {} }:
-pkgs.mkShell {
-  nativeBuildInputs = with pkgs; [
+pkgs.mkShellNoCC {
+  packages = with pkgs; [
     sops
     gnupg
     openstackclient
