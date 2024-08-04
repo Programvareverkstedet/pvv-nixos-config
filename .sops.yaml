@@ -30,7 +30,7 @@ creation_rules:
       - *user_oysteikt
 
   # Host specific secrets
-  
+
   - path_regex: secrets/bekkalokk/[^/]+\.yaml$
     key_groups:
     - age:
@@ -66,7 +66,7 @@ creation_rules:
       - *user_pederbs_bjarte
       pgp:
       - *user_oysteikt
-  
+
   - path_regex: secrets/bicep/[^/]+\.yaml$
     key_groups:
     - age:

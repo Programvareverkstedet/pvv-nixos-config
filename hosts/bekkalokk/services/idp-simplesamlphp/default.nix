@@ -22,62 +22,62 @@ let
       # openssl req -newkey rsa:4096 -new -x509 -days 365 -nodes -out idp.crt -keyout idp.pem
       "metadata/saml20-idp-hosted.php" = pkgs.writeText "saml20-idp-remote.php" ''
         <?php
-	  $metadata['https://idp.pvv.ntnu.no/'] = array(
-	    'host' => '__DEFAULT__',
-	    'privatekey' => '${config.sops.secrets."idp/privatekey".path}',
-	    'certificate' => '${./idp.crt}',
-	    'auth' => 'pwauth',
-	  );
-	?>
+        $metadata['https://idp.pvv.ntnu.no/'] = array(
+          'host' => '__DEFAULT__',
+          'privatekey' => '${config.sops.secrets."idp/privatekey".path}',
+          'certificate' => '${./idp.crt}',
+          'auth' => 'pwauth',
+        );
+        ?>
       '';
 
       "metadata/saml20-sp-remote.php" = pkgs.writeText "saml20-sp-remote.php" ''
         <?php
-	  ${ lib.pipe config.services.idp.sp-remote-metadata [
-             (map (url: ''
-               $metadata['${url}'] = [
-                   'SingleLogoutService' => [
-                       [
-                           'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-                           'Location' => '${url}module.php/saml/sp/saml2-logout.php/default-sp',
-                       ],
-                       [
-                           'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
-                           'Location' => '${url}module.php/saml/sp/saml2-logout.php/default-sp',
-                       ],
-                   ],
-                   'AssertionConsumerService' => [
-                       [
-                           'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
-                           'Location' => '${url}module.php/saml/sp/saml2-acs.php/default-sp',
-                           'index' => 0,
-                       ],
-                       [
-                           'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact',
-                           'Location' => '${url}module.php/saml/sp/saml2-acs.php/default-sp',
-                           'index' => 1,
-                       ],
-                   ],
-               ];
-	     ''))
-	     (lib.concatStringsSep "\n")
-	  ]}
-	?>
+          ${ lib.pipe config.services.idp.sp-remote-metadata [
+            (map (url: ''
+              $metadata['${url}'] = [
+                'SingleLogoutService' => [
+                  [
+                    'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+                    'Location' => '${url}module.php/saml/sp/saml2-logout.php/default-sp',
+                  ],
+                  [
+                    'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
+                    'Location' => '${url}module.php/saml/sp/saml2-logout.php/default-sp',
+                  ],
+                ],
+                'AssertionConsumerService' => [
+                  [
+                    'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+                    'Location' => '${url}module.php/saml/sp/saml2-acs.php/default-sp',
+                    'index' => 0,
+                  ],
+                  [
+                    'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact',
+                    'Location' => '${url}module.php/saml/sp/saml2-acs.php/default-sp',
+                    'index' => 1,
+                  ],
+                ],
+              ];
+            ''))
+            (lib.concatStringsSep "\n")
+          ]}
+        ?>
       '';
 
       "config/authsources.php" = pkgs.writeText "idp-authsources.php" ''
         <?php
           $config = array(
-	    'admin' => array(
-	      'core:AdminPassword'
-	    ),
+            'admin' => array(
+              'core:AdminPassword'
+            ),
             'pwauth' => array(
-               'authpwauth:PwAuth',
-               'pwauth_bin_path' => '${lib.getExe pwAuthScript}',
-               'mail_domain' => '@pvv.ntnu.no',
+              'authpwauth:PwAuth',
+              'pwauth_bin_path' => '${lib.getExe pwAuthScript}',
+              'mail_domain' => '@pvv.ntnu.no',
             ),
           );
-	?>
+        ?>
       '';
 
       "config/config.php" = pkgs.runCommandLocal "simplesamlphp-config.php" { } ''
@@ -108,7 +108,7 @@ in
       List of urls point to (simplesamlphp) service profiders, which the idp should trust.
 
       :::{.note}
-	Make sure the url ends with a `/`
+      Make sure the url ends with a `/`
       :::
     '';
   };
@@ -132,7 +132,7 @@ in
         owner = "idp";
         group = "idp";
       };
-    };  
+    };
 
     users.groups."idp" = { };
     users.users."idp" = {
@@ -199,9 +199,9 @@ in
           '';
         };
         "^~ /simplesaml/".extraConfig = ''
-	  rewrite ^/simplesaml/(.*)$ /$1 redirect;
-	  return 404;
-	'';
+          rewrite ^/simplesaml/(.*)$ /$1 redirect;
+          return 404;
+        '';
       };
     };
   };

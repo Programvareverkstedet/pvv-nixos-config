@@ -32,7 +32,7 @@
             color = "red";
             command = "hostname | ${pkgs.toilet}/bin/toilet -f mono9";
           };
-          
+
           service_status = {
             Accounts = "accounts-daemon";
             Cron = "cron";
@@ -40,16 +40,16 @@
             Matrix = "matrix-synapse";
             sshd = "sshd";
           };
-          
+
           uptime = {
             prefix = "Uptime: ";
           };
-          
+
           # Not relevant for server
           # user_service_status = {
           #   Gpg-agent = "gpg-agent";
           # };
-          
+
           filesystems = let
             inherit (lib.attrsets) attrNames listToAttrs nameValuePair;
             inherit (lib.lists) imap1;
@@ -61,7 +61,7 @@
             getName = i: v: if (v.label != null) then v.label else "<? ${toString i}>";
           in
             imap1Attrs' (i: n: v: nameValuePair (getName i v) n) fileSystems;
-          
+
           memory = {
             swap_pos = "beside"; # or "below" or "none"
           };
@@ -70,14 +70,14 @@
             inherit (lib.lists) imap1;
             inherit (lib.attrsets) filterAttrs nameValuePair attrValues listToAttrs;
             inherit (config.users) users;
-            
+
             normalUsers = filterAttrs (n: v: v.isNormalUser || n == "root") users;
             userNPVs = imap1 (index: user: nameValuePair user.name index) (attrValues normalUsers);
           in listToAttrs userNPVs;
 
           last_run = {};
         };
-      
+
         toml = pkgs.formats.toml {};
 
       in toml.generate "rust-motd.toml" cfg;

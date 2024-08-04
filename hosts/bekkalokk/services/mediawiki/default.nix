@@ -199,7 +199,7 @@ in {
         extraConfig = ''
           location ~ ^/simplesaml/(?<phpfile>.+?\.php)(?<pathinfo>/.*)?$ {
             include ${pkgs.nginx}/conf/fastcgi_params;
-            fastcgi_pass unix:${config.services.phpfpm.pools.mediawiki.socket}; 
+            fastcgi_pass unix:${config.services.phpfpm.pools.mediawiki.socket};
             fastcgi_param SCRIPT_FILENAME ${simplesamlphp}/share/php/simplesamlphp/public/$phpfile;
 
             # Must be prepended with the baseurlpath

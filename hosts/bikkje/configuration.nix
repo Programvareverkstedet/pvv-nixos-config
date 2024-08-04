@@ -35,7 +35,7 @@
         # Workaround for bug https://github.com/NixOS/nixpkgs/issues/162686
         useHostResolvConf = mkForce false;
       };
-      
+
       system.stateVersion = "23.11";
       services.resolved.enable = true;
     };

@@ -141,7 +141,7 @@ in {
 
 
   services.redis.servers."".enable = true;
-  
+
   services.nginx.virtualHosts."matrix.pvv.ntnu.no" = lib.mkMerge [
   {
     kTLS = true;

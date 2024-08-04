@@ -5,6 +5,7 @@ pkgs.mkShellNoCC {
     gnupg
     statix
     openstackclient
+    editorconfig-checker
   ];
 
   shellHook = ''

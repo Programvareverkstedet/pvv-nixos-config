@@ -35,7 +35,7 @@ in {
           name = "Ildkule Prometheus";
           type = "prometheus";
           url = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
-         isDefault = true;
+          isDefault = true;
         }
         {
           name = "Ildkule loki";
@@ -56,13 +56,13 @@ in {
           url = "https://raw.githubusercontent.com/matrix-org/synapse/develop/contrib/grafana/synapse.json";
           options.path = dashboards/synapse.json;
         }
-	# TODO: enable once https://github.com/NixOS/nixpkgs/pull/242365 gets merged
-	# {
-	#   name = "MySQL";
-	#   type = "file";
-	#   url = "https://raw.githubusercontent.com/prometheus/mysqld_exporter/main/mysqld-mixin/dashboards/mysql-overview.json";
-	#   options.path = dashboards/mysql.json;
-	# }
+        # TODO: enable once https://github.com/NixOS/nixpkgs/pull/242365 gets merged
+        # {
+        #   name = "MySQL";
+        #   type = "file";
+        #   url = "https://raw.githubusercontent.com/prometheus/mysqld_exporter/main/mysqld-mixin/dashboards/mysql-overview.json";
+        #   options.path = dashboards/mysql.json;
+        # }
         {
           name = "Postgresql";
           type = "file";
