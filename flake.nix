@@ -38,7 +38,7 @@
       "aarch64-darwin"
     ];
     forAllSystems = f: nixlib.genAttrs systems f;
-    allMachines = nixlib.mapAttrsToList (name: _: name) self.nixosConfigurations;
+    allMachines = builtins.attrNames self.nixosConfigurations;
     importantMachines = [
       "bekkalokk"
       "bicep"
