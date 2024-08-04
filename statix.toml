@@ -1,0 +1,24 @@
+ignore = [".direnv"]
+nix_version = '2.18' # '2.4'
+disabled = [
+    # "bool_comparison", # W01
+    # "empty_let_in", # W02
+    "manual_inherit", # W03
+    "manual_inherit_from", # W04
+    # "legacy_let_syntax", # W05
+    "collapsible_let_in", # W06
+    # "eta_reduction", # W07
+    # "useless_parens", # W08
+    "empty_pattern", # W10
+    # "redundant_pattern_bind", # W11
+    # "unquoted_uri", # W12
+    # "deprecated_is_null", # W13
+    # "empty_inherit", # W14
+    # "faster_groupby", # W15
+    # "faster_zipattrswith", # W16
+    # "deprecated_to_path", # W17
+    # "bool_simplification", # W18
+    # "useless_has_attr", # W19
+    "repeated_keys", # W20
+    "empty_list_concat", # W23
+]

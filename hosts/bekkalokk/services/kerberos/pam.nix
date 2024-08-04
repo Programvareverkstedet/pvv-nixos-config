@@ -879,7 +879,7 @@ let
 
   inherit (pkgs) pam_krb5 pam_ccreds;
 
-  use_ldap = (config.users.ldap.enable && config.users.ldap.loginPam);
+  use_ldap = config.users.ldap.enable && config.users.ldap.loginPam;
   pam_ldap = if config.users.ldap.daemon.enable then pkgs.nss_pam_ldapd else pkgs.pam_ldap;
 
   # Create a limits.conf(5) file.
@@ -1510,7 +1510,7 @@ in
            it complains "Cannot create session: Already running in a
            session". */
         runuser-l = { rootOK = true; unixAuth = false; };
-      } // optionalAttrs (config.security.pam.enableFscrypt) {
+      } // optionalAttrs config.security.pam.enableFscrypt {
         # Allow fscrypt to verify login passphrase
         fscrypt = {};
       };

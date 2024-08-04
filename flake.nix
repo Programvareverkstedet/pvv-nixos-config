@@ -37,7 +37,7 @@
       "aarch64-linux"
       "aarch64-darwin"
     ];
-    forAllSystems = f: nixlib.genAttrs systems (system: f system);
+    forAllSystems = f: nixlib.genAttrs systems f;
     allMachines = nixlib.mapAttrsToList (name: _: name) self.nixosConfigurations;
     importantMachines = [
       "bekkalokk"

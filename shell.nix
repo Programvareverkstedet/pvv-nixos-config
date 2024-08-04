@@ -3,6 +3,7 @@ pkgs.mkShellNoCC {
   packages = with pkgs; [
     sops
     gnupg
+    statix
     openstackclient
   ];
 
