@@ -10,5 +10,12 @@ check:
 build-machine machine=`just _a_machine`:
   {{nom}} build .#nixosConfigurations.{{ machine }}.config.system.build.toplevel
 
+@update-inputs:
+  nix eval .#inputs --apply builtins.attrNames --json \
+    | jq '.[]' -r \
+    | gum choose --no-limit --height=15 \
+    | xargs nix flake update --commit-lock-file
+
+
 _a_machine:
   nix eval .#nixosConfigurations --apply builtins.attrNames --json | jq .[] -r | gum filter
