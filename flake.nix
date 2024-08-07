@@ -47,6 +47,8 @@
       "ildkule"
     ];
   in {
+    inherit inputs;
+
     nixosConfigurations = let
       unstablePkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
       nixosConfig = nixpkgs: name: config: nixpkgs.lib.nixosSystem (nixpkgs.lib.recursiveUpdate

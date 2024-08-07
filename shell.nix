@@ -1,6 +1,9 @@
 { pkgs ? import <nixpkgs> {} }:
 pkgs.mkShellNoCC {
   packages = with pkgs; [
+    justfile
+    jq
+    gum
     sops
     gnupg
     statix
