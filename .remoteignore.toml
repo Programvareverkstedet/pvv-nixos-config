@@ -1,0 +1,15 @@
+# used by the `remote-exec` package
+[push]
+exclude = []
+include = []
+
+[pull]
+exclude = ["*"]
+
+[both]
+exclude = [
+    ".remote.toml",
+    ".direnv",
+    "result*",
+]
+include = []

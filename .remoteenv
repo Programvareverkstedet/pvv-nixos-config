@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# used by the `remote-exec` package
+eval "$(nix print-dev-env .#default)"
+# echo Entered "$(hostname --fqdn)" # just why systemd-networkd...
+echo Entered "$(hostname)"

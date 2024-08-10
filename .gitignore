@@ -1,3 +1,4 @@
 result*
 /configuration.nix
 /.direnv/
+/.remote.toml
