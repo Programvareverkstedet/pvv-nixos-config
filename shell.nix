@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {} }:
 pkgs.mkShellNoCC {
   packages = with pkgs; [
-    justfile
+    just
     jq
     gum
     sops
