@@ -59,7 +59,7 @@ in
           authorized-keys-path = "/var/lib/gitea-web/authorized_keys.d/%i";
           rrsync-script = pkgs.writeShellScript "rrsync-chown" ''
             ${lib.getExe pkgs.rrsync} -wo "$1"
-            ${pkgs.coreutils}/bin/chown -R gitea-web:nginx "$1"
+            ${pkgs.coreutils}/bin/chown -R gitea-web:gitea-web "$1"
           '';
           web-dir = "/var/lib/gitea-web/web";
         };
@@ -103,4 +103,12 @@ in
   systemd.targets.timers.wants = map (org: "gitea-web-secret-provider@${org}.timer") organizations;
 
   services.openssh.authorizedKeysFiles = map (org: "/var/lib/gitea-web/authorized_keys.d/${org}") organizations;
+
+  users.users.nginx.extraGroups = [ "gitea-web" ];
+  services.nginx.virtualHosts."pages.pvv.ntnu.no" = {
+    kTLS = true;
+    forceSSL = true;
+    enableACME = true;
+    root = "/var/lib/gitea-web/web";
+  };
 }
