@@ -6,7 +6,8 @@ let
 in {
   imports = [
     ./ci.nix
-    ./import-users.nix
+    ./import-users
+    ./web-secret-provider
   ];
 
   sops.secrets = {
