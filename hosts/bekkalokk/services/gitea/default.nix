@@ -58,6 +58,14 @@ in {
       service = {
         DISABLE_REGISTRATION = true;
         ENABLE_NOTIFY_MAIL = true;
+
+        # Not a very commonly used feature, make opt-in
+        DEFAULT_ENABLE_TIMETRACKING = false;
+
+        # Everyone here are contributors
+        DEFAULT_ALLOW_ONLY_CONTRIBUTORS_TO_TRACK_TIME = false;
+
+        DEFAULT_ORG_MEMBER_VISIBLE = true;
       };
       admin.DEFAULT_EMAIL_NOTIFICATIONS = "onmention";
       session.COOKIE_SECURE = true;
