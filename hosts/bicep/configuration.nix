@@ -12,8 +12,7 @@
     ./services/mysql.nix
     ./services/postgres.nix
     ./services/mysql.nix
-    # TODO: fix the calendar bot
-    # ./services/calendar-bot.nix
+    ./services/calendar-bot.nix
 
     ./services/matrix
   ];
