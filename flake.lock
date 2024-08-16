@@ -194,11 +194,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723792531,
-        "narHash": "sha256-7mG0S6KHjlVXo9mT6aPd9Fq+zJ+63UaTm573aEBEGM8=",
+        "lastModified": 1723850344,
+        "narHash": "sha256-aT37O9l9eclWEnqxASVNBL1dKwDHZUOqdbA4VO9DJvw=",
         "ref": "refs/heads/main",
-        "rev": "bbe3de32a48bdbe5b0ae7896bae915aa5e5ea85b",
-        "revCount": 16,
+        "rev": "38b66677ab8c01aee10cd59e745af9ce3ea88092",
+        "revCount": 19,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/calendar-bot.git"
       },
