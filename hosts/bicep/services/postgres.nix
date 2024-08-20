@@ -1,4 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+let
+  backupDir = "/var/lib/postgresql/backups";
+in
 {
   services.postgresql = {
     enable = true;
@@ -90,9 +93,50 @@
   networking.firewall.allowedTCPPorts = [ 5432 ];
   networking.firewall.allowedUDPPorts = [ 5432 ];
 
-  services.postgresqlBackup = {
-    enable = true;
-    location = "/var/lib/postgres/backups";
-    backupAll = true;
+  # NOTE: instead of having the upstream nixpkgs postgres backup unit trigger
+  #       another unit, it was easier to just make one ourselves
+  systemd.services."backup-postgresql" = {
+    description = "Backup PostgreSQL data";
+    requires = [ "postgresql.service" ];
+
+    path = [
+      pkgs.coreutils
+      pkgs.rsync
+      pkgs.gzip
+      config.services.postgresql.package
+    ];
+
+    script = let
+      rotations = 10;
+      sshTarget1 = "root@isvegg.pvv.ntnu.no:/mnt/backup1/bicep/postgresql";
+      sshTarget2 = "root@isvegg.pvv.ntnu.no:/mnt/backup2/bicep/postgresql";
+    in ''
+      set -eo pipefail
+
+      pg_dumpall -U postgres | gzip -c -9 --rsyncable > "${backupDir}/$(date --iso-8601)-dump.sql.gz"
+
+      while [ $(ls -1 "${backupDir}" | wc -l) -gt ${toString rotations} ]; do
+        rm $(find "${backupDir}" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)
+      done
+
+      rsync -avz --delete "${backupDir}" '${sshTarget1}'
+      rsync -avz --delete "${backupDir}" '${sshTarget2}'
+    '';
+
+    serviceConfig = {
+      Type = "oneshot";
+      User = "postgres";
+      Group = "postgres";
+      UMask = "0077";
+      ReadWritePaths = [ backupDir ];
+    };
+
+    startAt = "*-*-* 01:15:00";
+  };
+
+  systemd.tmpfiles.settings."10-postgresql-backup".${backupDir}.d = {
+    user = "postgres";
+    group = "postgres";
+    mode = "700";
   };
 }
