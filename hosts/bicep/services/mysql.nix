@@ -1,4 +1,7 @@
 { pkgs, lib, config, values, ... }:
+let
+  backupDir = "/var/lib/mysql/backups";
+in
 {
   sops.secrets."mysql/password" = {
     owner = "mysql";
@@ -36,11 +39,6 @@
     }];
   };
 
-  services.mysqlBackup = {
-    enable = true;
-    location = "/var/lib/mysql/backups";
-  };
-
   networking.firewall.allowedTCPPorts = [ 3306 ];
 
   systemd.services.mysql.serviceConfig = {
@@ -49,5 +47,52 @@
       values.ipv4-space
       values.ipv6-space
     ];
+  };
+
+  # NOTE: instead of having the upstream nixpkgs postgres backup unit trigger
+  #       another unit, it was easier to just make one ourselves
+  systemd.services."backup-mysql" = {
+    description = "Backup MySQL data";
+    requires = [ "mysql.service" ];
+
+    path = [
+      pkgs.coreutils
+      pkgs.rsync
+      pkgs.gzip
+      config.services.mysql.package
+    ];
+
+    script = let
+      rotations = 10;
+      sshTarget1 = "root@isvegg.pvv.ntnu.no:/mnt/backup1/bicep/mysql";
+      sshTarget2 = "root@isvegg.pvv.ntnu.no:/mnt/backup2/bicep/mysql";
+    in ''
+      set -eo pipefail
+
+      mysqldump | gzip -c -9 --rsyncable > "${backupDir}/$(date --iso-8601)-dump.sql.gz"
+
+      while [ $(ls -1 "${backupDir}" | wc -l) -gt ${toString rotations} ]; do
+        rm $(find "${backupDir}" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)
+      done
+
+      rsync -avz --delete "${backupDir}" '${sshTarget1}'
+      rsync -avz --delete "${backupDir}" '${sshTarget2}'
+    '';
+
+    serviceConfig = {
+      Type = "oneshot";
+      User = "mysql";
+      Group = "mysql";
+      UMask = "0077";
+      ReadWritePaths = [ backupDir ];
+    };
+
+    startAt = "*-*-* 02:15:00";
+  };
+
+  systemd.tmpfiles.settings."10-mysql-backup".${backupDir}.d = {
+    user = "mysql";
+    group = "mysql";
+    mode = "700";
   };
 }
