@@ -9,10 +9,11 @@
 
     ./acmeCert.nix
 
+    ./services/calendar-bot.nix
+    ./services/doorbell-bot.nix
+    ./services/mysql.nix
     ./services/mysql.nix
     ./services/postgres.nix
-    ./services/mysql.nix
-    ./services/calendar-bot.nix
 
     ./services/matrix
   ];

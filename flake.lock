@@ -207,6 +207,25 @@
         "url": "https://git.pvv.ntnu.no/Projects/calendar-bot.git"
       }
     },
+    "pvv-doorbell-bot": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dirtyRev": "cec320746bbf5b5bc6618a145c1a997ebd0b5196-dirty",
+        "dirtyShortRev": "cec3207-dirty",
+        "lastModified": 1724515328,
+        "narHash": "sha256-Vj3ZJkCaLq+6d1LJtl7Hg5f7XV4NDPeNC1xEyu9QkOI=",
+        "type": "git",
+        "url": "file:///home/felixalb/doorbell-matrix-bot"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///home/felixalb/doorbell-matrix-bot"
+      }
+    },
     "pvv-nettsiden": {
       "inputs": {
         "nixpkgs": [
@@ -237,6 +256,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "pvv-calendar-bot": "pvv-calendar-bot",
+        "pvv-doorbell-bot": "pvv-doorbell-bot",
         "pvv-nettsiden": "pvv-nettsiden",
         "sops-nix": "sops-nix"
       }

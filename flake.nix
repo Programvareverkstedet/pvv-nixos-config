@@ -17,6 +17,10 @@
     pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
+    pvv-doorbell-bot.url = "git+https://git.pvv.ntnu.no/Projects/doorbell-matrix-bot.git";
+    #pvv-doorbell-bot.url = "git+file:///home/felixalb/doorbell-matrix-bot";
+    pvv-doorbell-bot.inputs.nixpkgs.follows = "nixpkgs";
+
     matrix-next.url = "github:dali99/nixos-matrix-modules/v0.6.0";
     matrix-next.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -81,9 +85,11 @@
         modules = [
           inputs.matrix-next.nixosModules.default
           inputs.pvv-calendar-bot.nixosModules.default
+          inputs.pvv-doorbell-bot.nixosModules.default
         ];
         overlays = [
           inputs.pvv-calendar-bot.overlays.x86_64-linux.default
+          inputs.pvv-doorbell-bot.overlays.x86_64-linux.default
         ];
       };
       bekkalokk = stableNixosConfig "bekkalokk" {
