@@ -14,6 +14,9 @@ in
     preStart=''${pkgs.rsync}/bin/rsync -e "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=$CREDENTIALS_DIRECTORY/ssh-known-hosts -i $CREDENTIALS_DIRECTORY/sshkey" -a pvv@smtp.pvv.ntnu.no:/etc/passwd /tmp/passwd-import'';
     serviceConfig = {
       ExecStart = pkgs.writers.writePython3 "gitea-import-users" {
+        flakeIgnore = [
+          "E501" # Line over 80 chars lol
+        ];
         libraries = with pkgs.python3Packages; [ requests ];
       } (builtins.readFile ./gitea-import-users.py);
       LoadCredential=[
