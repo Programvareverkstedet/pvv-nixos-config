@@ -17,6 +17,9 @@
     pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
+    dibbler.url = "git+https://git.pvv.ntnu.no/Projects/dibbler.git";
+    dibbler.inputs.nixpkgs.follows = "nixpkgs";
+
     matrix-next.url = "github:dali99/nixos-matrix-modules/v0.6.0";
     matrix-next.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -124,6 +127,13 @@
         ];
       };
       buskerud = stableNixosConfig "buskerud" { };
+      skrott = stableNixosConfig "skrott" {
+        system = "aarch64-linux";
+        modules = [
+          (nixpkgs + "/nixos/modules/installer/sd-card/sd-image-aarch64.nix")
+          inputs.dibbler.nixosModules.default
+        ];
+      };
     };
 
     nixosModules = {
@@ -147,6 +157,7 @@
 
         simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
 
+        skrot = self.nixosConfigurations.skrott.config.system.build.sdImage;
       } //
       (nixlib.pipe null [
         (_: pkgs.callPackage ./packages/mediawiki-extensions { })

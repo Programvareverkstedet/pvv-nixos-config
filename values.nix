@@ -63,6 +63,10 @@ in rec {
       ipv4 = pvv-ipv4 231;
       ipv6 = pvv-ipv6 231;
     };
+    skrott = {
+      ipv4 = pvv-ipv4 235;
+      ipv6 = pvv-ipv6 235;
+    };
   };
 
   defaultNetworkConfig = {
