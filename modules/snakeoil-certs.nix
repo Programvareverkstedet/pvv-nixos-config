@@ -50,7 +50,7 @@ in
       serviceConfig.Type = "oneshot";
       script = let
         openssl = lib.getExe pkgs.openssl;
-      in lib.concatMapStringsSep "\n----------------\n" ({ name, value }: ''
+      in lib.concatMapStringsSep "\n" ({ name, value }: ''
         mkdir -p $(dirname "${value.certificate}") $(dirname "${value.certificateKey}")
         if ! ${openssl} x509 -checkend 86400 -noout -in ${value.certificate}
         then
@@ -69,6 +69,8 @@ in
         chown "${value.owner}:${value.group}" "${value.certificateKey}"
         chmod "${value.mode}" "${value.certificate}"
         chmod "${value.mode}" "${value.certificateKey}"
+
+        echo "\n-----------------\n"
       '') (lib.attrsToList cfg);
     };
     systemd.timers."generate-snakeoil-certs" = {
