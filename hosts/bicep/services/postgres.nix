@@ -1,7 +1,4 @@
 { config, pkgs, ... }:
-let
-  sslCert = config.security.acme.certs."postgres.pvv.ntnu.no";
-in
 {
   services.postgresql = {
     enable = true;
@@ -79,12 +76,16 @@ in
 
   systemd.services.postgresql.serviceConfig = {
     LoadCredential = [
-      "cert:${sslCert.directory}/cert.pem"
-      "key:${sslCert.directory}/key.pem"
+      "cert:/etc/certs/postgres.crt"
+      "key:/etc/certs/postgres.key"
     ];
   };
 
-  users.groups.acme.members = [ "postgres" ];
+  environment.snakeoil-certs."/etc/certs/postgres" = {
+    owner = "postgres";
+    group = "postgres";
+    subject = "/C=NO/O=Programvareverkstedet/CN=postgres.pvv.ntnu.no/emailAddress=drift@pvv.ntnu.no";
+  };
 
   networking.firewall.allowedTCPPorts = [ 5432 ];
   networking.firewall.allowedUDPPorts = [ 5432 ];
