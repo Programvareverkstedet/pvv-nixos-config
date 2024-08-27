@@ -21,6 +21,9 @@ in rec {
       ipv4 = pvv-ipv4 213;
       ipv6 = pvv-ipv6 213;
     };
+    log-collector = {
+      inherit (hosts.ildkule) ipv4 ipv6;
+    };
   };
 
   hosts = {

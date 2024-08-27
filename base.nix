@@ -173,6 +173,16 @@
     };
   };
 
+  services.journald.upload = {
+    enable =  values.services.logcollector.ipv4;
+    settings.Upload = {
+      URL = "https://logcollector.pvv.ntnu.no:19532";
+      ServerKeyFile = "-";
+      ServerCertificateFile = "-";
+      TrustedCertificateFile = "-";
+    };
+  };
+
   networking.firewall.allowedTCPPorts = lib.mkIf config.services.nginx.enable [ 80 443 ];
 
   security.acme = {
