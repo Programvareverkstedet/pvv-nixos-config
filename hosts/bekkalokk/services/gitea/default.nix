@@ -59,6 +59,7 @@ in {
       service = {
         DISABLE_REGISTRATION = true;
         ENABLE_NOTIFY_MAIL = true;
+        AUTO_WATCH_NEW_REPOS = false;
       };
       admin.DEFAULT_EMAIL_NOTIFICATIONS = "onmention";
       session.COOKIE_SECURE = true;
