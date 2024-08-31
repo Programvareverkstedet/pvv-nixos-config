@@ -13,6 +13,7 @@
     ./services/logrotate.nix
     ./services/nginx.nix
     ./services/openssh.nix
+    ./services/smartd.nix
     ./services/thermald.nix
   ];
 
