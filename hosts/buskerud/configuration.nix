@@ -2,7 +2,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../base.nix
+    ../../base
     ../../misc/metrics-exporters.nix
 
     ./services/libvirt.nix
