@@ -10,6 +10,7 @@
 
     ./services/acme.nix
     ./services/auto-upgrade.nix
+    ./services/irqbalance.nix
     ./services/logrotate.nix
     ./services/nginx.nix
     ./services/openssh.nix
