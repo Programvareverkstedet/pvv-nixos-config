@@ -158,6 +158,18 @@ in {
     };
   }
   {
+    locations."/_synapse/admin" = {
+      proxyPass = "http://$synapse_backend";
+      extraConfig = ''
+        allow 127.0.0.1;
+        allow ::1;
+        allow ${values.hosts.bicep.ipv4};
+        allow ${values.hosts.bicep.ipv6};
+        deny all;
+      '';
+    };
+  }
+  {
     locations = let
       connectionInfo = w: matrix-lib.workerConnectionResource "metrics" w;
       socketAddress = w: let c = connectionInfo w; in "${c.host}:${toString c.port}";

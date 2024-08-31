@@ -11,7 +11,7 @@
   services.mjolnir = {
     enable = true;
     pantalaimon.enable = false;
-    homeserverUrl = "http://127.0.0.1:8008";
+    homeserverUrl = "https://matrix.pvv.ntnu.no";
     accessTokenFile = config.sops.secrets."matrix/mjolnir/access_token".path;
     managementRoom = "!gsdeCoWjvYRBrzuiRq:pvv.ntnu.no";
     protectedRooms = map (a: "https://matrix.to/#/${a}") [
