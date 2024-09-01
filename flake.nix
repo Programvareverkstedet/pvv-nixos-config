@@ -27,6 +27,8 @@
     grzegorz.inputs.nixpkgs.follows = "nixpkgs-unstable";
     grzegorz-clients.url = "github:Programvareverkstedet/grzegorz-clients";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
+
+    minecraft-data.url = "git+https://git.pvv.ntnu.no/Drift/minecraft-data.git";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ... }@inputs:
@@ -92,6 +94,7 @@
             heimdal = unstablePkgs.heimdal;
             mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
             simplesamlphp = final.callPackage ./packages/simplesamlphp { };
+            bluemap = final.callPackage ./packages/bluemap.nix { };
           })
           inputs.nix-gitea-themes.overlays.default
           inputs.pvv-nettsiden.overlays.default

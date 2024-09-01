@@ -121,6 +121,21 @@
         "type": "github"
       }
     },
+    "minecraft-data": {
+      "locked": {
+        "lastModified": 1725277886,
+        "narHash": "sha256-Fw4VbbE3EfypQWSgPDFfvVH47BHeg3ptsO715NlUM8Q=",
+        "ref": "refs/heads/master",
+        "rev": "1b4087bd3322a2e2ba84271c8fcc013e6b641a58",
+        "revCount": 2,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Drift/minecraft-data.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Drift/minecraft-data.git"
+      }
+    },
     "nix-gitea-themes": {
       "inputs": {
         "nixpkgs": [
@@ -233,6 +248,7 @@
         "grzegorz": "grzegorz",
         "grzegorz-clients": "grzegorz-clients",
         "matrix-next": "matrix-next",
+        "minecraft-data": "minecraft-data",
         "nix-gitea-themes": "nix-gitea-themes",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
