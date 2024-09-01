@@ -45,6 +45,11 @@
 
   programs.zsh.enable = true;
 
+  security.sudo.execWheelOnly = true;
+  security.sudo.extraConfig = ''
+    Defaults lecture = never
+  '';
+
   users.groups."drift".name = "drift";
 
   # Trusted users on the nix builder machines
