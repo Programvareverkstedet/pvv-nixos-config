@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   imports = [
@@ -18,6 +18,8 @@
     ./services/smartd.nix
     ./services/thermald.nix
   ];
+
+  boot.tmp.cleanOnBoot = lib.mkDefault true;
 
   time.timeZone = "Europe/Oslo";
 
