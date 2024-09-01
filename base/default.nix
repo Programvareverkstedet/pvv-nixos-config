@@ -14,6 +14,7 @@
     ./services/logrotate.nix
     ./services/nginx.nix
     ./services/openssh.nix
+    ./services/postfix.nix
     ./services/smartd.nix
     ./services/thermald.nix
   ];
