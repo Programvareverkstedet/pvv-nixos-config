@@ -23,8 +23,12 @@
     */
     registry = {
       "nixpkgs".flake = inputs.nixpkgs;
+      "nixpkgs-unstable".flake = inputs.nixpkgs-unstable;
       "pvv-nix".flake = inputs.self;
     };
-    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    nixPath = [
+      "nixpkgs=${inputs.nixpkgs}"
+      "unstable=${inputs.nixpkgs-unstable}"
+    ];
   };
 }
