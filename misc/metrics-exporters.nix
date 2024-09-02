@@ -20,7 +20,29 @@
   };
 
 
-  networking.firewall.allowedTCPPorts = [ 9100 ];
+  services.prometheus.exporters.systemd = {
+    enable = true;
+    port = 9101;
+    extraFlags = [
+      "--systemd.collector.enable-restart-count"
+      "--systemd.collector.enable-ip-accounting"
+    ];
+  };
+
+  systemd.services.prometheus-systemd-exporter.serviceConfig = {
+    IPAddressDeny = "any";
+    IPAddressAllow = [
+      "127.0.0.1"
+      "::1"
+      values.hosts.ildkule.ipv4
+      values.hosts.ildkule.ipv6
+      values.hosts.ildkule.ipv4_global
+      values.hosts.ildkule.ipv6_global
+    ];
+  };
+  
+
+  networking.firewall.allowedTCPPorts = [ 9100 9101 ];
 
   services.promtail = {
     enable = true;

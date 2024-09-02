@@ -6,6 +6,7 @@
     # ./mysqld.nix
     ./node.nix
     ./postgres.nix
+    ./systemd.nix
   ];
 
   services.prometheus = {
