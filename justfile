@@ -18,7 +18,7 @@ run-vm machine=`just _a_machine`:
   nix eval .#inputs --apply builtins.attrNames --json \
     | jq '.[]' -r \
     | gum choose --no-limit --height=15 \
-    | xargs nix flake update --commit-lock-file
+    | xargs -L 1 nix flake lock --update-input
 
 
 _a_machine:
