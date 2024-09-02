@@ -202,6 +202,12 @@ in
           rewrite ^/simplesaml/(.*)$ /$1 redirect;
           return 404;
         '';
+        "/robots.txt" = {
+          root = pkgs.writeTextDir "robots.txt" ''
+            User-agent: *
+            Disallow: /
+          '';
+        };
       };
     };
   };
