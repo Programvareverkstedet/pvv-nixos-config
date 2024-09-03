@@ -7,8 +7,6 @@
     ../../misc/metrics-exporters.nix
     ./services/nginx
 
-    ./acmeCert.nix
-
     ./services/mysql.nix
     ./services/postgres.nix
     ./services/mysql.nix
@@ -35,6 +33,9 @@
   systemd.network.wait-online = {
     anyInterface = true;
   };
+
+  # There are no smart devices
+  services.smartd.enable = false;
 
   # Do not change, even during upgrades.
   # See https://search.nixos.org/options?show=system.stateVersion
