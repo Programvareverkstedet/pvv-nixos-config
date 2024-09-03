@@ -9,6 +9,8 @@ in {
           "ildkule.pvv.ntnu.no:${toString cfg.exporters.node.port}"
           "bicep.pvv.ntnu.no:9101"
           "bekkalokk.pvv.ntnu.no:9101"
+          "brzeczyszczykiewicz.pvv.ntnu.no:9101"
+          "georg.pvv.ntnu.no:9101"
         ];
       }
     ];
