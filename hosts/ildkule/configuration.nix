@@ -46,6 +46,9 @@
   environment.systemPackages = with pkgs; [
   ];
 
+  # No devices with SMART
+  services.smartd.enable = false;
+
   system.stateVersion = "23.11"; # Did you read the comment?
 
 }
