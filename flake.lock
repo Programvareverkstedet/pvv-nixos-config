@@ -63,7 +63,7 @@
       "inputs": {
         "fix-python": "fix-python",
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs"
         ]
       },
       "locked": {

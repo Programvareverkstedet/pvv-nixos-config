@@ -24,7 +24,7 @@
     nix-gitea-themes.inputs.nixpkgs.follows = "nixpkgs";
 
     grzegorz.url = "github:Programvareverkstedet/grzegorz";
-    grzegorz.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    grzegorz.inputs.nixpkgs.follows = "nixpkgs";
     grzegorz-clients.url = "github:Programvareverkstedet/grzegorz-clients";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
 
