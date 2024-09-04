@@ -30,11 +30,10 @@ in rec {
       ipv6 = pvv-ipv6 168;
     };
     ildkule = {
-      ipv4 = "10.212.25.209";
-      ipv6 = "2001:700:300:6025:f816:3eff:feee:812d";
-
-      ipv4_global = "129.241.153.213";
-      ipv6_global = "2001:700:300:6026:f816:3eff:fe58:f1e8";
+      ipv4 = "129.241.153.213";
+      ipv4_internal = "192.168.12.209";
+      ipv4_internal_gw = "192.168.12.1";
+      ipv6 = "2001:700:300:6026:f816:3eff:fe58:f1e8";
     };
     bicep = {
       ipv4 = pvv-ipv4 209;
@@ -66,32 +65,11 @@ in rec {
   };
 
   defaultNetworkConfig = {
-    networkConfig.IPv6AcceptRA = "no";
+    dns = [ "129.241.0.200" "129.241.0.201" "2001:700:300:1900::200" "2001:700:300:1900::201" ];
+    domains = [ "pvv.ntnu.no" "pvv.org" ];
     gateway = [ hosts.gateway ];
-    dns = [ "129.241.0.200" "129.241.0.201" ];
-    domains = [ "pvv.ntnu.no" "pvv.org" ];
-    DHCP = "no";
-  };
 
-  openstackGlobalNetworkConfig = {
-    networkConfig.IPv6AcceptRA = "yes";
-    dns = [ "129.241.0.200" "129.241.0.201" ];
-    domains = [ "pvv.ntnu.no" "pvv.org" ];
-    DHCP = "yes";
-  };
-
-  openstackLocalNetworkConfig = {
     networkConfig.IPv6AcceptRA = "no";
-    dns = [ "129.241.0.200" "129.241.0.201" ];
-    domains = [ "pvv.ntnu.no" "pvv.org" ];
-    DHCP = "yes";
-
-    # Only use this network for link-local networking, not global/default routes
-    dhcpV4Config.UseRoutes = "no";
-    routes = [
-      { routeConfig = { Destination = "10.0.0.0/8"; Gateway = "_dhcp4"; }; }
-    ];
-
-    linkConfig.RequiredForOnline = "no";
+    DHCP = "no";
   };
 }

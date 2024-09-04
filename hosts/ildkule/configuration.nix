@@ -1,4 +1,4 @@
-{ config, pkgs, values, ... }:
+{ config, pkgs, lib, values, ... }:
 {
   imports = [
       # Include the results of the hardware scan.
@@ -19,27 +19,28 @@
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
 
-  networking.hostName = "ildkule"; # Define your hostname.
+  # Openstack Neutron and systemd-networkd are not best friends, use something else:
+  systemd.network.enable = lib.mkForce false;
+  networking = let
+    hostConf = values.hosts.ildkule;
+  in {
+    hostName = "ildkule";
+    tempAddresses = "disabled";
+    useDHCP = lib.mkForce true;
 
-  # Main connection, using the global/floatig IP, for communications with the world
-  systemd.network.networks."30-ntnu-global" = values.openstackGlobalNetworkConfig // {
-    matchConfig.Name = "ens4";
+    search = values.defaultNetworkConfig.domains;
+    nameservers = values.defaultNetworkConfig.dns;
+    defaultGateway.address = hostConf.ipv4_internal_gw;
 
-    # Add the global addresses in addition to the local address learned from DHCP
-    addresses = [
-      { addressConfig.Address = "${values.hosts.ildkule.ipv4_global}/32"; }
-      { addressConfig.Address = "${values.hosts.ildkule.ipv6_global}/128"; }
-    ];
-  };
-
-  # Secondary connection only for use within the university network
-  systemd.network.networks."40-ntnu-internal" = values.openstackLocalNetworkConfig // {
-    matchConfig.Name = "ens3";
-    # Add the ntnu-internal addresses in addition to the local address learned from DHCP
-    addresses = [
-      { addressConfig.Address = "${values.hosts.ildkule.ipv4}/32"; }
-      { addressConfig.Address = "${values.hosts.ildkule.ipv6}/128"; }
-    ];
+    interfaces."ens4" = {
+      ipv4.addresses = [
+        { address = hostConf.ipv4;          prefixLength = 32; }
+        { address = hostConf.ipv4_internal; prefixLength = 24; }
+      ];
+      ipv6.addresses = [
+        { address = hostConf.ipv6;          prefixLength = 64; }
+      ];
+    };
   };
 
   # List packages installed in system profile
