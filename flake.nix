@@ -126,7 +126,6 @@
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
         ];
       };
-      buskerud = stableNixosConfig "buskerud" { };
     };
 
     nixosModules = {
