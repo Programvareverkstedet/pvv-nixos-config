@@ -1,0 +1,12 @@
+Contact: mailto:drift@pvv.ntnu.no
+Contact: mailto:cert@pvv.ntnu.no
+# drift@pvv.ntnu.no is read by more people and have a quicker reaction time,
+# but cert@pvv.ntnu.no can be used for more severe issues.
+
+Preferred-Languages: no, en
+
+Expires: 2032-12-31T23:59:59.000Z
+# This file was last updated 2024-09-14.
+
+# You can find a wikipage for our security policies at:
+# https://wiki.pvv.ntnu.no/wiki/CERT

@@ -16,6 +16,7 @@
     ./services/vaultwarden.nix
     ./services/webmail
     ./services/website
+    ./services/well-known
   ];
 
   sops.defaultSopsFile = ../../secrets/bekkalokk/bekkalokk.yaml;
