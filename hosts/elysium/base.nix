@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ./users
     ./modules/snakeoil-certs.nix
   ];
 
