@@ -29,9 +29,12 @@
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
 
     minecraft-data.url = "git+https://git.pvv.ntnu.no/Drift/minecraft-data.git";
+
+    nixos-generators.url = "github:nix-community/nixos-generators";
+    nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, nixos-generators, ... }@inputs:
   let
     nixlib = nixpkgs.lib;
     systems = [
@@ -148,6 +151,28 @@
           (nixlib.getAttrs allMachines self.packages.x86_64-linux);
 
         simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
+
+        openstack-image = nixos-generators.nixosGenerate {
+          system = "x86_64-linux";
+          format = "openstack";
+
+          modules = [
+            ({config, lib, pkgs, modulesPath, ... }: {
+              system.build.openstackImage = lib.mkForce (import "${modulesPath}/../lib/make-disk-image.nix" {
+                inherit config lib pkgs;
+                copyChannel = true;
+                additionalSpace = "1024M";
+                format = "raw";
+                configFile = pkgs.writeText "configuration.nix"
+                  ''
+                    {
+                      imports = [ <nixpkgs/nixos/modules/virtualisation/openstack-config.nix> ];
+                    }
+                  '';
+              });
+            })
+          ];
+        };
 
       } //
       (nixlib.pipe null [
