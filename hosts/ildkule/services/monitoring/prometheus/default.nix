@@ -1,6 +1,6 @@
 { config, ... }: {
   imports = [
-    ./gogs.nix
+    ./gitea.nix
     ./matrix-synapse.nix
     # TODO: enable once https://github.com/NixOS/nixpkgs/pull/242365 gets merged
     # ./mysqld.nix

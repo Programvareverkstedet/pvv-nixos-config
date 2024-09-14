@@ -75,6 +75,12 @@ in {
           url = "https://grafana.com/api/dashboards/240/revisions/3/download";
           options.path = dashboards/go-processes.json;
         }
+        {
+          name = "Gitea Dashbaord";
+          type = "file";
+          url = "https://grafana.com/api/dashboards/17802/revisions/3/download";
+          options.path = dashboards/gitea-dashbaord.json;
+        }
       ];
 
     };
