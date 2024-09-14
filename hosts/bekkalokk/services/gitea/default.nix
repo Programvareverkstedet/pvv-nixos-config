@@ -55,6 +55,11 @@ in {
         USER = "gitea@pvv.ntnu.no";
         SUBJECT_PREFIX = "[pvv-git]";
       };
+      metrics = {
+        ENABLED = true;
+        ENABLED_ISSUE_BY_LABEL = true;
+        ENABLED_ISSUE_BY_REPOSITORY = true;
+      };
       indexer.REPO_INDEXER_ENABLED = true;
       service = {
         DISABLE_REGISTRATION = true;
@@ -109,11 +114,20 @@ in {
     forceSSL = true;
     enableACME = true;
     kTLS = true;
-    locations."/" = {
-      proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
-      extraConfig = ''
-        client_max_body_size 512M;
-      '';
+    locations = {
+      "/" = {
+        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        extraConfig = ''
+          client_max_body_size 512M;
+        '';
+      };
+      "/metrics" = {
+        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        extraConfig = ''
+          allow ${values.hosts.ildkule.ipv4}/32;
+          deny all;
+        '';
+      };
     };
   };
 
