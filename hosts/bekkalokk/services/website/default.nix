@@ -116,16 +116,6 @@ in {
       "/drift".return = "301 https://wiki.pvv.ntnu.no/wiki/Drift";
       "/diverse/abuse.php".return = "301 https://wiki.pvv.ntnu.no/wiki/CERT/Abuse";
       "/nerds/".return = "301 https://wiki.pvv.ntnu.no/wiki/Nerdepizza";
-
-      # Proxy the matrix well-known files
-      # Host has be set before proxy_pass
-      # The header must be set so nginx on the other side routes it to the right place
-      "^~ /.well-known/matrix/" = {
-        extraConfig = ''
-          proxy_set_header Host matrix.pvv.ntnu.no;
-          proxy_pass https://matrix.pvv.ntnu.no/.well-known/matrix/;
-        '';
-      };
     };
   };
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<clientConfig version="1.1">
+  <emailProvider id="pvv.ntnu.no">
+    <domain>pvv.ntnu.no</domain>
+    <domain>pvv.org</domain>
+
+    <displayName>Programvareverkstedet</displayName>
+
+    <incomingServer type="imap">
+      <hostname>imap.pvv.ntnu.no</hostname>
+      <port>993</port>
+      <socketType>SSL</socketType>
+      <username>%EMAILLOCALPART%</username>
+      <authentication>password-cleartext</authentication>
+    </incomingServer>
+
+    <outgoingServer type="smtp">
+      <hostname>smtp.pvv.ntnu.no</hostname>
+      <port>587</port>
+      <socketType>STARTTLS</socketType>
+      <username>%EMAILLOCALPART%</username>
+      <authentication>password-cleartext</authentication>
+      <useGlobalPreferredServer>true</useGlobalPreferredServer>
+    </outgoingServer>
+
+    <documentation url="https://www.pvv.ntnu.no/pvv/Drift/Mail/IMAP_POP3">
+       <descr lang="en">Setup programvareverkstedet email user with IMAP or POP3</descr>
+       <descr lang="nb">Sett opp programvareverkstedet email bruker med IMAP eller POP3</descr>
+    </documentation>
+  </emailProvider>
+</clientConfig>
