@@ -160,9 +160,11 @@
             ({config, lib, pkgs, modulesPath, ... }: {
               system.build.openstackImage = lib.mkForce (import "${modulesPath}/../lib/make-disk-image.nix" {
                 inherit config lib pkgs;
-                copyChannel = true;
                 additionalSpace = "1024M";
+                copyChannel = true;
+                diskSize = "auto";
                 format = "raw";
+                partitionTableType = "efi";
                 configFile = pkgs.writeText "configuration.nix"
                   ''
                     {
@@ -170,6 +172,16 @@
                     }
                   '';
               });
+              boot.loader.grub = lib.mkForce {
+                device = "nodev";
+                efiSupport = true;
+                efiInstallAsRemovable = true;
+              };
+
+              fileSystems."/boot" = {
+                device = "/dev/disk/by-label/ESP";
+                fsType = "vfat";
+              };
             })
           ];
         };
