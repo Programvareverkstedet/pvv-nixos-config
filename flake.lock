@@ -29,11 +29,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1713887124,
-        "narHash": "sha256-hGTSm0p9xXUYDgsAAr/ORZICo6T6u33vLfX3tILikaQ=",
+        "lastModified": 1725463969,
+        "narHash": "sha256-d3c1TAlIN1PtK+oQP1wO6XbDfmR4SUp/C/4s7G46ARo=",
         "owner": "GuillaumeDesforges",
         "repo": "fix-python",
-        "rev": "f7f4b33e22414071fc1f9cbf68072c413c3a7fdf",
+        "rev": "2926402234c3f99aa8e4608c51d9ffa73ea403c0",
         "type": "github"
       },
       "original": {
@@ -67,17 +67,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1716065905,
-        "narHash": "sha256-08uhxBzfakfhl/ooc+gMzDupWKYvTeyQZwuvB1SBS7A=",
-        "owner": "Programvareverkstedet",
-        "repo": "grzegorz",
-        "rev": "0481aef6553ae9aee86e4edb4ca0ed4f2eba2058",
-        "type": "github"
+        "lastModified": 1726861911,
+        "narHash": "sha256-pXPmVp4AgszzJXlLjj8r9NxoDvxoV4USGaiMwqCyb4M=",
+        "ref": "refs/heads/master",
+        "rev": "d10db19d7df5c5c2cd2dcb878376d5d681f6c2f2",
+        "revCount": 94,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/grzegorz.git"
       },
       "original": {
-        "owner": "Programvareverkstedet",
-        "repo": "grzegorz",
-        "type": "github"
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/grzegorz.git"
       }
     },
     "grzegorz-clients": {
@@ -87,17 +87,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1716115695,
-        "narHash": "sha256-aI65l4x+U5v3i/nfn6N3eW5IZodmf4pyAByE7vTJh8I=",
-        "owner": "Programvareverkstedet",
-        "repo": "grzegorz-clients",
-        "rev": "b9444658fbb39cd1bf1c61ee5a1d5f0641c49abe",
-        "type": "github"
+        "lastModified": 1726861934,
+        "narHash": "sha256-lOzPDwktd+pwszUTbpUdQg6iCzInS11fHLfkjmnvJrM=",
+        "ref": "refs/heads/master",
+        "rev": "546d921ec46735dbf876e36f4af8df1064d09432",
+        "revCount": 78,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/grzegorz-clients.git"
       },
       "original": {
-        "owner": "Programvareverkstedet",
-        "repo": "grzegorz-clients",
-        "type": "github"
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/grzegorz-clients.git"
       }
     },
     "matrix-next": {
