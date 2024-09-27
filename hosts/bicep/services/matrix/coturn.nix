@@ -1,4 +1,4 @@
-{ config, lib, pkgs, secrets, ... }:
+{ config, lib, pkgs, secrets, values, ... }:
 
 {
   sops.secrets."matrix/synapse/turnconfig" = {
@@ -60,12 +60,14 @@
     pkey = "${config.security.acme.certs.${realm}.directory}/key.pem";
 
     use-auth-secret = true;
-    # World readable but I  dont think it's that bad
     static-auth-secret-file = config.sops.secrets."matrix/coturn/static-auth-secret".path;
 
     secure-stun = true;
 
-    listening-ips = [ "129.241.210.213" "2001:700:300:1900::213" ];
+    listening-ips = [
+      values.services.turn.ipv4
+      # values.services.turn.ipv6
+    ];
 
     tls-listening-port = 443;
     alt-tls-listening-port = 5349;
