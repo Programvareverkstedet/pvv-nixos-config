@@ -17,7 +17,7 @@
     pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
-    matrix-next.url = "github:dali99/nixos-matrix-modules/v0.6.0";
+    matrix-next.url = "github:dali99/nixos-matrix-modules/v0.6.1";
     matrix-next.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-gitea-themes.url = "git+https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git";
