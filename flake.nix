@@ -126,6 +126,12 @@
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
         ];
       };
+      kvernberg = stableNixosConfig "kvernberg" {
+        modules = [
+          disko.nixosModules.disko
+          { disko.devices.disk.disk1.device = "/dev/sda"; }
+        ];
+      };
     };
 
     nixosModules = {
