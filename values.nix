@@ -60,6 +60,10 @@ in rec {
       ipv4 = pvv-ipv4 204;
       ipv6 = pvv-ipv6 "1:4f"; # Wtf øystein og daniel why
     };
+    kvernberg = {
+      ipv4 = pvv-ipv4 206;
+      ipv6 = pvv-ipv6 "1:206";
+    };
   };
 
   defaultNetworkConfig = {
