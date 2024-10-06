@@ -159,6 +159,12 @@
           inputs.gergle.overlays.default
         ];
       };
+      kvernberg = stableNixosConfig "kvernberg" {
+        modules = [
+          disko.nixosModules.disko
+          { disko.devices.disk.disk1.device = "/dev/sda"; }
+        ];
+      };
     };
 
     nixosModules = {

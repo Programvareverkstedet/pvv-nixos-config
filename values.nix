@@ -71,6 +71,9 @@ in rec {
     wenche = {
       ipv4 = pvv-ipv4 240;
       ipv6 = pvv-ipv6 240;
+    kvernberg = {
+      ipv4 = pvv-ipv4 206;
+      ipv6 = pvv-ipv6 "1:206";
     };
   };
 
