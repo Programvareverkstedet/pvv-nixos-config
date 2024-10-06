@@ -64,6 +64,10 @@ in rec {
       ipv4 = pvv-ipv4 234;
       ipv6 = pvv-ipv6 234;
     };
+    kvernberg = {
+      ipv4 = pvv-ipv4 206;
+      ipv6 = pvv-ipv6 "1:206";
+    };
   };
 
   defaultNetworkConfig = {
