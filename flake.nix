@@ -57,7 +57,7 @@
         rec {
           system = "x86_64-linux";
           specialArgs = {
-            inherit nixpkgs-unstable inputs;
+            inherit unstablePkgs inputs;
             values = import ./values.nix;
           };
 

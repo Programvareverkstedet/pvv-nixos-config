@@ -10,6 +10,7 @@
     ./mjolnir.nix
 
     ./discord.nix
+    ./hookshot
   ];
 
 
