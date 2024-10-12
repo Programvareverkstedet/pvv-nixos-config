@@ -6,6 +6,11 @@ let
   domain = "webmail.pvv.ntnu.no";
 in
 {
+  sops.secrets."roundcube/postgres_password" = {
+    owner = "nginx";
+    group = "nginx";
+  };
+
   services.roundcube = {
     enable = true;
 
@@ -22,6 +27,7 @@ in
 
     database = {
       host = "postgres.pvv.ntnu.no";
+      passwordFile = config.sops.secrets."roundcube/postgres_password".path;
     };
 
     extraConfig = ''
