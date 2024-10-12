@@ -104,6 +104,30 @@ in {
         ENABLE_FEDERATED_AVATAR = false;
       };
       actions.ENABLED = true;
+      ui = {
+        REACTIONS = lib.concatStringsSep "," [
+          "+1"
+          "-1"
+          "laugh"
+          "confused"
+          "heart"
+          "hooray"
+          "rocket"
+          "eyes"
+          "100"
+          "anger"
+          "astonished"
+          "no_good"
+          "ok_hand"
+          "pensive"
+          "pizza"
+          "point_up"
+          "sob"
+          "skull"
+          "upside_down_face"
+          "shrug"
+        ];
+      };
       "ui.meta".DESCRIPTION = "Bokstavelig talt programvareverkstedet";
     };
   };
