@@ -20,6 +20,10 @@ in
     maxAttachmentSize = 20;
     hostName = "roundcubeplaceholder.example.com";
 
+    database = {
+      host = "postgres.pvv.ntnu.no";
+    };
+
     extraConfig = ''
       $config['enable_installer'] = false;
       $config['default_host'] = "ssl://imap.pvv.ntnu.no";
