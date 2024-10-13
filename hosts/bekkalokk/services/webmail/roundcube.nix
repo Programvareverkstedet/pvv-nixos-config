@@ -6,6 +6,11 @@ let
   domain = "webmail.pvv.ntnu.no";
 in
 {
+  sops.secrets."roundcube/postgres_password" = {
+    owner = "nginx";
+    group = "nginx";
+  };
+
   services.roundcube = {
     enable = true;
 
@@ -19,6 +24,11 @@ in
     dicts = with pkgs.aspellDicts; [ en en-science en-computers nb nn fr de it ];
     maxAttachmentSize = 20;
     hostName = "roundcubeplaceholder.example.com";
+
+    database = {
+      host = "postgres.pvv.ntnu.no";
+      passwordFile = config.sops.secrets."roundcube/postgres_password".path;
+    };
 
     extraConfig = ''
       $config['enable_installer'] = false;
