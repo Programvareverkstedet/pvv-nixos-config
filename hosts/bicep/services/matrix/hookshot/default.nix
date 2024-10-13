@@ -1,5 +1,10 @@
 { config, lib, unstablePkgs, inputs, ... }:
 
+let
+  cfg = config.services.matrix-hookshot;
+  webhookListenAddress = "127.0.0.1";
+  webhookListenPort = 9000;
+in
 {
   imports = [
     ./module.nix
@@ -30,18 +35,19 @@
       };
       listeners = [
         {
-          bindAddress = "127.0.0.1";
-          port = 9000;
+          bindAddress = webhookListenAddress;
+          port = webhookListenPort;
           resources = [
             "webhooks"
-            "metrics"
-            "provisioning"
+            # "metrics"
+            # "provisioning"
             "widgets"
           ];
         }
       ];
       generic = {
         enabled = true;
+        outbound = true;
       };
       feeds = {
         enabled = true;
@@ -53,5 +59,12 @@
 
   services.matrix-synapse-next.settings = {
     app_service_config_files = [ config.sops.secrets."matrix/registrations/matrix-hookshot".path ];
+  };
+
+  services.nginx.virtualHosts."hookshot.pvv.ntnu.no" = {
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://${webhookListenAddress}:${toString webhookListenPort}";
+    };
   };
 }
