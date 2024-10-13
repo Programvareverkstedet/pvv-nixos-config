@@ -3,7 +3,7 @@
 let
   cfg = config.services.matrix-hookshot;
   webhookListenAddress = "127.0.0.1";
-  webhookListenPort = 9000;
+  webhookListenPort = 8435;
 in
 {
   imports = [
@@ -28,7 +28,7 @@ in
     settings = {
       bridge = {
         bindAddress = "127.0.0.1";
-        domain = "pvv.ntnu,no";
+        domain = "pvv.ntnu.no";
         url = "https://matrix.pvv.ntnu.no";
         mediaUrl = "https://matrix.pvv.ntnu.no";
         port = 9993;
@@ -48,10 +48,43 @@ in
       generic = {
         enabled = true;
         outbound = true;
+        urlPrefix = "https://hookshot.pvv.ntnu.no/webhook/";
+        userIdPrefix = "_webhooks_";
+        allowJsTransformationFunctions = false;
+        waitForComplete = false;
       };
       feeds = {
         enabled = true;
+        pollIntervalSeconds = 600;
       };
+      
+      serviceBots = [
+        { localpart = "bot_feeds";
+          displayname = "Aya";
+          avatar = ./feeds.png;
+          prefix = "!aya";
+          service = "feeds";
+        }
+      ];
+
+      permissions = [
+        # Users of the PVV Server
+        { actor = "pvv.ntnu.no";
+          services = [ { service = "*"; level = "commands"; } ];
+        }
+        # Members of Medlem space (for people with their own hs)
+        { actor = "!pZOTJQinWyyTWaeOgK:pvv.ntnu.no";
+          services = [ { service = "*"; level = "commands"; } ];
+        }
+        # Members of Drift
+        { actor = "!eYgeufLrninXxQpYml:pvv.ntnu.no";
+          services = [ { service = "*"; level = "admin"; } ];
+        }
+        # Dan bootstrap
+        { actor = "@dandellion:dodsorf.as";
+          services = [ { service = "*"; level = "admin"; } ];
+        }
+      ];
     };
   };
 
