@@ -10,21 +10,52 @@ in
     ./module.nix
   ];
 
-  sops.secrets."matrix/registrations/matrix-hookshot" = {
+  sops.secrets."matrix/hookshot/as_token" = {
     sopsFile = ../../../../../secrets/bicep/matrix.yaml;
-    key = "registrations/matrix-hookshot";
+    key = "hookshot/as_token";
+  };
+  sops.secrets."matrix/hookshot/hs_token" = {
+    sopsFile = ../../../../../secrets/bicep/matrix.yaml;
+    key = "hookshot/hs_token";
+  };
+
+  sops.templates."hookshot-registration.yaml" = {
     owner = config.users.users.matrix-synapse.name;
     group = config.users.groups.keys-matrix-registrations.name;
+    content = ''
+      id: matrix-hookshot
+      as_token: "${config.sops.placeholder."matrix/hookshot/as_token"}"
+      hs_token: "${config.sops.placeholder."matrix/hookshot/hs_token"}"
+      namespaces:
+        rooms: []
+        users:
+          - regex: "@_webhooks_.*:pvv.ntnu.no"
+            exclusive: true
+          - regex: "@bot_feeds:pvv.ntnu.no"
+            exclusive: true
+        aliases: []
+
+      sender_localpart: hookshot
+      url: "http://${cfg.settings.bridge.bindAddress}:${toString cfg.settings.bridge.port}"
+      rate_limited: false
+
+      # If enabling encryption
+      de.sorunome.msc2409.push_ephemeral: true
+      push_ephemeral: true
+      org.matrix.msc3202: true
+    '';
   };
 
   systemd.services.matrix-hookshot = {
-    serviceConfig.SupplementaryGroups = [ config.users.groups.keys-matrix-registrations.name ];
+    serviceConfig.SupplementaryGroups = [
+      config.users.groups.keys-matrix-registrations.name
+    ];
   };
 
   services.matrix-hookshot = {
     enable = true;
     package = unstablePkgs.matrix-hookshot;
-    registrationFile = config.sops.secrets."matrix/registrations/matrix-hookshot".path;
+    registrationFile = config.sops.templates."hookshot-registration.yaml".path;
     settings = {
       bridge = {
         bindAddress = "127.0.0.1";
@@ -88,10 +119,15 @@ in
     };
   };
 
-  services.matrix-hookshot.serviceDependencies = [ "matrix-synapse.target" "nginx.service" ];
+  services.matrix-hookshot.serviceDependencies = [
+    "matrix-synapse.target"
+    "nginx.service"
+  ];
 
   services.matrix-synapse-next.settings = {
-    app_service_config_files = [ config.sops.secrets."matrix/registrations/matrix-hookshot".path ];
+    app_service_config_files = [
+      config.sops.templates."hookshot-registration.yaml".path
+    ];
   };
 
   services.nginx.virtualHosts."hookshot.pvv.ntnu.no" = {
