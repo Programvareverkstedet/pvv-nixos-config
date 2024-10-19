@@ -79,6 +79,11 @@
       stableNixosConfig = nixosConfig nixpkgs;
       unstableNixosConfig = nixosConfig nixpkgs-unstable;
     in {
+      bakke = stableNixosConfig "bakke" {
+        modules = [
+          disko.nixosModules.disko
+        ];
+      };
       bicep = stableNixosConfig "bicep" {
         modules = [
           inputs.matrix-next.nixosModules.default
