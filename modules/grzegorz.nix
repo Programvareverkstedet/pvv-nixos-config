@@ -1,31 +1,26 @@
 {config, lib, pkgs, ...}:
 let
-  grg = config.services.grzegorz;
+  grg = config.services.greg-ng;
   grgw = config.services.grzegorz-webui;
 in {
-  services.pipewire.enable = true;
-  services.pipewire.alsa.enable = true;
-  services.pipewire.alsa.support32Bit = true;
-  services.pipewire.pulse.enable = true;
-
-  users.users.pvv = {
-    isNormalUser = true;
-    description = "pvv";
+  services.greg-ng = {
+    enable = true;
+    settings.host = "localhost";
+    settings.port = 31337;
+    enableSway = true;
+    enablePipewire = true;
   };
 
-  services.grzegorz.enable = true;
-  services.grzegorz.listenAddr = "localhost";
-  services.grzegorz.listenPort = 31337;
-
-  services.grzegorz-webui.enable = true;
-  services.grzegorz-webui.listenAddr = "localhost";
-  services.grzegorz-webui.listenPort = 42069;
-  services.grzegorz-webui.listenWebsocketPort = 42042;
-  services.grzegorz-webui.hostName = "${config.networking.fqdn}";
-  services.grzegorz-webui.apiBase = "http://${toString grg.listenAddr}:${toString grg.listenPort}/api";
+  services.grzegorz-webui = {
+    enable = true;
+    listenAddr = "localhost";
+    listenPort = 42069;
+    listenWebsocketPort = 42042;
+    hostName = "${config.networking.fqdn}";
+    apiBase = "http://${grg.settings.host}:${toString grg.settings.port}/api";
+  };
 
   services.nginx.enable = true;
-
   services.nginx.virtualHosts."${config.networking.fqdn}" = {
     forceSSL = true;
     enableACME = true;
@@ -40,20 +35,19 @@ in {
     '';
 
     locations."/" = {
-      proxyPass = "http://localhost:${builtins.toString config.services.grzegorz-webui.listenPort}";
+      proxyPass = "http://${grgw.listenAddr}:${toString grgw.listenPort}";
     };
     # https://github.com/rawpython/remi/issues/216
     locations."/websocket" = {
-      proxyPass = "http://localhost:${builtins.toString config.services.grzegorz-webui.listenWebsocketPort}";
+      proxyPass = "http://${grgw.listenAddr}:${toString grgw.listenWebsocketPort}";
       proxyWebsockets = true;
     };
     locations."/api" = {
-      proxyPass = "http://localhost:${builtins.toString config.services.grzegorz.listenPort}";
+      proxyPass = "http://${grg.settings.host}:${toString grg.settings.port}";
     };
     locations."/docs" = {
-      proxyPass = "http://localhost:${builtins.toString config.services.grzegorz.listenPort}";
+      proxyPass = "http://${grg.settings.host}:${toString grg.settings.port}";
     };
   };
-
 }
 
