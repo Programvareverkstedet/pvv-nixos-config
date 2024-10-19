@@ -23,8 +23,8 @@
     nix-gitea-themes.url = "git+https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git";
     nix-gitea-themes.inputs.nixpkgs.follows = "nixpkgs";
 
-    grzegorz.url = "git+https://git.pvv.ntnu.no/Projects/grzegorz.git";
-    grzegorz.inputs.nixpkgs.follows = "nixpkgs";
+    greg-ng.url = "git+https://git.pvv.ntnu.no/Projects/greg-ng.git";
+    greg-ng.inputs.nixpkgs.follows = "nixpkgs";
     grzegorz-clients.url = "git+https://git.pvv.ntnu.no/Projects/grzegorz-clients.git";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -116,14 +116,20 @@
 
       brzeczyszczykiewicz = stableNixosConfig "brzeczyszczykiewicz" {
         modules = [
-          inputs.grzegorz.nixosModules.grzegorz-kiosk
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
+          inputs.greg-ng.nixosModules.default
+        ];
+        overlays = [
+          inputs.greg-ng.overlays.default
         ];
       };
       georg = stableNixosConfig "georg" {
         modules = [
-          inputs.grzegorz.nixosModules.grzegorz-kiosk
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
+          inputs.greg-ng.nixosModules.default
+        ];
+        overlays = [
+          inputs.greg-ng.overlays.default
         ];
       };
     };
