@@ -20,7 +20,7 @@
         "type": "github"
       }
     },
-    "greg": {
+    "greg-ng": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
@@ -28,11 +28,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1722796402,
-        "narHash": "sha256-Y6PdbTcfzDAZkVTLhTbRJMJCVR3KtCI7QyGqPR141uw=",
+        "lastModified": 1729458392,
+        "narHash": "sha256-AyTRfVlLsu+yylWSy5+1rendYoFU9nfsmFsCUkIf2O4=",
         "ref": "refs/heads/main",
-        "rev": "c1438f248020e4c71673c59501ae87ea4f5bec4f",
-        "revCount": 16,
+        "rev": "9934b1176678758c74691facb82e5521e129a4be",
+        "revCount": 30,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/greg-ng.git"
       },
@@ -208,7 +208,7 @@
     "root": {
       "inputs": {
         "disko": "disko",
-        "greg": "greg",
+        "greg-ng": "greg-ng",
         "grzegorz-clients": "grzegorz-clients",
         "matrix-next": "matrix-next",
         "minecraft-data": "minecraft-data",
@@ -223,16 +223,16 @@
     "rust-overlay": {
       "inputs": {
         "nixpkgs": [
-          "greg",
+          "greg-ng",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1722651535,
-        "narHash": "sha256-2uRmNwxe3CO5h7PfvqXrRe8OplXaEdwhqOUtaF13rpU=",
+        "lastModified": 1729391507,
+        "narHash": "sha256-as0I9xieJUHf7kiK2a9znDsVZQTFWhM1pLivII43Gi0=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "56d83ca6f3c557647476f3720426a7615c22b860",
+        "rev": "784981a9feeba406de38c1c9a3decf966d853cca",
         "type": "github"
       },
       "original": {
