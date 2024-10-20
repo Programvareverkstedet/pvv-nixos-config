@@ -2,8 +2,9 @@
 {
   # Boot drives:
   imports = [
-    ./boot-disks.nix
+    ./disks.nix
   ];
+  boot.swraid.enable = true;
 
   # ZFS Data pool:
   environment.systemPackages = with pkgs; [ zfs ];
