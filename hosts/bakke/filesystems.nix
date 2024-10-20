@@ -1,9 +1,6 @@
 { config, pkgs, lib, ... }:
 {
   # Boot drives:
-  imports = [
-    ./disks.nix
-  ];
   boot.swraid.enable = true;
 
   # ZFS Data pool:

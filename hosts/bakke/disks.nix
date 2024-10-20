@@ -1,5 +1,6 @@
 {
   # https://github.com/nix-community/disko/blob/master/example/boot-raid1.nix
+  # Note: Disko was used to create the initial md raid, but is no longer in active use on this host.
   disko.devices = {
     disk = {
       one = {
