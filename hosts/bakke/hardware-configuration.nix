@@ -8,12 +8,23 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "usbhid" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  swapDevices = [ ]; #TODO
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/873e1891-d9f8-470f-9c57-e1b4c8b7bf0e";
+      fsType = "ext4";
+    };
+
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-id/ata-WDC_WD40EFRX-68WT0N0_WD-WCC4E7LPLU71-part1";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
+
+  swapDevices = [ ];
 
   networking.useDHCP = lib.mkDefault false;
 
