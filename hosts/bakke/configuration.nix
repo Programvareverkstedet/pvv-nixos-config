@@ -22,5 +22,5 @@
     address = with values.hosts.bakke; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "24.05";
 }
