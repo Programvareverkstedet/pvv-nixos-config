@@ -4,6 +4,7 @@
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" ];
   boot.initrd.kernelModules = [ "nvme" ];
   fileSystems."/" = { device = "/dev/vda1"; fsType = "ext4"; };
+  fileSystems."/data" = { device = "/dev/vdb1"; fsType = "ext4"; };
 
   networking.useDHCP = lib.mkDefault true;
 }
