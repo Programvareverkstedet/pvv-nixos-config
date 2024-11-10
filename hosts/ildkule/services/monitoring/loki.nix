@@ -2,6 +2,7 @@
 
 let
   cfg = config.services.loki;
+  stateDir = "/data/monitoring/loki";
 in {
   services.loki = {
     enable = true;
@@ -16,7 +17,7 @@ in {
       ingester = {
         wal = {
           enabled = true;
-          dir = "/var/lib/loki/wal";
+          dir = "${stateDir}/wal";
         };
         lifecycler = {
           address = "127.0.0.1";
@@ -48,12 +49,12 @@ in {
 
       storage_config = {
         boltdb_shipper = {
-          active_index_directory = "/var/lib/loki/boltdb-shipper-index";
-          cache_location = "/var/lib/loki/boltdb-shipper-cache";
+          active_index_directory = "${stateDir}/boltdb-shipper-index";
+          cache_location = "${stateDir}/boltdb-shipper-cache";
           cache_ttl = "24h";
         };
         filesystem = {
-          directory = "/var/lib/loki/chunks";
+          directory = "${stateDir}/chunks";
         };
       };
 
@@ -64,14 +65,14 @@ in {
       };
 
       compactor = {
-        working_directory = "/var/lib/loki/compactor";
+        working_directory = "${stateDir}/compactor";
       };
 
       # ruler = {
       #   storage = {
       #     type = "local";
       #     local = {
-      #       directory = "/var/lib/loki/rules";
+      #       directory = "${stateDir}/rules";
       #     };
       #   };
       #   rule_path = "/etc/loki/rules";
