@@ -5,8 +5,9 @@
     ./hardware-configuration.nix
     (fp /base)
     (fp /misc/metrics-exporters.nix)
-
     ./disks.nix
+
+    ./services/pvvvvvv
   ];
 
   sops.defaultSopsFile = fp /secrets/kvernberg/kvernberg.yaml;

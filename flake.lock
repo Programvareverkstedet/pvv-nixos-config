@@ -7,37 +7,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1745502102,
-        "narHash": "sha256-LqhRwzvIVPEjH0TaPgwzqpyhW6DtCrvz7FnUJDoUZh8=",
+        "lastModified": 1731746438,
+        "narHash": "sha256-f3SSp1axoOk0NAI7oFdRzbxG2XPBSIXC+/DaAXnvS1A=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "ca27b88c88948d96feeee9ed814cbd34f53d0d70",
+        "rev": "cb64993826fa7a477490be6ccb38ba1fa1e18fa8",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
         "repo": "disko",
         "type": "github"
-      }
-    },
-    "gergle": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1736621371,
-        "narHash": "sha256-45UIQSQA7R5iU4YWvilo7mQbhY1Liql9bHBvYa3qRI0=",
-        "ref": "refs/heads/main",
-        "rev": "3729796c1213fe76e568ac28f1df8de4e596950b",
-        "revCount": 20,
-        "type": "git",
-        "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
       }
     },
     "greg-ng": {
@@ -48,17 +28,17 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1746563623,
-        "narHash": "sha256-5DxgNFpSgxft/sWraZnHIUlb4S3Io73SVS7FZCbWSUY=",
+        "lastModified": 1730249639,
+        "narHash": "sha256-G3URSlqCcb+GIvGyki+HHrDM5ZanX/dP9BtppD/SdfI=",
         "ref": "refs/heads/main",
-        "rev": "4e0408887f80e61a90286ff630a7855b828ae421",
-        "revCount": 45,
+        "rev": "80e0447bcb79adad4f459ada5610f3eae987b4e3",
+        "revCount": 34,
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
+        "url": "https://git.pvv.ntnu.no/Projects/greg-ng.git"
       },
       "original": {
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
+        "url": "https://git.pvv.ntnu.no/Projects/greg-ng.git"
       }
     },
     "grzegorz-clients": {
@@ -68,17 +48,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1736178795,
-        "narHash": "sha256-mPdi8cgvIDYcgG3FRG7A4BOIMu2Jef96TPMnV00uXlM=",
+        "lastModified": 1726861934,
+        "narHash": "sha256-lOzPDwktd+pwszUTbpUdQg6iCzInS11fHLfkjmnvJrM=",
         "ref": "refs/heads/master",
-        "rev": "fde738910de1fd8293535a6382c2f0c2749dd7c1",
-        "revCount": 79,
+        "rev": "546d921ec46735dbf876e36f4af8df1064d09432",
+        "revCount": 78,
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git"
+        "url": "https://git.pvv.ntnu.no/Projects/grzegorz-clients.git"
       },
       "original": {
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git"
+        "url": "https://git.pvv.ntnu.no/Projects/grzegorz-clients.git"
       }
     },
     "matrix-next": {
@@ -88,16 +68,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1735857245,
-        "narHash": "sha256-AKLLPrgXTxgzll3DqVUMa4QlPlRN3QceutgFBmEf8Nk=",
+        "lastModified": 1727410897,
+        "narHash": "sha256-tWsyxvf421ieWUJYgjV7m1eTdr2ZkO3vId7vmtvfFpQ=",
         "owner": "dali99",
         "repo": "nixos-matrix-modules",
-        "rev": "da9dc0479ffe22362793c87dc089035facf6ec4d",
+        "rev": "ff787d410cba17882cd7b6e2e22cc88d4064193c",
         "type": "github"
       },
       "original": {
         "owner": "dali99",
-        "ref": "0.7.0",
+        "ref": "v0.6.1",
         "repo": "nixos-matrix-modules",
         "type": "github"
       }
@@ -110,11 +90,11 @@
         "rev": "1b4087bd3322a2e2ba84271c8fcc013e6b641a58",
         "revCount": 2,
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
+        "url": "https://git.pvv.ntnu.no/Drift/minecraft-data.git"
       },
       "original": {
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
+        "url": "https://git.pvv.ntnu.no/Drift/minecraft-data.git"
       }
     },
     "nix-gitea-themes": {
@@ -124,42 +104,58 @@
         ]
       },
       "locked": {
-        "lastModified": 1743881366,
-        "narHash": "sha256-ScGA2IHPk9ugf9bqEZnp+YB/OJgrkZblnG/XLEKvJAo=",
+        "lastModified": 1714416973,
+        "narHash": "sha256-aZUcvXjdETUC6wVQpWDVjLUzwpDAEca8yR0ITDeK39o=",
         "ref": "refs/heads/main",
-        "rev": "db2e4becf1b11e5dfd33de12a90a7d089fcf68ec",
-        "revCount": 11,
+        "rev": "2b23c0ba8aae68d3cb6789f0f6e4891cef26cc6d",
+        "revCount": 6,
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Drift/nix-gitea-themes.git"
+        "url": "https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git"
       },
       "original": {
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Drift/nix-gitea-themes.git"
+        "url": "https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1745526780,
-        "narHash": "sha256-LXXYBmFPMQU2lTb6alKWfjgQs08BKn+txMNcgbu00hI=",
+        "lastModified": 1731779898,
+        "narHash": "sha256-oxxCrYZM0WNRoaokDyVXcPIlTc8Z2yX4QjKbgXGI3IM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9204750b34cae1a8347ab4b5588115edfeebc6d7",
+        "rev": "9972661139e27eed0237df4dde34839e09028cd5",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-24.11-small",
+        "ref": "refs/pull/332699/merge",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-stable": {
+      "locked": {
+        "lastModified": 1730602179,
+        "narHash": "sha256-efgLzQAWSzJuCLiCaQUCDu4NudNlHdg2NzGLX5GYaEY=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3c2f1c4ca372622cb2f9de8016c9a0b1cbd0f37c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "release-24.05",
         "repo": "nixpkgs",
         "type": "github"
       }
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1745688173,
-        "narHash": "sha256-fgvG1O5JvSSjeQx+ea0DJ3GfMbLPVhAQta/DqQ2y6jc=",
+        "lastModified": 1731745710,
+        "narHash": "sha256-SVeiClbgqL071JpAspOu0gCkPSAL51kSIRwo4C/pghA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "6a2957c7978b189202e03721aab901c0a9dc1e1a",
+        "rev": "dfaa4cb76c2d450d8f396bb6b9f43cede3ade129",
         "type": "github"
       },
       "original": {
@@ -196,11 +192,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1741738148,
-        "narHash": "sha256-cJo6nbcJEOjkazkZ194NDnlsZe0W0wpxeUh2/886uC8=",
-        "ref": "refs/heads/main",
-        "rev": "c1802e7cf27c7cf8b4890354c982a4eef5b11593",
-        "revCount": 486,
+        "lastModified": 1725212759,
+        "narHash": "sha256-yZBsefIarFUEhFRj+rCGMp9Zvag3MCafqV/JfGVRVwc=",
+        "ref": "refs/heads/master",
+        "rev": "e7b66b4bc6a89bab74bac45b87e9434f5165355f",
+        "revCount": 473,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/nettsiden.git"
       },
@@ -212,7 +208,6 @@
     "root": {
       "inputs": {
         "disko": "disko",
-        "gergle": "gergle",
         "greg-ng": "greg-ng",
         "grzegorz-clients": "grzegorz-clients",
         "matrix-next": "matrix-next",
@@ -233,11 +228,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1746498961,
-        "narHash": "sha256-rp+oh/N88JKHu7ySPuGiA3lBUVIsrOtHbN2eWJdYCgk=",
+        "lastModified": 1729391507,
+        "narHash": "sha256-as0I9xieJUHf7kiK2a9znDsVZQTFWhM1pLivII43Gi0=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "24b00064cdd1d7ba25200c4a8565dc455dc732ba",
+        "rev": "784981a9feeba406de38c1c9a3decf966d853cca",
         "type": "github"
       },
       "original": {
@@ -250,14 +245,15 @@
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
-        ]
+        ],
+        "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1745310711,
-        "narHash": "sha256-ePyTpKEJTgX0gvgNQWd7tQYQ3glIkbqcW778RpHlqgA=",
+        "lastModified": 1731748189,
+        "narHash": "sha256-Zd/Uukvpcu26M6YGhpbsgqm6LUSLz+Q8mDZ5LOEGdiE=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "5e3e92b16d6fdf9923425a8d4df7496b2434f39c",
+        "rev": "d2bd7f433b28db6bc7ae03d5eca43564da0af054",
         "type": "github"
       },
       "original": {
