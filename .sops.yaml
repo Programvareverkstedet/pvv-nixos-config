@@ -14,6 +14,7 @@ keys:
   - &host_bekkalokk age12nj59tguy9wg882updc2vjdusx5srnxmjyfaqve4zx6jnnsaw3qsyjq6zd
   - &host_bicep age1sl43gc9cw939z5tgha2lpwf0xxxgcnlw7w4xem4sqgmt2pt264vq0dmwx2
   - &host_ustetind age1hffjafs4slznksefmtqrlj7rdaqgzqncn4un938rhr053237ry8s3rs0v8
+  - &host_kvernberg age19rlntxt0m27waa0n288g9wgpksa6ndlzz8eneeqya7w3zd7may0sqzhcvz
 
 creation_rules:
   # Global secrets
@@ -91,3 +92,9 @@ creation_rules:
       - *user_pederbs_bjarte
       pgp:
       - *user_oysteikt
+  
+  - path_regex: secrets/kvernberg/[^/]+$
+    key_groups:
+      - age:
+          - *host_kvernberg
+          - *user_danio
