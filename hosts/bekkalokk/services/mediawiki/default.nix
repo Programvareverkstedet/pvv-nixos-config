@@ -1,4 +1,4 @@
-{ pkgs, lib, config, values, pkgs-unstable, ... }: let
+{ pkgs, lib, fp, config, values, pkgs-unstable, ... }: let
   cfg = config.services.mediawiki;
 
   # "mediawiki"
@@ -210,8 +210,8 @@ in {
         '';
       };
 
-      "= /PNG/PVV-logo.svg".alias = ../../../../assets/logo_blue_regular.svg;
-      "= /PNG/PVV-logo.png".alias = ../../../../assets/logo_blue_regular.png;
+      "= /PNG/PVV-logo.svg".alias = fp /assets/logo_blue_regular.svg;
+      "= /PNG/PVV-logo.png".alias = fp /assets/logo_blue_regular.png;
       "= /favicon.ico".alias = pkgs.runCommandLocal "mediawiki-favicon.ico" {
         buildInputs = with pkgs; [ imagemagick ];
       } ''
@@ -219,7 +219,7 @@ in {
           -resize x64 \
           -gravity center \
           -crop 64x64+0+0 \
-          ${../../../../assets/logo_blue_regular.png} \
+          ${fp /assets/logo_blue_regular.png} \
           -flatten \
           -colors 256 \
           -background transparent \

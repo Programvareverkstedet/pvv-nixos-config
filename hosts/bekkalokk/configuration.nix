@@ -1,10 +1,10 @@
-{ pkgs, values, ... }:
+{ fp, pkgs, values, ... }:
 {
   imports = [
     ./hardware-configuration.nix
 
-    ../../base
-    ../../misc/metrics-exporters.nix
+    (fp /base)
+    (fp /misc/metrics-exporters.nix)
 
     ./services/bluemap/default.nix
     ./services/gitea/default.nix
@@ -19,7 +19,7 @@
     ./services/well-known
   ];
 
-  sops.defaultSopsFile = ../../secrets/bekkalokk/bekkalokk.yaml;
+  sops.defaultSopsFile = fp /secrets/bekkalokk/bekkalokk.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;

@@ -1,9 +1,9 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, fp, ... }:
 
 {
   imports = [
-    ../users
-    ../modules/snakeoil-certs.nix
+    (fp /users)
+    (fp /modules/snakeoil-certs.nix)
 
     ./networking.nix
     ./nix.nix

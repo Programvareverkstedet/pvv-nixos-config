@@ -1,6 +1,6 @@
-{ config, ... }:
+{ config, fp, ... }:
 {
-  imports = [ ../../../modules/grzegorz.nix ];
+  imports = [ (fp /modules/grzegorz.nix) ];
 
   services.nginx.virtualHosts."${config.networking.fqdn}" = {
     serverAliases = [

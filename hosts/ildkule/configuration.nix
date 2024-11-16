@@ -1,16 +1,16 @@
-{ config, pkgs, lib, values, ... }:
+{ config, fp, pkgs, lib, values, ... }:
 {
   imports = [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ../../base
-      ../../misc/metrics-exporters.nix
+      (fp /base)
+      (fp /misc/metrics-exporters.nix)
 
       ./services/monitoring
       ./services/nginx
     ];
 
-  sops.defaultSopsFile = ../../secrets/ildkule/ildkule.yaml;
+  sops.defaultSopsFile = fp /secrets/ildkule/ildkule.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;

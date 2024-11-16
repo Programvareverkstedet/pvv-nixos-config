@@ -1,8 +1,8 @@
-{ config, lib, ... }:
+{ config, lib, fp, ... }:
 
 {
   sops.secrets."matrix/mjolnir/access_token" = {
-    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "mjolnir/access_token";
     owner = config.users.users.mjolnir.name;
     group = config.users.users.mjolnir.group;

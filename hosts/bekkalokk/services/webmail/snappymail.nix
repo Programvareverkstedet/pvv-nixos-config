@@ -1,8 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, fp, pkgs, ... }:
 let
   cfg = config.services.snappymail;
 in {
-  imports = [ ../../../../modules/snappymail.nix ];
+  imports = [ (fp /modules/snappymail.nix) ];
 
   services.snappymail = {
     enable = true;

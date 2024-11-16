@@ -1,12 +1,12 @@
-{ config, pkgs, values, ... }:
+{ config, fp, pkgs, values, ... }:
 {
   imports = [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ../../base
-      ../../misc/metrics-exporters.nix
+      (fp /base)
+      (fp /misc/metrics-exporters.nix)
 
-      ../../modules/grzegorz.nix
+      (fp /modules/grzegorz.nix)
     ];
 
   boot.loader.systemd-boot.enable = true;

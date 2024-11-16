@@ -1,14 +1,14 @@
-{ config, lib, pkgs, secrets, values, ... }:
+{ config, lib, fp, pkgs, secrets, values, ... }:
 
 {
   sops.secrets."matrix/synapse/turnconfig" = {
-    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "synapse/turnconfig";
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;
   };
   sops.secrets."matrix/coturn/static-auth-secret" = {
-    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "coturn/static-auth-secret";
     owner = config.users.users.turnserver.name;
     group = config.users.users.turnserver.group;

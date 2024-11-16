@@ -1,4 +1,4 @@
-{ config, lib, pkgs, values, inputs, ... }:
+{ config, lib, fp, pkgs, values, inputs, ... }:
 
 let
   cfg = config.services.matrix-synapse-next;
@@ -10,13 +10,13 @@ let
 in {
   sops.secrets."matrix/synapse/signing_key" = {
     key = "synapse/signing_key";
-    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    sopsFile = fp /secrets/bicep/matrix.yaml;
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;
   };
 
   sops.secrets."matrix/synapse/user_registration" = {
-    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "synapse/signing_key";
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;

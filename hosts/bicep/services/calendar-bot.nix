@@ -1,16 +1,16 @@
-{ config, lib, pkgs, ... }:
+{ config, fp, lib, pkgs, ... }:
 let
   cfg = config.services.pvv-calendar-bot;
 in {
   sops.secrets = {
     "calendar-bot/matrix_token" = {
-      sopsFile = ../../../secrets/bicep/bicep.yaml;
+      sopsFile = fp /secrets/bicep/bicep.yaml;
       key = "calendar-bot/matrix_token";
       owner = cfg.user;
       group = cfg.group;
     };
     "calendar-bot/mysql_password" = {
-      sopsFile = ../../../secrets/bicep/bicep.yaml;
+      sopsFile = fp /secrets/bicep/bicep.yaml;
       key = "calendar-bot/mysql_password";
       owner = cfg.user;
       group = cfg.group;

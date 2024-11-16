@@ -59,6 +59,7 @@
           specialArgs = {
             inherit unstablePkgs inputs;
             values = import ./values.nix;
+            fp = path: ./${path};
           };
 
           modules = [

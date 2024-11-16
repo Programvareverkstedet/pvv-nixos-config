@@ -1,4 +1,4 @@
-{ config, lib, unstablePkgs, inputs, ... }:
+{ config, lib, fp, unstablePkgs, inputs, ... }:
 
 let
   cfg = config.services.matrix-hookshot;
@@ -11,11 +11,11 @@ in
   ];
 
   sops.secrets."matrix/hookshot/as_token" = {
-    sopsFile = ../../../../../secrets/bicep/matrix.yaml;
+    sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "hookshot/as_token";
   };
   sops.secrets."matrix/hookshot/hs_token" = {
-    sopsFile = ../../../../../secrets/bicep/matrix.yaml;
+    sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "hookshot/hs_token";
   };
 

@@ -1,13 +1,13 @@
-{ config, pkgs, values, ... }:
+{ config, fp, pkgs, values, ... }:
 {
   imports = [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ../../base
-      ../../misc/metrics-exporters.nix
+      (fp /base)
+      (fp /misc/metrics-exporters.nix)
     ];
 
-  sops.defaultSopsFile = ../../secrets/shark/shark.yaml;
+  sops.defaultSopsFile = fp /secrets/shark/shark.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;

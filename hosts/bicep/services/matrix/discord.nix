@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, fp, ... }:
 
 let
   cfg = config.services.mx-puppet-discord;
@@ -7,11 +7,11 @@ in
   users.groups.keys-matrix-registrations = { };
 
   sops.secrets."matrix/discord/as_token" = {
-    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "discord/as_token";
   };
   sops.secrets."matrix/discord/hs_token" = {
-    sopsFile = ../../../../secrets/bicep/matrix.yaml;
+    sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "discord/hs_token";
   };
 

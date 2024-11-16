@@ -1,4 +1,4 @@
-{ config, values, pkgs, lib, ... }:
+{ config, values, fp, pkgs, lib, ... }:
 let
   cfg = config.services.gitea;
   domain = "git.pvv.ntnu.no";
@@ -173,8 +173,8 @@ in {
     };
 
     script = let
-      logo-svg = ../../../../assets/logo_blue_regular.svg;
-      logo-png = ../../../../assets/logo_blue_regular.png;
+      logo-svg = fp /assets/logo_blue_regular.svg;
+      logo-png = fp /assets/logo_blue_regular.png;
       extraLinks = pkgs.writeText "gitea-extra-links.tmpl" ''
         <a class="item" href="https://www.pvv.ntnu.no/">PVV</a>
         <a class="item" href="https://wiki.pvv.ntnu.no/">Wiki</a>

@@ -1,10 +1,10 @@
-{ config, pkgs, values, ... }:
+{ config, fp, pkgs, values, ... }:
 {
   imports = [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ../../base
-      ../../misc/metrics-exporters.nix
+      (fp /base)
+      (fp /misc/metrics-exporters.nix)
 
       ./services/grzegorz.nix
     ];
