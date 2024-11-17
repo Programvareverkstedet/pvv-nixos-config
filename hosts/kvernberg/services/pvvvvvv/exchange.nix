@@ -14,7 +14,7 @@ in {
     openFirewall = true;
     denominationConfig = ''
       ## Old denomination names cannot be used again
-      #[COIN-${CURRENCY}-k1-1-0]
+      # [COIN-${CURRENCY}-k1-1-0]
 
       ## NOK Denominations
       [coin-${CURRENCY}-nok-1-0]
@@ -146,6 +146,17 @@ in {
       };
       exchange-offline = {
         MASTER_PRIV_FILE = config.sops.secrets.exchange-offline-master.path;
+      };
+      exchange-account-test = {
+        PAYTO_URI = "payto://x-taler-bank/bank:8082/exchange?receiver-name=Exchange";
+        ENABLE_DEBIT = "YES";
+        ENABLE_CREDIT = "YES";
+      };
+      exchange-accountcredentials-test = {
+        WIRE_GATEWAY_URL = "http://kvernberg.pvv.ntnu.no:8082/accounts/exchange/taler-wire-gateway/";
+        WIRE_GATEWAY_AUTH_METHOD = "BASIC";
+        USERNAME = "exchange";
+        PASSWORD = "exchange";
       };
     };
   };
