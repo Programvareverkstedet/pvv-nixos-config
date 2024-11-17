@@ -7,6 +7,7 @@
     (fp /misc/metrics-exporters.nix)
     ./disks.nix
 
+    ./services/nginx.nix
     ./services/pvvvvvv
   ];
 
