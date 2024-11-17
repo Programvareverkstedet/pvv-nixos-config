@@ -11,7 +11,6 @@ in {
   services.taler.exchange = {
     enable = true;
     debug = true;
-    openFirewall = true;
     denominationConfig = ''
       ## Old denomination names cannot be used again
       # [COIN-${CURRENCY}-k1-1-0]
@@ -148,16 +147,23 @@ in {
         MASTER_PRIV_FILE = config.sops.secrets.exchange-offline-master.path;
       };
       exchange-account-test = {
-        PAYTO_URI = "payto://x-taler-bank/bank:8082/exchange?receiver-name=Exchange";
+        PAYTO_URI = "payto://x-taler-bank/bank.kvernberg.pvv.ntnu.no/exchange?receiver-name=Exchange";
         ENABLE_DEBIT = "YES";
         ENABLE_CREDIT = "YES";
       };
       exchange-accountcredentials-test = {
-        WIRE_GATEWAY_URL = "http://kvernberg.pvv.ntnu.no:8082/accounts/exchange/taler-wire-gateway/";
+        WIRE_GATEWAY_URL = "http://bank.kvernberg.pvv.ntnu.no/accounts/exchange/taler-wire-gateway/";
         WIRE_GATEWAY_AUTH_METHOD = "BASIC";
         USERNAME = "exchange";
         PASSWORD = "exchange";
       };
     };
+  };
+
+  services.nginx.virtualHosts."exchange.kvernberg.pvv.ntnu.no" = {
+    enableACME = true;
+    forceSSL = true;
+    kTLS = true;
+    locations."/".proxyPass = "http://127.0.0.1:8081";
   };
 }
