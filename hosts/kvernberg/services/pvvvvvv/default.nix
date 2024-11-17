@@ -1,6 +1,7 @@
 {
   imports = [
     ./exchange.nix
+    ./bank.nix
   ];
 
   services.taler = {
