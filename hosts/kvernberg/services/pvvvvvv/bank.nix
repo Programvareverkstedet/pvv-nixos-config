@@ -18,7 +18,7 @@ in {
       libeufin-bank = {
         WIRE_TYPE = "x-taler-bank";
         X_TALER_BANK_PAYTO_HOSTNAME = "bank.kvernberg.pvv.ntnu.no";
-        BASE_URL = "bank.kvernberg.pvv.ntnu.no";
+        BASE_URL = "bank.kvernberg.pvv.ntnu.no/";
 
         ALLOW_REGISTRATION = "yes";
 
@@ -41,7 +41,11 @@ in {
     enableACME = true;
     forceSSL = true;
     kTLS = true;
-    locations."/".proxyPass = "http://127.0.0.1:8082";
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:8082";
+      extraConfig = ''
+         proxy_read_timeout 300s; 
+      '';
+    };
   };
-  
 }

@@ -140,8 +140,12 @@ in {
     '';
     settings = {
       exchange = {
+        inherit (config.services.taler.settings.taler) CURRENCY CURRENCY_ROUND_UNIT; 
         MASTER_PUBLIC_KEY = "J331T37C8E58P9CVE686P1JFH11DWSRJ3RE4GVDTXKES9M24ERZG";
-        BASE_URL = "http://kvernberg.pvv.ntnu.no:8081/";
+        BASE_URL = "https://exchange.kvernberg.pvv.ntnu.no/";
+        TERMS_DIR = "${./terms}";
+        TERMS_ETAG = "0";
+        ENABLE_KYC = "NO";
       };
       exchange-offline = {
         MASTER_PRIV_FILE = config.sops.secrets.exchange-offline-master.path;
@@ -152,10 +156,19 @@ in {
         ENABLE_CREDIT = "YES";
       };
       exchange-accountcredentials-test = {
-        WIRE_GATEWAY_URL = "http://bank.kvernberg.pvv.ntnu.no/accounts/exchange/taler-wire-gateway/";
+        WIRE_GATEWAY_URL = "https://bank.kvernberg.pvv.ntnu.no/accounts/exchange/taler-wire-gateway/";
         WIRE_GATEWAY_AUTH_METHOD = "BASIC";
         USERNAME = "exchange";
         PASSWORD = "exchange";
+      };
+      "currency-${CURRENCY}" = {
+        ENABLED = "YES";
+        CODE = "SCHPENN";
+        NAME = "SCHPENN";
+        FRACTIONAL_NORMAL_DIGITS = 0;
+        FRACTIONAL_INPUT_DIGITS = 0;
+        FRACTIONAL_TRAILING_ZERO_DIGITS = 0;
+        ALT_UNIT_NAMES = "{\"0\": \"S\"}";
       };
     };
   };
@@ -164,6 +177,11 @@ in {
     enableACME = true;
     forceSSL = true;
     kTLS = true;
-    locations."/".proxyPass = "http://127.0.0.1:8081";
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:8081";
+      extraConfig = ''
+        proxy_read_timeout 300s;
+      '';
+    };
   };
 }
