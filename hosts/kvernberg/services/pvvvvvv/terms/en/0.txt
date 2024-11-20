@@ -1,0 +1,147 @@
+Terms of Service
+================
+
+Last update: 19.11.2024
+----------------------
+
+Welcome! A subset of PVVers who cares about Dibbler (“we,” “our,” or “us”) provides a experimental payment service
+through our Internet presence (collectively the “Services”). Before using our
+Services, please read the Terms of Service (the “Terms” or the “Agreement”)
+carefully.
+
+Overview
+--------
+
+This section provides a brief summary of the highlights of this
+Agreement. Please note that when you accept this Agreement, you are accepting
+all of the terms and conditions and not just this section. We and possibly
+other third parties provide Internet services which interact with the Taler
+Wallet’s self-hosted personal payment application. When using the Taler Wallet
+to interact with our Services, you are agreeing to our Terms, so please read
+carefully.
+
+Research
+----------
+
+This is research, any dibbler credits sent to the dibbler account could be lost at any time.
+We would make an effort to send the credits back to their canonical owners, but this may be difficult.
+We make no guarantees on the state of this. The dibbler economy is totally unsecured, and so are these services!
+Usage is wholly on your own risk.
+
+Highlights:
+-----------
+
+* You are responsible for keeping the data in your Taler Wallet at all times under your control. Any losses arising from you not being in control of your private information are your problem.
+
+* For our Services, we may charge transaction fees. The specific fee structure is provided based on the Taler protocol and should be shown to you when you withdraw electronic coins using a Taler Wallet. You agree and understand that the Taler protocol allows for the fee structure to change.
+
+* You agree to not intentionally overwhelm our systems with requests and follow responsible disclosure if you find security issues in our services.
+
+* We cannot be held accountable for our Services not being available due to circumstances beyond our control. If we modify or terminate our services, we will try to give you the opportunity to recover your funds. However, given the experimental state of the Services today, this may not be possible. You are strongly advised to limit your use of the Service to small-scale experiments expecting total loss of all funds.
+
+These terms outline approved uses of our Services. The Services and these
+Terms are still at an experimental stage. If you have any questions or
+comments related to this Agreement, please send us a message on IRC, or on our Matrix server.
+If you do not agree to this Agreement, you must not use our Services.
+
+How you accept this policy
+--------------------------
+
+By sending funds to us (to top-up your Taler Wallet), you acknowledge that you
+have read, understood, and agreed to these Terms. We reserve the right to
+change these Terms at any time. If you disagree with the change, we may in the
+future offer you with an easy option to recover your unspent funds. However,
+in the current experimental period you acknowledge that this feature is not
+yet available, resulting in your funds being lost unless you accept the new
+Terms. If you continue to use our Services other than to recover your unspent
+funds, your continued use of our Services following any such change will
+signify your acceptance to be bound by the then current Terms. Please check
+the effective date above to determine if there have been any changes since you
+have last reviewed these Terms.
+
+Services
+--------
+
+We will try to transfer funds that we hold in escrow for our users to any
+legal recipient to the best of our ability and within the limitations of the
+law and our implementation. However, the Services offered today are highly
+experimental and the set of recipients of funds is severely restricted. The
+Taler Wallet can be loaded by exchanging ordinary dibbler credit for electronic
+coins. We are providing this exchange service. Once your Taler Wallet is
+loaded with electronic coins they can be spent for purchases if the seller is
+accepting Taler as a means of payment. We are not guaranteeing that any seller
+is accepting Taler at all or a particular seller. The seller or recipient of
+deposits of electronic coins must specify the target account, as per the
+design of the Taler protocol. They are responsible for following the protocol
+and specifying the correct dibbler account, and are solely liable for any losses
+that may arise from specifying the wrong account. We will allow the government
+to link wire transfers to the underlying contract hash. It is the
+responsibility of recipients to preserve the full contracts and to pay
+whatever taxes and charges may be applicable. Technical issues may lead to
+situations where we are unable to make transfers at all or lead to incorrect
+transfers that cannot be reversed. We will only refuse to execute transfers if
+the transfers are prohibited by a competent legal authority and we are ordered
+to do so.
+
+When using our Services, you agree to not take any action that intentionally
+imposes an unreasonable load on our infrastructure. If you find security
+problems in our Services, you agree to first report them to
+security@taler-systems.com and grant us the right to publish your report. We
+warrant that we will ourselves publicly disclose any issues reported within 3
+months, and that we will not prosecute anyone reporting security issues if
+they did not exploit the issue beyond a proof-of-concept, and followed the
+above responsible disclosure practice.
+
+Fees
+----
+
+You agree to pay the fees for exchanges and withdrawals completed via the
+Taler Wallet ("Fees") as defined by us, which we may change from time to
+time.
+
+
+Copyrights and trademarks
+-------------------------
+
+The Taler Wallet is released under the terms of the GNU General Public License
+(GNU GPL). You have the right to access, use, and share the Taler Wallet, in
+modified or unmodified form. However, the GPL is a strong copyleft license,
+which means that any derivative works must be distributed under the same
+license terms as the original software. If you have any questions, you should
+review the GNU GPL’s full terms and conditions on the GNU GPL Licenses page 
+(https://www.gnu.org/licenses/). “Taler” itself is a trademark
+of Taler Systems SA. You are welcome to use the name in relation to processing
+payments based on the Taler protocol, assuming your use is compatible with an
+official release from the GNU Project that is not older than two years.
+
+
+
+Discontinuance of services and Force majeure
+--------------------------------------------
+
+We may, in our sole discretion and without cost to you, with or without prior
+notice, and at any time, modify or discontinue, temporarily or permanently,
+any portion of our Services. We will use the Taler protocol’s provisions to
+notify Wallets if our Services are to be discontinued. It is your
+responsibility to ensure that the Taler Wallet is online at least once every
+three months to observe these notifications. We shall not be held responsible
+or liable for any loss of funds in the event that we discontinue or depreciate
+the Services and your Taler Wallet fails to transfer out the coins within a
+three months notification period.
+
+We shall not be held liable for any delays, failure in performance, or
+interruptions of service which result directly or indirectly from any cause or
+condition beyond our reasonable control, including but not limited to: any
+delay or failure due to any act of God, act of civil or military authorities,
+act of terrorism, civil disturbance, war, strike or other labor dispute, fire,
+interruption in telecommunications or Internet services or network provider
+services, failure of equipment and/or software, other catastrophe, or any
+other occurrence which is beyond our reasonable control and shall not affect
+the validity and enforceability of any remaining provisions.
+
+
+Questions or comments
+---------------------
+
+We welcome comments, questions, concerns, or suggestions. Please send us a
+message via the usual communication channels at PVV
