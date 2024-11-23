@@ -6,6 +6,7 @@ let
 in {
   imports = [
     ./ci.nix
+    ./gpg.nix
     ./import-users
     ./web-secret-provider
   ];
