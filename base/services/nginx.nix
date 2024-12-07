@@ -33,6 +33,10 @@
 
   systemd.services.nginx.serviceConfig = lib.mkIf config.services.nginx.enable {
     LimitNOFILE = 65536;
+    # We use jit my dudes
+    MemoryDenyWriteExecute = lib.mkForce false;
+    # What the fuck do we use that where the defaults are not enough???
+    SystemCallFilter = lib.mkForce null;
   };
 
   services.nginx.virtualHosts."_" = lib.mkIf config.services.nginx.enable {
