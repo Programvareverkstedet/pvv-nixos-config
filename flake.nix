@@ -49,7 +49,7 @@
       "ildkule"
     ];
   in {
-    inherit inputs;
+    inputs = nixlib.mapAttrs (_: src: src.outPath) inputs;
 
     nixosConfigurations = let
       unstablePkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
