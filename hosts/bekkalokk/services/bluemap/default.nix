@@ -6,7 +6,7 @@ in {
     ./module.nix # From danio, pending upstreaming
   ];
 
-  disabledModules = [ "services/web-servers/bluemap.nix" ];
+  disabledModules = [ "services/web-apps/bluemap.nix" ];
 
   sops.secrets."bluemap/ssh-key" = { };
   sops.secrets."bluemap/ssh-known-hosts" = { };

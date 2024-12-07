@@ -31,7 +31,6 @@
       ProtectSystem = "full";
       RestrictNamespaces = true;
       RestrictRealtime = true;
-      RestrictSUIDSGID = true; # disable for creating setgid directories
       SocketBindDeny = [ "any" ];
       SystemCallArchitectures = "native";
       SystemCallFilter = [

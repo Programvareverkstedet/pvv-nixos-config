@@ -6,10 +6,6 @@ let
   webhookListenPort = 8435;
 in
 {
-  imports = [
-    ./module.nix
-  ];
-
   sops.secrets."matrix/hookshot/as_token" = {
     sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "hookshot/as_token";
