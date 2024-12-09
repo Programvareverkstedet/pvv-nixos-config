@@ -115,6 +115,12 @@
       #ildkule-unstable = unstableNixosConfig "ildkule" { };
       shark = stableNixosConfig "shark" { };
 
+      ustetind = stableNixosConfig "ustetind" {
+        modules = [
+         "${nixpkgs}/nixos/modules/virtualisation/lxc-container.nix"
+        ];
+      };
+
       brzeczyszczykiewicz = stableNixosConfig "brzeczyszczykiewicz" {
         modules = [
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
