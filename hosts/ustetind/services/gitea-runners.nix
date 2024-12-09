@@ -27,5 +27,15 @@ lib.mkMerge [
   (mkRunner "alpha")
   (mkRunner "beta")
   (mkRunner "epsilon")
-  { virtualisation.podman.enable = true; }
+  {
+    virtualisation.podman = {
+      enable = true;
+      defaultNetwork.settings.dns_enabled = true;
+      autoPrune.enable = true;
+    };
+
+    networking.dhcpcd.IPv6rs = false;
+
+    networking.firewall.interfaces."podman+".allowedUDPPorts = [53 5353];
+  }
 ]

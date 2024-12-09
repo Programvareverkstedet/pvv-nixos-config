@@ -16,19 +16,28 @@
   networking.hostName = "ustetind";
 
   networking.useHostResolvConf = lib.mkForce false;
-  # systemd.network.enable = lib.mkForce false;
-  # networking.useDHCP = lib.mkForce true;
-  # networking.address = with values.hosts.georg; [ (ipv4 + "/25") (ipv6 + "/64") ];
 
-  systemd.network.networks."30-lxc-veth" = values.defaultNetworkConfig // {
-    matchConfig = {
-      Type = "ether";
-      Kind = "veth";
-      Name = [
-        "eth*"
-      ];
+  systemd.network.networks = {
+    "30-lxc-eth" = values.defaultNetworkConfig // {
+      matchConfig = {
+        Type = "ether";
+        Kind = "veth";
+        Name = [
+          "eth*"
+        ];
+      };
+      address = with values.hosts.ustetind; [ (ipv4 + "/25") (ipv6 + "/64") ];
     };
-    address = with values.hosts.ustetind; [ (ipv4 + "/25") (ipv6 + "/64") ];
+    "40-podman-veth" = values.defaultNetworkConfig // {
+      matchConfig = {
+        Type = "ether";
+        Kind = "veth";
+        Name = [
+          "veth*"
+        ];
+      };
+      DHCP = "yes";
+    };
   };
 
   system.stateVersion = "24.11";
