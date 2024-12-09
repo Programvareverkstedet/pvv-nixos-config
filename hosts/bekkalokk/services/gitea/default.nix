@@ -5,7 +5,6 @@ let
   sshPort  = 2222;
 in {
   imports = [
-    ./ci.nix
     ./gpg.nix
     ./import-users
     ./web-secret-provider

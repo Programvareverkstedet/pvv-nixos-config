@@ -13,6 +13,7 @@ keys:
   - &host_ildkule age1x28hmzvuv6f2n66c0jtqcca3h9rput8d7j5uek6jcpx8n9egd52sqpejq0
   - &host_bekkalokk age12nj59tguy9wg882updc2vjdusx5srnxmjyfaqve4zx6jnnsaw3qsyjq6zd
   - &host_bicep age1sl43gc9cw939z5tgha2lpwf0xxxgcnlw7w4xem4sqgmt2pt264vq0dmwx2
+  - &host_ustetind age1hffjafs4slznksefmtqrlj7rdaqgzqncn4un938rhr053237ry8s3rs0v8
 
 creation_rules:
   # Global secrets
@@ -71,6 +72,18 @@ creation_rules:
     key_groups:
     - age:
       - *host_bicep
+      - *user_danio
+      - *user_felixalb
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
+      pgp:
+      - *user_oysteikt
+
+  - path_regex: secrets/ustetind/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *host_ustetind
       - *user_danio
       - *user_felixalb
       - *user_pederbs_sopp
