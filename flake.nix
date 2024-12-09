@@ -33,13 +33,13 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ... }@inputs:
   let
-    nixlib = nixpkgs.lib;
+    inherit (nixpkgs) lib;
     systems = [
       "x86_64-linux"
       "aarch64-linux"
       "aarch64-darwin"
     ];
-    forAllSystems = f: nixlib.genAttrs systems f;
+    forAllSystems = f: lib.genAttrs systems f;
     allMachines = builtins.attrNames self.nixosConfigurations;
     importantMachines = [
       "bekkalokk"
@@ -49,11 +49,11 @@
       "ildkule"
     ];
   in {
-    inputs = nixlib.mapAttrs (_: src: src.outPath) inputs;
+    inputs = lib.mapAttrs (_: src: src.outPath) inputs;
 
     nixosConfigurations = let
       unstablePkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
-      nixosConfig = nixpkgs: name: config: nixpkgs.lib.nixosSystem (nixpkgs.lib.recursiveUpdate
+      nixosConfig = nixpkgs: name: config: lib.nixosSystem (lib.recursiveUpdate
         rec {
           system = "x86_64-linux";
           specialArgs = {
@@ -156,19 +156,19 @@
       in rec {
         default = important-machines;
         important-machines = pkgs.linkFarm "important-machines"
-          (nixlib.getAttrs importantMachines self.packages.x86_64-linux);
+          (lib.getAttrs importantMachines self.packages.x86_64-linux);
         all-machines = pkgs.linkFarm "all-machines"
-          (nixlib.getAttrs allMachines self.packages.x86_64-linux);
+          (lib.getAttrs allMachines self.packages.x86_64-linux);
 
         simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
 
       } //
-      (nixlib.pipe null [
+      (lib.pipe null [
         (_: pkgs.callPackage ./packages/mediawiki-extensions { })
-        (nixlib.flip builtins.removeAttrs ["override" "overrideDerivation"])
-        (nixlib.mapAttrs' (name: nixlib.nameValuePair "mediawiki-${name}"))
+        (lib.flip builtins.removeAttrs ["override" "overrideDerivation"])
+        (lib.mapAttrs' (name: lib.nameValuePair "mediawiki-${name}"))
       ])
-      // nixlib.genAttrs allMachines
+      // lib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
     };
   };
