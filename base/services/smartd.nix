@@ -15,4 +15,6 @@
   environment.systemPackages = lib.optionals config.services.smartd.enable (with pkgs; [
     smartmontools
   ]);
+
+  systemd.services.smartd.unitConfig.ConditionVirtualization = "no";
 }
