@@ -34,7 +34,21 @@ def get_org_repo_list(args: argparse.Namespace, token: str):
         f"{args.api_url}/orgs/{args.org}/repos",
         headers = { 'Authorization': 'token ' + token },
     )
-    return [repo["name"] for repo in result.json()]
+
+    results = [repo["name"] for repo in result.json()]
+    target = int(result.headers['X-Total-Count'])
+
+    i = 2
+    while len(results) < target:
+        result = requests.get(
+            f"{args.api_url}/orgs/{args.org}/repos",
+            params = { 'page': i },
+            headers = { 'Authorization': 'token ' + token },
+        )
+        results += [repo["name"] for repo in result.json()]
+        i += 1
+
+    return results
 
 
 def generate_ssh_key(args: argparse.Namespace, repository: str):
