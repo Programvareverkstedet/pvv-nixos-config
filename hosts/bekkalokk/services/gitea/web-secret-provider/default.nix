@@ -27,6 +27,7 @@ in
   users.users."gitea-web" = {
     group = "gitea-web";
     isSystemUser = true;
+    shell = pkgs.bash;
   };
 
   sops.secrets."gitea/web-secret-provider/token" = {
@@ -58,6 +59,7 @@ in
           key-dir = "/var/lib/gitea-web/keys/%i";
           authorized-keys-path = "/var/lib/gitea-web/authorized_keys.d/%i";
           rrsync-script = pkgs.writeShellScript "rrsync-chown" ''
+            mkdir -p "$1"
             ${lib.getExe pkgs.rrsync} -wo "$1"
             ${pkgs.coreutils}/bin/chown -R gitea-web:gitea-web "$1"
           '';
