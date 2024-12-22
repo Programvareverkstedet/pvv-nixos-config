@@ -2,7 +2,7 @@
 {
   system.autoUpgrade = {
     enable = true;
-    flake = "git+https://git.pvv.ntnu.no/Drift/pvv-nixos-config.git?ref=24.11";
+    flake = "git+https://git.pvv.ntnu.no/Drift/pvv-nixos-config.git";
     flags = [
       # --update-input is deprecated since nix 2.22, and removed in lix 2.90
       # https://git.lix.systems/lix-project/lix/issues/400
