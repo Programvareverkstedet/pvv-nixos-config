@@ -64,19 +64,18 @@ in
 
     script = let
       rotations = 10;
-      sshTarget1 = "root@isvegg.pvv.ntnu.no:/mnt/backup1/bicep/mysql";
-      sshTarget2 = "root@isvegg.pvv.ntnu.no:/mnt/backup2/bicep/mysql";
+      # rsyncTarget = "root@isvegg.pvv.ntnu.no:/mnt/backup1/bicep/mysql";
+      rsyncTarget = "/data/backup/mysql";
     in ''
       set -eo pipefail
 
-      mysqldump | gzip -c -9 --rsyncable > "${backupDir}/$(date --iso-8601)-dump.sql.gz"
+      mysqldump --all-databases | gzip -c -9 --rsyncable > "${backupDir}/$(date --iso-8601)-dump.sql.gz"
 
       while [ $(ls -1 "${backupDir}" | wc -l) -gt ${toString rotations} ]; do
         rm $(find "${backupDir}" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)
       done
 
-      rsync -avz --delete "${backupDir}" '${sshTarget1}'
-      rsync -avz --delete "${backupDir}" '${sshTarget2}'
+      rsync -avz --delete "${backupDir}" '${rsyncTarget}'
     '';
 
     serviceConfig = {
@@ -84,7 +83,15 @@ in
       User = "mysql";
       Group = "mysql";
       UMask = "0077";
-      ReadWritePaths = [ backupDir ];
+
+      Nice = 19;
+      IOSchedulingClass = "best-effort";
+      IOSchedulingPriority = 7;
+
+      ReadWritePaths = [
+        backupDir
+        "/data/backup/mysql" # NOTE: should not be part of this option once rsyncTarget is remote
+      ];
     };
 
     startAt = "*-*-* 02:15:00";

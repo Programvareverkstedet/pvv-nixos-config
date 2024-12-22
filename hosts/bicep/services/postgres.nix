@@ -108,8 +108,8 @@ in
 
     script = let
       rotations = 10;
-      sshTarget1 = "root@isvegg.pvv.ntnu.no:/mnt/backup1/bicep/postgresql";
-      sshTarget2 = "root@isvegg.pvv.ntnu.no:/mnt/backup2/bicep/postgresql";
+      # rsyncTarget = "root@isvegg.pvv.ntnu.no:/mnt/backup1/bicep/postgresql";
+      rsyncTarget = "/data/backup/postgresql";
     in ''
       set -eo pipefail
 
@@ -119,8 +119,7 @@ in
         rm $(find "${backupDir}" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)
       done
 
-      rsync -avz --delete "${backupDir}" '${sshTarget1}'
-      rsync -avz --delete "${backupDir}" '${sshTarget2}'
+      rsync -avz --delete "${backupDir}" '${rsyncTarget}'
     '';
 
     serviceConfig = {
@@ -128,7 +127,15 @@ in
       User = "postgres";
       Group = "postgres";
       UMask = "0077";
-      ReadWritePaths = [ backupDir ];
+
+      Nice = 19;
+      IOSchedulingClass = "best-effort";
+      IOSchedulingPriority = 7;
+
+      ReadWritePaths = [
+        backupDir
+        "/data/backup/postgresql" # NOTE: should not be part of this option once rsyncTarget is remote
+      ];
     };
 
     startAt = "*-*-* 01:15:00";
