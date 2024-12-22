@@ -15,8 +15,8 @@ let
         enable = true;
         name = "git-runner-${name}"; url = "https://git.pvv.ntnu.no";
         labels = [
-          "debian-latest:docker://node:18-bullseye"
-          "ubuntu-latest:docker://node:18-bullseye"
+          "debian-latest:docker://node:current-bookworm"
+          "ubuntu-latest:docker://node:current-bookworm"
         ];
         tokenFile = config.sops.secrets."gitea/runners/${name}".path;
       };
