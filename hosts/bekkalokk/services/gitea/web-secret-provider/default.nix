@@ -3,6 +3,7 @@ let
   organizations = [
     "Drift"
     "Projects"
+    "Grzegorz"
     "Kurs"
   ];
 

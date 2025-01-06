@@ -177,6 +177,7 @@ def ensure_gitea_user_is_part_of_team(
 # List of teams that all users should be part of by default
 COMMON_USER_TEAMS = [
     ("Projects", "Members"),
+    ("Grzegorz", "Members"),
     ("Kurs", "Members"),
 ]
 
