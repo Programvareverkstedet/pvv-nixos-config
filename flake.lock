@@ -28,17 +28,17 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1730249639,
-        "narHash": "sha256-G3URSlqCcb+GIvGyki+HHrDM5ZanX/dP9BtppD/SdfI=",
+        "lastModified": 1736177549,
+        "narHash": "sha256-iEgxxU4INJXntv20A5WQQ/9P0ulDxGaZ8Cn8sfvyAFU=",
         "ref": "refs/heads/main",
-        "rev": "80e0447bcb79adad4f459ada5610f3eae987b4e3",
-        "revCount": 34,
+        "rev": "29ae3d7482420f1757cca5558d16420aaac22f61",
+        "revCount": 39,
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Projects/greg-ng.git"
+        "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       },
       "original": {
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Projects/greg-ng.git"
+        "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       }
     },
     "grzegorz-clients": {
@@ -54,11 +54,11 @@
         "rev": "546d921ec46735dbf876e36f4af8df1064d09432",
         "revCount": 78,
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Projects/grzegorz-clients.git"
+        "url": "https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git"
       },
       "original": {
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Projects/grzegorz-clients.git"
+        "url": "https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git"
       }
     },
     "matrix-next": {

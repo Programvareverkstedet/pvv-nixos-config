@@ -23,9 +23,9 @@
     nix-gitea-themes.url = "git+https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git";
     nix-gitea-themes.inputs.nixpkgs.follows = "nixpkgs";
 
-    greg-ng.url = "git+https://git.pvv.ntnu.no/Projects/greg-ng.git";
+    greg-ng.url = "git+https://git.pvv.ntnu.no/Grzegorz/greg-ng.git";
     greg-ng.inputs.nixpkgs.follows = "nixpkgs";
-    grzegorz-clients.url = "git+https://git.pvv.ntnu.no/Projects/grzegorz-clients.git";
+    grzegorz-clients.url = "git+https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
 
     minecraft-data.url = "git+https://git.pvv.ntnu.no/Drift/minecraft-data.git";
