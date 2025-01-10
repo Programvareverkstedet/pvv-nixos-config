@@ -1,0 +1,116 @@
+[
+  {
+    "name": "art",
+    "exclusive": false,
+    "color": "#006b75",
+    "description": "Requires some creativity"
+  },
+  {
+    "name": "big",
+    "exclusive": false,
+    "color": "#754bc4",
+    "description": "This is gonna take a while"
+  },
+  {
+    "name": "blocked",
+    "exclusive": false,
+    "color": "#850021",
+    "description": "This issue/PR depends on one or more other issues/PRs"
+  },
+  {
+    "name": "bug",
+    "exclusive": false,
+    "color": "#f05048",
+    "description": "Something brokey"
+  },
+  {
+    "name": "ci-cd",
+    "exclusive": false,
+    "color": "#d1ff78",
+    "description": "Continuous integrals and continuous derivation"
+  },
+  {
+    "name": "crash report",
+    "exclusive": false,
+    "color": "#ed1111",
+    "description": "Report an oopsie"
+  },
+  {
+    "name": "disputed",
+    "exclusive": false,
+    "color": "#5319e7",
+    "description": "Kranglefanter"
+  },
+  {
+    "name": "documentation",
+    "exclusive": false,
+    "color": "#fbca04",
+    "description": "Documentation changes required"
+  },
+  {
+    "name": "duplicate",
+    "exclusive": false,
+    "color": "#cccccc",
+    "description": "This issue or pull request already exists"
+  },
+  {
+    "name": "feature request",
+    "exclusive": false,
+    "color": "#0052cc",
+    "description": ""
+  },
+  {
+    "name": "good first issue",
+    "exclusive": false,
+    "color": "#009800",
+    "description": "Get your hands dirty with a new project here"
+  },
+  {
+    "name": "me gusta",
+    "exclusive": false,
+    "color": "#30ff36",
+    "description": "( ͡° ͜ʖ ͡°)"
+  },
+  {
+    "name": "packaging",
+    "exclusive": false,
+    "color": "#bf642b",
+    "description": ""
+  },
+  {
+    "name": "question",
+    "exclusive": false,
+    "color": "#cc317c",
+    "description": ""
+  },
+  {
+    "name": "security",
+    "exclusive": false,
+    "color": "#ed1111",
+    "description": "Skommel"
+  },
+  {
+    "name": "techdebt spring cleaning",
+    "exclusive": false,
+    "color": "#8c6217",
+    "description": "The code is smelly 👃"
+  },
+  {
+    "name": "testing",
+    "exclusive": false,
+    "color": "#52b373",
+    "description": "Poke it and see if it explodes"
+  },
+  {
+    "name": "ui/ux",
+    "exclusive": false,
+    "color": "#f28852",
+    "description": "User complaints about ergonomics and economics and whatever"
+  },
+  {
+    "name": "wontfix",
+    "exclusive": false,
+    "color": "#ffffff",
+    "description": "Nei, vil ikke"
+  }
+]
