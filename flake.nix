@@ -25,6 +25,8 @@
 
     greg-ng.url = "git+https://git.pvv.ntnu.no/Grzegorz/greg-ng.git";
     greg-ng.inputs.nixpkgs.follows = "nixpkgs";
+    gergle.url = "git+https://git.pvv.ntnu.no/Grzegorz/gergle.git";
+    gergle.inputs.nixpkgs.follows = "nixpkgs";
     grzegorz-clients.url = "git+https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -124,19 +126,23 @@
       brzeczyszczykiewicz = stableNixosConfig "brzeczyszczykiewicz" {
         modules = [
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
+          inputs.gergle.nixosModules.default
           inputs.greg-ng.nixosModules.default
         ];
         overlays = [
           inputs.greg-ng.overlays.default
+          inputs.gergle.overlays.default
         ];
       };
       georg = stableNixosConfig "georg" {
         modules = [
           inputs.grzegorz-clients.nixosModules.grzegorz-webui
+          inputs.gergle.nixosModules.default
           inputs.greg-ng.nixosModules.default
         ];
         overlays = [
           inputs.greg-ng.overlays.default
+          inputs.gergle.overlays.default
         ];
       };
     };

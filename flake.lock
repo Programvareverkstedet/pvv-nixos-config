@@ -20,6 +20,26 @@
         "type": "github"
       }
     },
+    "gergle": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1736621371,
+        "narHash": "sha256-45UIQSQA7R5iU4YWvilo7mQbhY1Liql9bHBvYa3qRI0=",
+        "ref": "refs/heads/main",
+        "rev": "3729796c1213fe76e568ac28f1df8de4e596950b",
+        "revCount": 20,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
+      }
+    },
     "greg-ng": {
       "inputs": {
         "nixpkgs": [
@@ -192,6 +212,7 @@
     "root": {
       "inputs": {
         "disko": "disko",
+        "gergle": "gergle",
         "greg-ng": "greg-ng",
         "grzegorz-clients": "grzegorz-clients",
         "matrix-next": "matrix-next",
