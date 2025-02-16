@@ -1,3 +1,7 @@
+{ config, lib, pkgs, ... }:
+let
+  cfg = config.services.taler;
+in
 {
   imports = [
     ./exchange.nix
