@@ -48,6 +48,9 @@
 
   users.users.turnserver.extraGroups = [ "acme" ];
 
+  # It needs this to be allowed to access the files with the acme group
+  systemd.services.coturn.serviceConfig.PrivateUsers = lib.mkForce false;
+
   systemd.services."acme-${config.services.coturn.realm}".serviceConfig = {
     AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
   };
@@ -66,7 +69,7 @@
 
     listening-ips = [
       values.services.turn.ipv4
-      # values.services.turn.ipv6
+      values.services.turn.ipv6
     ];
 
     tls-listening-port = 443;
