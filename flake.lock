@@ -7,17 +7,37 @@
         ]
       },
       "locked": {
-        "lastModified": 1731746438,
-        "narHash": "sha256-f3SSp1axoOk0NAI7oFdRzbxG2XPBSIXC+/DaAXnvS1A=",
+        "lastModified": 1739634831,
+        "narHash": "sha256-xFnU+uUl48Icas2wPQ+ZzlL2O3n8f6J2LrzNK9f2nng=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "cb64993826fa7a477490be6ccb38ba1fa1e18fa8",
+        "rev": "fa5746ecea1772cf59b3f34c5816ab3531478142",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
         "repo": "disko",
         "type": "github"
+      }
+    },
+    "gergle": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1736621371,
+        "narHash": "sha256-45UIQSQA7R5iU4YWvilo7mQbhY1Liql9bHBvYa3qRI0=",
+        "ref": "refs/heads/main",
+        "rev": "3729796c1213fe76e568ac28f1df8de4e596950b",
+        "revCount": 20,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
       }
     },
     "greg-ng": {
@@ -28,17 +48,17 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1730249639,
-        "narHash": "sha256-G3URSlqCcb+GIvGyki+HHrDM5ZanX/dP9BtppD/SdfI=",
+        "lastModified": 1736545379,
+        "narHash": "sha256-PeTTmGumdOX3rd6OKI7QMCrZovCDkrckZbcHr+znxWA=",
         "ref": "refs/heads/main",
-        "rev": "80e0447bcb79adad4f459ada5610f3eae987b4e3",
-        "revCount": 34,
+        "rev": "74f5316121776db2769385927ec0d0c2cc2b23e4",
+        "revCount": 42,
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Projects/greg-ng.git"
+        "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       },
       "original": {
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Projects/greg-ng.git"
+        "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       }
     },
     "grzegorz-clients": {
@@ -48,17 +68,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1726861934,
-        "narHash": "sha256-lOzPDwktd+pwszUTbpUdQg6iCzInS11fHLfkjmnvJrM=",
+        "lastModified": 1736178795,
+        "narHash": "sha256-mPdi8cgvIDYcgG3FRG7A4BOIMu2Jef96TPMnV00uXlM=",
         "ref": "refs/heads/master",
-        "rev": "546d921ec46735dbf876e36f4af8df1064d09432",
-        "revCount": 78,
+        "rev": "fde738910de1fd8293535a6382c2f0c2749dd7c1",
+        "revCount": 79,
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Projects/grzegorz-clients.git"
+        "url": "https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git"
       },
       "original": {
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/Projects/grzegorz-clients.git"
+        "url": "https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git"
       }
     },
     "matrix-next": {
@@ -104,11 +124,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1714416973,
-        "narHash": "sha256-aZUcvXjdETUC6wVQpWDVjLUzwpDAEca8yR0ITDeK39o=",
+        "lastModified": 1736531400,
+        "narHash": "sha256-+X/HVI1AwoPcud28wI35XRrc1kDgkYdDUGABJBAkxDI=",
         "ref": "refs/heads/main",
-        "rev": "2b23c0ba8aae68d3cb6789f0f6e4891cef26cc6d",
-        "revCount": 6,
+        "rev": "e4dafd06b3d7e9e6e07617766e9c3743134571b7",
+        "revCount": 7,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git"
       },
@@ -119,43 +139,27 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1731779898,
-        "narHash": "sha256-oxxCrYZM0WNRoaokDyVXcPIlTc8Z2yX4QjKbgXGI3IM=",
+        "lastModified": 1739611738,
+        "narHash": "sha256-3bnOIZz8KXtzcaXGuH9Eriv0HiQyr1EIfcye+VHLQZE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9972661139e27eed0237df4dde34839e09028cd5",
+        "rev": "31ff66eb77d02e9ac34b7256a02edb1c43fb9998",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "refs/pull/332699/merge",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-stable": {
-      "locked": {
-        "lastModified": 1730602179,
-        "narHash": "sha256-efgLzQAWSzJuCLiCaQUCDu4NudNlHdg2NzGLX5GYaEY=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "3c2f1c4ca372622cb2f9de8016c9a0b1cbd0f37c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "release-24.05",
+        "ref": "nixos-unstable-small",
         "repo": "nixpkgs",
         "type": "github"
       }
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1731745710,
-        "narHash": "sha256-SVeiClbgqL071JpAspOu0gCkPSAL51kSIRwo4C/pghA=",
+        "lastModified": 1739611738,
+        "narHash": "sha256-3bnOIZz8KXtzcaXGuH9Eriv0HiQyr1EIfcye+VHLQZE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "dfaa4cb76c2d450d8f396bb6b9f43cede3ade129",
+        "rev": "31ff66eb77d02e9ac34b7256a02edb1c43fb9998",
         "type": "github"
       },
       "original": {
@@ -192,11 +196,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1725212759,
+        "lastModified": 1737151758,
         "narHash": "sha256-yZBsefIarFUEhFRj+rCGMp9Zvag3MCafqV/JfGVRVwc=",
         "ref": "refs/heads/master",
-        "rev": "e7b66b4bc6a89bab74bac45b87e9434f5165355f",
-        "revCount": 473,
+        "rev": "a4ebe6ded0c8c124561a41cb329ff30891914b5e",
+        "revCount": 475,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/nettsiden.git"
       },
@@ -208,6 +212,7 @@
     "root": {
       "inputs": {
         "disko": "disko",
+        "gergle": "gergle",
         "greg-ng": "greg-ng",
         "grzegorz-clients": "grzegorz-clients",
         "matrix-next": "matrix-next",
@@ -245,15 +250,14 @@
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
-        ],
-        "nixpkgs-stable": "nixpkgs-stable"
+        ]
       },
       "locked": {
-        "lastModified": 1731748189,
-        "narHash": "sha256-Zd/Uukvpcu26M6YGhpbsgqm6LUSLz+Q8mDZ5LOEGdiE=",
+        "lastModified": 1739262228,
+        "narHash": "sha256-7JAGezJ0Dn5qIyA2+T4Dt/xQgAbhCglh6lzCekTVMeU=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "d2bd7f433b28db6bc7ae03d5eca43564da0af054",
+        "rev": "07af005bb7d60c7f118d9d9f5530485da5d1e975",
         "type": "github"
       },
       "original": {
