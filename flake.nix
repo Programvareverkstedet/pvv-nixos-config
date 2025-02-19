@@ -116,6 +116,7 @@
       ildkule = stableNixosConfig "ildkule" { };
       #ildkule-unstable = unstableNixosConfig "ildkule" { };
       shark = stableNixosConfig "shark" { };
+      wenche = stableNixosConfig "wenche" { };
 
       ustetind = stableNixosConfig "ustetind" {
         modules = [
