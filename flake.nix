@@ -71,6 +71,11 @@
 
           pkgs = import nixpkgs {
             inherit system;
+            config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
+              [
+                "nvidia-x11"
+                "nvidia-settings"
+              ];
             overlays = [
               # Global overlays go here
             ] ++ config.overlays or [ ];

@@ -1,4 +1,4 @@
-{ config, fp, pkgs, values, ... }:
+{ config, fp, pkgs, values, lib, ... }:
 {
   imports = [
       # Include the results of the hardware scan.
@@ -21,6 +21,14 @@
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens18";
     address = with values.hosts.wenche; [ (ipv4 + "/25") (ipv6 + "/64") ];
+  };
+
+  hardware.graphics.enable = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = true;
+    package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
   # List packages installed in system profile
