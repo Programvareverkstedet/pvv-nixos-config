@@ -160,6 +160,15 @@
 
     devShells = forAllSystems (system: {
       default = nixpkgs.legacyPackages.${system}.callPackage ./shell.nix { };
+      cuda = let
+        cuda-pkgs = import nixpkgs {
+          inherit system;
+          config = {
+            allowUnfree = true;
+            cudaSupport = true;
+          };
+        };
+      in cuda-pkgs.callPackage ./shells/cuda.nix { };
     });
 
     packages = {
