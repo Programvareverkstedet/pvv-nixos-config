@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1733168902,
-        "narHash": "sha256-8dupm9GfK+BowGdQd7EHK5V61nneLfr9xR6sc5vtDi0=",
+        "lastModified": 1740485968,
+        "narHash": "sha256-WK+PZHbfDjLyveXAxpnrfagiFgZWaTJglewBWniTn2Y=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "785c1e02c7e465375df971949b8dcbde9ec362e5",
+        "rev": "19c1140419c4f1cdf88ad4c1cfb6605597628940",
         "type": "github"
       },
       "original": {
@@ -68,11 +68,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1726861934,
-        "narHash": "sha256-lOzPDwktd+pwszUTbpUdQg6iCzInS11fHLfkjmnvJrM=",
+        "lastModified": 1736178795,
+        "narHash": "sha256-mPdi8cgvIDYcgG3FRG7A4BOIMu2Jef96TPMnV00uXlM=",
         "ref": "refs/heads/master",
-        "rev": "546d921ec46735dbf876e36f4af8df1064d09432",
-        "revCount": 78,
+        "rev": "fde738910de1fd8293535a6382c2f0c2749dd7c1",
+        "revCount": 79,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git"
       },
@@ -139,11 +139,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1733466147,
-        "narHash": "sha256-1QAch5UZXGDc8Kh3PvdIKfVNeebjZFWiIKn8lAr1ZBM=",
+        "lastModified": 1740782485,
+        "narHash": "sha256-GkDJDqHYlPKZFdyxzZHtljxNRsosKB1GCrblqlvLFgo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "66dddf2c2aae34272f117ea95a06efe376edbe27",
+        "rev": "dd5c2540983641bbaabdfc665931592d4c9989e8",
         "type": "github"
       },
       "original": {
@@ -155,11 +155,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1733603762,
-        "narHash": "sha256-E+cuaL8s1oHCumWD/Zkw0gkLOOQcz848pVyLfvqWDVw=",
+        "lastModified": 1740848276,
+        "narHash": "sha256-bYeI3FEs824X+MJYksKboNlmglehzplqzn+XvcojWMc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b1dd465e8139748a8e26037fdd4c5ffe79457cbd",
+        "rev": "e9b0ff70ddc61c42548501b0fafb86bb49cca858",
         "type": "github"
       },
       "original": {
@@ -253,11 +253,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1733128155,
-        "narHash": "sha256-m6/qwJAJYcidGMEdLqjKzRIjapK4nUfMq7rDCTmZajc=",
+        "lastModified": 1739262228,
+        "narHash": "sha256-7JAGezJ0Dn5qIyA2+T4Dt/xQgAbhCglh6lzCekTVMeU=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "c6134b6fff6bda95a1ac872a2a9d5f32e3c37856",
+        "rev": "07af005bb7d60c7f118d9d9f5530485da5d1e975",
         "type": "github"
       },
       "original": {
