@@ -13,6 +13,8 @@ in {
 
   services.bluemap = {
     enable = true;
+    package = pkgs.callPackage ./package.nix { };
+    
     eula = true;
     onCalendar = "*-*-* 05:45:00"; # a little over an hour after auto-upgrade
 

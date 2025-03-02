@@ -26,7 +26,6 @@ let
     "webapp.conf" = webappConfig;
     "webserver.conf" = webserverConfig;
     "packs" = cfg.resourcepacks;
-    "addons" = cfg.resourcepacks; # TODO
   };
 
   renderConfigFolder = name: value: pkgs.linkFarm "bluemap-${name}-config" {
@@ -38,13 +37,13 @@ let
     "webapp.conf" = format.generate "webapp.conf" (cfg.webappSettings // { "update-settings-file" = false; });
     "webserver.conf" = webserverConfig;
     "packs" = value.resourcepacks;
-    "addons" = cfg.resourcepacks; # TODO
   };
 
   inherit (lib) mkOption;
 in {
   options.services.bluemap = {
     enable = lib.mkEnableOption "bluemap";
+    package = lib.mkPackageOption pkgs "bluemap" { };
 
     eula = mkOption {
       type = lib.types.bool;
@@ -159,7 +158,7 @@ in {
             type = lib.types.path;
             default = cfg.resourcepacks;
             defaultText = lib.literalExpression "config.services.bluemap.resourcepacks";
-            description = "A set of resourcepacks/mods to extract models from loaded in alphabetical order";
+            description = "A set of resourcepacks/mods/bluemap-addons to extract models from loaded in alphabetical order";
           };
           settings = mkOption {
             type = (lib.types.submodule {
@@ -311,8 +310,8 @@ in {
         UMask = "026";
       };
       script = lib.strings.concatStringsSep "\n" ((lib.attrsets.mapAttrsToList
-        (name: value: "${lib.getExe pkgs.bluemap} -c ${renderConfigFolder name value} -r")
-        cfg.maps) ++ [ "${lib.getExe pkgs.bluemap} -c ${webappConfigFolder} -gs" ]);
+        (name: value: "${lib.getExe cfg.package} -c ${renderConfigFolder name value} -r")
+        cfg.maps) ++ [ "${lib.getExe cfg.package} -c ${webappConfigFolder} -gs" ]);
     };
 
     systemd.timers."render-bluemap-maps" = lib.mkIf cfg.enableRender {
