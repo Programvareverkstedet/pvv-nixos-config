@@ -179,6 +179,7 @@ in {
         <a class="item" href="https://www.pvv.ntnu.no/">PVV</a>
         <a class="item" href="https://wiki.pvv.ntnu.no/">Wiki</a>
         <a class="item" href="https://git.pvv.ntnu.no/Drift/-/projects/4">Tokyo Drift Issues</a>
+        <a class="item" href="https://wiki.pvv.ntnu.no/wiki/Tjenester/Kodelager">Howto</a>
       '';
 
       project-labels = (pkgs.formats.yaml { }).generate "gitea-project-labels.yaml" {
