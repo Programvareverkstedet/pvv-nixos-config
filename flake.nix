@@ -95,6 +95,7 @@
         overlays = [
           (final: prev: {
             heimdal = unstablePkgs.heimdal;
+            gitea = unstablePkgs.gitea;
             mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
             simplesamlphp = final.callPackage ./packages/simplesamlphp { };
             bluemap = final.callPackage ./packages/bluemap.nix { };
