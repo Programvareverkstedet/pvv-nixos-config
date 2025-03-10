@@ -5,7 +5,7 @@ in
 {
   services.gitea-themes.monokai = pkgs.gitea-theme-monokai;
 
-  systemd.services.install-gitea-customization = lib.mkIf cfg.enable {
+  systemd.services.gitea-customization = lib.mkIf cfg.enable {
     description = "Install extra customization in gitea's CUSTOM_DIR";
     wantedBy = [ "gitea.service" ];
     requiredBy = [ "gitea.service" ];
