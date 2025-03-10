@@ -131,6 +131,11 @@ in {
       };
       "ui.meta".DESCRIPTION = "Bokstavelig talt programvareverkstedet";
     };
+
+    dump = {
+      enable = true;
+      type = "tar.gz";
+    };
   };
 
   environment.systemPackages = [ cfg.package ];
