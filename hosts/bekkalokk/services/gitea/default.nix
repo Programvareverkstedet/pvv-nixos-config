@@ -1,4 +1,4 @@
-{ config, values, lib, ... }:
+{ config, values, lib, unstablePkgs, ... }:
 let
   cfg = config.services.gitea;
   domain = "git.pvv.ntnu.no";
@@ -25,6 +25,8 @@ in {
   services.gitea = {
     enable = true;
     appName = "PVV Git";
+
+    package = unstablePkgs.gitea;
 
     database = {
       type = "postgres";
