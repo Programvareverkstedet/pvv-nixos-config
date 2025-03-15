@@ -56,7 +56,7 @@ in {
     interfaceGroups = [ ["eth1" "eth2" "eth3" "eth4" "eth5" "eth6" "eth7"] ];
     connections.eth2 = mkConnection "bekkalokk" "enp2s0";
     connections.eth3 = mkConnection "bicep" "enp6s0f0";
-    connections.eth4 = mkConnection "buskerud" "enp3s0f0";
+    # connections.eth4 = mkConnection "buskerud" "enp3s0f0";
     connections.eth5 = mkConnection "knutsen" "eth1";
     connections.eth7 = mkConnection "joshua" "eth1";
   };
