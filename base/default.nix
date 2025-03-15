@@ -20,6 +20,7 @@
     ./services/smartd.nix
     ./services/thermald.nix
     ./services/userborn.nix
+    ./services/userdbd.nix
   ];
 
   boot.tmp.cleanOnBoot = lib.mkDefault true;
