@@ -11,6 +11,7 @@
     ./services/acme.nix
     ./services/auto-upgrade.nix
     ./services/dbus.nix
+    ./services/fwupd.nix
     ./services/irqbalance.nix
     ./services/logrotate.nix
     ./services/nginx.nix
