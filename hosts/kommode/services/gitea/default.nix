@@ -193,6 +193,109 @@ in {
     };
   };
 
+  environment.robots-txt."gitea" = {
+    virtualHost = domain;
+    rules = [
+      {
+        pre_comment = ''
+          Gitea internals
+
+          See these for more information:
+          - https://gitea.com/robots.txt
+          - https://codeberg.org/robots.txt
+        '';
+        User-agent = "*";
+        Disallow = [
+          "/api/*"
+          "/avatars"
+          "/*/*/src/commit/*"
+          "/*/*/commit/*"
+          "/*/*/*/refs/*"
+          "/*/*/*/star"
+          "/*/*/*/watch"
+          "/*/*/labels"
+          "/*/*/activity/*"
+          "/vendor/*"
+          "/swagger.*.json"
+          "/repo/create"
+          "/repo/migrate"
+          "/org/create"
+          "/*/*/fork"
+          "/*/*/watchers"
+          "/*/*/stargazers"
+          "/*/*/forks"
+          "*/.git/"
+          "/*.git"
+          "/*.atom"
+          "/*.rss"
+        ];
+      }
+      {
+        pre_comment = "Language Spam";
+        Disallow = "/*?lang=";
+      }
+      {
+        pre_comment = ''
+          AI bots
+
+          Sourced from:
+          - https://www.vg.no/robots.txt
+          - https://codeberg.org/robots.txt
+        '';
+        User-agent = [
+          "AI2Bot"
+          "Ai2Bot-Dolma"
+          "Amazonbot"
+          "Applebot-Extended"
+          "Bytespider"
+          "CCBot"
+          "ChatGPT-User"
+          "Claude-Web"
+          "ClaudeBot"
+          "Crawlspace"
+          "Diffbot"
+          "FacebookBot"
+          "FriendlyCrawler"
+          "GPTBot"
+          "Google-Extended"
+          "ICC-Crawler"
+          "ImagesiftBot"
+          "Kangaroo Bot"
+          "Meta-ExternalAgent"
+          "OAI-SearchBot"
+          "Omgili"
+          "Omgilibot"
+          "PanguBot"
+          "PerplexityBot"
+          "PetalBot"
+          "Scrapy"
+          "SemrushBot-OCOB"
+          "Sidetrade indexer bot"
+          "Timpibot"
+          "VelenPublicWebCrawler"
+          "Webzio-Extended"
+          "YouBot"
+          "anthropic-ai"
+          "cohere-ai"
+          "cohere-training-data-crawler"
+          "facebookexternalhit"
+          "iaskspider/2.0"
+          "img2dataset"
+          "meta-externalagent"
+          "omgili"
+          "omgilibot"
+        ];
+        Disallow = "/";
+      }
+      {
+        Crawl-delay = "2";
+      }
+      {
+        Sitemap = "https://${domain}/sitemap.xml";
+      }
+    ];
+  };
+
   networking.firewall.allowedTCPPorts = [ sshPort ];
 
   services.rsync-pull-targets = {
