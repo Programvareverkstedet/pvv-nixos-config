@@ -14,21 +14,21 @@
     nix-topology.url = "github:oddlama/nix-topology";
     nix-topology.inputs.nixpkgs.follows = "nixpkgs";
 
-    pvv-nettsiden.url = "git+https://git.pvv.ntnu.no/Projects/nettsiden.git";
+    pvv-nettsiden.url = "git+https://git.pvv.ntnu.no/Projects/nettsiden.git?ref=main";
     pvv-nettsiden.inputs.nixpkgs.follows = "nixpkgs";
 
-    pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git";
+    pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git?ref=main";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
     matrix-next.url = "github:dali99/nixos-matrix-modules/0.7.0";
     matrix-next.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-gitea-themes.url = "git+https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git";
+    nix-gitea-themes.url = "git+https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git?ref=main";
     nix-gitea-themes.inputs.nixpkgs.follows = "nixpkgs";
 
-    greg-ng.url = "git+https://git.pvv.ntnu.no/Grzegorz/greg-ng.git";
+    greg-ng.url = "git+https://git.pvv.ntnu.no/Grzegorz/greg-ng.git?ref=main";
     greg-ng.inputs.nixpkgs.follows = "nixpkgs";
-    gergle.url = "git+https://git.pvv.ntnu.no/Grzegorz/gergle.git";
+    gergle.url = "git+https://git.pvv.ntnu.no/Grzegorz/gergle.git?ref=main";
     gergle.inputs.nixpkgs.follows = "nixpkgs";
     grzegorz-clients.url = "git+https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
