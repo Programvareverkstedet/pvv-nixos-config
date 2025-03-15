@@ -89,3 +89,5 @@ creation_rules:
       - *user_pederbs_sopp
       - *user_pederbs_nord
       - *user_pederbs_bjarte
+      pgp:
+      - *user_oysteikt
