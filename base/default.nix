@@ -19,6 +19,7 @@
     ./services/postfix.nix
     ./services/smartd.nix
     ./services/thermald.nix
+    ./services/userborn.nix
   ];
 
   boot.tmp.cleanOnBoot = lib.mkDefault true;
