@@ -20,6 +20,7 @@
   ];
 
   boot.tmp.cleanOnBoot = lib.mkDefault true;
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
   time.timeZone = "Europe/Oslo";
 
