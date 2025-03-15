@@ -150,6 +150,7 @@
     nixosModules = {
       snakeoil-certs = ./modules/snakeoil-certs.nix;
       snappymail = ./modules/snappymail.nix;
+      robots-txt = ./modules/robots-txt.nix;
     };
 
     devShells = forAllSystems (system: {
