@@ -196,6 +196,7 @@
         modules = [
           inputs.nix-gitea-themes.nixosModules.default
           inputs.disko.nixosModules.disko
+          self.nixosModules.robots-txt
         ];
       };
 
