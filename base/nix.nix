@@ -5,10 +5,10 @@
       automatic = true;
       options = "--delete-older-than 2d";
     };
+    optimise.automatic = true;
 
     settings = {
       allow-dirty = true;
-      auto-optimise-store = true;
       builders-use-substitutes = true;
       experimental-features = [ "nix-command" "flakes" ];
       log-lines = 50;
