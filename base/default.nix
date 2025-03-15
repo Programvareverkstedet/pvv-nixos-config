@@ -10,6 +10,7 @@
 
     ./services/acme.nix
     ./services/auto-upgrade.nix
+    ./services/dbus.nix
     ./services/irqbalance.nix
     ./services/logrotate.nix
     ./services/nginx.nix
@@ -48,6 +49,8 @@
 
   programs.zsh.enable = true;
 
+  security.lockKernelModules = true;
+  security.protectKernelImage = true;
   security.sudo.execWheelOnly = true;
   security.sudo.extraConfig = ''
     Defaults lecture = never
