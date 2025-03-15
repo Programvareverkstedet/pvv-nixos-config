@@ -105,6 +105,7 @@
         modules = [
           inputs.nix-gitea-themes.nixosModules.default
           inputs.pvv-nettsiden.nixosModules.default
+          self.nixosModules.robots-txt
         ];
       };
       bob = stableNixosConfig "bob" {
