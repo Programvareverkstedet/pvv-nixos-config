@@ -19,7 +19,7 @@ in {
 
     exporters.mysqld = {
       enable = true;
-      configFilePath = config.sops.secrets."config/mysqld_exporter".path;
+      configFile = config.sops.secrets."config/mysqld_exporter".path;
     };
   };
 }
