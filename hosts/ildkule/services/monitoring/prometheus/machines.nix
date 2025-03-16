@@ -16,6 +16,12 @@ in {
           "bekkalokk.pvv.ntnu.no:9101"
         ];
       }
+      { labels.hostname = "kommode";
+        targets = [
+          "kommode.pvv.ntnu.no:9100"
+          "kommode.pvv.ntnu.no:9101"
+        ];
+      }
       { labels.hostname = "bicep";
         targets = [
           "bicep.pvv.ntnu.no:9100"
@@ -32,6 +38,12 @@ in {
         targets = [
           "georg.pvv.ntnu.no:9100"
           "georg.pvv.ntnu.no:9101"
+        ];
+      }
+      { labels.hostname = "ustetind";
+        targets = [
+          "ustetind.pvv.ntnu.no:9100"
+          "ustetind.pvv.ntnu.no:9101"
         ];
       }
       { labels.hostname =  "hildring";
