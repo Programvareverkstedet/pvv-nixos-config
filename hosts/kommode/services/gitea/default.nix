@@ -142,6 +142,8 @@ in {
 
   environment.systemPackages = [ cfg.package ];
 
+  systemd.services.gitea.serviceConfig.CPUSchedulingPolicy = "batch";
+
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
     enableACME = true;
