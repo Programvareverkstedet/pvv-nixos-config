@@ -61,7 +61,6 @@ in {
       user = "mediawiki";
       passwordFile = config.sops.secrets."mediawiki/postgres_password".path;
       createLocally = false;
-      # TODO: create a normal database and copy over old data when the service is production ready
       name = "mediawiki";
     };
 
