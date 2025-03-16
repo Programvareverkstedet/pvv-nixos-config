@@ -60,6 +60,10 @@ in rec {
       ipv4 = pvv-ipv4 204;
       ipv6 = pvv-ipv6 "1:4f"; # Wtf øystein og daniel why
     };
+    kommode = {
+      ipv4 = pvv-ipv4 223;
+      ipv6 = pvv-ipv6 223;
+    };
     ustetind = {
       ipv4 = pvv-ipv4 234;
       ipv6 = pvv-ipv6 234;

@@ -117,6 +117,8 @@
       #ildkule-unstable = unstableNixosConfig "ildkule" { };
       shark = stableNixosConfig "shark" { };
 
+      kommode = stableNixosConfig "kommode" { };
+
       ustetind = stableNixosConfig "ustetind" {
         modules = [
          "${nixpkgs}/nixos/modules/virtualisation/lxc-container.nix"
