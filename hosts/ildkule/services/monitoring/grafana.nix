@@ -76,10 +76,10 @@ in {
           options.path = dashboards/go-processes.json;
         }
         {
-          name = "Gitea Dashbaord";
+          name = "Gitea Dashboard";
           type = "file";
           url = "https://grafana.com/api/dashboards/17802/revisions/3/download";
-          options.path = dashboards/gitea-dashbaord.json;
+          options.path = dashboards/gitea-dashboard.json;
         }
       ];
 
