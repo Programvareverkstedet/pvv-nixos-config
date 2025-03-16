@@ -1,0 +1,4 @@
+{ ... }:
+{
+  services.nginx.enable = true;
+}

@@ -7,7 +7,6 @@
     (fp /misc/metrics-exporters.nix)
 
     ./services/bluemap/default.nix
-    ./services/gitea/default.nix
     ./services/idp-simplesamlphp
     ./services/kerberos
     ./services/mediawiki

@@ -99,11 +99,9 @@
             simplesamlphp = final.callPackage ./packages/simplesamlphp { };
             bluemap = final.callPackage ./packages/bluemap.nix { };
           })
-          inputs.nix-gitea-themes.overlays.default
           inputs.pvv-nettsiden.overlays.default
         ];
         modules = [
-          inputs.nix-gitea-themes.nixosModules.default
           inputs.pvv-nettsiden.nixosModules.default
         ];
       };
@@ -117,7 +115,14 @@
       #ildkule-unstable = unstableNixosConfig "ildkule" { };
       shark = stableNixosConfig "shark" { };
 
-      kommode = stableNixosConfig "kommode" { };
+      kommode = stableNixosConfig "kommode" {
+        overlays = [
+          inputs.nix-gitea-themes.overlays.default
+        ];
+        modules = [
+          inputs.nix-gitea-themes.nixosModules.default
+        ];
+      };
 
       ustetind = stableNixosConfig "ustetind" {
         modules = [

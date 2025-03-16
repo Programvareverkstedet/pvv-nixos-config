@@ -5,6 +5,9 @@
     ./hardware-configuration.nix
     (fp /base)
     (fp /misc/metrics-exporters.nix)
+
+    ./services/gitea
+    ./services/nginx.nix
   ];
 
   sops.defaultSopsFile = fp /secrets/kommode/kommode.yaml;
