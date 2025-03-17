@@ -38,6 +38,10 @@ in
         # Bigger icons
         install -Dm444 "${cfg.package.src}/templates/repo/icon.tmpl" "$out/repo/icon.tmpl"
         sed -i -e 's/24/48/g' "$out/repo/icon.tmpl"
+
+        # Show license in list view
+        patch -i ${./licenses-in-repo-list.diff} "${cfg.package.src}/templates/explore/repo_list.tmpl" -o repo_list.tmpl
+        install -Dm444 repo_list.tmpl "$out/explore/repo_list.tmpl"
       '';
     in ''
       install -Dm444 ${logo-svg} ${cfg.customDir}/public/assets/img/logo.svg
