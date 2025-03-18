@@ -1,4 +1,4 @@
-{config, lib, pkgs, ...}:
+{config, lib, pkgs, values, ...}:
 let
   grg = config.services.greg-ng;
   grgw = config.services.grzegorz-webui;
@@ -37,8 +37,8 @@ in {
         "${machine}.pvv.org"
       ];
       extraConfig = ''
-        allow 129.241.210.128/25;
-        allow 2001:700:300:1900::/64;
+        allow ${values.ipv4-space}
+        allow ${values.ipv6-space}
         deny all;
       '';
     };
@@ -51,8 +51,8 @@ in {
         "${machine}-backend.pvv.org"
       ];
       extraConfig = ''
-        allow 129.241.210.128/25;
-        allow 2001:700:300:1900::/64;
+        allow ${values.ipv4-space}
+        allow ${values.ipv6-space}
         deny all;
       '';
 
@@ -70,8 +70,8 @@ in {
         "${machine}-old.pvv.org"
       ];
       extraConfig = ''
-        allow 129.241.210.128/25;
-        allow 2001:700:300:1900::/64;
+        allow ${values.ipv4-space}
+        allow ${values.ipv6-space}
         deny all;
       '';
 
