@@ -44,8 +44,12 @@ in {
         "${machine}.pvv.org"
       ];
       extraConfig = ''
+        # pvv
         allow ${values.ipv4-space}
         allow ${values.ipv6-space}
+        # ntnu
+        allow 129.241.0.0/16 # https://ipinfo.io/ips/129.241.0.0/16
+        allow 2001:700:300::/48; # https://ipinfo.io/2001:700:300::
         deny all;
       '';
 
@@ -67,8 +71,12 @@ in {
         "${machine}-backend.pvv.org"
       ];
       extraConfig = ''
+        # pvv
         allow ${values.ipv4-space}
         allow ${values.ipv6-space}
+        # ntnu
+        allow 129.241.0.0/16 # https://ipinfo.io/ips/129.241.0.0/16
+        allow 2001:700:300::/48; # https://ipinfo.io/2001:700:300::
         deny all;
       '';
 
@@ -86,8 +94,12 @@ in {
         "${machine}-old.pvv.org"
       ];
       extraConfig = ''
+        # pvv
         allow ${values.ipv4-space}
         allow ${values.ipv6-space}
+        # ntnu
+        allow 129.241.0.0/16 # https://ipinfo.io/ips/129.241.0.0/16
+        allow 2001:700:300::/48; # https://ipinfo.io/2001:700:300::
         deny all;
       '';
 
