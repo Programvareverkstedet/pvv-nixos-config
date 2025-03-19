@@ -67,7 +67,12 @@ in {
         ADMIN_NAME = "PVV Drift";
         ADMIN_EMAIL = "drift@pvv.ntnu.no";
         ADMIN_PASSWORD = includeFromSops "simplesamlphp/admin_password";
-        TRUSTED_DOMAINS = [ cfg.domainName ];
+        TRUSTED_DOMAINS = [
+          "www.pvv.ntnu.no"
+          "pvv.ntnu.no"
+          "www.pvv.org"
+          "pvv.org"
+        ];
       };
     };
   };
