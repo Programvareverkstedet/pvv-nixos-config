@@ -50,6 +50,18 @@
     kitty.terminfo
   ];
 
+  # .bash_profile already works, but lets also use .bashrc like literally every other distro
+  # https://man.archlinux.org/man/core/bash/bash.1.en#INVOCATION
+  # home-manager usually handles this for you: https://github.com/nix-community/home-manager/blob/22a36aa709de7dd42b562a433b9cefecf104a6ee/modules/programs/bash.nix#L203-L209
+  # btw, programs.bash.shellInit just goes into environment.shellInit which in turn goes into /etc/profile, spooky shit
+  programs.bash.shellInit = ''
+   if [ -n "''${BASH_VERSION:-}" ]; then
+     if [[ ! -f ~/.bash_profile && ! -f ~/.bash_login ]]; then
+      [[ -f ~/.bashrc ]] && . ~/.bashrc
+     fi
+   fi
+  '';
+
   programs.zsh.enable = true;
 
   security.lockKernelModules = true;
