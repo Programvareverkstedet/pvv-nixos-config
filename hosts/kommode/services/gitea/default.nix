@@ -49,6 +49,10 @@ in {
         START_LFS_SERVER = true;
         LANDING_PAGE = "explore";
       };
+      "git.timeout" = {
+        MIGRATE = 3600;
+        MIRROR = 1800;
+      };
       mailer = {
         ENABLED = true;
         FROM = "gitea@pvv.ntnu.no";
