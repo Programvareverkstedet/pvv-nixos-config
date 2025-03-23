@@ -140,6 +140,7 @@ in {
 
     dump = {
       enable = true;
+      interval = "weekly";
       type = "tar.gz";
     };
   };
