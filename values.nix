@@ -68,6 +68,10 @@ in rec {
       ipv4 = pvv-ipv4 234;
       ipv6 = pvv-ipv6 234;
     };
+    wenche = {
+      ipv4 = pvv-ipv4 240;
+      ipv6 = pvv-ipv6 240;
+    };
   };
 
   defaultNetworkConfig = {

@@ -71,6 +71,11 @@
 
           pkgs = import nixpkgs {
             inherit system;
+            config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
+              [
+                "nvidia-x11"
+                "nvidia-settings"
+              ];
             overlays = [
               # Global overlays go here
             ] ++ config.overlays or [ ];
@@ -114,6 +119,7 @@
       ildkule = stableNixosConfig "ildkule" { };
       #ildkule-unstable = unstableNixosConfig "ildkule" { };
       shark = stableNixosConfig "shark" { };
+      wenche = stableNixosConfig "wenche" { };
 
       kommode = stableNixosConfig "kommode" {
         overlays = [
@@ -162,6 +168,15 @@
 
     devShells = forAllSystems (system: {
       default = nixpkgs.legacyPackages.${system}.callPackage ./shell.nix { };
+      cuda = let
+        cuda-pkgs = import nixpkgs {
+          inherit system;
+          config = {
+            allowUnfree = true;
+            cudaSupport = true;
+          };
+        };
+      in cuda-pkgs.callPackage ./shells/cuda.nix { };
     });
 
     packages = {
