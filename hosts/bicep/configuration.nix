@@ -7,10 +7,9 @@
     (fp /misc/metrics-exporters.nix)
     ./services/nginx
 
+    ./services/calendar-bot.nix
     ./services/mysql.nix
     ./services/postgres.nix
-    ./services/mysql.nix
-    ./services/calendar-bot.nix
 
     ./services/matrix
   ];
