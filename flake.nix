@@ -20,7 +20,7 @@
     matrix-next.url = "github:dali99/nixos-matrix-modules/0.7.0";
     matrix-next.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-gitea-themes.url = "git+https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git";
+    nix-gitea-themes.url = "git+https://git.pvv.ntnu.no/Drift/nix-gitea-themes.git";
     nix-gitea-themes.inputs.nixpkgs.follows = "nixpkgs";
 
     greg-ng.url = "git+https://git.pvv.ntnu.no/Grzegorz/greg-ng.git";

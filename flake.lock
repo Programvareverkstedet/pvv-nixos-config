@@ -130,11 +130,11 @@
         "rev": "e4dafd06b3d7e9e6e07617766e9c3743134571b7",
         "revCount": 7,
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git"
+        "url": "https://git.pvv.ntnu.no/Drift/nix-gitea-themes.git"
       },
       "original": {
         "type": "git",
-        "url": "https://git.pvv.ntnu.no/oysteikt/nix-gitea-themes.git"
+        "url": "https://git.pvv.ntnu.no/Drift/nix-gitea-themes.git"
       }
     },
     "nixpkgs": {
