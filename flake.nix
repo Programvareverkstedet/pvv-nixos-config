@@ -91,6 +91,7 @@
         modules = [
           inputs.matrix-next.nixosModules.default
           inputs.pvv-calendar-bot.nixosModules.default
+          self.nixosModules.gickup
         ];
         overlays = [
           inputs.pvv-calendar-bot.overlays.x86_64-linux.default
@@ -164,6 +165,7 @@
       snakeoil-certs = ./modules/snakeoil-certs.nix;
       snappymail = ./modules/snappymail.nix;
       robots-txt = ./modules/robots-txt.nix;
+      gickup = ./modules/gickup;
     };
 
     devShells = forAllSystems (system: {

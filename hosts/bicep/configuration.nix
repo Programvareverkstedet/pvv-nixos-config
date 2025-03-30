@@ -8,6 +8,7 @@
     ./services/nginx
 
     ./services/calendar-bot.nix
+    ./services/git-mirrors
     ./services/mysql.nix
     ./services/postgres.nix
 
