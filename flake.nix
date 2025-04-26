@@ -55,7 +55,7 @@
 
     nixosConfigurations = let
       unstablePkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
-      nixosConfig = nixpkgs: name: config: lib.nixosSystem (lib.recursiveUpdate
+      nixosConfig = nixpkgs: name: configurationPath: config: lib.nixosSystem (lib.recursiveUpdate
         rec {
           system = "x86_64-linux";
           specialArgs = {
@@ -65,7 +65,7 @@
           };
 
           modules = [
-            ./hosts/${name}/configuration.nix
+            configurationPath
             sops-nix.nixosModules.sops
           ] ++ config.modules or [];
 
@@ -84,8 +84,8 @@
         (removeAttrs config [ "modules" "overlays" ])
       );
 
-      stableNixosConfig = nixosConfig nixpkgs;
-      unstableNixosConfig = nixosConfig nixpkgs-unstable;
+      stableNixosConfig = name: config:
+          nixosConfig nixpkgs name ./hosts/${name}/configuration.nix config;
     in {
       bicep = stableNixosConfig "bicep" {
         modules = [
@@ -158,7 +158,16 @@
           inputs.gergle.overlays.default
         ];
       };
-    };
+    } //
+    (let
+      machineNames = map (i: "lupine-${toString i}") (lib.range 1 5);
+      stableLupineNixosConfig = name: config:
+          nixosConfig nixpkgs name ./hosts/lupine/configuration.nix config;
+    in lib.genAttrs machineNames (name: stableLupineNixosConfig name {
+      modules = [
+        { networking.hostname = name; }
+      ];
+    }));
 
     nixosModules = {
       snakeoil-certs = ./modules/snakeoil-certs.nix;
