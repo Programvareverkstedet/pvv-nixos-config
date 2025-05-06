@@ -48,11 +48,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1736545379,
-        "narHash": "sha256-PeTTmGumdOX3rd6OKI7QMCrZovCDkrckZbcHr+znxWA=",
+        "lastModified": 1746563623,
+        "narHash": "sha256-5DxgNFpSgxft/sWraZnHIUlb4S3Io73SVS7FZCbWSUY=",
         "ref": "refs/heads/main",
-        "rev": "74f5316121776db2769385927ec0d0c2cc2b23e4",
-        "revCount": 42,
+        "rev": "4e0408887f80e61a90286ff630a7855b828ae421",
+        "revCount": 45,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       },
@@ -233,11 +233,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1729391507,
-        "narHash": "sha256-as0I9xieJUHf7kiK2a9znDsVZQTFWhM1pLivII43Gi0=",
+        "lastModified": 1746498961,
+        "narHash": "sha256-rp+oh/N88JKHu7ySPuGiA3lBUVIsrOtHbN2eWJdYCgk=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "784981a9feeba406de38c1c9a3decf966d853cca",
+        "rev": "24b00064cdd1d7ba25200c4a8565dc455dc732ba",
         "type": "github"
       },
       "original": {
