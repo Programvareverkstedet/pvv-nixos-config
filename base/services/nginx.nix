@@ -20,14 +20,14 @@
     recommendedGzipSettings = true;
 
     appendConfig = ''
-      pcre_jit on;
+      # pcre_jit on;
       worker_processes auto;
       worker_rlimit_nofile 100000;
     '';
     eventsConfig = ''
       worker_connections 2048;
       use epoll;
-      multi_accept on;
+      # multi_accept on;
     '';
   };
 
