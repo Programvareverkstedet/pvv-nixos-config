@@ -214,7 +214,7 @@ in {
       "= /favicon.ico".alias = pkgs.runCommandLocal "mediawiki-favicon.ico" {
         buildInputs = with pkgs; [ imagemagick ];
       } ''
-        convert \
+        magick \
           -resize x64 \
           -gravity center \
           -crop 64x64+0+0 \
