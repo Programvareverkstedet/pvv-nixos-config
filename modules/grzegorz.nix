@@ -13,6 +13,11 @@ in {
     enablePipewire = true;
   };
 
+  systemd.user.services.restart-greg-ng = {
+    script = "systemctl --user restart greg-ng.service";
+    startAt = "*-*-* 06:30:00";
+  };
+
   services.grzegorz-webui = {
     enable = true;
     listenAddr = "localhost";
