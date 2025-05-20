@@ -215,10 +215,10 @@ in {
         buildInputs = with pkgs; [ imagemagick ];
       } ''
         magick \
+          ${fp /assets/logo_blue_regular.png} \
           -resize x64 \
           -gravity center \
           -crop 64x64+0+0 \
-          ${fp /assets/logo_blue_regular.png} \
           -flatten \
           -colors 256 \
           -background transparent \
