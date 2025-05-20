@@ -13,7 +13,6 @@
       bottom
       eza
       neovim
-      diskonaut
       ripgrep
       tmux
     ];
