@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1745502102,
-        "narHash": "sha256-LqhRwzvIVPEjH0TaPgwzqpyhW6DtCrvz7FnUJDoUZh8=",
+        "lastModified": 1747742835,
+        "narHash": "sha256-kYL4GCwwznsypvsnA20oyvW8zB/Dvn6K5G/tgMjVMT4=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "ca27b88c88948d96feeee9ed814cbd34f53d0d70",
+        "rev": "df522e787fdffc4f32ed3e1fca9ed0968a384d62",
         "type": "github"
       },
       "original": {
@@ -139,27 +139,27 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1745526780,
-        "narHash": "sha256-LXXYBmFPMQU2lTb6alKWfjgQs08BKn+txMNcgbu00hI=",
+        "lastModified": 1748085680,
+        "narHash": "sha256-XG90Q/040NiV70gAVvoYbXg1lULbiwIzfkWmwSINyGQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9204750b34cae1a8347ab4b5588115edfeebc6d7",
+        "rev": "4e6eeca5ed45465087274fc9dc6bc2011254a0f3",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-24.11-small",
+        "ref": "nixos-25.05-small",
         "repo": "nixpkgs",
         "type": "github"
       }
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1745688173,
-        "narHash": "sha256-fgvG1O5JvSSjeQx+ea0DJ3GfMbLPVhAQta/DqQ2y6jc=",
+        "lastModified": 1748074755,
+        "narHash": "sha256-b3SC3Q3cXr4tdCN3WVTFqMP8I9OwaXXcj1aVoSVaygw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "6a2957c7978b189202e03721aab901c0a9dc1e1a",
+        "rev": "c3ee76c437067f1ae09d6e530df46a3f80977992",
         "type": "github"
       },
       "original": {
@@ -176,11 +176,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723850344,
-        "narHash": "sha256-aT37O9l9eclWEnqxASVNBL1dKwDHZUOqdbA4VO9DJvw=",
+        "lastModified": 1742225512,
+        "narHash": "sha256-OB0ndlrGLE5wMUeYP4lmxly9JUEpPCeZRQyMzITKCB0=",
         "ref": "refs/heads/main",
-        "rev": "38b66677ab8c01aee10cd59e745af9ce3ea88092",
-        "revCount": 19,
+        "rev": "c4a6a02c84d8227abf00305dc995d7242176e6f6",
+        "revCount": 21,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/calendar-bot.git"
       },
@@ -196,11 +196,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1741738148,
-        "narHash": "sha256-cJo6nbcJEOjkazkZ194NDnlsZe0W0wpxeUh2/886uC8=",
+        "lastModified": 1742344479,
+        "narHash": "sha256-9vzkDdcJPkZIHJ+fQZjC6MepicBQiMzldNhjBR58qWY=",
         "ref": "refs/heads/main",
-        "rev": "c1802e7cf27c7cf8b4890354c982a4eef5b11593",
-        "revCount": 486,
+        "rev": "20bab54235488b66f30acceece4f7721f280ef85",
+        "revCount": 493,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/nettsiden.git"
       },
@@ -253,11 +253,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1745310711,
-        "narHash": "sha256-ePyTpKEJTgX0gvgNQWd7tQYQ3glIkbqcW778RpHlqgA=",
+        "lastModified": 1747603214,
+        "narHash": "sha256-lAblXm0VwifYCJ/ILPXJwlz0qNY07DDYdLD+9H+Wc8o=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "5e3e92b16d6fdf9923425a8d4df7496b2434f39c",
+        "rev": "8d215e1c981be3aa37e47aeabd4e61bb069548fd",
         "type": "github"
       },
       "original": {
