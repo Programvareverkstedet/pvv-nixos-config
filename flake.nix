@@ -32,7 +32,7 @@
 
     minecraft-data.url = "git+https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git";
 
-    dibbler.url = "github:Programvareverkstedet/dibbler";
+    dibbler.url = "git+https://git.pvv.ntnu.no/Projects/dibbler.git";
     dibbler.inputs.nixpkgs.follows = "nixpkgs";
   };
 

@@ -8,17 +8,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1746449548,
-        "narHash": "sha256-FWoEhsZtzzYMkvcEXQG4bf89TYqBYJKcqzBuN9/kg3M=",
-        "owner": "Programvareverkstedet",
-        "repo": "dibbler",
-        "rev": "4a4f0e6947d220ca390ad4982ae0de32435d08a0",
-        "type": "github"
+        "lastModified": 1747505135,
+        "narHash": "sha256-kfDCvIbNKePKpJCXST2V1bwWHtsgFOL/E7DvQbBygsQ=",
+        "ref": "refs/heads/main",
+        "rev": "0844843e595be617f683fbc245c944edd2bc6aa8",
+        "revCount": 209,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/dibbler.git"
       },
       "original": {
-        "owner": "Programvareverkstedet",
-        "repo": "dibbler",
-        "type": "github"
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/dibbler.git"
       }
     },
     "disko": {

@@ -2,10 +2,10 @@
 {
   imports = [
     # Include the results of the hardware scan.
-    # ./hardware-configuration.nix
-    (fp /base.nix)
+    ./hardware-configuration.nix
+    (fp /base)
     (fp /misc/metrics-exporters.nix)
-    ./services/dibbler.nix
+    # ./services/dibbler.nix
   ];
   
   sops.defaultSopsFile = ../../secrets/skrott/skrott.yaml;
