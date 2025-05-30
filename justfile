@@ -17,10 +17,13 @@ run-vm machine=`just _a_machine` *_:
   QEMU_NET_OPTS="hostfwd=tcp::8080-:80,hostfwd=tcp::8081-:443,hostfwd=tcp::2222-:22" ./result/bin/run-*-vm
 
 @update-inputs *_:
-  nix eval {{nix_eval_opts}} .#inputs --apply builtins.attrNames --json \
-    | jq '.[]' -r \
-    | gum choose --no-limit --height=15 \
-    | xargs -L 1 nix flake lock --update-input "$@"
+  @git reset flake.lock
+  @git restore flake.lock
+  nix eval {{nix_eval_opts}} --file flake.nix --apply 'x: builtins.attrNames x.inputs' --json \
+    | { printf "%s\n" --commit-lock-file; jq '.[]' -r | grep -vxF "self" ||:; } \
+    | gum choose --no-limit --header "Choose extra arguments:" \
+    | tee >(xargs -d'\n' echo + nix flake update "$@" >&2) \
+    | xargs -d'\n' nix flake update "$@"
 
 @repl $machine=`just _a_machine` *_:
   set -v; nixos-rebuild --flake .#"$machine" repl "${@:2}"
