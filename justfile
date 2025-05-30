@@ -1,5 +1,6 @@
 export GUM_FILTER_HEIGHT := "15"
 nom := `if command -v nom >/dev/null; then echo nom; else echo nix; fi`
+nix_eval_opts := "--log-format raw --option warn-dirty false"
 
 @_default:
   just "$(gum choose --ordered --header "Pick a recipie..." $(just --summary --unsorted))"
@@ -15,7 +16,7 @@ run-vm machine=`just _a_machine`:
   QEMU_NET_OPTS="hostfwd=tcp::8080-:80,hostfwd=tcp::8081-:443,hostfwd=tcp::2222-:22" ./result/bin/run-*-vm
 
 @update-inputs:
-  nix eval .#inputs --apply builtins.attrNames --json \
+  nix eval {{nix_eval_opts}} .#inputs --apply builtins.attrNames --json \
     | jq '.[]' -r \
     | gum choose --no-limit --height=15 \
     | xargs -L 1 nix flake lock --update-input
