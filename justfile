@@ -22,6 +22,14 @@ run-vm machine=`just _a_machine` *_:
     | gum choose --no-limit --height=15 \
     | xargs -L 1 nix flake lock --update-input "$@"
 
+@repl $machine=`just _a_machine` *_:
+  set -v; nixos-rebuild --flake .#"$machine" repl "${@:2}"
+
+@eval $machine=`just _a_machine` $attrpath="system.build.toplevel.outPath" *_:
+  set -v; nix eval {{nix_eval_opts}} ".#nixosConfigurations.\"$machine\".config.$attrpath" --show-trace "${@:3}"
+
+@eval-vm $machine=`just _a_machine` $attrpath="system.build.toplevel.outPath" *_:
+  just eval "$machine" "virtualisation.vmVariant.$attrpath" "${@:3}"
 
 
 # helpers
