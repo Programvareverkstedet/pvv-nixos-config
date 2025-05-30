@@ -17,7 +17,7 @@ in
       zip = false;
       keep = 10;
       bare = true;
-      lfs = true;
+      lfs = false;
     };
 
     instances = let
