@@ -59,7 +59,7 @@ in
   };
 
   services.cgit = let
-    domain = "bicep.pvv.ntnu.no";
+    domain = "mirrors.pvv.ntnu.no";
   in {
     ${domain} = {
       enable = true;
@@ -81,7 +81,7 @@ in
     };
   };
 
-  services.nginx.virtualHosts."bicep.pvv.ntnu.no" = {
+  services.nginx.virtualHosts."mirrors.pvv.ntnu.no" = {
     forceSSL = true;
     enableACME = true;
 
@@ -94,7 +94,7 @@ in
     in toString small-pvv-logo;
   };
 
-  systemd.services."fcgiwrap-cgit-bicep.pvv.ntnu.no" = {
+  systemd.services."fcgiwrap-cgit-mirrors.pvv.ntnu.no" = {
     serviceConfig.BindReadOnlyPaths = [ cfg.dataDir ];
   };
 }
