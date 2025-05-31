@@ -169,9 +169,9 @@
     };
 
     devShells = forAllSystems (system: {
-      default = nixpkgs.legacyPackages.${system}.callPackage ./shell.nix { };
+      default = nixpkgs-unstable.legacyPackages.${system}.callPackage ./shell.nix { };
       cuda = let
-        cuda-pkgs = import nixpkgs {
+        cuda-pkgs = import nixpkgs-unstable {
           inherit system;
           config = {
             allowUnfree = true;
