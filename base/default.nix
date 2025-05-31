@@ -9,6 +9,7 @@
     ./nix.nix
 
     ./services/acme.nix
+    ./services/uptimed.nix
     ./services/auto-upgrade.nix
     ./services/dbus.nix
     ./services/fwupd.nix
