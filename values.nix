@@ -1,8 +1,13 @@
 # Feel free to change the structure of this file
 let
-  pvv-ipv4 = suffix: "129.241.210.${toString suffix}";
-  pvv-ipv6 = suffix: "2001:700:300:1900::${toString suffix}";
+  ntnu-ipv4 = suffix: "129.241.${toString suffix}";
+  ntnu-ipv6 = suffix: "2001:700:300:${toString suffix}";
+  pvv-ipv4 = suffix: ntnu-ipv4 "210.${toString suffix}";
+  pvv-ipv6 = suffix: ntnu-ipv6 "1900::${toString suffix}";
 in rec {
+  ntnu.ipv4-space = ntnu-ipv4 "0.0/16"; # https://ipinfo.io/ips/129.241.0.0/16
+  ntnu.ipv6-space = ntnu-ipv6 ":/48"; # https://ipinfo.io/2001:700:300::
+
   ipv4-space = pvv-ipv4 "128/25";
   ipv6-space = pvv-ipv6 "/64";
 
