@@ -1,6 +1,6 @@
 set positional-arguments # makes variables accesible as $1 $2 $@
 export GUM_FILTER_HEIGHT := "15"
-nom := `if [[ -t 1 ]] && command -v nom >/dev/null; then echo nom; else echo nix; fi`
+nom := `if [[ -t 2 ]] && command -v nom >/dev/null; then echo nom; else echo nix; fi`
 nix_eval_opts := "--log-format raw --option warn-dirty false"
 
 @_default:
