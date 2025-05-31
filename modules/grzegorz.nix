@@ -48,8 +48,8 @@ in {
         allow ${values.ipv4-space}
         allow ${values.ipv6-space}
         # ntnu
-        allow 129.241.0.0/16 # https://ipinfo.io/ips/129.241.0.0/16
-        allow 2001:700:300::/48; # https://ipinfo.io/2001:700:300::
+        allow ${values.ntnu.ipv4-space}
+        allow ${values.ntnu.ipv6-space}
         deny all;
       '';
 
@@ -75,8 +75,8 @@ in {
         allow ${values.ipv4-space}
         allow ${values.ipv6-space}
         # ntnu
-        allow 129.241.0.0/16 # https://ipinfo.io/ips/129.241.0.0/16
-        allow 2001:700:300::/48; # https://ipinfo.io/2001:700:300::
+        allow ${values.ntnu.ipv4-space}
+        allow ${values.ntnu.ipv6-space}
         deny all;
       '';
 
@@ -98,8 +98,8 @@ in {
         allow ${values.ipv4-space}
         allow ${values.ipv6-space}
         # ntnu
-        allow 129.241.0.0/16 # https://ipinfo.io/ips/129.241.0.0/16
-        allow 2001:700:300::/48; # https://ipinfo.io/2001:700:300::
+        allow ${values.ntnu.ipv4-space}
+        allow ${values.ntnu.ipv6-space}
         deny all;
       '';
 
