@@ -7,6 +7,7 @@
 
     ./networking.nix
     ./nix.nix
+    ./vm.nix
 
     ./services/acme.nix
     ./services/uptimed.nix
@@ -77,4 +78,3 @@
   # Trusted users on the nix builder machines
   users.groups."nix-builder-users".name = "nix-builder-users";
 }
-
