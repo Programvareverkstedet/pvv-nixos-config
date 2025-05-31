@@ -2,8 +2,8 @@
   description = "PVV System flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11-small"; # remember to also update the url in base/services/auto-upgrade.nix
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    nixpkgs.url = "https://nixos.org/channels/nixos-24.11-small/nixexprs.tar.xz";
+    nixpkgs-unstable.url = "https://nixos.org/channels/nixos-unstable-small/nixexprs.tar.xz";
 
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
