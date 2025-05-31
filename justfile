@@ -26,7 +26,7 @@ run-vm machine=`just _a_machine` *_:
     | xargs -d'\n' nix flake update "$@"
 
 @repl $machine=`just _a_machine` *_:
-  set -v; nixos-rebuild --flake .#"$machine" repl "${@:2}"
+  set -v; NIX_NO_NOM=1 nixos-rebuild --flake .#"$machine" repl "${@:2}"
 
 @eval $machine=`just _a_machine` $attrpath="system.build.toplevel.outPath" *_:
   set -v; nix eval {{nix_eval_opts}} ".#nixosConfigurations.\"$machine\".config.$attrpath" --show-trace "${@:3}"

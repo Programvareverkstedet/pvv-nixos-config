@@ -1,6 +1,18 @@
 { pkgs ? import <nixpkgs> {} }:
+
+let
+  nixos-rebuild-nom = pkgs.writeScriptBin "nixos-rebuild" ''
+    if [[ -t 1 && -z "''${NIX_NO_NOM-}" ]]; then
+      exec ${pkgs.lib.getExe pkgs.nixos-rebuild} -L "$@" |& ${pkgs.lib.getExe pkgs.nix-output-monitor}
+    else
+      exec ${pkgs.lib.getExe pkgs.nixos-rebuild} -L "$@"
+    fi
+  '';
+in
+
 pkgs.mkShellNoCC {
   packages = with pkgs; [
+    nixos-rebuild-nom
     just
     jq
     gum
