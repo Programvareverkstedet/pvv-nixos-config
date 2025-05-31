@@ -3,7 +3,12 @@ let
   cfg = config.services.gitea;
 in
 {
-  services.gitea-themes.monokai = pkgs.gitea-theme-monokai;
+  services.gitea-themes = {
+    monokai = pkgs.gitea-theme-monokai;
+    earl-grey = pkgs.gitea-theme-earl-grey;
+    pitch-black = pkgs.gitea-theme-pitch-black;
+    catppuccin = pkgs.gitea-theme-catppuccin;
+  };
 
   systemd.services.gitea-customization = lib.mkIf cfg.enable {
     description = "Install extra customization in gitea's CUSTOM_DIR";
