@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, ... }:
+{ config, inputs, pkgs, lib, ... }:
 
 let
   inputUrls = lib.mapAttrs (input: value: value.url) (import "${inputs.self}/flake.nix").inputs;
@@ -26,12 +26,14 @@ in
 
   # workaround for https://github.com/NixOS/nix/issues/6895
   # via https://git.lix.systems/lix-project/lix/issues/400
-  environment.etc."current-system-flake-inputs.json".source
-    = pkgs.writers.writeJSON "flake-inputs.json" (
-      lib.flip lib.mapAttrs inputs (name: input:
-        # inputs.*.sourceInfo sans outPath, since writeJSON will otherwise serialize sourceInfo like a derivation
-        lib.removeAttrs (input.sourceInfo or {}) [ "outPath" ]
-          // { store-path = input.outPath; } # comment this line if you don't want to retain a store reference to the flake inputs
-      )
-    );
+  environment.etc = lib.mkIf (!config.virtualisation.isVmVariant) {
+    "current-system-flake-inputs.json".source
+      = pkgs.writers.writeJSON "flake-inputs.json" (
+        lib.flip lib.mapAttrs inputs (name: input:
+          # inputs.*.sourceInfo sans outPath, since writeJSON will otherwise serialize sourceInfo like a derivation
+          lib.removeAttrs (input.sourceInfo or {}) [ "outPath" ]
+            // { store-path = input.outPath; } # comment this line if you don't want to retain a store reference to the flake inputs
+        )
+      );
+  };
 }

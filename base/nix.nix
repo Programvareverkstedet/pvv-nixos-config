@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ lib, config, inputs, ... }:
 {
   nix = {
     gc = {
@@ -21,11 +21,16 @@
     ** use the same channel the system
     ** was built with
     */
-    registry = {
-      "nixpkgs".flake = inputs.nixpkgs;
-      "nixpkgs-unstable".flake = inputs.nixpkgs-unstable;
-      "pvv-nix".flake = inputs.self;
-    };
+    registry = lib.mkMerge [
+      {
+        "nixpkgs".flake = inputs.nixpkgs;
+        "nixpkgs-unstable".flake = inputs.nixpkgs-unstable;
+      }
+      # We avoid the reference to self in vmVariant to get a stable system .outPath for equivalence testing
+      (lib.mkIf (!config.virtualisation.isVmVariant) {
+        "pvv-nix".flake = inputs.self;
+      })
+    ];
     nixPath = [
       "nixpkgs=${inputs.nixpkgs}"
       "unstable=${inputs.nixpkgs-unstable}"
