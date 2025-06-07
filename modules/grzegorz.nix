@@ -46,6 +46,15 @@ in {
         allow 2001:700:300:1900::/64;
         deny all;
       '';
+
+      locations."/docs" = {
+        proxyPass = "http://${grg.settings.host}:${toString grg.settings.port}";
+      };
+
+      locations."/api" = {
+        proxyPass = "http://${grg.settings.host}:${toString grg.settings.port}";
+        proxyWebsockets = true;
+      };
     };
 
     "${machine}-backend.pvv.ntnu.no" = {
