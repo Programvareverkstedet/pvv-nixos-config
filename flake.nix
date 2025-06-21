@@ -166,6 +166,7 @@
       snappymail = ./modules/snappymail.nix;
       robots-txt = ./modules/robots-txt.nix;
       gickup = ./modules/gickup;
+      ooye = ./modules/matrix-ooye.nix;
     };
 
     devShells = forAllSystems (system: {
