@@ -9,7 +9,8 @@
     ./coturn.nix
     ./mjolnir.nix
 
-    ./discord.nix
+    # ./discord.nix
+    ./out-of-your-element.nix
     ./hookshot
   ];
 

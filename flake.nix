@@ -92,9 +92,13 @@
           inputs.matrix-next.nixosModules.default
           inputs.pvv-calendar-bot.nixosModules.default
           self.nixosModules.gickup
+          self.nixosModules.matrix-ooye
         ];
         overlays = [
           inputs.pvv-calendar-bot.overlays.x86_64-linux.default
+          (final: prev: {
+            inherit (self.packages.${prev.system}) out-of-your-element;
+          })
         ];
       };
       bekkalokk = stableNixosConfig "bekkalokk" {
@@ -166,7 +170,7 @@
       snappymail = ./modules/snappymail.nix;
       robots-txt = ./modules/robots-txt.nix;
       gickup = ./modules/gickup;
-      ooye = ./modules/matrix-ooye.nix;
+      matrix-ooye = ./modules/matrix-ooye.nix;
     };
 
     devShells = forAllSystems (system: {

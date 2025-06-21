@@ -45,7 +45,7 @@ in
   };
 
 
-  services.mx-puppet-discord.enable = true;
+  services.mx-puppet-discord.enable = false;
   services.mx-puppet-discord.settings = {
     bridge = {
       bindAddress = "localhost";
