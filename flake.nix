@@ -193,6 +193,7 @@
 
         simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
 
+        out-of-your-element = pkgs.callPackage ./packages/out-of-your-element.nix { };
       } //
       (lib.pipe null [
         (_: pkgs.callPackage ./packages/mediawiki-extensions { })
