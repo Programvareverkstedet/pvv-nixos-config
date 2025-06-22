@@ -7,11 +7,11 @@
 }:
 buildNpmPackage {
   pname = "out-of-your-element";
-  version = "3.1-unstable-2025-06-21";
+  version = "3.1-unstable-2025-06-22";
   src = fetchgit {
     url = "https://gitdab.com/cadence/out-of-your-element.git";
-    rev = "efaa59ca9293a56b57d997d3dc7c5bd7564d07d4";
-    sha256 = "sha256-KxpmqxELXWCAPefa2bHyFTtPkvZkaeZqEL9fi6w6rLw=";
+    rev = "639912fee30af595e68dfe2aeb207166a3ff60b4";
+    sha256 = "sha256-8PUkWMOqwif4D8AYdeyQ1FuDq9ObOV6+sW+ii+yVsd0=";
   };
   npmDepsHash = "sha256-HNHEGez8X7CsoGYXqzB49o1pcCImfmGYIw9QKF2SbHo=";
   dontNpmBuild = true;

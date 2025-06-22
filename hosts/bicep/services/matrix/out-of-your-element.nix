@@ -27,7 +27,7 @@ in
   services.matrix-ooye = {
     enable = true;
     homeserver = "https://matrix.pvv.ntnu.no";
-    homeserverName = "matrix.pvv.ntnu.no";
+    homeserverName = "pvv.ntnu.no";
     discordTokenPath = config.sops.secrets."matrix/ooye/discord_token".path;
     discordClientSecretPath = config.sops.secrets."matrix/ooye/discord_client_secret".path;
     bridgeOrigin = "https://ooye.pvv.ntnu.no";
@@ -59,6 +59,8 @@ in
   };
 
   services.nginx.virtualHosts."ooye.pvv.ntnu.no" = {
+    forceSSL = true;
+    enableACME = true;
     locations."/".proxyPass = "http://localhost:${cfg.socket}";
   };
 }
