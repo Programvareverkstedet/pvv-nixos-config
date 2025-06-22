@@ -6,12 +6,12 @@
   buildNpmPackage,
 }:
 buildNpmPackage {
-  pname = "out-of-your-element";
+  pname = "delete-your-element";
   version = "3.1-unstable-2025-06-22";
   src = fetchgit {
-    url = "https://gitdab.com/cadence/out-of-your-element.git";
-    rev = "639912fee30af595e68dfe2aeb207166a3ff60b4";
-    sha256 = "sha256-8PUkWMOqwif4D8AYdeyQ1FuDq9ObOV6+sW+ii+yVsd0=";
+    url = "https://git.pvv.ntnu.no/Drift/delete-your-element.git";
+    rev = "cdc3b95858419568c7058d4f0056b14dbbf1152b";
+    sha256 = "sha256-v6PFyduwve6uwqBB5mzXMP09GwaxGjv1xIzgs/Eeolc=";
   };
   npmDepsHash = "sha256-HNHEGez8X7CsoGYXqzB49o1pcCImfmGYIw9QKF2SbHo=";
   dontNpmBuild = true;
