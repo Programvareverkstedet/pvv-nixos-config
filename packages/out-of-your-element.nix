@@ -7,11 +7,11 @@
 }:
 buildNpmPackage {
   pname = "delete-your-element";
-  version = "3.1-unstable-2025-06-22";
+  version = "3.1-unstable-2025-06-23";
   src = fetchgit {
     url = "https://git.pvv.ntnu.no/Drift/delete-your-element.git";
-    rev = "cdc3b95858419568c7058d4f0056b14dbbf1152b";
-    sha256 = "sha256-v6PFyduwve6uwqBB5mzXMP09GwaxGjv1xIzgs/Eeolc=";
+    rev = "67658bf68026918163a2e5c2a30007364c9b2d2d";
+    sha256 = "sha256-jSQ588kwvAYCe6ogmO+jDB6Hi3ACJ/3+rC8M94OVMNw=";
   };
   npmDepsHash = "sha256-HNHEGez8X7CsoGYXqzB49o1pcCImfmGYIw9QKF2SbHo=";
   dontNpmBuild = true;
