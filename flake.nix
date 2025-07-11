@@ -2,7 +2,7 @@
   description = "PVV System flake";
 
   inputs = {
-    nixpkgs.url = "https://nixos.org/channels/nixos-24.11-small/nixexprs.tar.xz";
+    nixpkgs.url = "https://nixos.org/channels/nixos-25.05-small/nixexprs.tar.xz";
     nixpkgs-unstable.url = "https://nixos.org/channels/nixos-unstable-small/nixexprs.tar.xz";
 
     sops-nix.url = "github:Mic92/sops-nix";
