@@ -8,7 +8,7 @@
 
       (fp /modules/grzegorz.nix)
     ];
-  services.spotifyd.enable = true;
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -24,6 +24,26 @@
   ];
 
   # List services that you want to enable:
+
+
+
+  services.spotifyd = {
+    enable = true;
+    settings.global = {
+      device_name = "georg";
+      use_mpris = false;
+      #dbus_type = "system";
+      #zeroconf_port = 1234;
+    };
+  };
+
+  networking.firewall.allowedTCPPorts = [
+    # config.services.spotifyd.settings.zeroconf_port
+    5353 # spotifyd is its own mDNS service wtf
+  ];
+
+
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

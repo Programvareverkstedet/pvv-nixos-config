@@ -115,12 +115,6 @@
           inputs.pvv-nettsiden.nixosModules.default
         ];
       };
-      bob = stableNixosConfig "bob" {
-        modules = [
-          disko.nixosModules.disko
-          { disko.devices.disk.disk1.device = "/dev/vda"; }
-        ];
-      };
       ildkule = stableNixosConfig "ildkule" { };
       #ildkule-unstable = unstableNixosConfig "ildkule" { };
       shark = stableNixosConfig "shark" { };

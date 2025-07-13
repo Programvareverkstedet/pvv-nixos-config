@@ -41,10 +41,6 @@ in rec {
       ipv4 = pvv-ipv4 209;
       ipv6 = pvv-ipv6 209;
     };
-    bob = {
-      ipv4 = "129.241.152.254";
-      # ipv6 = ;
-    };
     knutsen = {
       ipv4 = pvv-ipv4 191;
     };
