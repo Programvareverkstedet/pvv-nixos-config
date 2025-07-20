@@ -55,37 +55,50 @@
 
     nixosConfigurations = let
       unstablePkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
-      nixosConfig = nixpkgs: name: config: lib.nixosSystem (lib.recursiveUpdate
-        rec {
+
+      nixosConfig =
+        nixpkgs:
+        name:
+        configurationPath:
+        extraArgs:
+        lib.nixosSystem (lib.recursiveUpdate
+        (let
           system = "x86_64-linux";
+        in {
+          inherit system;
+
           specialArgs = {
             inherit unstablePkgs inputs;
             values = import ./values.nix;
             fp = path: ./${path};
-          };
+          } // extraArgs.specialArgs or { };
 
           modules = [
-            ./hosts/${name}/configuration.nix
+            configurationPath
             sops-nix.nixosModules.sops
-          ] ++ config.modules or [];
+          ] ++ extraArgs.modules or [];
 
           pkgs = import nixpkgs {
             inherit system;
-            config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
+            extraArgs.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
               [
                 "nvidia-x11"
                 "nvidia-settings"
               ];
             overlays = [
               # Global overlays go here
-            ] ++ config.overlays or [ ];
+            ] ++ extraArgs.overlays or [ ];
           };
-        }
-        (removeAttrs config [ "modules" "overlays" ])
+        })
+        (builtins.removeAttrs extraArgs [
+          "modules"
+          "overlays"
+          "specialArgs"
+        ])
       );
 
-      stableNixosConfig = nixosConfig nixpkgs;
-      unstableNixosConfig = nixosConfig nixpkgs-unstable;
+      stableNixosConfig = name: extraArgs:
+          nixosConfig nixpkgs name ./hosts/${name}/configuration.nix extraArgs;
     in {
       bicep = stableNixosConfig "bicep" {
         modules = [
