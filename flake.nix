@@ -170,7 +170,16 @@
           inputs.gergle.overlays.default
         ];
       };
-    };
+    }
+    //
+    (let
+      machineNames = map (i: "lupine-${toString i}") (lib.range 1 5);
+      stableLupineNixosConfig = name: extraArgs:
+          nixosConfig nixpkgs name ./hosts/lupine/configuration.nix extraArgs;
+    in lib.genAttrs machineNames (name: stableLupineNixosConfig name {
+      modules = [{ networking.hostName = name; }];
+      specialArgs.lupineName = name;
+    }));
 
     nixosModules = {
       snakeoil-certs = ./modules/snakeoil-certs.nix;

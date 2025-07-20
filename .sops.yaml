@@ -15,6 +15,11 @@ keys:
   - &host_bicep age1sl43gc9cw939z5tgha2lpwf0xxxgcnlw7w4xem4sqgmt2pt264vq0dmwx2
   - &host_ustetind age1hffjafs4slznksefmtqrlj7rdaqgzqncn4un938rhr053237ry8s3rs0v8
   - &host_kommode age1mt4d0hg5g76qp7j0884llemy0k2ymr5up8vfudz6vzvsflk5nptqqd32ly
+  - &host_lupine-1 age1fkrypl6fu4ldsa7te4g3v4qsegnk7sd6qhkquuwzh04vguy96qus08902e
+  - &host_lupine-2 age1mu0ej57n4s30ghealhyju3enls83qyjua69986la35t2yh0q2s0seruz5n
+  - &host_lupine-3 age1j2u876z8hu87q5npfxzzpfgllyw8ypj66d7cgelmzmnrf3xud34qzkntp9
+  - &host_lupine-4 age1t8zlawqkmhye737pn8yx0z3p9cl947d9ktv2cajdc6hnvn52d3fsc59s2k
+  - &host_lupine-5 age199zkqq4jp4yc3d0hx2q0ksxdtp42xhmjsqwyngh8tswuck34ke3smrfyqu
 
 creation_rules:
   # Global secrets
@@ -97,6 +102,22 @@ creation_rules:
     key_groups:
     - age:
       - *host_ustetind
+      - *user_danio
+      - *user_felixalb
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
+      pgp:
+      - *user_oysteikt
+
+  - path_regex: secrets/lupine/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *host_lupine-1
+      - *host_lupine-2
+      - *host_lupine-3
+      - *host_lupine-4
+      - *host_lupine-5
       - *user_danio
       - *user_felixalb
       - *user_pederbs_sopp
