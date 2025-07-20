@@ -15,6 +15,7 @@ keys:
   - &host_bicep age1sl43gc9cw939z5tgha2lpwf0xxxgcnlw7w4xem4sqgmt2pt264vq0dmwx2
   - &host_ustetind age1hffjafs4slznksefmtqrlj7rdaqgzqncn4un938rhr053237ry8s3rs0v8
   - &host_kommode age1mt4d0hg5g76qp7j0884llemy0k2ymr5up8vfudz6vzvsflk5nptqqd32ly
+  - &host_lupine-1 age1fkrypl6fu4ldsa7te4g3v4qsegnk7sd6qhkquuwzh04vguy96qus08902e
 
 creation_rules:
   # Global secrets
@@ -97,6 +98,18 @@ creation_rules:
     key_groups:
     - age:
       - *host_ustetind
+      - *user_danio
+      - *user_felixalb
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
+      pgp:
+      - *user_oysteikt
+
+  - path_regex: secrets/lupine/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *host_lupine-1
       - *user_danio
       - *user_felixalb
       - *user_pederbs_sopp

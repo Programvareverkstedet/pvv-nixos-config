@@ -68,6 +68,26 @@ in rec {
       ipv4 = pvv-ipv4 240;
       ipv6 = pvv-ipv6 240;
     };
+    lupine-1 = {
+      ipv4 = pvv-ipv4 224;
+      ipv6 = pvv-ipv6 224;
+    };
+    lupine-2 = {
+      ipv4 = pvv-ipv4 225;
+      ipv6 = pvv-ipv6 225;
+    };
+    lupine-3 = {
+      ipv4 = pvv-ipv4 226;
+      ipv6 = pvv-ipv6 226;
+    };
+    lupine-4 = {
+      ipv4 = pvv-ipv4 227;
+      ipv6 = pvv-ipv6 227;
+    };
+    lupine-5 = {
+      ipv4 = pvv-ipv4 228;
+      ipv6 = pvv-ipv6 228;
+    };
   };
 
   defaultNetworkConfig = {
