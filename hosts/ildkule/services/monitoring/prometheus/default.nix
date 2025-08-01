@@ -2,11 +2,12 @@
   stateDir = "/data/monitoring/prometheus";
 in {
   imports = [
+    ./exim.nix
     ./gitea.nix
+    ./machines.nix
     ./matrix-synapse.nix
     ./mysqld.nix
     ./postgres.nix
-    ./machines.nix
   ];
 
   services.prometheus = {
