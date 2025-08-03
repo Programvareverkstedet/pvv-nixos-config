@@ -6,16 +6,14 @@
   # successfully registered will gitea give you the next token.
   # - oysteikt Sep 2023
   sops = {
-    secrets."gitea/runners/token" = {
-      key = "gitea/runners/${lupineName}";
-    };
+    secrets."gitea/runners/token" = { };
 
     templates."gitea-runner-envfile" = {
       restartUnits = [
         "gitea-runner-${lupineName}.service"
       ];
       content = ''
-        TOKEN="${config.sops.placeholder."gitea/runners/token"}"
+        TOKEN=${config.sops.placeholder."gitea/runners/token"}
       '';
     };
   };
@@ -41,5 +39,5 @@
 
   networking.dhcpcd.IPv6rs = false;
 
-  networking.firewall.interfaces."podman+".allowedUDPPorts = [53 5353];
+  networking.firewall.interfaces."podman+".allowedUDPPorts = [ 53 5353 ];
 }
