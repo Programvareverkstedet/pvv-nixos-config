@@ -51,11 +51,11 @@ in {
         START_SSH_SERVER = true;
         START_LFS_SERVER = true;
         LFS_JWT_SECRET = lib.mkForce "";
-        LFS_JWT_SECRET_URI = config.sops.secrets."gitea/lfs-jwt-secret".path;
+        LFS_JWT_SECRET_URI = "file:${config.sops.secrets."gitea/lfs-jwt-secret".path}";
       };
       oauth2 = {
         JWT_SECRET = lib.mkForce "";
-        JWT_SECRET_URI = config.sops.secrets."gitea/oauth2-jwt-secret".path;
+        JWT_SECRET_URI = "file:${config.sops.secrets."gitea/oauth2-jwt-secret".path}";
       };
       "git.timeout" = {
         MIGRATE = 3600;
@@ -85,7 +85,7 @@ in {
       session.COOKIE_SECURE = true;
       security = {
         SECRET_KEY = lib.mkForce "";
-        SECRET_KEY_PATH = config.sops.secrets."gitea/secret-key".path;
+        SECRET_KEY_URI = "file:${config.sops.secrets."gitea/secret-key".path}";
       };
       database.LOG_SQL = false;
       repository = {
