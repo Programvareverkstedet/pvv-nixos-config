@@ -66,7 +66,7 @@
 
   programs.zsh.enable = true;
 
-  security.lockKernelModules = true;
+  # security.lockKernelModules = true;
   security.protectKernelImage = true;
   security.sudo.execWheelOnly = true;
   security.sudo.extraConfig = ''
