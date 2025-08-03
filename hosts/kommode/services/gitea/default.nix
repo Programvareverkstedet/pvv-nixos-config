@@ -11,15 +11,17 @@ in {
     ./web-secret-provider
   ];
 
-  sops.secrets = {
-    "gitea/database" = {
+  sops.secrets = let
+    defaultConfig = {
       owner = "gitea";
       group = "gitea";
     };
-    "gitea/email-password" = {
-      owner = "gitea";
-      group = "gitea";
-    };
+  in {
+    "gitea/database" = defaultConfig;
+    "gitea/email-password" = defaultConfig;
+    "gitea/lfs-jwt-secret" = defaultConfig;
+    "gitea/oauth2-jwt-secret" = defaultConfig;
+    "gitea/secret-key" = defaultConfig;
   };
 
   services.gitea = {
@@ -45,9 +47,15 @@ in {
         ROOT_URL = "https://${domain}/";
         PROTOCOL = "http+unix";
         SSH_PORT = sshPort;
+        LANDING_PAGE = "explore";
         START_SSH_SERVER = true;
         START_LFS_SERVER = true;
-        LANDING_PAGE = "explore";
+        LFS_JWT_SECRET = lib.mkForce "";
+        LFS_JWT_SECRET_URI = config.sops.secrets."gitea/lfs-jwt-secret".path;
+      };
+      oauth2 = {
+        JWT_SECRET = lib.mkForce "";
+        JWT_SECRET_URI = config.sops.secrets."gitea/oauth2-jwt-secret".path;
       };
       "git.timeout" = {
         MIGRATE = 3600;
@@ -75,6 +83,10 @@ in {
       };
       admin.DEFAULT_EMAIL_NOTIFICATIONS = "onmention";
       session.COOKIE_SECURE = true;
+      security = {
+        SECRET_KEY = lib.mkForce "";
+        SECRET_KEY_PATH = config.sops.secrets."gitea/secret-key".path;
+      };
       database.LOG_SQL = false;
       repository = {
         PREFERRED_LICENSES = lib.concatStringsSep "," [
