@@ -17,6 +17,10 @@ GITEA_API_URL = os.getenv('GITEA_API_URL')
 if GITEA_API_URL is None:
     GITEA_API_URL = 'https://git.pvv.ntnu.no/api/v1'
 
+PASSWD_FILE_PATH = os.getenv('PASSWD_FILE_PATH')
+if PASSWD_FILE_PATH is None:
+    PASSWD_FILE_PATH = '/tmp/passwd-import'
+
 
 def gitea_list_all_users() -> dict[str, dict[str, any]] | None:
     r = requests.get(
@@ -187,7 +191,8 @@ def main():
     if existing_users is None:
         exit(1)
 
-    for username, name in passwd_file_parser("/tmp/passwd-import"):
+    print(f"Reading passwd entries from {PASSWD_FILE_PATH}")
+    for username, name in passwd_file_parser(PASSWD_FILE_PATH):
         print(f"Processing {username}")
         add_or_patch_gitea_user(username, name, existing_users)
         for org, team_name in COMMON_USER_TEAMS:
