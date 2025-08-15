@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  users.users.alb = {
+  users.users.albertba = {
     isNormalUser = true;
     extraGroups = [ "wheel" "drift" "nix-builder-users" ];
 
