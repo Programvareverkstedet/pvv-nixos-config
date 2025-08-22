@@ -23,6 +23,9 @@
     nix-gitea-themes.url = "git+https://git.pvv.ntnu.no/Drift/nix-gitea-themes.git";
     nix-gitea-themes.inputs.nixpkgs.follows = "nixpkgs";
 
+    minecraft-heatmap.url = "git+https://git.pvv.ntnu.no/Projects/minecraft-heatmap.git";
+    minecraft-heatmap.inputs.nixpkgs.follows = "nixpkgs";
+
     greg-ng.url = "git+https://git.pvv.ntnu.no/Grzegorz/greg-ng.git";
     greg-ng.inputs.nixpkgs.follows = "nixpkgs";
     gergle.url = "git+https://git.pvv.ntnu.no/Grzegorz/gergle.git";
@@ -104,11 +107,13 @@
         modules = [
           inputs.matrix-next.nixosModules.default
           inputs.pvv-calendar-bot.nixosModules.default
+          inputs.minecraft-heatmap.nixosModules.default
           self.nixosModules.gickup
           self.nixosModules.matrix-ooye
         ];
         overlays = [
           inputs.pvv-calendar-bot.overlays.x86_64-linux.default
+          inputs.minecraft-heatmap.overlays.default
           (final: prev: {
             inherit (self.packages.${prev.system}) out-of-your-element;
           })

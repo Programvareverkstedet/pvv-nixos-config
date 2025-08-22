@@ -117,6 +117,26 @@
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
       }
     },
+    "minecraft-heatmap": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1756124334,
+        "narHash": "sha256-DXFmSpgI8FrqcdqY7wg5l/lpssWjslHq5ufvyp/5k4o=",
+        "ref": "refs/heads/main",
+        "rev": "83760b1ebcd9722ddf58a4117d29555da65538ad",
+        "revCount": 13,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/minecraft-heatmap.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/minecraft-heatmap.git"
+      }
+    },
     "nix-gitea-themes": {
       "inputs": {
         "nixpkgs": [
@@ -211,6 +231,7 @@
         "grzegorz-clients": "grzegorz-clients",
         "matrix-next": "matrix-next",
         "minecraft-data": "minecraft-data",
+        "minecraft-heatmap": "minecraft-heatmap",
         "nix-gitea-themes": "nix-gitea-themes",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
