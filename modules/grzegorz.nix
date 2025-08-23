@@ -1,4 +1,4 @@
-{config, lib, pkgs, ...}:
+{ config, lib, pkgs, unstablePkgs, ... }:
 let
   grg = config.services.greg-ng;
   grgw = config.services.grzegorz-webui;
@@ -11,6 +11,8 @@ in {
     settings.port = 31337;
     enableSway = true;
     enablePipewire = true;
+
+    mpvPackage = unstablePkgs.mpv;
   };
 
   systemd.user.services.restart-greg-ng = {
