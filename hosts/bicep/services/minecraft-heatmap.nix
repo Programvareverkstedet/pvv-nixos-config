@@ -7,6 +7,10 @@ in
     mode = "600";
   };
 
+  sops.secrets."minecraft-heatmap/postgres-passwd" = {
+    mode = "600";
+  };
+
   services.minecraft-heatmap = {
     enable = true;
     database = {
@@ -14,7 +18,7 @@ in
       port = 5432;
       name = "minecraft_heatmap";
       user = "minecraft_heatmap";
-      passwordFile = pkgs.writeText "minecraft-heatmap-password.txt" "1234";
+      passwordFile = config.sops.secrets."minecraft-heatmap/postgres-passwd".path;
     };
   };
 
