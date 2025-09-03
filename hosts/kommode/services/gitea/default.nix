@@ -1,4 +1,4 @@
-{ config, values, lib, unstablePkgs, ... }:
+{ config, values, lib, pkgs, unstablePkgs, ... }:
 let
   cfg = config.services.gitea;
   domain = "git.pvv.ntnu.no";
@@ -184,4 +184,14 @@ in {
   };
 
   networking.firewall.allowedTCPPorts = [ sshPort ];
+
+  # Only keep n backup files at a time
+  systemd.services.gitea-dump.postStop = let
+    cu = prog: "'${lib.getExe' pkgs.coreutils prog}'";
+    backupCount = 3;
+  in ''
+    for file in $(${cu "ls"} -t1 '${cfg.dump.backupDir}' | ${cu "sort"} --reverse | ${cu "tail"} -n+${toString (backupCount - 1)}); do
+      ${cu "rm"} "$file"
+    done
+  '';
 }
