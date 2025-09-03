@@ -161,6 +161,11 @@ in {
 
   systemd.services.gitea.serviceConfig.CPUSchedulingPolicy = "batch";
 
+  systemd.services.gitea.serviceConfig.CacheDirectory = "gitea/repo-archive";
+  systemd.services.gitea.serviceConfig.BindPaths = [
+    "%C/gitea/repo-archive:${cfg.stateDir}/data/repo-archive"
+  ];
+
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
     enableACME = true;
