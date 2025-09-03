@@ -159,6 +159,10 @@ in {
 
   environment.systemPackages = [ cfg.package ];
 
+  systemd.services.gitea.serviceConfig.Type = lib.mkForce "notify";
+
+  systemd.services.gitea.serviceConfig.WatchdogSec = "60";
+
   systemd.services.gitea.serviceConfig.CPUSchedulingPolicy = "batch";
 
   systemd.services.gitea.serviceConfig.CacheDirectory = "gitea/repo-archive";
