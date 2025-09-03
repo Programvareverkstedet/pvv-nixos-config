@@ -199,7 +199,7 @@ in {
     cu = prog: "'${lib.getExe' pkgs.coreutils prog}'";
     backupCount = 3;
   in ''
-    for file in $(${cu "ls"} -t1 '${cfg.dump.backupDir}' | ${cu "sort"} --reverse | ${cu "tail"} -n+${toString (backupCount - 1)}); do
+    for file in $(${cu "ls"} -t1 '${cfg.dump.backupDir}' | ${cu "sort"} --reverse | ${cu "tail"} -n+${toString (backupCount + 1)}); do
       ${cu "rm"} "$file"
     done
   '';
