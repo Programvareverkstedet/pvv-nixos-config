@@ -194,13 +194,30 @@ in {
 
   networking.firewall.allowedTCPPorts = [ sshPort ];
 
-  # Only keep n backup files at a time
-  systemd.services.gitea-dump.postStop = let
-    cu = prog: "'${lib.getExe' pkgs.coreutils prog}'";
-    backupCount = 3;
-  in ''
-    for file in $(${cu "ls"} -t1 '${cfg.dump.backupDir}' | ${cu "sort"} --reverse | ${cu "tail"} -n+${toString (backupCount + 1)}); do
-      ${cu "rm"} "$file"
-    done
-  '';
+  systemd.services.gitea-dump = {
+    serviceConfig.ExecStart = let
+      args = lib.cli.toGNUCommandLineShell { } {
+        type = cfg.dump.type;
+
+        # This should be declarative on nixos, no need to backup.
+        skip-custom-dir = true;
+
+        # This can be regenerated, no need to backup
+        skip-index = true;
+
+        # Logs are stored in the systemd journal
+        skip-log = true;
+      };
+    in lib.mkForce "${lib.getExe cfg.package} ${args}";
+
+    # Only keep n backup files at a time
+    postStop = let
+      cu = prog: "'${lib.getExe' pkgs.coreutils prog}'";
+      backupCount = 3;
+    in ''
+      for file in $(${cu "ls"} -t1 '${cfg.dump.backupDir}' | ${cu "sort"} --reverse | ${cu "tail"} -n+${toString (backupCount + 1)}); do
+        ${cu "rm"} "$file"
+      done
+      '';
+  };
 }
