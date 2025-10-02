@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <title>PVV | Intern serverfeil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Open Sans', sans-serif;
+      background-color: #002244;
+      color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    .box {
+      max-width: 480px;
+      padding: 2rem;
+    }
+    .logo {
+      width: 30%;
+      height: auto;
+      margin: 0 auto 2rem;
+    }
+    h1 {
+      margin: 0 0 1rem;
+      font-size: 2.25rem;
+      font-weight: 700;
+    }
+    p {
+      margin: 0 0 1.25rem;
+      font-size: 1.05rem;
+      line-height: 1.4;
+    }
+    .error-code {
+      margin: 1.5rem 0;
+      opacity: 0.7;
+    }
+    .contact {
+      margin-top: 1.75rem;
+      font-size: 0.93rem;
+      line-height: 1.4;
+    }
+    .contact a {
+      color: #bcd025;
+      text-decoration: none;
+    }
+    ul {
+      padding: 0;
+      list-style: none;
+      margin: 0.5rem 0 0;
+    }
+    li {
+      margin: 0.35rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+        <path fill="#283681" d="M0 0h200v200H0z"/>
+        <g fill="none" fill-opacity="0" stroke="#fff" stroke-width="1.1">
+          <path d="M119.6 180H78.3"/>
+          <path d="M179.3 55.8v124.3h-55"/>
+          <path stroke-linecap="square" d="M124.6 180a2.5 2.5 0 0 0-2.5-2.5 2.5 2.5 0 0 0-2.6 2.6H78.6a2.5 2.5 0 0 0-2.5-2.6 2.5 2.5 0 0 0-2.6 2.6H19.2V19.9h160v30H175v6.2h4.3"/>
+        </g>
+        <circle cx="396.8" cy="400" r="320.3" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="4.2" transform="scale(.25)"/>
+        <g fill="none" fill-opacity="0" stroke="#fff" stroke-width="1.1">
+          <path stroke-linejoin="bevel" d="M128.6 43.4h-86v113.3h113.2V53.8l-9.7-10.5h-6.8L137 45h-5.4"/>
+          <path d="M131.6 83c0 1.9-1.3 3.4-3 3.4H57c-1.6 0-3-1.6-3-3.5v-36c0-1.9 1.4-3.4 3-3.4h71.7c1.7 0 3 1.5 3 3.4z"/>
+          <path d="M131.7 83.4a3 3 0 0 1-3 3H74.2a3 3 0 0 1-3-3v-37a3 3 0 0 1 3-3h54.5a3 3 0 0 1 3 3zm12.8 70a3 3 0 0 1-3 3H56.9a3 3 0 0 1-3-3V95.3a3 3 0 0 1 3-3h84.6a3 3 0 0 1 3 3zM45 147.6h6.4v5.7H45zm101.9 0h6.4v5.7H147z"/>
+          <path d="M108.4 48.4h16.2v34.4h-16.2z"/>
+        </g>
+        <path fill="#fff" stroke="#fff" stroke-miterlimit="10" stroke-width="4.2" d="M275 541.6c0 3.5 2.7 6.4 6.2 6.4 3.6 0 6.5-2.9 6.5-6.4v-31h30.8c10.5 0 19.2-8.7 19.2-19.2v-22.7c0-10.3-8.7-19-19.2-19H275zm12.7-43.8v-35.4h30.8c3.3 0 6.5 3 6.5 6.3v22.7c0 3.6-3 6.5-6.5 6.5zm78.3-19 25.3 65.2a6.4 6.4 0 0 0 12 0l25.4-65.3V456c0-3.4-2.9-6.3-6.4-6.3a6.3 6.3 0 0 0-6.3 6.3v20.3l-18.6 47.6-18.7-47.6V456c0-3.4-2.9-6.3-6.4-6.3a6.3 6.3 0 0 0-6.3 6.3zm91 0 25.4 65.2a6.4 6.4 0 0 0 12 0l25.4-65.3V456c0-3.4-2.9-6.3-6.4-6.3a6.3 6.3 0 0 0-6.3 6.3v20.3l-18.7 47.6-18.6-47.6V456c0-3.4-3-6.3-6.5-6.3a6.3 6.3 0 0 0-6.3 6.3z" transform="scale(.25)"/>
+      </svg>
+    </div>
+
+    <h1>500: Intern serverfeil</h1>
+    <p>Beklager, noe gikk galt.</p>
+    <p>Vennligst prøv igjen senere eller gå til forsiden.</p>
+    <div class="error-code">Feilkode: 500</div>
+
+    <div class="contact">
+      <p>Kontakt drift hvis problemet vedvarer:</p>
+      <ul>
+        <li><strong>Discord:</strong> <a href="https://discord.gg/pyDDFpbG2x" target="_blank">discord.gg/pyDDFpbG2x</a></li>
+        <li><strong>Matrix:</strong> <a href="https://matrix.to/#/#pvv:pvv.ntnu.no" target="_blank">#pvv:pvv.ntnu.no</a></li>
+        <li><strong>Epost:</strong> <a href="mailto:drift@pvv.ntnu.no">drift@pvv.ntnu.no</a></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
+
