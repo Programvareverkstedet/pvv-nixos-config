@@ -122,5 +122,17 @@ in {
       "/diverse/abuse.php".return = "301 https://wiki.pvv.ntnu.no/wiki/CERT/Abuse";
       "/nerds/".return = "301 https://wiki.pvv.ntnu.no/wiki/Nerdepizza";
     };
+
+
+    extraConfig = ''
+      error_page 500 502 503 504 /500.html;
+    '';
+    locations."/500.html" = {
+      root = "/etc/static/nginx/html";
+      extraConfig = ''
+        internal;
+      '';
+    };
+
   };
 }
