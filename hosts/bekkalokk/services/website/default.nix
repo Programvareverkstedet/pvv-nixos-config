@@ -84,6 +84,10 @@ in {
   };
 
   services.nginx.virtualHosts.${cfg.domainName} = {
+    extraConfig = ''
+        error_page 500 /500.html;
+    '';
+
     serverAliases = [
       "pvv.ntnu.no"
       "www.pvv.org"
@@ -102,6 +106,12 @@ in {
           proxy_set_header X-Forwarded-Proto $scheme;
         '';
       };
+
+      "= /500.html" = {
+        root = ./.;
+        extraConfig = "add_header X-Error-Page 1;";
+      };
+
 
       # Redirect the old webmail/wiki paths from spikkjeposche
       "^~ /webmail".return = "301 https://webmail.pvv.ntnu.no";
