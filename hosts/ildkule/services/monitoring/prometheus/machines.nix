@@ -8,25 +8,26 @@
 
   defaultNodeExporterPort = 9100;
   defaultSystemdExporterPort = 9101;
+  defaultNixosExporterPort = 9102;
 in {
   services.prometheus.scrapeConfigs = [{
     job_name = "base_info";
     static_configs = [
-      (mkHostScrapeConfig "ildkule" [ cfg.exporters.node.port cfg.exporters.systemd.port ])
+      (mkHostScrapeConfig "ildkule" [ cfg.exporters.node.port cfg.exporters.systemd.port defaultNixosExporterPort ])
 
-      (mkHostScrapeConfig "bekkalokk" [ defaultNodeExporterPort defaultSystemdExporterPort ])
-      (mkHostScrapeConfig "bicep" [ defaultNodeExporterPort defaultSystemdExporterPort ])
-      (mkHostScrapeConfig "brzeczyszczykiewicz" [ defaultNodeExporterPort defaultSystemdExporterPort ])
-      (mkHostScrapeConfig "georg" [ defaultNodeExporterPort defaultSystemdExporterPort ])
-      (mkHostScrapeConfig "kommode" [ defaultNodeExporterPort defaultSystemdExporterPort ])
-      (mkHostScrapeConfig "ustetind" [ defaultNodeExporterPort defaultSystemdExporterPort ])
-      (mkHostScrapeConfig "wenche" [ defaultNodeExporterPort defaultSystemdExporterPort ])
+      (mkHostScrapeConfig "bekkalokk" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
+      (mkHostScrapeConfig "bicep" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
+      (mkHostScrapeConfig "brzeczyszczykiewicz" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
+      (mkHostScrapeConfig "georg" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
+      (mkHostScrapeConfig "kommode" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
+      (mkHostScrapeConfig "ustetind" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
+      (mkHostScrapeConfig "wenche" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
 
-      (mkHostScrapeConfig "lupine-1" [ defaultNodeExporterPort defaultSystemdExporterPort ])
+      (mkHostScrapeConfig "lupine-1" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
       # (mkHostScrapeConfig "lupine-2" [ defaultNodeExporterPort defaultSystemdExporterPort ])
-      (mkHostScrapeConfig "lupine-3" [ defaultNodeExporterPort defaultSystemdExporterPort ])
-      (mkHostScrapeConfig "lupine-4" [ defaultNodeExporterPort defaultSystemdExporterPort ])
-      (mkHostScrapeConfig "lupine-5" [ defaultNodeExporterPort defaultSystemdExporterPort ])
+      (mkHostScrapeConfig "lupine-3" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
+      (mkHostScrapeConfig "lupine-4" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
+      (mkHostScrapeConfig "lupine-5" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
 
       (mkHostScrapeConfig "hildring" [ defaultNodeExporterPort ])
       (mkHostScrapeConfig "isvegg" [ defaultNodeExporterPort ])
