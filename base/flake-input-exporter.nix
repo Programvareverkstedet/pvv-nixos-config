@@ -22,7 +22,8 @@ let
   port = 9102;
 in
 {
-  services.nginx.virtualHosts."${config.networking.fqdn}" = {
+  services.nginx.virtualHosts."${config.networking.fqdn}-nixos-metrics" = {
+    serverName = config.networking.fqdn;
     serverAliases = [
       "${config.networking.hostName}.pvv.org"
     ];
