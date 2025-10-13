@@ -84,7 +84,7 @@ in
         enabled = true;
         pollIntervalSeconds = 600;
       };
-      
+
       serviceBots = [
         { localpart = "bot_feeds";
           displayname = "Aya";
@@ -93,6 +93,10 @@ in
           service = "feeds";
         }
       ];
+
+      widgets = {
+        publicUrl = "https://hookshot.pvv.ntnu.no/widgetapi/v1/static";
+      };
 
       permissions = [
         # Users of the PVV Server
@@ -128,6 +132,7 @@ in
 
   services.nginx.virtualHosts."hookshot.pvv.ntnu.no" = {
     enableACME = true;
+    addSSL = true;
     locations."/" = {
       proxyPass = "http://${webhookListenAddress}:${toString webhookListenPort}";
     };
