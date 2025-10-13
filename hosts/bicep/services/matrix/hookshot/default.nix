@@ -77,7 +77,7 @@ in
         outbound = true;
         urlPrefix = "https://hookshot.pvv.ntnu.no/webhook/";
         userIdPrefix = "_webhooks_";
-        allowJsTransformationFunctions = false;
+        allowJsTransformationFunctions = true;
         waitForComplete = false;
       };
       feeds = {
@@ -95,6 +95,7 @@ in
       ];
 
       widgets = {
+        roomSetupWidget.addOnInvite = false;
         publicUrl = "https://hookshot.pvv.ntnu.no/widgetapi/v1/static";
       };
 
