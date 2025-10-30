@@ -8,6 +8,7 @@ in {
     ./customization
     ./gpg.nix
     ./import-users
+    ./vaskepersonalet.nix
     ./web-secret-provider
   ];
 
