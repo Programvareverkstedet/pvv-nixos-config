@@ -84,7 +84,7 @@
 
           pkgs = import nixpkgs {
             inherit system;
-            extraArgs.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
+            config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
               [
                 "nvidia-x11"
                 "nvidia-settings"
