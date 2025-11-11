@@ -102,21 +102,6 @@
         "type": "github"
       }
     },
-    "minecraft-data": {
-      "locked": {
-        "lastModified": 1725277886,
-        "narHash": "sha256-Fw4VbbE3EfypQWSgPDFfvVH47BHeg3ptsO715NlUM8Q=",
-        "ref": "refs/heads/master",
-        "rev": "1b4087bd3322a2e2ba84271c8fcc013e6b641a58",
-        "revCount": 2,
-        "type": "git",
-        "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
-      }
-    },
     "minecraft-heatmap": {
       "inputs": {
         "nixpkgs": [
@@ -135,6 +120,27 @@
       "original": {
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-heatmap.git"
+      }
+    },
+    "minecraft-kartverket": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1762856548,
+        "narHash": "sha256-HA7z6QH4vLUWSj1Ff7lIfdbBUPrC56Qq4gWBClfxuqc=",
+        "ref": "rewrite-in-python",
+        "rev": "85b20b636d0afb64fa60323ee2406f1ae059d6c1",
+        "revCount": 13,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
+      },
+      "original": {
+        "ref": "rewrite-in-python",
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
       }
     },
     "nix-gitea-themes": {
@@ -230,8 +236,8 @@
         "greg-ng": "greg-ng",
         "grzegorz-clients": "grzegorz-clients",
         "matrix-next": "matrix-next",
-        "minecraft-data": "minecraft-data",
         "minecraft-heatmap": "minecraft-heatmap",
+        "minecraft-kartverket": "minecraft-kartverket",
         "nix-gitea-themes": "nix-gitea-themes",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",

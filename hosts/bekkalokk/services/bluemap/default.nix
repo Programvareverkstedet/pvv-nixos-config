@@ -1,6 +1,7 @@
 { config, lib, pkgs, inputs, ... }:
 let
   vanillaSurvival = "/var/lib/bluemap/vanilla_survival_world";
+  format = pkgs.formats.hocon { };
 in {
   imports = [
     ./module.nix # From danio, pending upstreaming
@@ -14,20 +15,24 @@ in {
   services.bluemap = {
     enable = true;
     package = pkgs.callPackage ./package.nix { };
-    
+
     eula = true;
     onCalendar = "*-*-* 05:45:00"; # a little over an hour after auto-upgrade
 
     host = "minecraft.pvv.ntnu.no";
 
-    maps = {
+    maps = let
+      inherit (inputs.minecraft-kartverket.packages.${pkgs.hostPlatform.system}) bluemap-export;
+    in {
       "verden" = {
         settings = {
           world = vanillaSurvival;
           sorting = 0;
           ambient-light = 0.1;
           cave-detection-ocean-floor = -5;
-          marker-sets = inputs.minecraft-data.map-markers.vanillaSurvival.verden;
+          marker-sets = {
+            _includes = [ (format.lib.mkInclude "${bluemap-export}/overworld.hocon") ];
+          };
         };
       };
       "underverden" = {
@@ -42,7 +47,9 @@ in {
           cave-detection-ocean-floor = -5;
           cave-detection-uses-block-light = true;
           max-y = 90;
-          marker-sets = inputs.minecraft-data.map-markers.vanillaSurvival.underverden;
+          marker-sets = {
+            _includes = [ (format.lib.mkInclude "${bluemap-export}/nether.hocon") ];
+          };
         };
       };
       "enden" = {
@@ -55,6 +62,9 @@ in {
           world-sky-light = 0;
           remove-caves-below-y = -10000;
           cave-detection-ocean-floor = -5;
+          marker-sets = {
+            _includes = [ (format.lib.mkInclude "${bluemap-export}/the-end.hocon") ];
+          };
         };
       };
     };

@@ -33,7 +33,8 @@
     grzegorz-clients.url = "git+https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
 
-    minecraft-data.url = "git+https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git";
+    minecraft-kartverket.url = "git+https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git?ref=rewrite-in-python";
+    minecraft-kartverket.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ... }@inputs:
