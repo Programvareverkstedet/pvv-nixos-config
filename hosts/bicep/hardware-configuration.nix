@@ -5,22 +5,29 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [ (modulesPath + "/profiles/qemu-guest.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "hpsa" "ohci_pci" "usbhid" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "ahci" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/31a67903-dc00-448a-a24a-36e820318fe5";
+    { device = "/dev/disk/by-uuid/20e06202-7a09-47cc-8ef6-5e7afe19453a";
       fsType = "ext4";
     };
 
+  # temp data disk, only 128gb not enough until we can add another disk to the system.
   fileSystems."/data" =
-    { device = "/dev/disk/by-uuid/79e93eed-ad95-45c9-b115-4ef92afcc8c0";
-      fsType = "f2fs";
+    { device = "/dev/disk/by-uuid/c81af266-0781-4084-b8eb-c2587cbcf1ba";
+      fsType = "ext4";
+    };
+
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/198B-E363";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
     };
 
   swapDevices = [ ];
@@ -30,11 +37,7 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp6s0f0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp6s0f1.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp6s0f2.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp6s0f3.useDHCP = lib.mkDefault true;
+  # networking.interfaces.ens18.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
