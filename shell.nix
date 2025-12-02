@@ -5,6 +5,7 @@ pkgs.mkShellNoCC {
     jq
     gum
     sops
+    ssh-to-age
     gnupg
     statix
     openstackclient
