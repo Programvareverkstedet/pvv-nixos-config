@@ -42,8 +42,18 @@
         "alpine-3.22:docker://node:current-alpine3.22"
         "alpine-3.21:docker://node:current-alpine3.21"
 
-        # lol, we should really figure out something here
-        "ubuntu-latest:docker://node:current-trixie"
+        # See https://gitea.com/gitea/runner-images
+        "ubuntu-latest:docker://docker.gitea.com/runner-images:ubuntu-latest"
+        "ubuntu-24.04:docker://docker.gitea.com/runner-images:ubuntu-24.04"
+        "ubuntu-noble:docker://docker.gitea.com/runner-images:ubuntu-24.04"
+        "ubuntu-22.04:docker://docker.gitea.com/runner-images:ubuntu-22.04"
+        "ubuntu-jammy:docker://docker.gitea.com/runner-images:ubuntu-22.04"
+
+        "ubuntu-latest-slim:docker://docker.gitea.com/runner-images:ubuntu-latest-slim"
+        "ubuntu-24.04-slim:docker://docker.gitea.com/runner-images:ubuntu-24.04-slim"
+        "ubuntu-noble-slim:docker://docker.gitea.com/runner-images:ubuntu-24.04-slim"
+        "ubuntu-22.04-slim:docker://docker.gitea.com/runner-images:ubuntu-22.04-slim"
+        "ubuntu-jammy-slim:docker://docker.gitea.com/runner-images:ubuntu-22.04-slim"
       ];
       tokenFile = config.sops.templates."gitea-runner-envfile".path;
     };
