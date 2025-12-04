@@ -9,8 +9,9 @@
 
     settings = {
       allow-dirty = true;
+      auto-allocate-uids = true;
       builders-use-substitutes = true;
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [ "nix-command" "flakes" "auto-allocate-uids" ];
       log-lines = 50;
       use-xdg-base-directories = true;
     };
