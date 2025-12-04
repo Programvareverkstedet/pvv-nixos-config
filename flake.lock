@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1758287904,
-        "narHash": "sha256-IGmaEf3Do8o5Cwp1kXBN1wQmZwQN3NLfq5t4nHtVtcU=",
+        "lastModified": 1764627417,
+        "narHash": "sha256-D6xc3Rl8Ab6wucJWdvjNsGYGSxNjQHzRc2EZ6eeQ6l4=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "67ff9807dd148e704baadbd4fd783b54282ca627",
+        "rev": "5a88a6eceb8fd732b983e72b732f6f4b8269bef3",
         "type": "github"
       },
       "original": {
@@ -27,11 +27,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1758384693,
-        "narHash": "sha256-zakdGo9micgEXGiC5Uq0gE5GkHtX12qaRYLcstKPek4=",
+        "lastModified": 1764868579,
+        "narHash": "sha256-rfTUOIc0wnC4+19gLVfPbHfXx/ilfuUix6bWY+yaM2U=",
         "ref": "refs/heads/main",
-        "rev": "5f6a462d87cbe25834e8f31283f39fb46c9c3561",
-        "revCount": 21,
+        "rev": "9c923d1d50daa6a3b28c3214ad2300bfaf6c8fcd",
+        "revCount": 22,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
       },
@@ -48,11 +48,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1758919016,
-        "narHash": "sha256-TSJMOWq9dO7P1iQB4httzWwAtpM1veacLcaS7FAyTpo=",
+        "lastModified": 1764868843,
+        "narHash": "sha256-ZXYLXKO+VjAJr2f5zz+7SuKFICfI2eZnmTgS/626YE0=",
         "ref": "refs/heads/main",
-        "rev": "c87263b784954d20485d108e70934c9316935d75",
-        "revCount": 51,
+        "rev": "c095533c50e80dd18ac48046f1479cf4d83c631c",
+        "revCount": 52,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       },
@@ -68,11 +68,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1736178795,
-        "narHash": "sha256-mPdi8cgvIDYcgG3FRG7A4BOIMu2Jef96TPMnV00uXlM=",
+        "lastModified": 1764867811,
+        "narHash": "sha256-UWHiwr8tIcGcVxMLvAdNxDbQ8QuHf3REHboyxvFkYEI=",
         "ref": "refs/heads/master",
-        "rev": "fde738910de1fd8293535a6382c2f0c2749dd7c1",
-        "revCount": 79,
+        "rev": "c9983e947efe047ea9d6f97157a1f90e49d0eab3",
+        "revCount": 81,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git"
       },
@@ -88,16 +88,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1753216555,
-        "narHash": "sha256-qfgVfgXjVPV7vEER4PVFiGUOUW08GHH71CVXgYW8EVc=",
+        "lastModified": 1764844095,
+        "narHash": "sha256-Drf1orxsmFDzO+UbPo85gHjXW7QzAM+6oTPvI7vOSik=",
         "owner": "dali99",
         "repo": "nixos-matrix-modules",
-        "rev": "099db715d1eba526a464f271b05cead5166fd9a9",
+        "rev": "25b9f31ef1dbc3987b4c716de716239f2b283701",
         "type": "github"
       },
       "original": {
         "owner": "dali99",
-        "ref": "v0.7.1",
+        "ref": "v0.8.0",
         "repo": "nixos-matrix-modules",
         "type": "github"
       }
@@ -129,16 +129,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1762856548,
-        "narHash": "sha256-HA7z6QH4vLUWSj1Ff7lIfdbBUPrC56Qq4gWBClfxuqc=",
-        "ref": "rewrite-in-python",
-        "rev": "85b20b636d0afb64fa60323ee2406f1ae059d6c1",
-        "revCount": 13,
+        "lastModified": 1764830810,
+        "narHash": "sha256-I/pVqi4STwmJbpFDI9TmU9PS1lKuYdbJLcztukvZ3PU=",
+        "ref": "refs/heads/main",
+        "rev": "df52aa968679a62745bf42c272de53fdd9a035ac",
+        "revCount": 16,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
       },
       "original": {
-        "ref": "rewrite-in-python",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
       }
@@ -165,24 +164,24 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1760254360,
-        "narHash": "sha256-Npp92Joy2bRyickrrVP9+85z31aGS8kVNiLlKvd5pC4=",
-        "rev": "bafe987a29b8bea2edbb3aba76b51464b3d222f0",
+        "lastModified": 1764806471,
+        "narHash": "sha256-Qk0SArnS83KqyS9wNt1YoTkkYKDraNrjRWKUtB9DKoM=",
+        "rev": "6707b1809330d0f912f5813963bb29f6f194ee81",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/25.05-small/nixos-25.05.811161.bafe987a29b8/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/25.11-small/nixos-25.11.896.6707b1809330/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://nixos.org/channels/nixos-25.05-small/nixexprs.tar.xz"
+        "url": "https://nixos.org/channels/nixos-25.11-small/nixexprs.tar.xz"
       }
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1760252326,
-        "narHash": "sha256-5v32B25kSE++E+KtP4DO687r/AlWL9qOlOjtYyfcDSw=",
-        "rev": "66e5020bfe0af40ffa127426f8405edbdadbb40b",
+        "lastModified": 1764854611,
+        "narHash": "sha256-MVzFp4ZKwdh6U1wy4fJe/GY3Hb4cvvyJbAZOhaeBQoo=",
+        "rev": "3a4b875aef660bbd148e86b92cffea2a360c3275",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-25.11pre876242.66e5020bfe0a/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.05pre906534.3a4b875aef66/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -196,11 +195,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1742225512,
-        "narHash": "sha256-OB0ndlrGLE5wMUeYP4lmxly9JUEpPCeZRQyMzITKCB0=",
+        "lastModified": 1764869785,
+        "narHash": "sha256-FGTIpC7gB4lbeL0bfYzn1Ge0PaCpd7VqWBLhJBx0i4A=",
         "ref": "refs/heads/main",
-        "rev": "c4a6a02c84d8227abf00305dc995d7242176e6f6",
-        "revCount": 21,
+        "rev": "8ce7fb0b1918bdb3d1489a40d73895693955e8b2",
+        "revCount": 23,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/calendar-bot.git"
       },
@@ -254,11 +253,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1758335443,
-        "narHash": "sha256-2jaGMj32IckpZgBjn7kG4zyJl66T+2A1Fn2ppkHh91o=",
+        "lastModified": 1764816035,
+        "narHash": "sha256-F0IQSmSj4t2ThkbWZooAhkCTO+YpZSd2Pqiv2uoYEHo=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "f1ccb14649cf87e48051a6ac3a571b4a57d84ff3",
+        "rev": "74d9abb7c5c030469f90d97a67d127cc5d76c238",
         "type": "github"
       },
       "original": {
@@ -274,11 +273,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1760240450,
-        "narHash": "sha256-sa9bS9jSyc4vH0jSWrUsPGdqtMvDwmkLg971ntWOo2U=",
+        "lastModified": 1764483358,
+        "narHash": "sha256-EyyvCzXoHrbL467YSsQBTWWg4sR96MH1sPpKoSOelB4=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "41fd1f7570c89f645ee0ada0be4e2d3c4b169549",
+        "rev": "5aca6ff67264321d47856a2ed183729271107c9c",
         "type": "github"
       },
       "original": {

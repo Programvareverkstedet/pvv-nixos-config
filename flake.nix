@@ -2,7 +2,7 @@
   description = "PVV System flake";
 
   inputs = {
-    nixpkgs.url = "https://nixos.org/channels/nixos-25.05-small/nixexprs.tar.xz";
+    nixpkgs.url = "https://nixos.org/channels/nixos-25.11-small/nixexprs.tar.xz";
     nixpkgs-unstable.url = "https://nixos.org/channels/nixos-unstable-small/nixexprs.tar.xz";
 
     sops-nix.url = "github:Mic92/sops-nix";
@@ -17,7 +17,7 @@
     pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
-    matrix-next.url = "github:dali99/nixos-matrix-modules/v0.7.1";
+    matrix-next.url = "github:dali99/nixos-matrix-modules/v0.8.0";
     matrix-next.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-gitea-themes.url = "git+https://git.pvv.ntnu.no/Drift/nix-gitea-themes.git";
@@ -33,7 +33,7 @@
     grzegorz-clients.url = "git+https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
 
-    minecraft-kartverket.url = "git+https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git?ref=rewrite-in-python";
+    minecraft-kartverket.url = "git+https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git";
     minecraft-kartverket.inputs.nixpkgs.follows = "nixpkgs";
   };
 
