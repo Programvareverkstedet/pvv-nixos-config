@@ -22,7 +22,7 @@ in {
     host = "minecraft.pvv.ntnu.no";
 
     maps = let
-      inherit (inputs.minecraft-kartverket.packages.${pkgs.hostPlatform.system}) bluemap-export;
+      inherit (inputs.minecraft-kartverket.packages.${pkgs.stdenv.hostPlatform.system}) bluemap-export;
     in {
       "verden" = {
         settings = {
