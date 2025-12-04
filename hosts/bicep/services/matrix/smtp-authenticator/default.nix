@@ -1,10 +1,13 @@
-{ lib, buildPythonPackage, fetchFromGitHub }:
+{ lib, buildPythonPackage, fetchFromGitHub, setuptools }:
 
 buildPythonPackage rec {
   pname = "matrix-synapse-smtp-auth";
   version = "0.1.0";
 
   src = ./.;
+
+  pyproject = true;
+  build-system = [ setuptools ];
 
   doCheck = false;
 
