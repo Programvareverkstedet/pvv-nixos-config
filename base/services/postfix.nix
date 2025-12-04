@@ -6,18 +6,17 @@ in
   services.postfix = {
     enable = true;
 
-    hostname = "${config.networking.hostName}.pvv.ntnu.no";
-    domain = "pvv.ntnu.no";
+    settings.main = {
+      myhostname = "${config.networking.hostName}.pvv.ntnu.no";
+      mydomain = "pvv.ntnu.no";
 
-    relayHost = "smtp.pvv.ntnu.no";
-    relayPort = 465;
+      # Nothing should be delivered to this machine
+      mydestination = [ ];
 
-    config = {
+      relayhost = [ "smtp.pvv.ntnu.no:465" ];
+
       smtp_tls_wrappermode = "yes";
       smtp_tls_security_level = "encrypt";
     };
-
-    # Nothing should be delivered to this machine
-    destination = [ ];
   };
 }
