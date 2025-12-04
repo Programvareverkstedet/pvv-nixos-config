@@ -25,9 +25,25 @@
       enable = true;
       name = "git-runner-${lupineName}";
       url = "https://git.pvv.ntnu.no";
+      # NOTE: gitea actions runners need node inside their docker images,
+      #       so we are a bit limited here.
       labels = [
-        "debian-latest:docker://node:current-bookworm"
-        "ubuntu-latest:docker://node:current-bookworm"
+        "debian-latest:docker://node:current-trixie"
+        "debian-trixie:docker://node:current-trixie"
+        "debian-bookworm:docker://node:current-bookworm"
+        "debian-bullseye:docker://node:current-bullseye"
+
+        "debian-latest-slim:docker://node:current-trixie-slim"
+        "debian-trixie-slim:docker://node:current-trixie-slim"
+        "debian-bookworm-slim:docker://node:current-bookworm-slim"
+        "debian-bullseye-slim:docker://node:current-bullseye-slim"
+
+        "alpine-latest:docker://node:current-alpine"
+        "alpine-3.22:docker://node:current-alpine3.22"
+        "alpine-3.21:docker://node:current-alpine3.21"
+
+        # lol, we should really figure out something here
+        "ubuntu-latest:docker://node:current-trixie"
       ];
       tokenFile = config.sops.templates."gitea-runner-envfile".path;
     };
