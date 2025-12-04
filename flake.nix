@@ -113,7 +113,7 @@
           self.nixosModules.matrix-ooye
         ];
         overlays = [
-          inputs.pvv-calendar-bot.overlays.x86_64-linux.default
+          inputs.pvv-calendar-bot.overlays.default
           inputs.minecraft-heatmap.overlays.default
           (final: prev: {
             inherit (self.packages.${prev.system}) out-of-your-element;
