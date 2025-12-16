@@ -42,7 +42,7 @@ in
       } ''
         # Bigger icons
         install -Dm444 "${cfg.package.src}/templates/repo/icon.tmpl" "$out/repo/icon.tmpl"
-        sed -i -e 's/24/48/g' "$out/repo/icon.tmpl"
+        sed -i -e 's/24/60/g' "$out/repo/icon.tmpl"
       '';
     in ''
       install -Dm444 ${logo-svg} ${cfg.customDir}/public/assets/img/logo.svg
