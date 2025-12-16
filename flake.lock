@@ -129,11 +129,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764830810,
-        "narHash": "sha256-I/pVqi4STwmJbpFDI9TmU9PS1lKuYdbJLcztukvZ3PU=",
+        "lastModified": 1765903589,
+        "narHash": "sha256-JRLmckeM4G2hkH2V3VdfjHrrsWgJ8j7rZDYYjHTkRqA=",
         "ref": "refs/heads/main",
-        "rev": "df52aa968679a62745bf42c272de53fdd9a035ac",
-        "revCount": 16,
+        "rev": "7c86d342e68506fcd83cb74af3336f99ff522a0a",
+        "revCount": 24,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
       },
