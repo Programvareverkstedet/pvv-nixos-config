@@ -60,8 +60,10 @@ in {
       DOOR_SECRET = includeFromSops "door_secret";
 
       DB = {
-        DSN = "mysql:dbname=www-data_nettside;host=mysql.pvv.ntnu.no";
-        USER = "www-data_nettsi";
+        # DSN = "mysql:dbname=www-data_nettside;host=mysql.pvv.ntnu.no";
+        # USER = "www-data_nettsi";
+        DSN = "pgsql:dbname=pvv_nettsiden;host=postgres.pvv.ntnu.no";
+        USER = "pvv_nettsiden";
         PASS = includeFromSops "mysql_password";
       };
 
@@ -81,6 +83,7 @@ in {
 
   services.phpfpm.pools."pvv-nettsiden".settings = {
     "php_admin_value[error_log]" = "syslog";
+    "php_flag[display_errors]" = true;
     "php_admin_flag[log_errors]" = true;
     "catch_workers_output" = true;
 
