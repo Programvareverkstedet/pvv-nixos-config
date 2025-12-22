@@ -48,6 +48,8 @@
     IPAddressAllow = [
       values.ipv4-space
       values.ipv6-space
+      values.hosts.ildkule.ipv4
+      values.hosts.ildkule.ipv6
     ];
   };
 }
