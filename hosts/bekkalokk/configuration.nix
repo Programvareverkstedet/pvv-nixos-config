@@ -8,7 +8,7 @@
 
     ./services/bluemap/default.nix
     ./services/idp-simplesamlphp
-    ./services/kerberos
+    ./services/kerberos.nix
     ./services/mediawiki
     ./services/nginx.nix
     ./services/phpfpm.nix
