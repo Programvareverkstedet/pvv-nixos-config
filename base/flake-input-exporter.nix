@@ -45,8 +45,8 @@ in
       allow ${values.hosts.ildkule.ipv6}/128;
       allow 127.0.0.1/32;
       allow ::1/128;
-      allow 129.241.210.128/25;
-      allow 2001:700:300:1900::/64;
+      allow ${values.ipv4-space};
+      allow ${values.ipv6-space};
       deny all;
     '';
   };
