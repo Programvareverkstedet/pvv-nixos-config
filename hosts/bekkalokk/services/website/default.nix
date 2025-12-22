@@ -83,13 +83,22 @@ in {
     "catch_workers_output" = true;
   };
 
-  services.nginx.virtualHosts.${cfg.domainName} = {
-    serverAliases = [
-      "pvv.ntnu.no"
-      "www.pvv.org"
-      "pvv.org"
-    ];
+  services.nginx.virtualHosts."pvv.ntnu.no" = {
+    globalRedirect = cfg.domainName;
+    redirectCode = 307;
+  };
 
+  services.nginx.virtualHosts."www.pvv.org" = {
+    globalRedirect = cfg.domainName;
+    redirectCode = 307;
+  };
+
+  services.nginx.virtualHosts."pvv.org" = {
+    globalRedirect = cfg.domainName;
+    redirectCode = 307;
+  };
+
+  services.nginx.virtualHosts.${cfg.domainName} = {
     locations = {
       # Proxy home directories
       "^~ /~" = {
