@@ -18,6 +18,14 @@ in {
     restartUnits = [ "phpfpm-pvv-nettsiden.service" ];
   });
 
+  security.acme.certs."www.pvv.ntnu.no" = {
+    extraDomainNames = [
+      "pvv.ntnu.no"
+      "www.pvv.org"
+      "pvv.org"
+    ];
+  };
+
   services.idp.sp-remote-metadata = [
     "https://www.pvv.ntnu.no/simplesaml/"
     "https://pvv.ntnu.no/simplesaml/"
@@ -86,16 +94,22 @@ in {
   services.nginx.virtualHosts."pvv.ntnu.no" = {
     globalRedirect = cfg.domainName;
     redirectCode = 307;
+    forceSSL = true;
+    useACMEHost = "www.pvv.ntnu.no";
   };
 
   services.nginx.virtualHosts."www.pvv.org" = {
     globalRedirect = cfg.domainName;
     redirectCode = 307;
+    forceSSL = true;
+    useACMEHost = "www.pvv.ntnu.no";
   };
 
   services.nginx.virtualHosts."pvv.org" = {
     globalRedirect = cfg.domainName;
     redirectCode = 307;
+    forceSSL = true;
+    useACMEHost = "www.pvv.ntnu.no";
   };
 
   services.nginx.virtualHosts.${cfg.domainName} = {
