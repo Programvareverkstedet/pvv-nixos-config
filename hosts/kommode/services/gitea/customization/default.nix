@@ -24,10 +24,15 @@ in
     script = let
       logo-svg = fp /assets/logo_blue_regular.svg;
       logo-png = fp /assets/logo_blue_regular.png;
+
       extraLinks = pkgs.writeText "gitea-extra-links.tmpl" ''
+        <a class="item" href="https://git.pvv.ntnu.no/Drift/-/projects/4">Tokyo Drift Issues</a>
+      '';
+
+      extraLinksFooter = pkgs.writeText "gitea-extra-links-footer.tmpl" ''
         <a class="item" href="https://www.pvv.ntnu.no/">PVV</a>
         <a class="item" href="https://wiki.pvv.ntnu.no/">Wiki</a>
-        <a class="item" href="https://git.pvv.ntnu.no/Drift/-/projects/4">Tokyo Drift Issues</a>
+        <a class="item" href="https://wiki.pvv.ntnu.no/wiki/Tjenester/Kodelager">PVV Gitea Howto</a>
       '';
 
       project-labels = (pkgs.formats.yaml { }).generate "gitea-project-labels.yaml" {
@@ -49,6 +54,7 @@ in
       install -Dm444 ${logo-png} ${cfg.customDir}/public/assets/img/logo.png
       install -Dm444 ${./loading.apng} ${cfg.customDir}/public/assets/img/loading.png
       install -Dm444 ${extraLinks} ${cfg.customDir}/templates/custom/extra_links.tmpl
+      install -Dm444 ${extraLinksFooter} ${cfg.customDir}/templates/custom/extra_links_footer.tmpl
       install -Dm444 ${project-labels} ${cfg.customDir}/options/label/project-labels.yaml
 
       "${lib.getExe pkgs.rsync}" -a "${customTemplates}/" ${cfg.customDir}/templates/
