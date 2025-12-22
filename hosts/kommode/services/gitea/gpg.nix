@@ -7,6 +7,7 @@ in
   sops.secrets."gitea/gpg-signing-key" = {
     owner = cfg.user;
     inherit (cfg) group;
+    restartUnits = [ "gitea.service" ];
   };
 
   systemd.services.gitea.environment = { inherit GNUPGHOME; };

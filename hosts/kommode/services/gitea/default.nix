@@ -15,6 +15,7 @@ in {
     defaultConfig = {
       owner = "gitea";
       group = "gitea";
+      restartUnits = [ "gitea.service" ];
     };
   in {
     "gitea/database" = defaultConfig;
