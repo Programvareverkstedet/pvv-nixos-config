@@ -8,12 +8,18 @@ in
     "gitea/gpg-signing-key-public" = {
       owner = cfg.user;
       inherit (cfg) group;
-      restartUnits = [ "gitea.service" ];
+      restartUnits = [
+        "gitea.service"
+        "gitea-ensure-gnupg-homedir.service"
+      ];
     };
     "gitea/gpg-signing-key-private" = {
       owner = cfg.user;
       inherit (cfg) group;
-      restartUnits = [ "gitea.service" ];
+      restartUnits = [
+        "gitea.service"
+        "gitea-ensure-gnupg-homedir.service"
+      ];
     };
   };
 
@@ -26,6 +32,7 @@ in
 
   systemd.services.gitea-ensure-gnupg-homedir = {
     description = "Import gpg key for gitea";
+    before = [ "gitea.service" ];
     environment = { inherit GNUPGHOME; };
     serviceConfig = {
       Type = "oneshot";
