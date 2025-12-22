@@ -124,8 +124,8 @@ in {
         "fec0::/10"
 
         # NTNU
-        "129.241.0.0/16"
-        "2001:700:300::/44"
+        values.ntnu.ipv4-space
+        values.ntnu.ipv6-space
       ];
     };
   };
