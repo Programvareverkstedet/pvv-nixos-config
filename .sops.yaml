@@ -26,7 +26,6 @@ creation_rules:
   - path_regex: secrets/[^/]+\.yaml$
     key_groups:
     - age:
-      - *host_jokum
       - *user_danio
       - *user_felixalb
       - *user_eirikwit
@@ -54,18 +53,6 @@ creation_rules:
     key_groups:
     - age:
       - *host_kommode
-      - *user_danio
-      - *user_felixalb
-      - *user_pederbs_sopp
-      - *user_pederbs_nord
-      - *user_pederbs_bjarte
-      pgp:
-      - *user_oysteikt
-
-  - path_regex: secrets/jokum/[^/]+\.yaml$
-    key_groups:
-    - age:
-      - *host_jokum
       - *user_danio
       - *user_felixalb
       - *user_pederbs_sopp
