@@ -6,12 +6,14 @@
     key = "synapse/turnconfig";
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;
+    restartUnits = [ "coturn.service" ];
   };
   sops.secrets."matrix/coturn/static-auth-secret" = {
     sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "coturn/static-auth-secret";
     owner = config.users.users.turnserver.name;
     group = config.users.users.turnserver.group;
+    restartUnits = [ "coturn.service" ];
   };
 
   services.matrix-synapse-next = {

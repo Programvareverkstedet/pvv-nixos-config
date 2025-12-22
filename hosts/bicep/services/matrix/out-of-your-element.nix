@@ -9,18 +9,22 @@ in
     "matrix/ooye/as_token" = {
       sopsFile = fp /secrets/bicep/matrix.yaml;
       key = "ooye/as_token";
+      restartUnits = [ "matrix-ooye.service" ];
     };
     "matrix/ooye/hs_token" = {
       sopsFile = fp /secrets/bicep/matrix.yaml;
       key = "ooye/hs_token";
+      restartUnits = [ "matrix-ooye.service" ];
     };
     "matrix/ooye/discord_token" = {
       sopsFile = fp /secrets/bicep/matrix.yaml;
       key = "ooye/discord_token";
+      restartUnits = [ "matrix-ooye.service" ];
     };
     "matrix/ooye/discord_client_secret" = {
       sopsFile = fp /secrets/bicep/matrix.yaml;
       key = "ooye/discord_client_secret";
+      restartUnits = [ "matrix-ooye.service" ];
     };
   };
 

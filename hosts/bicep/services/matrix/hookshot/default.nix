@@ -18,6 +18,7 @@ in
   sops.templates."hookshot-registration.yaml" = {
     owner = config.users.users.matrix-synapse.name;
     group = config.users.groups.keys-matrix-registrations.name;
+    restartUnits = [ "matrix-hookshot.service" ];
     content = ''
       id: matrix-hookshot
       as_token: "${config.sops.placeholder."matrix/hookshot/as_token"}"

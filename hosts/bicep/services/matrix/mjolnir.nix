@@ -6,6 +6,7 @@
     key = "mjolnir/access_token";
     owner = config.users.users.mjolnir.name;
     group = config.users.users.mjolnir.group;
+    restartUnits = [ "mjolnir.service" ];
   };
 
   services.mjolnir = {
