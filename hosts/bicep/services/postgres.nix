@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, values, ... }:
 {
   services.postgresql = {
     enable = true;
@@ -8,8 +8,10 @@
     dataDir = "/data/postgresql";
 
     authentication = ''
-      host all all 129.241.210.128/25 md5
-      host all all 2001:700:300:1900::/64 md5
+      host all all ${values.ipv4-space} md5
+      host all all ${values.ipv6-space} md5
+      host all all ${values.hosts.ildkule.ipv4}/32 md5
+      host all all ${values.hosts.ildkule.ipv6}/32 md5
     '';
 
     # Hilsen https://pgconfigurator.cybertec-postgresql.com/
