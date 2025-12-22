@@ -5,8 +5,6 @@
     package = pkgs.postgresql_15;
     enableTCPIP = true;
 
-    dataDir = "/data/postgresql";
-
     authentication = ''
       host all all ${values.ipv4-space} md5
       host all all ${values.ipv6-space} md5
@@ -76,11 +74,40 @@
     };
   };
 
-  systemd.services.postgresql.serviceConfig = {
-    LoadCredential = [
-      "cert:/etc/certs/postgres.crt"
-      "key:/etc/certs/postgres.key"
+  systemd.tmpfiles.settings."10-postgresql"."/data/postgresql".d = {
+    user = config.systemd.services.postgresql.serviceConfig.User;
+    group = config.systemd.services.postgresql.serviceConfig.Group;
+    mode = "0700";
+  };
+
+  systemd.services.postgresql-setup = {
+    after = [
+      "systemd-tmpfiles-setup.service"
+      "systemd-tmpfiles-resetup.service"
     ];
+    serviceConfig = {
+      LoadCredential = [
+        "cert:/etc/certs/postgres.crt"
+        "key:/etc/certs/postgres.key"
+      ];
+
+      BindPaths = [ "/data/postgresql:/var/lib/postgresql" ];
+    };
+  };
+
+  systemd.services.postgresql = {
+    after = [
+      "systemd-tmpfiles-setup.service"
+      "systemd-tmpfiles-resetup.service"
+    ];
+    serviceConfig = {
+      LoadCredential = [
+        "cert:/etc/certs/postgres.crt"
+        "key:/etc/certs/postgres.key"
+      ];
+
+      BindPaths = [ "/data/postgresql:/var/lib/postgresql" ];
+    };
   };
 
   environment.snakeoil-certs."/etc/certs/postgres" = {
