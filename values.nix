@@ -32,6 +32,10 @@ in rec {
     gateway = pvv-ipv4 129;
     gateway6 = pvv-ipv6 1;
 
+    bakke = {
+      ipv4 = pvv-ipv4 173;
+      ipv6 = pvv-ipv6 173;
+    };
     bekkalokk = {
       ipv4 = pvv-ipv4 168;
       ipv6 = pvv-ipv6 168;

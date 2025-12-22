@@ -104,6 +104,11 @@
       stableNixosConfig = name: extraArgs:
           nixosConfig nixpkgs name ./hosts/${name}/configuration.nix extraArgs;
     in {
+      bakke = stableNixosConfig "bakke" {
+        modules = [
+          disko.nixosModules.disko
+        ];
+      };
       bicep = stableNixosConfig "bicep" {
         modules = [
           inputs.matrix-next.nixosModules.default

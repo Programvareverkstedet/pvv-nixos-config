@@ -1,25 +1,25 @@
 keys:
   # Users
   - &user_danio age1ug30gg4y7ftuya0wdv7q0vh4egn00wlv2th7mt7cgc2ze46wmvyq9lq6ge
+  - &user_eirikwit age1ju7rd26llahz3g8tz7cy5ld52swj8gsmg0flrmrxngc0nj0avq3ssh0sn5
   - &user_felixalb age1mrnldl334l2nszuta6ywvewng0fswv2dz9l5g4qcwe3nj4yxf92qjskdx6
   - &user_oysteikt F7D37890228A907440E1FD4846B9228E814A2AAC
-  - &user_eirikwit age1ju7rd26llahz3g8tz7cy5ld52swj8gsmg0flrmrxngc0nj0avq3ssh0sn5
-  - &user_pederbs_sopp age1hmpdk4h69wxpwqk9tkud39f66hprhehxtzhgw97r6dvr7v0mx5jscsuhkn
-  - &user_pederbs_nord age1wrssr4z4g6vl3fd3qme5cewchmmhm0j2xe6wf2meu4r6ycn37anse98mfs
   - &user_pederbs_bjarte age1zhxul786an743u0fascv4wtc5xduu7qfy803lfs539yzhgmlq5ds2lznt5
+  - &user_pederbs_nord age1wrssr4z4g6vl3fd3qme5cewchmmhm0j2xe6wf2meu4r6ycn37anse98mfs
+  - &user_pederbs_sopp age1hmpdk4h69wxpwqk9tkud39f66hprhehxtzhgw97r6dvr7v0mx5jscsuhkn
 
   # Hosts
-  - &host_jokum age1gp8ye4g2mmw3may5xg0zsy7mm04glfz3788mmdx9cvcsdxs9hg0s0cc9kt
-  - &host_ildkule age1x28hmzvuv6f2n66c0jtqcca3h9rput8d7j5uek6jcpx8n9egd52sqpejq0
+  - &host_bakke age1syted6kt48sumjjucggh6r3uca4x2ppp4mfungf3lamkt2le05csc99633
   - &host_bekkalokk age12nj59tguy9wg882updc2vjdusx5srnxmjyfaqve4zx6jnnsaw3qsyjq6zd
   - &host_bicep age19nk55kcs7s0358jpkn75xnr57dfq6fq3p43nartvsprx0su22v7qcgcjdx
-  - &host_ustetind age1hffjafs4slznksefmtqrlj7rdaqgzqncn4un938rhr053237ry8s3rs0v8
+  - &host_ildkule age1x28hmzvuv6f2n66c0jtqcca3h9rput8d7j5uek6jcpx8n9egd52sqpejq0
   - &host_kommode age1mt4d0hg5g76qp7j0884llemy0k2ymr5up8vfudz6vzvsflk5nptqqd32ly
   - &host_lupine-1 age1fkrypl6fu4ldsa7te4g3v4qsegnk7sd6qhkquuwzh04vguy96qus08902e
   - &host_lupine-2 age1mu0ej57n4s30ghealhyju3enls83qyjua69986la35t2yh0q2s0seruz5n
   - &host_lupine-3 age1j2u876z8hu87q5npfxzzpfgllyw8ypj66d7cgelmzmnrf3xud34qzkntp9
   - &host_lupine-4 age1t8zlawqkmhye737pn8yx0z3p9cl947d9ktv2cajdc6hnvn52d3fsc59s2k
   - &host_lupine-5 age199zkqq4jp4yc3d0hx2q0ksxdtp42xhmjsqwyngh8tswuck34ke3smrfyqu
+  - &host_ustetind age1hffjafs4slznksefmtqrlj7rdaqgzqncn4un938rhr053237ry8s3rs0v8
 
 creation_rules:
   # Global secrets
@@ -118,6 +118,18 @@ creation_rules:
       - *host_lupine-3
       - *host_lupine-4
       - *host_lupine-5
+      - *user_danio
+      - *user_felixalb
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
+      pgp:
+      - *user_oysteikt
+
+  - path_regex: secrets/bakke/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *host_bakke
       - *user_danio
       - *user_felixalb
       - *user_pederbs_sopp
