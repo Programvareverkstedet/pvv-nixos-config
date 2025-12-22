@@ -4,10 +4,17 @@ let
   GNUPGHOME = "${config.users.users.gitea.home}/gnupg";
 in
 {
-  sops.secrets."gitea/gpg-signing-key" = {
-    owner = cfg.user;
-    inherit (cfg) group;
-    restartUnits = [ "gitea.service" ];
+  sops.secrets = {
+    "gitea/gpg-signing-key-public" = {
+      owner = cfg.user;
+      inherit (cfg) group;
+      restartUnits = [ "gitea.service" ];
+    };
+    "gitea/gpg-signing-key-private" = {
+      owner = cfg.user;
+      inherit (cfg) group;
+      restartUnits = [ "gitea.service" ];
+    };
   };
 
   systemd.services.gitea.environment = { inherit GNUPGHOME; };
@@ -26,7 +33,8 @@ in
       PrivateNetwork = true;
     };
     script = ''
-      ${lib.getExe pkgs.gnupg} --import ${config.sops.secrets."gitea/gpg-signing-key".path}
+      ${lib.getExe pkgs.gnupg} --import ${config.sops.secrets."gitea/gpg-signing-key-public".path}
+      ${lib.getExe pkgs.gnupg} --import ${config.sops.secrets."gitea/gpg-signing-key-private".path}
     '';
   };
 
@@ -35,5 +43,6 @@ in
     SIGNING_NAME = "PVV Git";
     SIGNING_EMAIL = "gitea@git.pvv.ntnu.no";
     INITIAL_COMMIT = "always";
+    WIKI = "always";
   };
 }
