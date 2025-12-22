@@ -10,7 +10,7 @@ in {
         inherit (config.sops) placeholder;
       in ''
         [client]
-        host = bicep.pvv.ntnu.no
+        host = mysql.pvv.ntnu.no
         port = 3306
         user = prometheus_mysqld_exporter
         password = ${placeholder."config/mysqld_exporter_password"}
