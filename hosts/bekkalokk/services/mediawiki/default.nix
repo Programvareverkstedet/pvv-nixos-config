@@ -130,6 +130,12 @@ in {
       $wgVectorDefaultSidebarVisibleForAnonymousUser = true;
       $wgVectorResponsive = true;
 
+      # Experimental dark mode support for Vector 2022
+      $wgVectorNightMode['beta'] = true;
+      $wgVectorNightMode['logged_out'] = true;
+      $wgVectorNightMode['logged_in'] = true;
+      $wgDefaultUserOptions['vector-theme'] = 'os';
+
       # Misc
       $wgEmergencyContact = "${cfg.passwordSender}";
       $wgUseTeX = false;
