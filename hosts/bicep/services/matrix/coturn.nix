@@ -42,7 +42,7 @@
 
   security.acme.certs.${config.services.coturn.realm} = {
     email = "drift@pvv.ntnu.no";
-    listenHTTP = "129.241.210.213:80";
+    listenHTTP = "${values.services.turn.ipv4}:80";
     reloadServices = [ "coturn.service" ];
   };
 
