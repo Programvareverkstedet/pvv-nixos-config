@@ -186,20 +186,22 @@ in {
       }));
       default = {
         "overworld".settings = {
-          world = "${cfg.defaultWorld}";
+          world = cfg.defaultWorld;
+          dimension = "minecraft:overworld";
           name = "Overworld";
           ambient-light = 0.1;
           cave-detection-ocean-floor = -5;
         };
 
         "nether".settings = {
-          world = "${cfg.defaultWorld}/DIM-1";
+          world = cfg.defaultWorld;
+          dimension = "minecraft:the_nether";
           name = "Nether";
           sorting = 100;
           sky-color = "#290000";
           void-color = "#150000";
+          sky-light = 1;
           ambient-light = 0.6;
-          world-sky-light = 0;
           remove-caves-below-y = -10000;
           cave-detection-ocean-floor = -5;
           cave-detection-uses-block-light = true;
@@ -207,13 +209,14 @@ in {
         };
 
         "end".settings = {
-          world = "${cfg.defaultWorld}/DIM1";
-          name "The End";
+          world = cfg.defaultWorld;
+          dimension = "minecraft:the_end";
+          name = "The End";
           sorting = 200;
           sky-color = "#080010";
           void-color = "#080010";
+          sky-light = 1;
           ambient-light = 0.6;
-          world-sky-light = 0;
           remove-caves-below-y = -10000;
           cave-detection-ocean-floor = -5;
         };
@@ -221,18 +224,22 @@ in {
       defaultText = lib.literalExpression ''
         {
           "overworld".settings = {
-            world = "''${cfg.defaultWorld}";
+            world = cfg.defaultWorld;
+            name = "Overworld";
+            dimension = "minecraft:overworld";
             ambient-light = 0.1;
             cave-detection-ocean-floor = -5;
           };
 
           "nether".settings = {
-            world = "''${cfg.defaultWorld}/DIM-1";
+            world = cfg.defaultWorld;
+            dimension = "minecraft:the_nether";
+            name = "Nether";
             sorting = 100;
             sky-color = "#290000";
             void-color = "#150000";
+            sky-light = 1;
             ambient-light = 0.6;
-            world-sky-light = 0;
             remove-caves-below-y = -10000;
             cave-detection-ocean-floor = -5;
             cave-detection-uses-block-light = true;
@@ -240,12 +247,14 @@ in {
           };
 
           "end".settings = {
-            world = "''${cfg.defaultWorld}/DIM1";
+            world = cfg.defaultWorld;
+            name = "The End";
+            dimension = "minecraft:the_end";
             sorting = 200;
             sky-color = "#080010";
             void-color = "#080010";
+            sky-light = 1;
             ambient-light = 0.6;
-            world-sky-light = 0;
             remove-caves-below-y = -10000;
             cave-detection-ocean-floor = -5;
           };
