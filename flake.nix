@@ -225,6 +225,8 @@
 
         simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
 
+        bluemap = pkgs.callPackage ./packages/bluemap.nix { };
+
         out-of-your-element = pkgs.callPackage ./packages/out-of-your-element.nix { };
       } //
       (lib.pipe null [
