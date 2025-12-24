@@ -174,6 +174,26 @@ in {
                   default = name;
                   defaultText = lib.literalExpression "<name>";
                 };
+                render-mask = mkOption {
+                  type = with lib.types; listOf (attrsOf format.type);
+                  description = "Limits for the map render";
+                  default = [ ];
+                  example = [
+                    {
+                      min-x = -4000;
+                      max-x = 4000;
+                      min-z = -4000;
+                      max-z = 4000;
+                      min-y = 50;
+                      max-y = 100;
+                    }
+                    {
+                      subtract = true;
+                      min-y = 90;
+                      max-y = 127;
+                    }
+                  ];
+                };
               };
             });
             description = ''
