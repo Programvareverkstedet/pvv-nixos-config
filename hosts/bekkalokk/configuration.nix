@@ -6,7 +6,7 @@
     (fp /base)
     (fp /misc/metrics-exporters.nix)
 
-    ./services/bluemap/default.nix
+    ./services/bluemap.nix
     ./services/idp-simplesamlphp
     ./services/kerberos.nix
     ./services/mediawiki

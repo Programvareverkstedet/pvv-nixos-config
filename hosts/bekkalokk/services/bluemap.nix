@@ -3,10 +3,7 @@ let
   vanillaSurvival = "/var/lib/bluemap/vanilla_survival_world";
   format = pkgs.formats.hocon { };
 in {
-  imports = [
-    ./module.nix # From danio, pending upstreaming
-  ];
-
+  # NOTE: our versino of the module gets added in flake.nix
   disabledModules = [ "services/web-apps/bluemap.nix" ];
 
   sops.secrets."bluemap/ssh-key" = { };
@@ -14,7 +11,6 @@ in {
 
   services.bluemap = {
     enable = true;
-    package = pkgs.callPackage ./package.nix { };
 
     eula = true;
     onCalendar = "*-*-* 05:45:00"; # a little over an hour after auto-upgrade
@@ -90,7 +86,6 @@ in {
     forceSSL = true;
   };
 
-  # TODO: render somewhere else lmao
   systemd.services."render-bluemap-maps" = {
     preStart = ''
       mkdir -p /var/lib/bluemap/world

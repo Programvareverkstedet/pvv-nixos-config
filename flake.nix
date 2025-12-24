@@ -137,6 +137,7 @@
         ];
         modules = [
           inputs.pvv-nettsiden.nixosModules.default
+          self.nixosModules.bluemap
         ];
       };
       ildkule = stableNixosConfig "ildkule" { };
@@ -193,6 +194,7 @@
     }));
 
     nixosModules = {
+      bluemap = ./modules/bluemap.nix;
       snakeoil-certs = ./modules/snakeoil-certs.nix;
       snappymail = ./modules/snappymail.nix;
       robots-txt = ./modules/robots-txt.nix;
