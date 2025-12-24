@@ -24,6 +24,7 @@ in {
         settings = {
           world = vanillaSurvival;
           dimension = "minecraft:overworld";
+          name = "Verden";
           sorting = 0;
           start-pos = {
             x = 0;
@@ -40,6 +41,7 @@ in {
         settings = {
           world = vanillaSurvival;
           dimension = "minecraft:the_nether";
+          name = "Underverden";
           sorting = 100;
           start-pos = {
             x = 0;
@@ -47,8 +49,8 @@ in {
           };
           sky-color = "#290000";
           void-color = "#150000";
+          sky-light = 1;
           ambient-light = 0.6;
-          world-sky-light = 0;
           remove-caves-below-y = -10000;
           cave-detection-ocean-floor = -5;
           cave-detection-uses-block-light = true;
@@ -62,6 +64,7 @@ in {
         settings = {
           world = vanillaSurvival;
           dimension = "minecraft:the_end";
+          name = "Enden";
           sorting = 200;
           start-pos = {
             x = 0;
@@ -69,8 +72,8 @@ in {
           };
           sky-color = "#080010";
           void-color = "#080010";
+          sky-light = 1;
           ambient-light = 0.6;
-          world-sky-light = 0;
           remove-caves-below-y = -10000;
           cave-detection-ocean-floor = -5;
           marker-sets = {
