@@ -92,15 +92,18 @@ in {
   };
 
   systemd.services."render-bluemap-maps" = {
-    preStart = ''
-      mkdir -p /var/lib/bluemap/world
-      ${pkgs.rsync}/bin/rsync \
-        -e "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=$CREDENTIALS_DIRECTORY/ssh-known-hosts -i $CREDENTIALS_DIRECTORY/sshkey" \
-        -avz --no-owner --no-group \
-        root@innovation.pvv.ntnu.no:/ \
-        ${vanillaSurvival}
-    '';
     serviceConfig = {
+      StateDirectory = [ "bluemap/world" ];
+      ExecStartPre = let
+        rsyncArgs = lib.cli.toCommandLineShellGNU { } {
+          archive = true;
+          compress = true;
+          verbose = true;
+          no-owner = true;
+          no-group = true;
+          rsh = "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=%d/ssh-known-hosts -i %d/sshkey";
+        };
+      in "${lib.getExe pkgs.rsync} ${rsyncArgs} root@innovation.pvv.ntnu.no:/ ${vanillaSurvival}";
       LoadCredential = [
         "sshkey:${config.sops.secrets."bluemap/ssh-key".path}"
         "ssh-known-hosts:${config.sops.secrets."bluemap/ssh-known-hosts".path}"
