@@ -342,6 +342,7 @@ in {
     systemd.services."render-bluemap-maps" = lib.mkIf cfg.enableRender {
       serviceConfig = {
         Type = "oneshot";
+        CPUSchedulingPolicy = "batch";
         Group = "nginx";
         UMask = "026";
       };
