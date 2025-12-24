@@ -33,13 +33,13 @@ in
 lib.mergeAttrsList [
   (mw-ext {
     name = "CodeEditor";
-    commit = "9f19fe510beb671d6ea3076e2e7cbd1025451924";
-    hash = "sha256-Bl0evDM4TpsoU5gvZ02UaH5ehFatJcn8YJPbUWRcK9s=";
+    commit = "6e5b06e8cf2d040c0abb53ac3735f9f3c96a7a4f";
+    hash = "sha256-Jee+Ws9REUohywhbuemixXKaTRc54+cIlyUNDCyYcEM=";
   })
   (mw-ext {
     name = "CodeMirror";
-    commit = "050d8257c942dfd95b98525c0a61290a89fe8ef4";
-    hash = "sha256-3DnY9wlaG9BrnSgt8GMM6fzp3nAAPno49vr2QAz50Ho=";
+    commit = "da9c5d4f03e6425f6f2cf68b75d21311e0f7e77e";
+    hash = "sha256-aL+v9xeqKHGmQVUWVczh54BkReu+fP49PT1NP7eTC6k=";
   })
   (mw-ext {
     name = "DeleteBatch";
@@ -53,13 +53,13 @@ lib.mergeAttrsList [
   })
   (mw-ext {
     name = "Popups";
-    commit = "4c22b8604b0dca04f001d9e2bc13b1ea4f934835";
-    hash = "sha256-mul9m5zPFSBCfBHZJihJrxP55kFMo/YJ18+JLt5X6zA=";
+    commit = "7ed940a09f83f869cbc0bc20f3ca92f85b534951";
+    hash = "sha256-pcDPcu4kSvMHfSOuShrod694TKI9Oo3AEpMP9DXp9oY=";
   })
   (mw-ext {
     name = "Scribunto";
-    commit = "4a917ed13212f60c33dbc82d3d18c7f5b8461fdc";
-    hash = "sha256-3qQgXyPb00V9McN8fxgZlU+MeBzQm5ikH/vkXazibY8=";
+    commit = "e755852a8e28a030a21ded2d5dd7270eb933b683";
+    hash = "sha256-zyI5nSE+KuodJOWyV0CQM7G0GfkKEgfoF/czi2/qk98=";
   })
   (mw-ext {
     name = "SimpleSAMLphp";
@@ -69,8 +69,8 @@ lib.mergeAttrsList [
   })
   (mw-ext {
     name = "TemplateData";
-    commit = "1b02875f3e668fa9033849a663c5f5e450581071";
-    hash = "sha256-vQ/o7X7puTN1OQzX3bwKsW3IyVbK1IzvQKV9KtV2kRA=";
+    commit = "fd7cf4d95a70ef564130266f2a6b18f33a2a2ff9";
+    hash = "sha256-5OhDPFhIi55Eh5+ovMP1QTjNBb9Sm/3vyArNCApAgSw=";
   })
   (mw-ext {
     name = "TemplateStyles";
@@ -84,12 +84,12 @@ lib.mergeAttrsList [
   })
   (mw-ext {
     name = "VisualEditor";
-    commit = "3cca60141dec1150d3019bd14bd9865cf120362d";
-    hash = "sha256-HwbmRVaQObYoJdABeHn19WBoq8aw+Q6QU8xr9YvDcJU=";
+    commit = "032364cfdff33818e6ae0dfa251fe3973b0ae4f3";
+    hash = "sha256-AQDdq9r6rSo8h4u1ERonH14/1i1BgLGdzANEiQ065PU=";
   })
   (mw-ext {
     name = "WikiEditor";
-    commit = "d5e6856eeba114fcd1653f3e7ae629989f5ced56";
-    hash = "sha256-U5ism/ni9uAxiD4wOVE0/8FFUc4zQCPqYmQ1AL5+E7Q=";
+    commit = "cb9f7e06a9c59b6d3b31c653e5886b7f53583d01";
+    hash = "sha256-UWi3Ac+LCOLliLkXnS8YL0rD/HguuPH5MseqOm0z7s4=";
   })
 ]
