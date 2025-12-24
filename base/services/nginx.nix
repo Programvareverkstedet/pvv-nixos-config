@@ -40,6 +40,25 @@
   };
 
   services.nginx.virtualHosts."_" = lib.mkIf config.services.nginx.enable {
+    listen = [
+      {
+        addr = "0.0.0.0";
+        extraParameters = [
+          "default_server"
+          # Seemingly the default value of net.core.somaxconn
+          "backlog=4096"
+          "deferred"
+        ];
+      }
+      {
+        addr = "[::0]";
+        extraParameters = [
+          "default_server"
+          "backlog=4096"
+          "deferred"
+        ];
+      }
+    ];
     sslCertificate = "/etc/certs/nginx.crt";
     sslCertificateKey = "/etc/certs/nginx.key";
     addSSL = true;
