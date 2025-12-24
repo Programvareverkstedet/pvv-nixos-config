@@ -25,7 +25,7 @@ let
     "core.conf" = coreConfig;
     "webapp.conf" = webappConfig;
     "webserver.conf" = webserverConfig;
-    "packs" = cfg.resourcepacks;
+    "packs" = cfg.packs;
   };
 
   renderConfigFolder = name: value: pkgs.linkFarm "bluemap-${name}-config" {
@@ -36,7 +36,7 @@ let
     "core.conf" = coreConfig;
     "webapp.conf" = format.generate "webapp.conf" (cfg.webappSettings // { "update-settings-file" = false; });
     "webserver.conf" = webserverConfig;
-    "packs" = value.resourcepacks;
+    "packs" = value.packs;
   };
 
   inherit (lib) mkOption;
@@ -110,7 +110,7 @@ in {
           metrics = lib.mkEnableOption "Sending usage metrics containing the version of bluemap in use";
         };
       };
-      description = "Settings for the core.conf file, [see upstream docs](https://github.com/BlueMap-Minecraft/BlueMap/blob/master/BlueMapCommon/src/main/resources/de/bluecolored/bluemap/config/core.conf).";
+      description = "Settings for the core.conf file, [see upstream docs](https://github.com/BlueMap-Minecraft/BlueMap/blob/master/common/src/main/resources/de/bluecolored/bluemap/config/core.conf).";
     };
 
     webappSettings = mkOption {
@@ -127,7 +127,7 @@ in {
           webroot = config.services.bluemap.webRoot;
         }
       '';
-      description = "Settings for the webapp.conf file, see [upstream docs](https://github.com/BlueMap-Minecraft/BlueMap/blob/master/BlueMapCommon/src/main/resources/de/bluecolored/bluemap/config/webapp.conf).";
+      description = "Settings for the webapp.conf file, see [upstream docs](https://github.com/BlueMap-Minecraft/BlueMap/blob/master/common/src/main/resources/de/bluecolored/bluemap/config/webapp.conf).";
     };
 
     webserverSettings = mkOption {
@@ -147,18 +147,18 @@ in {
       default = { };
       description = ''
         Settings for the webserver.conf file, usually not required.
-        [See upstream docs](https://github.com/BlueMap-Minecraft/BlueMap/blob/master/BlueMapCommon/src/main/resources/de/bluecolored/bluemap/config/webserver.conf).
+        [See upstream docs](https://github.com/BlueMap-Minecraft/BlueMap/blob/master/common/src/main/resources/de/bluecolored/bluemap/config/webserver.conf).
       '';
     };
 
     maps = mkOption {
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
-          resourcepacks = mkOption {
+          packs = mkOption {
             type = lib.types.path;
-            default = cfg.resourcepacks;
-            defaultText = lib.literalExpression "config.services.bluemap.resourcepacks";
-            description = "A set of resourcepacks/mods/bluemap-addons to extract models from loaded in alphabetical order";
+            default = cfg.packs;
+            defaultText = lib.literalExpression "config.services.bluemap.packs";
+            description = "A set of resourcepacks, datapacks, and mods to extract resources from, loaded in alphabetical order.";
           };
           settings = mkOption {
             type = (lib.types.submodule {
@@ -173,7 +173,7 @@ in {
             description = ''
               Settings for files in `maps/`.
               See the default for an example with good options for the different world types.
-              For valid values [consult upstream docs](https://github.com/BlueMap-Minecraft/BlueMap/blob/master/BlueMapCommon/src/main/resources/de/bluecolored/bluemap/config/maps/map.conf).
+              For valid values [consult upstream docs](https://github.com/BlueMap-Minecraft/BlueMap/blob/master/common/src/main/resources/de/bluecolored/bluemap/config/maps/map.conf).
             '';
           };
         };
@@ -264,7 +264,7 @@ in {
       description = ''
         Where the rendered map will be stored.
         Unless you are doing something advanced you should probably leave this alone and configure webRoot instead.
-        [See upstream docs](https://github.com/BlueMap-Minecraft/BlueMap/tree/master/BlueMapCommon/src/main/resources/de/bluecolored/bluemap/config/storages)
+        [See upstream docs](https://github.com/BlueMap-Minecraft/BlueMap/tree/master/common/src/main/resources/de/bluecolored/bluemap/config/storages)
       '';
       default = {
         "file" = {
@@ -280,12 +280,12 @@ in {
       '';
     };
 
-    resourcepacks = mkOption {
+    packs = mkOption {
       type = lib.types.path;
-      default = pkgs.linkFarm "resourcepacks" { };
+      default = pkgs.linkFarm "packs" { };
       description = ''
-        A set of resourcepacks/mods to extract models from loaded in alphabetical order.
-        Can be overriden on a per-map basis with `services.bluemap.maps.<name>.resourcepacks`.
+        A set of resourcepacks, datapacks, and mods to extract resources from, loaded in alphabetical order.
+        Can be overriden on a per-map basis with `services.bluemap.maps.<name>.packs`.
       '';
     };
   };
