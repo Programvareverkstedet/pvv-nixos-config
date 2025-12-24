@@ -27,7 +27,12 @@ in {
       "verden" = {
         settings = {
           world = vanillaSurvival;
+          dimension = "minecraft:overworld";
           sorting = 0;
+          start-pos = {
+            x = 0;
+            y = 0;
+          };
           ambient-light = 0.1;
           cave-detection-ocean-floor = -5;
           marker-sets = {
@@ -37,8 +42,13 @@ in {
       };
       "underverden" = {
         settings = {
-          world = "${vanillaSurvival}/DIM-1";
+          world = vanillaSurvival;
+          dimension = "minecraft:the_nether";
           sorting = 100;
+          start-pos = {
+            x = 0;
+            y = 0;
+          };
           sky-color = "#290000";
           void-color = "#150000";
           ambient-light = 0.6;
@@ -54,8 +64,13 @@ in {
       };
       "enden" = {
         settings = {
-          world = "${vanillaSurvival}/DIM1";
+          world = vanillaSurvival;
+          dimension = "minecraft:the_end";
           sorting = 200;
+          start-pos = {
+            x = 0;
+            y = 0;
+          };
           sky-color = "#080010";
           void-color = "#080010";
           ambient-light = 0.6;
