@@ -28,7 +28,7 @@ in {
           sorting = 0;
           start-pos = {
             x = 0;
-            y = 0;
+            z = 0;
           };
           ambient-light = 0.1;
           cave-detection-ocean-floor = -5;
@@ -45,7 +45,7 @@ in {
           sorting = 100;
           start-pos = {
             x = 0;
-            y = 0;
+            z = 0;
           };
           sky-color = "#290000";
           void-color = "#150000";
@@ -68,7 +68,7 @@ in {
           sorting = 200;
           start-pos = {
             x = 0;
-            y = 0;
+            z = 0;
           };
           sky-color = "#080010";
           void-color = "#080010";
