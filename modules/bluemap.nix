@@ -345,19 +345,20 @@ in {
         CPUSchedulingPolicy = "batch";
         Group = "nginx";
         UMask = "026";
+        ExecStart = [
+          # If web folder doesnt exist generate it
+          ''|test -f "${cfg.webRoot}" || ${lib.getExe cfg.package} -c ${webappConfigFolder} -gs''
+        ]
+        ++
+          # Render each minecraft map
+          lib.attrsets.mapAttrsToList
+            (name: value: "${lib.getExe cfg.package} -c ${renderConfigFolder name value} -r")
+            cfg.maps
+        ++ [
+          # Generate updated webapp
+          "${lib.getExe cfg.package} -c ${webappConfigFolder} -gs"
+        ];
       };
-      script = ''
-        # If web folder doesnt exist generate it
-        test -f "${cfg.webRoot}" || ${lib.getExe cfg.package} -c ${webappConfigFolder} -gs
-
-        # Render each minecraft map
-        ${lib.strings.concatStringsSep "\n" (lib.attrsets.mapAttrsToList
-          (name: value: "${lib.getExe cfg.package} -c ${renderConfigFolder name value} -r")
-          cfg.maps)}
-
-        # Generate updated webapp
-        ${lib.getExe cfg.package} -c ${webappConfigFolder} -gs
-      '';
     };
 
     systemd.timers."render-bluemap-maps" = lib.mkIf cfg.enableRender {
