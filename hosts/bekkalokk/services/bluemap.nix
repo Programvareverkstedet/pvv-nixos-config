@@ -54,7 +54,9 @@ in {
           remove-caves-below-y = -10000;
           cave-detection-ocean-floor = -5;
           cave-detection-uses-block-light = true;
-          max-y = 90;
+          render-mask = [{
+            max-y = 90;
+          }];
           marker-sets = {
             _includes = [ (format.lib.mkInclude "${bluemap-export}/nether.hocon") ];
           };

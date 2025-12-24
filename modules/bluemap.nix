@@ -205,7 +205,6 @@ in {
           remove-caves-below-y = -10000;
           cave-detection-ocean-floor = -5;
           cave-detection-uses-block-light = true;
-          max-y = 90;
         };
 
         "end".settings = {
@@ -243,7 +242,6 @@ in {
             remove-caves-below-y = -10000;
             cave-detection-ocean-floor = -5;
             cave-detection-uses-block-light = true;
-            max-y = 90;
           };
 
           "end".settings = {
