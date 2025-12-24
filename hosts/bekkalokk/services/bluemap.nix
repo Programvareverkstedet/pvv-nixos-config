@@ -86,11 +86,6 @@ in {
     };
   };
 
-  services.nginx.virtualHosts."minecraft.pvv.ntnu.no" = {
-    enableACME = true;
-    forceSSL = true;
-  };
-
   systemd.services."render-bluemap-maps" = {
     serviceConfig = {
       StateDirectory = [ "bluemap/world" ];
@@ -110,4 +105,23 @@ in {
       ];
     };
   };
+
+  services.nginx.virtualHosts."minecraft.pvv.ntnu.no" = {
+    enableACME = true;
+    forceSSL = true;
+    kTLS = true;
+    http3 = true;
+    quic = true;
+    http3_hq = true;
+    extraConfig = ''
+      # Enabling QUIC 0-RTT
+      ssl_early_data on;
+
+      quic_gso on;
+      quic_retry on;
+      add_header Alt-Svc 'h3=":$server_port"; ma=86400';
+    '';
+  };
+
+  networking.firewall.allowedUDPPorts = [ 443 ];
 }
