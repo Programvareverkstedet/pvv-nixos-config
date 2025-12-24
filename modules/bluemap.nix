@@ -152,7 +152,7 @@ in {
     };
 
     maps = mkOption {
-      type = lib.types.attrsOf (lib.types.submodule {
+      type = lib.types.attrsOf (lib.types.submodule ({ name, ... }: {
         options = {
           packs = mkOption {
             type = lib.types.path;
@@ -168,6 +168,12 @@ in {
                   type = lib.types.path;
                   description = "Path to world folder containing the dimension to render";
                 };
+                name = mkOption {
+                  type = lib.types.str;
+                  description = "The display name of this map (how this map will be named on the webapp)";
+                  default = name;
+                  defaultText = lib.literalExpression "<name>";
+                };
               };
             });
             description = ''
@@ -177,16 +183,18 @@ in {
             '';
           };
         };
-      });
+      }));
       default = {
         "overworld".settings = {
           world = "${cfg.defaultWorld}";
+          name = "Overworld";
           ambient-light = 0.1;
           cave-detection-ocean-floor = -5;
         };
 
         "nether".settings = {
           world = "${cfg.defaultWorld}/DIM-1";
+          name = "Nether";
           sorting = 100;
           sky-color = "#290000";
           void-color = "#150000";
@@ -200,6 +208,7 @@ in {
 
         "end".settings = {
           world = "${cfg.defaultWorld}/DIM1";
+          name "The End";
           sorting = 200;
           sky-color = "#080010";
           void-color = "#080010";
