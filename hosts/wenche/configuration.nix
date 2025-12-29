@@ -5,9 +5,15 @@
       ./hardware-configuration.nix
       (fp /base)
       (fp /misc/metrics-exporters.nix)
-
-      (fp /misc/builder.nix)
     ];
+
+  nix.settings.trusted-users = [ "@nix-builder-users" ];
+  nix.daemonCPUSchedPolicy = "batch";
+
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+    "armv7l-linux"
+  ];
 
   sops.defaultSopsFile = fp /secrets/wenche/wenche.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
