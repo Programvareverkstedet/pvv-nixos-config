@@ -7,15 +7,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1764627417,
-        "narHash": "sha256-D6xc3Rl8Ab6wucJWdvjNsGYGSxNjQHzRc2EZ6eeQ6l4=",
+        "lastModified": 1736864502,
+        "narHash": "sha256-ItkIZyebGvNH2dK9jVGzJHGPtb6BSWLN8Gmef16NeY0=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "5a88a6eceb8fd732b983e72b732f6f4b8269bef3",
+        "rev": "0141aabed359f063de7413f80d906e1d98c0c123",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
+        "ref": "v1.11.0",
         "repo": "disko",
         "type": "github"
       }
@@ -29,13 +30,14 @@
       "locked": {
         "lastModified": 1764868579,
         "narHash": "sha256-rfTUOIc0wnC4+19gLVfPbHfXx/ilfuUix6bWY+yaM2U=",
-        "ref": "refs/heads/main",
+        "ref": "main",
         "rev": "9c923d1d50daa6a3b28c3214ad2300bfaf6c8fcd",
         "revCount": 22,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
       },
       "original": {
+        "ref": "main",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
       }
@@ -48,15 +50,16 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1764868843,
-        "narHash": "sha256-ZXYLXKO+VjAJr2f5zz+7SuKFICfI2eZnmTgS/626YE0=",
-        "ref": "refs/heads/main",
-        "rev": "c095533c50e80dd18ac48046f1479cf4d83c631c",
-        "revCount": 52,
+        "lastModified": 1765760377,
+        "narHash": "sha256-2+lgzUjVas9hPSeWn52MwuX+iidMN4RkzkHo4vrGmR8=",
+        "ref": "main",
+        "rev": "f340dc5b9c9f3b75b7aca41f56f8869b9e28cf8c",
+        "revCount": 58,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       },
       "original": {
+        "ref": "main",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       }
@@ -70,13 +73,14 @@
       "locked": {
         "lastModified": 1764867811,
         "narHash": "sha256-UWHiwr8tIcGcVxMLvAdNxDbQ8QuHf3REHboyxvFkYEI=",
-        "ref": "refs/heads/master",
+        "ref": "master",
         "rev": "c9983e947efe047ea9d6f97157a1f90e49d0eab3",
         "revCount": 81,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git"
       },
       "original": {
+        "ref": "master",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git"
       }
@@ -106,18 +110,20 @@
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
-        ]
+        ],
+        "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1756124334,
-        "narHash": "sha256-DXFmSpgI8FrqcdqY7wg5l/lpssWjslHq5ufvyp/5k4o=",
-        "ref": "refs/heads/main",
-        "rev": "83760b1ebcd9722ddf58a4117d29555da65538ad",
-        "revCount": 13,
+        "lastModified": 1766407405,
+        "narHash": "sha256-UEJ8F8/oG70biWRrGbL5/aB7OXzzvnYs+jxkR07UHvA=",
+        "ref": "main",
+        "rev": "e719840f72ca1b0cd169562a3a0de69899821de0",
+        "revCount": 16,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-heatmap.git"
       },
       "original": {
+        "ref": "main",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-heatmap.git"
       }
@@ -129,15 +135,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1765903589,
-        "narHash": "sha256-JRLmckeM4G2hkH2V3VdfjHrrsWgJ8j7rZDYYjHTkRqA=",
-        "ref": "refs/heads/main",
-        "rev": "7c86d342e68506fcd83cb74af3336f99ff522a0a",
-        "revCount": 24,
+        "lastModified": 1765904683,
+        "narHash": "sha256-uXM56y5n5GWpCiCNdKlTcCAy2IntgDB21c4gBDU30io=",
+        "ref": "main",
+        "rev": "6fae27b1659efb6774cf08a4e36ed29ab0e24105",
+        "revCount": 26,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
       },
       "original": {
+        "ref": "main",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
       }
@@ -151,13 +158,14 @@
       "locked": {
         "lastModified": 1743881366,
         "narHash": "sha256-ScGA2IHPk9ugf9bqEZnp+YB/OJgrkZblnG/XLEKvJAo=",
-        "ref": "refs/heads/main",
+        "ref": "main",
         "rev": "db2e4becf1b11e5dfd33de12a90a7d089fcf68ec",
         "revCount": 11,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Drift/nix-gitea-themes.git"
       },
       "original": {
+        "ref": "main",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Drift/nix-gitea-themes.git"
       }
@@ -197,13 +205,14 @@
       "locked": {
         "lastModified": 1764869785,
         "narHash": "sha256-FGTIpC7gB4lbeL0bfYzn1Ge0PaCpd7VqWBLhJBx0i4A=",
-        "ref": "refs/heads/main",
+        "ref": "main",
         "rev": "8ce7fb0b1918bdb3d1489a40d73895693955e8b2",
         "revCount": 23,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/calendar-bot.git"
       },
       "original": {
+        "ref": "main",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/calendar-bot.git"
       }
@@ -215,15 +224,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1757332682,
-        "narHash": "sha256-4p4aVQWs7jHu3xb6TJlGik20lqbUU/Fc0/EHpzoRlO0=",
-        "ref": "refs/heads/main",
-        "rev": "da1113341ad9881d8d333d1e29790317bd7701e7",
-        "revCount": 518,
+        "lastModified": 1765978548,
+        "narHash": "sha256-VDSPpw+/Mgo+JujoW12CRlkTs9o0tX/FEL2AR5kl5+Q=",
+        "ref": "main",
+        "rev": "961f021d27f86b2aedd16290dbf85bdd9d50fd42",
+        "revCount": 532,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/nettsiden.git"
       },
       "original": {
+        "ref": "main",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/nettsiden.git"
       }
@@ -253,11 +263,32 @@
         ]
       },
       "locked": {
-        "lastModified": 1764816035,
-        "narHash": "sha256-F0IQSmSj4t2ThkbWZooAhkCTO+YpZSd2Pqiv2uoYEHo=",
+        "lastModified": 1765680428,
+        "narHash": "sha256-fyPmRof9SZeI14ChPk5rVPOm7ISiiGkwGCunkhM+eUg=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "74d9abb7c5c030469f90d97a67d127cc5d76c238",
+        "rev": "eb3898d8ef143d4bf0f7f2229105fc51c7731b2f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_2": {
+      "inputs": {
+        "nixpkgs": [
+          "minecraft-heatmap",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1766371695,
+        "narHash": "sha256-W7CX9vy7H2Jj3E8NI4djHyF8iHSxKpb2c/7uNQ/vGFU=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "d81285ba8199b00dc31847258cae3c655b605e8c",
         "type": "github"
       },
       "original": {
@@ -273,15 +304,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1764483358,
-        "narHash": "sha256-EyyvCzXoHrbL467YSsQBTWWg4sR96MH1sPpKoSOelB4=",
+        "lastModified": 1766894905,
+        "narHash": "sha256-pn8AxxfajqyR/Dmr1wnZYdUXHgM3u6z9x0Z1Ijmz2UQ=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "5aca6ff67264321d47856a2ed183729271107c9c",
+        "rev": "61b39c7b657081c2adc91b75dd3ad8a91d6f07a7",
         "type": "github"
       },
       "original": {
         "owner": "Mic92",
+        "ref": "master",
         "repo": "sops-nix",
         "type": "github"
       }
