@@ -10,6 +10,10 @@ let
     mkConnectionRev;
   values = import ../values.nix;
 in {
+  imports = [
+    ./non-nixos-machines.nix
+  ];
+
   ### Networks
 
   networks.pvv = {
@@ -29,6 +33,8 @@ in {
 
   networks.ntnu = {
     name = "NTNU";
+    cidrv4 = values.ntnu.ipv4-space;
+    cidrv6 = values.ntnu.ipv6-space;
   };
 
   nodes.internet = mkInternet {
@@ -54,17 +60,30 @@ in {
   nodes.brus-switch = mkSwitch "Brus Switch" {
     interfaceGroups =  [ (lib.genList (i: "eth${toString i}") 16) ];
 
-    connections.eth2 = mkConnection "bekkalokk" "enp2s0";
-    # connections.eth3 = mkConnection "bicep" "enp6s0f0";
-    connections.eth4 = mkConnection "buskerud" "eth1";
-    connections.eth5 = mkConnection "knutsen" "eth1";
-    connections.eth6 = mkConnection "powerpuff-cluster" "eth1";
-
-    connections.eth8 = mkConnection "lupine-1" "enp0s31f6";
-    connections.eth9 = mkConnection "lupine-2" "enp0s31f6";
-    connections.eth11 = mkConnection "lupine-3" "enp0s31f6";
-    connections.eth10 = mkConnection "lupine-4" "enp0s31f6";
-    connections.eth12 = mkConnection "lupine-5" "enp0s31f6";
+    connections = let
+      connections' = [
+        (mkConnection "bekkalokk" "enp2s0")
+        # (mkConnection "bicep" "enp6s0f0")
+        (mkConnection "buskerud" "eth1")
+        (mkConnection "knutsen" "eth1")
+        (mkConnection "powerpuff-cluster" "eth1")
+        (mkConnection "lupine-1" "enp0s31f6")
+        (mkConnection "lupine-2" "enp0s31f6")
+        (mkConnection "lupine-3" "enp0s31f6")
+        (mkConnection "lupine-4" "enp0s31f6")
+        (mkConnection "lupine-5" "enp0s31f6")
+        (mkConnection "innovation" "em0")
+        (mkConnection "microbel" "eth0")
+        # (mkConnection "isvegg" "")
+        # (mkConnection "ameno" "")
+        # (mkConnection "sleipner" "")
+      ];
+    in builtins.listToAttrs (
+      lib.zipListsWith
+        (a: b: lib.nameValuePair a b)
+        (lib.genList (i: "eth${toString i}") 16)
+        connections'
+    );
   };
 
   nodes.knutsen = mkRouter "knutsen" {
