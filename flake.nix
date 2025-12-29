@@ -93,7 +93,6 @@
           modules = [
             configurationPath
             sops-nix.nixosModules.sops
-            inputs.nix-topology.nixosModules.default
           ] ++ extraArgs.modules or [];
 
           pkgs = import nixpkgs {
@@ -244,27 +243,50 @@
         bluemap = pkgs.callPackage ./packages/bluemap.nix { };
 
         out-of-your-element = pkgs.callPackage ./packages/out-of-your-element.nix { };
-      } //
+      }
+      //
+      # Mediawiki extensions
       (lib.pipe null [
         (_: pkgs.callPackage ./packages/mediawiki-extensions { })
         (lib.flip builtins.removeAttrs ["override" "overrideDerivation"])
         (lib.mapAttrs' (name: lib.nameValuePair "mediawiki-${name}"))
       ])
-      // lib.genAttrs allMachines
-        (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel);
-    };
+      //
+      # Machines
+      lib.genAttrs allMachines
+        (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel)
+      //
+      # Nix-topology
+      (let
+        topology' = import inputs.nix-topology {
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+            overlays = [ inputs.nix-topology.overlays.default ];
+          };
 
-    topology.x86_64-linux = import inputs.nix-topology {
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        overlays = [inputs.nix-topology.overlays.default];
-      }; # Only this package set must include nix-topology.overlays.default
-      modules = [
-        # Your own file to define global topology. Works in principle like a nixos module but uses different options.
-        ./topology.nix
-        # Inline module to inform topology of your existing NixOS hosts.
-        { nixosConfigurations = self.nixosConfigurations; }
-      ];
+          modules = [
+            ./topology
+            {
+              nixosConfigurations = lib.mapAttrs (_name: nixosCfg: nixosCfg.extendModules {
+                modules = [
+                  inputs.nix-topology.nixosModules.default
+                  ./topology/service-extractors/greg-ng.nix
+                ];
+              }) self.nixosConfigurations;
+            }
+          ];
+        };
+      in {
+        topology = topology'.config.output;
+        topology-png = pkgs.runCommand "pvv-config-topology-png" {
+          nativeBuildInputs = [ pkgs.writableTmpDirAsHomeHook ];
+        } ''
+          mkdir -p "$out"
+          for file in '${topology'.config.output}'/*.svg; do
+            ${lib.getExe pkgs.imagemagick} -density 300 -background none "$file" "$out"/"$(basename "''${file%.svg}.png")"
+          done
+        '';
+      });
     };
   };
 }
