@@ -34,28 +34,7 @@ Hvis du ikke har lyst til å oppdatere alle pakkene (og kanskje måtte vente en 
 
 `nixos-rebuild switch --override-input nixpkgs nixpkgs --override-input nixpkgs-unstable nixpkgs-unstable --flake git+https://git.pvv.ntnu.no/Drift/pvv-nixos-config.git`
 
-## Seksjonen for hemmeligheter
+## Annen dokumentasjon
 
-For at hemmeligheter ikke skal deles med hele verden i git - eller å være world
-readable i nix-storen, bruker vi [sops-nix](https://github.com/Mic92/sops-nix)
-
-For å legge til secrets kan du kjøre f.eks. `sops secrets/jokum/jokum.yaml`
-Dette vil dekryptere filen og gi deg en text-editor du kan bruke for endre hemmelighetene.
-
-Et nix shell med dette verktøyet inkludert ligger i flaket og shell.nix og kan aktiveres med:
-
-`nix-shell` eller `nix develop`. Vi anbefaler det siste.
-I tilegg kan du sette opp [direnv](https://direnv.net/) slik at dette skjer automatisk
-
-for å få tilgang til å lese/skrive hemmeligheter må du spørre noen/noe som har tilgang til hemmelighetene
-om å legge til age eller pgp nøkkelen din i [`.sops.yaml`](https://git.pvv.ntnu.no/Drift/pvv-nixos-config/src/main/.sops.yaml)
-
-Denne kan du generere fra ssh-nøkkelene dine eller lage en egen nøkkel.
-
-### Legge til flere keys
-
-Gjør det som gir mening i .sops.yml
-
-Etter det kjør `sops updatekeys secrets/host/file.yml`
-
-MERK at det ikke er `sops -r` som BARE roterer nøkklene for de som allerede er i secretfila
+- [User management](./docs/users.md)
+- [Secret management and `sops-nix`](./docs/secret-management.md)
