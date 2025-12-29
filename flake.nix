@@ -57,6 +57,16 @@
   in {
     inputs = lib.mapAttrs (_: src: src.outPath) inputs;
 
+    pkgs = forAllSystems (system:
+      import nixpkgs {
+        inherit system;
+        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
+          [
+            "nvidia-x11"
+            "nvidia-settings"
+          ];
+      });
+
     nixosConfigurations = let
       unstablePkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
 
