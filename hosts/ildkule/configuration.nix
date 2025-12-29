@@ -4,7 +4,6 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       (fp /base)
-      (fp /misc/metrics-exporters.nix)
 
       ./services/monitoring
       ./services/nginx

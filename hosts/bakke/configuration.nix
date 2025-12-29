@@ -3,7 +3,6 @@
   imports = [
       ./hardware-configuration.nix
       ../../base
-      ../../misc/metrics-exporters.nix
       ./filesystems.nix
     ];
 

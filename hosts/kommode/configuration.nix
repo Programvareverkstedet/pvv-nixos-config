@@ -4,7 +4,6 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     (fp /base)
-    (fp /misc/metrics-exporters.nix)
 
     ./services/gitea
     ./services/nginx.nix
@@ -31,4 +30,3 @@
 
   system.stateVersion = "24.11";
 }
-

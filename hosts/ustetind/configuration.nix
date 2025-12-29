@@ -3,7 +3,6 @@
 {
   imports = [
     (fp /base)
-    (fp /misc/metrics-exporters.nix)
 
     ./services/gitea-runners.nix
   ];

@@ -4,7 +4,6 @@
     ./hardware-configuration/${lupineName}.nix
 
     (fp /base)
-    (fp /misc/metrics-exporters.nix)
 
     ./services/gitea-runner.nix
   ];

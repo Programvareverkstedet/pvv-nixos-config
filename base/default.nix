@@ -25,6 +25,9 @@
     ./services/nginx.nix
     ./services/openssh.nix
     ./services/postfix.nix
+    ./services/prometheus-node-exporter.nix
+    ./services/prometheus-systemd-exporter.nix
+    ./services/promtail.nix
     ./services/smartd.nix
     ./services/thermald.nix
     ./services/userborn.nix
