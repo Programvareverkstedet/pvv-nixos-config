@@ -103,11 +103,26 @@ in {
     );
   };
 
+  nodes.bekkalokk.hardware.info = "Supermicro X9SCL/X9SCM";
+
+  nodes.lupine-1.hardware.info = "Dell OptiPlex 7040";
+  # nodes.lupine-2.hardware.info = "Dell OptiPlex 5050";
+  nodes.lupine-3.hardware.info = "Dell OptiPlex 5050";
+  nodes.lupine-4.hardware.info = "Dell OptiPlex 5050";
+  # nodes.lupine-5.hardware.info = "Dell OptiPlex 5050";
+
   nodes.buskerud = mkDevice "buskerud" {
     deviceIcon = ./icons/proxmox.svg;
     interfaceGroups = [ [ "eth1" ] ];
 
     interfaces.eth1.network = "pvv";
+
+    services = {
+      proxmox = {
+        name = "Proxmox web interface";
+        info = "https://buskerud.pvv.ntnu.no:8006/";
+      };
+    };
   };
 
   nodes.shark = {
@@ -125,6 +140,15 @@ in {
     hardware.info = "Dell PowerEdge R730 x 3";
 
     interfaceGroups = [ [ "eth1" ] ];
+
+    services = {
+      proxmox = {
+        name = "Proxmox web interface";
+        details.bubbles.text = "https://bubbles.pvv.ntnu.no:8006/";
+        details.blossom.text = "https://blossom.pvv.ntnu.no:8006/";
+        details.buttercup.text = "https://buttercup.pvv.ntnu.no:8006/";
+      };
+    };
   };
 
   nodes.kommode = {

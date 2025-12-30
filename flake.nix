@@ -261,7 +261,12 @@
         topology' = import inputs.nix-topology {
           pkgs = import nixpkgs {
             system = "x86_64-linux";
-            overlays = [ inputs.nix-topology.overlays.default ];
+            overlays = [
+              inputs.nix-topology.overlays.default
+              (final: prev: {
+                inherit (nixpkgs-unstable.legacyPackages.x86_64-linux) super-tiny-icons;
+              })
+            ];
           };
 
           specialArgs = {
@@ -275,6 +280,9 @@
                 modules = [
                   inputs.nix-topology.nixosModules.default
                   ./topology/service-extractors/greg-ng.nix
+                  ./topology/service-extractors/postgresql.nix
+                  ./topology/service-extractors/mysql.nix
+                  ./topology/service-extractors/gitea-runners.nix
                 ];
               }) self.nixosConfigurations;
             }

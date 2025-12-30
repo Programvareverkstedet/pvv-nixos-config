@@ -120,6 +120,30 @@ in {
         values.hosts.gateway6
       ];
     };
+
+    services = {
+      dovecot = {
+        name = "Dovecot";
+        info = "imap.pvv.ntnu.no pop.pvv.ntnu.no";
+        icon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/dovecot.svg";
+        details.imap.text = "0.0.0.0:993";
+        details.pop3.text = "0.0.0.0:995";
+      };
+
+      exim4 = {
+        name = "Exim4";
+        info = "mail.pvv.ntnu.no mailhost.pvv.ntnu.no";
+        details.smtp.text = "0.0.0.0:25";
+        details.smtps.text = "0.0.0.0:465";
+        details.starttls.text = "0.0.0.0:587";
+      };
+
+      nfs = {
+        name = "NFS";
+        info = "homepvv.pvv.ntnu.no";
+        details.rpcbind.text = "0.0.0.0:111";
+      };
+    };
   };
 
   nodes.innovation = mkDevice "innovation" {
@@ -145,6 +169,7 @@ in {
         icon = "services.minecraft";
         info = "minecraft.pvv.ntnu.no";
         details.listen.text = "0.0.0.0:25565";
+        details.directory.text = "/srv/minecraft-pvv";
       };
     };
   };
@@ -220,10 +245,25 @@ in {
         values.hosts.gateway6
       ];
     };
+
+    services = {
+      mapcrafter = {
+        name = "Mapcrafter Minecraft Map";
+        info = "http://isvegg.pvv.ntnu.no/kart/";
+        details.directory.text = "/scratch/mckart/kart";
+      };
+      gophernicus = {
+        name = "Gophernicus";
+        info = "gopher://gopher.pvv.ntnu.no/";
+        details.directory.text = "/var/gopher";
+      };
+    };
   };
 
   nodes.ameno = mkDevice "ameno" {
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/ubuntu.svg";
+
+    hardware.info = "Raspberry Pi 2B 1.1";
 
     interfaceGroups = [ [ "eth0" ] ];
     interfaces.eth0 = {
