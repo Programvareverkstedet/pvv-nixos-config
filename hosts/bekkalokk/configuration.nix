@@ -5,6 +5,7 @@
 
     (fp /base)
 
+    ./services/alps.nix
     ./services/bluemap.nix
     ./services/idp-simplesamlphp
     ./services/kerberos.nix
