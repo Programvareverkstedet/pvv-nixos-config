@@ -52,11 +52,27 @@ in {
 
   nodes.ntnu-pvv-router = mkRouter "NTNU PVV Gateway" {
     interfaceGroups = [ ["wan1"] ["eth1"] ];
-    connections.eth1 = mkConnection "brus-switch" "eth0";
+    connections.eth1 = mkConnection "knutsen" "em1";
     interfaces.eth1.network = "pvv";
   };
 
-  nodes.brus-switch = mkSwitch "Brus Switch" {
+  nodes.knutsen = mkRouter "knutsen" {
+    deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/freebsd.svg";
+
+    interfaceGroups = [ ["em0"] ["em1"] ["vpn1"] ];
+
+    connections.em0 = mkConnection "nintendo" "eth0";
+
+    # connections.vpn1 = mkConnection "ludvigsen" "vpn1";
+    interfaces.vpn1.network = "site-vpn";
+    interfaces.vpn1.virtual = true;
+    interfaces.vpn1.icon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/openvpn.svg";
+
+    interfaces.em0.network = "pvv";
+    interfaces.em1.network = "ntnu";
+  };
+
+  nodes.nintendo = mkSwitch "Nintendo (brus switch)" {
     interfaceGroups =  [ (lib.genList (i: "eth${toString i}") 16) ];
 
     connections = let
@@ -64,7 +80,7 @@ in {
         (mkConnection "bekkalokk" "enp2s0")
         # (mkConnection "bicep" "enp6s0f0") # NOTE: physical machine is dead at the moment
         (mkConnection "buskerud" "eth1")
-        (mkConnection "knutsen" "eth1")
+        # (mkConnection "knutsen" "eth1")
         (mkConnection "powerpuff-cluster" "eth1")
         (mkConnection "lupine-1" "enp0s31f6")
         (mkConnection "lupine-2" "enp0s31f6")
@@ -73,11 +89,13 @@ in {
         (mkConnection "lupine-5" "enp0s31f6")
         (mkConnection "innovation" "em0")
         (mkConnection "microbel" "eth0")
-        # (mkConnection "isvegg" "")
+        (mkConnection "isvegg" "eth0")
         (mkConnection "ameno" "eth0")
         (mkConnection "sleipner" "eno0")
       ];
-    in builtins.listToAttrs (
+    in
+    assert (lib.length connections' <= 15);
+    builtins.listToAttrs (
       lib.zipListsWith
         (a: b: lib.nameValuePair a b)
         (lib.genList (i: "eth${toString (i + 1)}") 15)
@@ -85,61 +103,86 @@ in {
     );
   };
 
-  nodes.knutsen = mkRouter "knutsen" {
-    interfaceGroups = [ ["eth1"] ["eth2"] ["vpn1"] ];
-    connections.eth2 = mkConnectionRev "brus-switch" "eth6";
-    # connections.vpn1 = mkConnection "ludvigsen" "vpn1";
-    interfaces.vpn1.network = "site-vpn";
-    interfaces.vpn1.virtual = true;
-  };
-
   nodes.buskerud = mkDevice "buskerud" {
-    interfaceGroups = [ ["eth1"] ];
+    deviceIcon = ./icons/proxmox.svg;
+    interfaceGroups = [ [ "eth1" ] ];
+
+    interfaces.eth1.network = "pvv";
   };
 
   nodes.shark = {
     guestType = "proxmox";
     parent = config.nodes.buskerud.id;
+
+    interfaces.ens18.network = "pvv";
   };
 
   ### Powerpuff
 
-  nodes.powerpuff-cluster = mkDevice "powerpuff-cluster" {
-    interfaceGroups = [ ["eth1"] ];
+  nodes.powerpuff-cluster = mkDevice "Powerpuff Cluster" {
+    deviceIcon = ./icons/proxmox.svg;
+
+    hardware.info = "Dell PowerEdge R730 x 3";
+
+    interfaceGroups = [ [ "eth1" ] ];
   };
 
   nodes.kommode = {
     guestType = "proxmox";
     parent = config.nodes.powerpuff-cluster.id;
+
+    interfaces.ens18.network = "pvv";
   };
 
   nodes.bicep = {
     guestType = "proxmox";
     parent = config.nodes.powerpuff-cluster.id;
+
+    # hardware.info = "HP Proliant DL370G6";
+
+    interfaces.ens18.network = "pvv";
   };
 
   nodes.ustetind = {
-    guestType = "proxmox";
+    guestType = "proxmox LXC";
     parent = config.nodes.powerpuff-cluster.id;
+
+    # TODO: the interface name is likely wrong
+    # interfaceGroups = [ [ "eth0" ] ];
+    interfaces.eth0 = {
+      network = "pvv";
+      # mac = "";
+      addresses = [
+        "129.241.210.234"
+        "2001:700:300:1900::234"
+      ];
+      gateways = [
+        values.hosts.gateway
+        values.hosts.gateway6
+      ];
+    };
   };
 
   ### PVV
 
   nodes.ntnu-veggen = mkRouter "NTNU-Veggen" {
     interfaceGroups = [ ["wan1"] ["eth1"] ];
-    connections.eth1 = mkConnection "ludvigsen" "eth1";
+    connections.eth1 = mkConnection "ludvigsen" "re0";
   };
 
   nodes.ludvigsen = mkRouter "ludvigsen" {
-    interfaceGroups = [ ["eth1"] ["eth2"] ["vpn1"] ];
-    connections.eth2 = mkConnection "pvv-switch" "eth0";
+    deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/freebsd.svg";
+
+    interfaceGroups = [ [ "re0" ] [ "em0" ] [ "vpn1" ] ];
+
+    connections.em0 = mkConnection "pvv-switch" "eth0";
 
     interfaces.vpn1.network = "site-vpn";
     interfaces.vpn1.virtual = true;
     interfaces.vpn1.icon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/openvpn.svg";
 
-    interfaces.eth1.network = "ntnu";
-    interfaces.eth2.network = "pvv";
+    interfaces.re0.network = "ntnu";
+    interfaces.em0.network = "pvv";
   };
 
   nodes.pvv-switch = mkSwitch "PVV Switch (Terminalrommet)" {
@@ -151,11 +194,15 @@ in {
         (mkConnection "wegonke" "enp4s0")
         (mkConnection "demiurgen" "eno1")
         (mkConnection "sanctuary" "ethernet_0")
-        # (mkConnection "torskas" "")
-        # (mkConnection "skrott" "")
-        # (mkConnection "principal" "")
+        (mkConnection "torskas" "eth0")
+        (mkConnection "skrott" "eth0")
+        (mkConnection "homeassistant" "eth0")
+        (mkConnection "orchid" "eth0")
+        (mkConnection "principal" "em0")
       ];
-    in builtins.listToAttrs (
+    in
+    assert (lib.length connections' <= 15);
+    builtins.listToAttrs (
       lib.zipListsWith
         (a: b: lib.nameValuePair a b)
         (lib.genList (i: "eth${toString (i + 1)}") 15)
@@ -167,19 +214,27 @@ in {
   ### Openstack
 
   nodes.stackit = mkDevice "stackit" {
-    interfaceGroups = [ ["*"] ];
+    interfaceGroups = [ [ "*" ] ];
+
+    interfaces."*".network = "ntnu";
   };
 
   nodes.ildkule = {
     guestType = "openstack";
     parent = config.nodes.stackit.id;
+
+    interfaces.ens4.network = "ntnu";
   };
   nodes.wenche = {
     guestType = "openstack";
     parent = config.nodes.stackit.id;
+
+    interfaces.ens18.network = "pvv";
   };
   nodes.bakke = {
     guestType = "openstack";
     parent = config.nodes.stackit.id;
+
+    interfaces.enp2s0.network = "pvv";
   };
 }

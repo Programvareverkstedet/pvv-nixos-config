@@ -9,6 +9,7 @@ in {
 
     interfaceGroups = [ [ "ens18" ] ];
     interfaces.ens18 = {
+      network = "pvv";
       mac = "00:0c:29:de:05:0f";
       addresses = [
         "129.241.210.192"
@@ -29,6 +30,7 @@ in {
       };
     };
   };
+
   nodes.tom = mkDevice "tom" {
     guestType = "proxmox";
     parent = config.nodes.powerpuff-cluster.id;
@@ -36,6 +38,7 @@ in {
 
     interfaceGroups = [ [ "ens18" ] ];
     interfaces.ens18 = {
+      network = "pvv";
       mac = "00:0c:29:4d:f7:56";
       addresses = [
         "129.241.210.180"
@@ -55,6 +58,7 @@ in {
       };
     };
   };
+
   nodes.hildring = mkDevice "hildring" {
     guestType = "proxmox";
     parent = config.nodes.powerpuff-cluster.id;
@@ -63,6 +67,7 @@ in {
 
     interfaceGroups = [ [ "eth0" ] ];
     interfaces.eth0 = {
+      network = "pvv";
       mac = "00:0c:29:e7:dd:79";
       addresses = [
         "129.241.210.176"
@@ -74,11 +79,28 @@ in {
       ];
     };
   };
+
   nodes.drolsum = mkDevice "drolsum" {
     guestType = "proxmox";
     parent = config.nodes.powerpuff-cluster.id;
     deviceType = "loginbox";
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/debian.svg";
+
+    # TODO: the interface name is likely wrong
+    interfaceGroups = [ [ "eth0" ] ];
+    interfaces.eth0 = {
+      network = "pvv";
+      # mac = "";
+      addresses = [
+        "129.241.210.217"
+        "2001:700:300:1900::217"
+        "2001:700:300:1900::1:217"
+      ];
+      gateways = [
+        values.hosts.gateway
+        values.hosts.gateway6
+      ];
+    };
   };
 
   nodes.microbel = mkDevice "microbel" {
@@ -99,6 +121,7 @@ in {
       ];
     };
   };
+
   nodes.innovation = mkDevice "innovation" {
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/freebsd.svg";
 
@@ -125,11 +148,45 @@ in {
       };
     };
   };
+
   nodes.principal = mkDevice "principal" {
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/freebsd.svg";
 
-    interfaceGroups = [ [ ] ];
+    # TODO: the interface name is likely wrong
+    interfaceGroups = [ [ "em0" ] ];
+    interfaces.em0 = {
+      # mac = "";
+      addresses = [
+        "129.241.210.233"
+        "2001:700:300:1900::1:233"
+      ];
+      gateways = [
+        values.hosts.gateway
+        values.hosts.gateway6
+      ];
+    };
   };
+
+  nodes.homeassistant = mkDevice "homeassistant" {
+    deviceIcon = "services.home-assistant";
+
+    hardware.info = "Raspberry Pi 4B";
+
+    # TODO: the interface name is likely wrong
+    interfaceGroups = [ [ "eth0" ] ];
+    interfaces.eth0 = {
+      # mac = "";
+      addresses = [
+        "129.241.210.229"
+        "2001:700:300:1900::4:229"
+      ];
+      gateways = [
+        values.hosts.gateway
+        values.hosts.gateway6
+      ];
+    };
+  };
+
   nodes.sleipner = mkDevice "sleipner" {
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/debian.svg";
 
@@ -146,11 +203,25 @@ in {
       ];
     };
   };
+
   nodes.isvegg = mkDevice "isvegg" {
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/debian.svg";
 
-    interfaceGroups = [ [ ] ];
+    # TODO: the interface name is likely wrong
+    interfaceGroups = [ [ "eth0" ] ];
+    interfaces.eth0 = {
+      # mac = "";
+      addresses = [
+        "129.241.210.175"
+        "2001:700:300:1900::1:a"
+      ];
+      gateways = [
+        values.hosts.gateway
+        values.hosts.gateway6
+      ];
+    };
   };
+
   nodes.ameno = mkDevice "ameno" {
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/ubuntu.svg";
 
@@ -178,14 +249,42 @@ in {
       };
     };
   };
+
   nodes.skrott = mkDevice "skrott" {
-    interfaceGroups = [ [ ] ];
+    # TODO: the interface name is likely wrong
+    interfaceGroups = [ [ "eth0" ] ];
+    interfaces.eth0 = {
+      # mac = "";
+      addresses = [
+        "129.241.210.235"
+      ];
+      gateways = [
+        values.hosts.gateway
+        values.hosts.gateway6
+      ];
+    };
   };
+
   nodes.torskas = mkDevice "torskas" {
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/arch_linux.svg";
 
-    interfaceGroups = [ [ ] ];
+    hardware.info = "Raspberry pi 4B";
+
+    # TODO: the interface name is likely wrong
+    interfaceGroups = [ [ "eth0" ] ];
+    interfaces.eth0 = {
+      # mac = "";
+      addresses = [
+        "129.241.210.241"
+        "2001:700:300:1900::241"
+      ];
+      gateways = [
+        values.hosts.gateway
+        values.hosts.gateway6
+      ];
+    };
   };
+
   nodes.wegonke = mkDevice "wegonke" {
     deviceType = "terminal";
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/debian.svg";
@@ -205,6 +304,7 @@ in {
       ];
     };
   };
+
   nodes.demiurgen = mkDevice "demiurgen" {
     deviceType = "terminal";
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/debian.svg";
@@ -232,6 +332,26 @@ in {
       addresses = [
         "129.241.210.170"
         "2001:700:300:1900::1337"
+      ];
+      gateways = [
+        values.hosts.gateway
+        values.hosts.gateway6
+      ];
+    };
+  };
+
+  nodes.orchid = mkDevice "orchid" {
+    deviceType = "terminal";
+    deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/debian.svg";
+
+    hardware.info = "Ryzen1600 Nvidia GTX 1060";
+
+    # TODO: the interface name is likely wrong
+    interfaceGroups = [ [ "eth0" ] ];
+    interfaces.eth0 = {
+      addresses = [
+        "129.241.210.210"
+        "2001:700:300:1900::210"
       ];
       gateways = [
         values.hosts.gateway
