@@ -273,11 +273,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1764806471,
-        "narHash": "sha256-Qk0SArnS83KqyS9wNt1YoTkkYKDraNrjRWKUtB9DKoM=",
-        "rev": "6707b1809330d0f912f5813963bb29f6f194ee81",
+        "lastModified": 1767043167,
+        "narHash": "sha256-wN04/SL+8tV0D2HBIgt9dpX/03U18xoJ+8PT+dcn30E=",
+        "rev": "0b43a6ee07997a6e319e92dcbf276c2736506944",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/25.11-small/nixos-25.11.896.6707b1809330/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/25.11-small/nixos-25.11.2789.0b43a6ee0799/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -286,11 +286,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1764854611,
-        "narHash": "sha256-MVzFp4ZKwdh6U1wy4fJe/GY3Hb4cvvyJbAZOhaeBQoo=",
-        "rev": "3a4b875aef660bbd148e86b92cffea2a360c3275",
+        "lastModified": 1767031366,
+        "narHash": "sha256-SJz8tVEnXusU8OzN5ixAXQgzXv8fNIzp9ztzUyobh4s=",
+        "rev": "d23fedd87fcd067b1d160323fae0d0e4f995527d",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.05pre906534.3a4b875aef66/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.05pre918279.d23fedd87fcd/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -352,11 +352,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1765978548,
-        "narHash": "sha256-VDSPpw+/Mgo+JujoW12CRlkTs9o0tX/FEL2AR5kl5+Q=",
+        "lastModified": 1767080188,
+        "narHash": "sha256-BmyPuWeSQ9XREyi0KSerWRfJndmyzHNJLysBJld/KwA=",
         "ref": "main",
-        "rev": "961f021d27f86b2aedd16290dbf85bdd9d50fd42",
-        "revCount": 532,
+        "rev": "08a216f4473e26aa2a5349e72633c0ab24e8ffbd",
+        "revCount": 534,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/nettsiden.git"
       },
