@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ config, pkgs, lib, values, ... }:
 let
   inherit
     (config.lib.topology)
@@ -8,7 +8,6 @@ let
     mkDevice
     mkConnection
     mkConnectionRev;
-  values = import ../values.nix;
 in {
   imports = [
     ./non-nixos-machines.nix
@@ -53,7 +52,7 @@ in {
 
   nodes.ntnu-pvv-router = mkRouter "NTNU PVV Gateway" {
     interfaceGroups = [ ["wan1"] ["eth1"] ];
-    connections.eth1 = mkConnection "brus-switch" "eth1";
+    connections.eth1 = mkConnection "brus-switch" "eth0";
     interfaces.eth1.network = "pvv";
   };
 
@@ -63,7 +62,7 @@ in {
     connections = let
       connections' = [
         (mkConnection "bekkalokk" "enp2s0")
-        # (mkConnection "bicep" "enp6s0f0")
+        # (mkConnection "bicep" "enp6s0f0") # NOTE: physical machine is dead at the moment
         (mkConnection "buskerud" "eth1")
         (mkConnection "knutsen" "eth1")
         (mkConnection "powerpuff-cluster" "eth1")
@@ -75,13 +74,13 @@ in {
         (mkConnection "innovation" "em0")
         (mkConnection "microbel" "eth0")
         # (mkConnection "isvegg" "")
-        # (mkConnection "ameno" "")
-        # (mkConnection "sleipner" "")
+        (mkConnection "ameno" "eth0")
+        (mkConnection "sleipner" "eno0")
       ];
     in builtins.listToAttrs (
       lib.zipListsWith
         (a: b: lib.nameValuePair a b)
-        (lib.genList (i: "eth${toString i}") 16)
+        (lib.genList (i: "eth${toString (i + 1)}") 15)
         connections'
     );
   };
@@ -133,17 +132,35 @@ in {
 
   nodes.ludvigsen = mkRouter "ludvigsen" {
     interfaceGroups = [ ["eth1"] ["eth2"] ["vpn1"] ];
-    connections.eth2 = mkConnection "pvv-switch" "eth1";
+    connections.eth2 = mkConnection "pvv-switch" "eth0";
+
     interfaces.vpn1.network = "site-vpn";
     interfaces.vpn1.virtual = true;
+    interfaces.vpn1.icon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/openvpn.svg";
+
     interfaces.eth1.network = "ntnu";
     interfaces.eth2.network = "pvv";
   };
 
   nodes.pvv-switch = mkSwitch "PVV Switch (Terminalrommet)" {
-    interfaceGroups = [ ["eth1" "eth2" "eth3"] ];
-    connections.eth2 = mkConnection "brzeczyszczykiewicz" "eno1";
-    connections.eth3 = mkConnection "georg" "eno1";
+    interfaceGroups =  [ (lib.genList (i: "eth${toString i}") 16) ];
+    connections = let
+      connections' = [
+        (mkConnection "brzeczyszczykiewicz" "eno1")
+        (mkConnection "georg" "eno1")
+        (mkConnection "wegonke" "enp4s0")
+        (mkConnection "demiurgen" "eno1")
+        (mkConnection "sanctuary" "ethernet_0")
+        # (mkConnection "torskas" "")
+        # (mkConnection "skrott" "")
+        # (mkConnection "principal" "")
+      ];
+    in builtins.listToAttrs (
+      lib.zipListsWith
+        (a: b: lib.nameValuePair a b)
+        (lib.genList (i: "eth${toString (i + 1)}") 15)
+        connections'
+    );
   };
 
 

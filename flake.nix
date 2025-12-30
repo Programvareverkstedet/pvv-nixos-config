@@ -264,6 +264,10 @@
             overlays = [ inputs.nix-topology.overlays.default ];
           };
 
+          specialArgs = {
+            values = import ./values.nix;
+          };
+
           modules = [
             ./topology
             {
