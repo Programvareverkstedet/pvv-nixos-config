@@ -1,0 +1,32 @@
+name: "Build topology graph"
+on:
+  push:
+    branches:
+      - main
+jobs:
+  evals:
+    runs-on: debian-latest
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Install sudo
+      run: apt-get update && apt-get -y install sudo
+
+    - uses: https://github.com/cachix/install-nix-action@v31
+
+    - name: Configure Nix
+      run: echo -e "show-trace = true\nmax-jobs = auto\ntrusted-users = root\nexperimental-features = nix-command flakes\nbuild-users-group =" > /etc/nix/nix.conf
+
+    - name: Build topology graph
+      run: nix build .#topology -L
+
+    - name: Upload topology graph
+      uses: https://git.pvv.ntnu.no/Projects/rsync-action@v2
+      with:
+        source: result/*.svg
+        quote-source: false
+        target: ${{ gitea.ref_name }}/topology_graph/
+        username: gitea-web
+        ssh-key: ${{ secrets.WEB_SYNC_SSH_KEY }}
+        host: pages.pvv.ntnu.no
+        known-hosts: "pages.pvv.ntnu.no ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH2QjfFB+city1SYqltkVqWACfo1j37k+oQQfj13mtgg"
