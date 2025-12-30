@@ -58,7 +58,11 @@ in {
             max-y = 90;
           }];
           marker-sets = {
-            _includes = [ (format.lib.mkInclude "${bluemap-export}/nether.hocon") ];
+            _includes = [ (format.lib.mkInclude {
+              required = true;
+              type = "file";
+              value = "${bluemap-export}/nether.hocon";
+            }) ];
           };
         };
       };
