@@ -381,7 +381,30 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "pvv-calendar-bot": "pvv-calendar-bot",
         "pvv-nettsiden": "pvv-nettsiden",
+        "roowho2": "roowho2",
         "sops-nix": "sops-nix"
+      }
+    },
+    "roowho2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay_3"
+      },
+      "locked": {
+        "lastModified": 1767669800,
+        "narHash": "sha256-b1r1VSDBTRuxYHZVV4his8KhafAqNcWlAZBLOX1UORg=",
+        "ref": "main",
+        "rev": "369d37513c85855751f406191fbd493a2461f072",
+        "revCount": 33,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/roowho2.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/roowho2.git"
       }
     },
     "rust-overlay": {
@@ -418,6 +441,27 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "rev": "d81285ba8199b00dc31847258cae3c655b605e8c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_3": {
+      "inputs": {
+        "nixpkgs": [
+          "roowho2",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1767322002,
+        "narHash": "sha256-yHKXXw2OWfIFsyTjduB4EyFwR0SYYF0hK8xI9z4NIn0=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "03c6e38661c02a27ca006a284813afdc461e9f7e",
         "type": "github"
       },
       "original": {

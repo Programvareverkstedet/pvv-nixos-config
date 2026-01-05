@@ -29,6 +29,9 @@
     minecraft-heatmap.url = "git+https://git.pvv.ntnu.no/Projects/minecraft-heatmap.git?ref=main";
     minecraft-heatmap.inputs.nixpkgs.follows = "nixpkgs";
 
+    roowho2.url = "git+https://git.pvv.ntnu.no/Projects/roowho2.git?ref=main";
+    roowho2.inputs.nixpkgs.follows = "nixpkgs";
+
     greg-ng.url = "git+https://git.pvv.ntnu.no/Grzegorz/greg-ng.git?ref=main";
     greg-ng.inputs.nixpkgs.follows = "nixpkgs";
     gergle.url = "git+https://git.pvv.ntnu.no/Grzegorz/gergle.git?ref=main";
@@ -93,6 +96,7 @@
           modules = [
             configurationPath
             sops-nix.nixosModules.sops
+            inputs.roowho2.nixosModules.default
           ] ++ extraArgs.modules or [];
 
           pkgs = import nixpkgs {
@@ -104,6 +108,7 @@
               ];
             overlays = [
               # Global overlays go here
+              inputs.roowho2.overlays.default
             ] ++ extraArgs.overlays or [ ];
           };
         })
