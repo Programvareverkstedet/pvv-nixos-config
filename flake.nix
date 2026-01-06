@@ -80,7 +80,13 @@
         nixpkgs:
         name:
         configurationPath:
-        extraArgs:
+        extraArgs@{
+          specialArgs ? { },
+          modules ? [ ],
+          overlays ? [ ],
+          enableDefaults ? true,
+          ...
+        }:
         lib.nixosSystem (lib.recursiveUpdate
         (let
           system = "x86_64-linux";
@@ -91,13 +97,14 @@
             inherit unstablePkgs inputs;
             values = import ./values.nix;
             fp = path: ./${path};
-          } // extraArgs.specialArgs or { };
+          } // specialArgs;
 
           modules = [
             configurationPath
+          ] ++ (lib.optionals enableDefaults [
             sops-nix.nixosModules.sops
             inputs.roowho2.nixosModules.default
-          ] ++ extraArgs.modules or [];
+          ]) ++ modules;
 
           pkgs = import nixpkgs {
             inherit system;
@@ -106,10 +113,10 @@
                 "nvidia-x11"
                 "nvidia-settings"
               ];
-            overlays = [
+            overlays = (lib.optionals enableDefaults [
               # Global overlays go here
               inputs.roowho2.overlays.default
-            ] ++ extraArgs.overlays or [ ];
+            ]) ++ overlays;
           };
         })
         (builtins.removeAttrs extraArgs [
