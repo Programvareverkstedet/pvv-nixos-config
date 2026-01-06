@@ -20,6 +20,9 @@
     pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git?ref=main";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
+    dibbler.url = "git+https://git.pvv.ntnu.no/Projects/dibbler.git?ref=main";
+    dibbler.inputs.nixpkgs.follows = "nixpkgs";
+
     matrix-next.url = "github:dali99/nixos-matrix-modules/v0.8.0";
     matrix-next.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -81,6 +84,7 @@
         name:
         configurationPath:
         extraArgs@{
+          system ? "x86_64-linux",
           specialArgs ? { },
           modules ? [ ],
           overlays ? [ ],
@@ -88,9 +92,7 @@
           ...
         }:
         lib.nixosSystem (lib.recursiveUpdate
-        (let
-          system = "x86_64-linux";
-        in {
+        {
           inherit system;
 
           specialArgs = {
@@ -118,11 +120,13 @@
               inputs.roowho2.overlays.default
             ]) ++ overlays;
           };
-        })
+        }
         (builtins.removeAttrs extraArgs [
+          "system"
           "modules"
           "overlays"
           "specialArgs"
+          "enableDefaults"
         ])
       );
 
@@ -207,6 +211,16 @@
           inputs.gergle.overlays.default
         ];
       };
+      skrott = stableNixosConfig "skrott" {
+        system = "aarch64-linux";
+        modules = [
+          (nixpkgs + "/nixos/modules/installer/sd-card/sd-image-aarch64.nix")
+          inputs.dibbler.nixosModules.default
+        ];
+        overlays = [
+          inputs.dibbler.overlays.default
+        ];
+      };
     }
     //
     (let
@@ -267,6 +281,11 @@
       # Machines
       lib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel)
+      //
+      # Skrott is exception
+      {
+        skrott = self.nixosConfigurations.skrott.config.system.build.sdImage;
+      }
       //
       # Nix-topology
       (let
