@@ -7,7 +7,7 @@ the links from the *Upstream documentation* section below, or in [Miscellaneous 
 
 ## Editing nix files
 
-> [!WARN]
+> [!WARNING]
 > Before editing any nix files, make sure to read [Secret management and `sops-nix`](./secret-management.md)!
 > We do not want to add any secrets in plaintext to the nix files, and certainly not commit and publish
 > them into the common public.
@@ -158,7 +158,7 @@ nix build .#
 
 ### Deploying to machines
 
-> [!WARN]
+> [!WARNING]
 > Be careful to think about state when testing changes against the machines. Sometimes, a certain change
 > can lead to irreversible changes to the data stored on the machine. An example would be a set of database
 > migrations applied when testing a newer version of a service. Unless that service also comes with downwards
