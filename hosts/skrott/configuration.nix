@@ -1,4 +1,4 @@
-{ lib, fp, ... }: {
+{ pkgs, lib, fp, ... }: {
   imports = [
     # ./hardware-configuration.nix
 
@@ -9,6 +9,7 @@
     consoleLogLevel = 0;
     enableContainers = false;
     loader.grub.enable = false;
+    kernelPackages = pkgs.linuxPackages;
   };
 
   # Now turn off a bunch of stuff lol
