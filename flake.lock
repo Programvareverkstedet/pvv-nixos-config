@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1728330715,
-        "narHash": "sha256-xRJ2nPOXb//u1jaBnDP56M7v5ldavjbtR6lfGqSvcKg=",
+        "lastModified": 1764011051,
+        "narHash": "sha256-M7SZyPZiqZUR/EiiBJnmyUbOi5oE/03tCeFrTiUZchI=",
         "owner": "numtide",
         "repo": "devshell",
-        "rev": "dd6b80932022cea34a019e2bb32f6fa9e494dfef",
+        "rev": "17ed8d9744ebe70424659b0ef74ad6d41fc87071",
         "type": "github"
       },
       "original": {
@@ -29,11 +29,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767688395,
-        "narHash": "sha256-vvAr3XPLmpG8cP1F0csbxfVNipiWD5Jhtg2lE42H+AQ=",
+        "lastModified": 1767906875,
+        "narHash": "sha256-S88Qh7TJwuTkMQqAdXmF3JMkuV2e5GHTdom02QrtdIs=",
         "ref": "main",
-        "rev": "1733843b772dc0055f0182155c9a105bccd7a858",
-        "revCount": 216,
+        "rev": "b86962ef0e15d1a7de445172d4acea454b119a91",
+        "revCount": 220,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/dibbler.git"
       },
@@ -67,11 +67,11 @@
     "flake-compat": {
       "flake": false,
       "locked": {
-        "lastModified": 1696426674,
-        "narHash": "sha256-kvjfFW7WAETZlt09AgDn1MrtKzP7t90Vf7vypd3OL1U=",
+        "lastModified": 1761588595,
+        "narHash": "sha256-XKUZz9zewJNUj46b4AJdiRZJAvSZ0Dqj2BNfXvFlJC4=",
         "owner": "edolstra",
         "repo": "flake-compat",
-        "rev": "0f9255e01c2351cc7d116c072cb317785dd33b33",
+        "rev": "f387cd2afec9419c8ee37694406ca490c3f34ee5",
         "type": "github"
       },
       "original": {
@@ -102,11 +102,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1726560853,
-        "narHash": "sha256-X6rJYSESBVr3hBoH0WbKE5KvhPU5bloyZ2L4K60/fPQ=",
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "c1dfcf08411b08f6b8615f7d8971a2bfa81d5e8a",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
         "type": "github"
       },
       "original": {
@@ -122,11 +122,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764868579,
-        "narHash": "sha256-rfTUOIc0wnC4+19gLVfPbHfXx/ilfuUix6bWY+yaM2U=",
+        "lastModified": 1767906545,
+        "narHash": "sha256-LOf08pcjEQFLs3dLPuep5d1bAXWOFcdfxuk3YMb5KWw=",
         "ref": "main",
-        "rev": "9c923d1d50daa6a3b28c3214ad2300bfaf6c8fcd",
-        "revCount": 22,
+        "rev": "e55cbe0ce0b20fc5952ed491fa8a553c8afb1bdd",
+        "revCount": 23,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
       },
@@ -166,11 +166,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1765760377,
-        "narHash": "sha256-2+lgzUjVas9hPSeWn52MwuX+iidMN4RkzkHo4vrGmR8=",
+        "lastModified": 1767906494,
+        "narHash": "sha256-Dd6gtdZfRMAD6JhdX0GdJwIHVaBikePSpQXhIdwLlWI=",
         "ref": "main",
-        "rev": "f340dc5b9c9f3b75b7aca41f56f8869b9e28cf8c",
-        "revCount": 58,
+        "rev": "7258822e2e90fea2ea00b13b5542f63699e33a9e",
+        "revCount": 61,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       },
@@ -230,11 +230,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1766407405,
-        "narHash": "sha256-UEJ8F8/oG70biWRrGbL5/aB7OXzzvnYs+jxkR07UHvA=",
+        "lastModified": 1767906976,
+        "narHash": "sha256-igCg8I83eO+noF00raXVJqDxzLS2SrZN8fK5bnvO+xI=",
         "ref": "main",
-        "rev": "e719840f72ca1b0cd169562a3a0de69899821de0",
-        "revCount": 16,
+        "rev": "626bc9b6bae6a997b347cdbe84080240884f2955",
+        "revCount": 17,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-heatmap.git"
       },
@@ -251,11 +251,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1765904683,
-        "narHash": "sha256-uXM56y5n5GWpCiCNdKlTcCAy2IntgDB21c4gBDU30io=",
+        "lastModified": 1767906653,
+        "narHash": "sha256-KMiVvnlkRpW4/MVloLURfjv3bvjcae0X9skext2jKVE=",
         "ref": "main",
-        "rev": "6fae27b1659efb6774cf08a4e36ed29ab0e24105",
-        "revCount": 26,
+        "rev": "584fd6379c905a6370484c5b5ba0623b4fcb778f",
+        "revCount": 27,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
       },
@@ -272,11 +272,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1743881366,
-        "narHash": "sha256-ScGA2IHPk9ugf9bqEZnp+YB/OJgrkZblnG/XLEKvJAo=",
+        "lastModified": 1767906352,
+        "narHash": "sha256-wYsH9MMAPFG3XTL+3DwI39XMG0F2fTmn/5lt265a3Es=",
         "ref": "main",
-        "rev": "db2e4becf1b11e5dfd33de12a90a7d089fcf68ec",
-        "revCount": 11,
+        "rev": "d054c5d064b8ed6d53a0adb0cf6c0a72febe212e",
+        "revCount": 13,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Drift/nix-gitea-themes.git"
       },
@@ -296,11 +296,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1765969653,
-        "narHash": "sha256-qVpQxyvdByeDfb+d+jhbyNna2Ie+w85iHpt4Qu0rv/E=",
+        "lastModified": 1767888340,
+        "narHash": "sha256-CccRg4d8TpOUGz2HefBZLNYtGrcAyCMa7GVJHcUd8W4=",
         "owner": "oddlama",
         "repo": "nix-topology",
-        "rev": "0ed73e5a1b65eb8ed388d070ebe8dedb9182f466",
+        "rev": "416ff06f72e810c554761e3f5dbf33b4f331e73e",
         "type": "github"
       },
       "original": {
@@ -312,11 +312,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1767043167,
-        "narHash": "sha256-wN04/SL+8tV0D2HBIgt9dpX/03U18xoJ+8PT+dcn30E=",
-        "rev": "0b43a6ee07997a6e319e92dcbf276c2736506944",
+        "lastModified": 1767871818,
+        "narHash": "sha256-SOIHRu1sk+dW5f5DNTN5xYoeuZCyGIlKqxZ8RRj4lCM=",
+        "rev": "6eb8dee465373971d4495d92e23c2f0979384f76",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/25.11-small/nixos-25.11.2789.0b43a6ee0799/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/25.11-small/nixos-25.11.3412.6eb8dee46537/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -325,11 +325,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1767031366,
-        "narHash": "sha256-SJz8tVEnXusU8OzN5ixAXQgzXv8fNIzp9ztzUyobh4s=",
-        "rev": "d23fedd87fcd067b1d160323fae0d0e4f995527d",
+        "lastModified": 1767870855,
+        "narHash": "sha256-SmrGFE9SdHFz60YbSCF7TtZ+GV8nIiYiI8fTEDyUouc=",
+        "rev": "719f19e8e447a52152aee8061c7a2951f9254f14",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.05pre918279.d23fedd87fcd/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.05pre924399.719f19e8e447/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -343,18 +343,14 @@
         "nixpkgs": [
           "nix-topology",
           "nixpkgs"
-        ],
-        "nixpkgs-stable": [
-          "nix-topology",
-          "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1730797577,
-        "narHash": "sha256-SrID5yVpyUfknUTGWgYkTyvdr9J1LxUym4om3SVGPkg=",
+        "lastModified": 1765911976,
+        "narHash": "sha256-t3T/xm8zstHRLx+pIHxVpQTiySbKqcQbK+r+01XVKc0=",
         "owner": "cachix",
         "repo": "pre-commit-hooks.nix",
-        "rev": "1864030ed24a2b8b4e4d386a5eeaf0c5369e50a9",
+        "rev": "b68b780b69702a090c8bb1b973bab13756cc7a27",
         "type": "github"
       },
       "original": {
@@ -391,11 +387,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767080188,
-        "narHash": "sha256-BmyPuWeSQ9XREyi0KSerWRfJndmyzHNJLysBJld/KwA=",
+        "lastModified": 1767906725,
+        "narHash": "sha256-AZpNzcnbl855mqemSrWbYl2mEgngC2lmiI6yiszEgQw=",
         "ref": "main",
-        "rev": "08a216f4473e26aa2a5349e72633c0ab24e8ffbd",
-        "revCount": 534,
+        "rev": "65118b6abebd339e071c38f00a23b92dbbb72b38",
+        "revCount": 537,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/nettsiden.git"
       },
@@ -433,11 +429,11 @@
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1767669800,
-        "narHash": "sha256-b1r1VSDBTRuxYHZVV4his8KhafAqNcWlAZBLOX1UORg=",
+        "lastModified": 1767903580,
+        "narHash": "sha256-UtulIUyFv6HcU5BUcQONtyG29XPTOBMsJ4N0nJGNOUk=",
         "ref": "main",
-        "rev": "369d37513c85855751f406191fbd493a2461f072",
-        "revCount": 33,
+        "rev": "dd23346bda46629788b08aba2e8af3b3f13335af",
+        "revCount": 38,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/roowho2.git"
       },
@@ -455,11 +451,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1765680428,
-        "narHash": "sha256-fyPmRof9SZeI14ChPk5rVPOm7ISiiGkwGCunkhM+eUg=",
+        "lastModified": 1767840362,
+        "narHash": "sha256-ZtsFqUhilubohNZ1TgpQIFsi4biZTwRH9rjZsDRDik8=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "eb3898d8ef143d4bf0f7f2229105fc51c7731b2f",
+        "rev": "d159ea1fc321c60f88a616ac28bab660092a227d",
         "type": "github"
       },
       "original": {
@@ -517,11 +513,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1766894905,
-        "narHash": "sha256-pn8AxxfajqyR/Dmr1wnZYdUXHgM3u6z9x0Z1Ijmz2UQ=",
+        "lastModified": 1767826491,
+        "narHash": "sha256-WSBENPotD2MIhZwolL6GC9npqgaS5fkM7j07V2i/Ur8=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "61b39c7b657081c2adc91b75dd3ad8a91d6f07a7",
+        "rev": "ea3adcb6d2a000d9a69d0e23cad1f2cacb3a9fbe",
         "type": "github"
       },
       "original": {
