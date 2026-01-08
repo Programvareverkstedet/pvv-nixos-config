@@ -150,7 +150,7 @@
           inputs.pvv-calendar-bot.overlays.default
           inputs.minecraft-heatmap.overlays.default
           (final: prev: {
-            inherit (self.packages.${prev.system}) out-of-your-element;
+            inherit (self.packages.${prev.stdenv.hostPlatform.system}) out-of-your-element;
           })
         ];
       };
