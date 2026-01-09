@@ -45,11 +45,11 @@ in {
       ];
       extraConfig = ''
         # pvv
-        allow ${values.ipv4-space}
-        allow ${values.ipv6-space}
+        allow ${values.ipv4-space};
+        allow ${values.ipv6-space};
         # ntnu
-        allow ${values.ntnu.ipv4-space}
-        allow ${values.ntnu.ipv6-space}
+        allow ${values.ntnu.ipv4-space};
+        allow ${values.ntnu.ipv6-space};
         deny all;
       '';
 
@@ -72,11 +72,11 @@ in {
       ];
       extraConfig = ''
         # pvv
-        allow ${values.ipv4-space}
-        allow ${values.ipv6-space}
+        allow ${values.ipv4-space};
+        allow ${values.ipv6-space};
         # ntnu
-        allow ${values.ntnu.ipv4-space}
-        allow ${values.ntnu.ipv6-space}
+        allow ${values.ntnu.ipv4-space};
+        allow ${values.ntnu.ipv6-space};
         deny all;
       '';
 
@@ -95,11 +95,11 @@ in {
       ];
       extraConfig = ''
         # pvv
-        allow ${values.ipv4-space}
-        allow ${values.ipv6-space}
+        allow ${values.ipv4-space};
+        allow ${values.ipv6-space};
         # ntnu
-        allow ${values.ntnu.ipv4-space}
-        allow ${values.ntnu.ipv6-space}
+        allow ${values.ntnu.ipv4-space};
+        allow ${values.ntnu.ipv6-space};
         deny all;
       '';
 
