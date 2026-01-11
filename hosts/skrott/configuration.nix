@@ -55,6 +55,7 @@
     limitScreenHeight = 42;
 
     settings = {
+      general.quit_allowed = false;
       database.url = config.sops.secrets."dibbler/postgresql/url".path;
     };
   };
