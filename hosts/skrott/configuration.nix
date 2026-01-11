@@ -1,4 +1,4 @@
-{ pkgs, lib, fp, ... }: {
+{ config, pkgs, lib, fp, ... }: {
   imports = [
     # ./hardware-configuration.nix
 
@@ -23,10 +23,17 @@
 
   system.stateVersion = "25.05";
 
-  # sops.defaultSopsFile = fp /secrets/skrott/skrott.yaml;
-  # sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  # sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-  # sops.age.generateKey = true;
+  sops.defaultSopsFile = fp /secrets/skrott/skrott.yaml;
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+  sops.age.generateKey = true;
+
+  sops.secrets = {
+    "dibbler/postgresql/url" = {
+      owner = "dibbler";
+      group = "dibbler";
+    };
+  };
 
   # zramSwap.enable = true;
 
@@ -46,6 +53,10 @@
     kioskMode = true;
     limitScreenWidth = 80;
     limitScreenHeight = 42;
+
+    settings = {
+      database.url = config.sops.secrets."dibbler/postgresql/url".path;
+    };
   };
 
   # https://github.com/NixOS/nixpkgs/issues/84105

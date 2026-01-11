@@ -124,3 +124,14 @@ creation_rules:
       - *user_pederbs_bjarte
       pgp:
       - *user_oysteikt
+
+  - path_regex: secrets/skrott/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *user_danio
+      - *user_felixalb
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
+      pgp:
+      - *user_oysteikt
