@@ -387,11 +387,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767906725,
-        "narHash": "sha256-AZpNzcnbl855mqemSrWbYl2mEgngC2lmiI6yiszEgQw=",
+        "lastModified": 1768301954,
+        "narHash": "sha256-qRmrsx0k6Hc0BLM0I/f3YnTg19Sofjk2l1Kp/0Xfhc8=",
         "ref": "main",
-        "rev": "65118b6abebd339e071c38f00a23b92dbbb72b38",
-        "revCount": 537,
+        "rev": "c997ad4b47993dfd2368c3bbd07a0f71d55e3f5a",
+        "revCount": 569,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/nettsiden.git"
       },
