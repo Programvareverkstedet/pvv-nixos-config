@@ -36,6 +36,12 @@
     "description": "Report an oopsie"
   },
   {
+    "name": "developer experience",
+    "exclusive": false,
+    "color": "#eb6420",
+    "description": "Think about the developers"
+  },
+  {
     "name": "disputed",
     "exclusive": false,
     "color": "#5319e7",
