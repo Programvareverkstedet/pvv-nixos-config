@@ -9,6 +9,8 @@ in
     enable = true;
     flake = "git+https://git.pvv.ntnu.no/Drift/pvv-nixos-config.git";
     flags = [
+      "-L"
+
       "--refresh"
       "--no-write-lock-file"
       # --update-input is deprecated since nix 2.22, and removed in lix 2.90
