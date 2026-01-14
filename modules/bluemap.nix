@@ -13,11 +13,32 @@ let
         (format.generate "${name}.conf" value))
       cfg.storage);
 
-  mapsFolder = pkgs.linkFarm "maps"
-    (lib.attrsets.mapAttrs' (name: value:
-      lib.nameValuePair "${name}.conf"
-        (format.generate "${name}.conf" value.settings))
-      cfg.maps);
+  generateMapConfigWithMarkerData = name: { extraHoconMarkersFile, settings, ... }:
+    assert (extraHoconMarkersFile == null) != ((settings.marker-sets or { }) == { });
+    lib.pipe settings (
+      (lib.optionals (extraHoconMarkersFile != null) [
+        (settings: lib.recursiveUpdate settings {
+          marker-placeholder = "###ASDF###";
+        })
+      ]) ++ [
+        (format.generate "${name}.conf")
+      ] ++ (lib.optionals (extraHoconMarkersFile != null) [
+        (hoconFile: pkgs.runCommand "${name}-patched.conf" { } ''
+          mkdir -p "$(dirname "$out")"
+          cp '${hoconFile}' "$out"
+          substituteInPlace "$out" \
+            --replace-fail '"marker-placeholder" = "###ASDF###"' "\"marker-sets\" = $(cat '${extraHoconMarkersFile}')"
+        '')
+      ])
+    );
+
+  mapsFolder = lib.pipe cfg.maps [
+    (lib.attrsets.mapAttrs' (name: value: {
+      name = "${name}.conf";
+      value = generateMapConfigWithMarkerData name value;
+    }))
+    (pkgs.linkFarm "maps")
+  ];
 
   webappConfigFolder = pkgs.linkFarm "bluemap-config" {
     "maps" = mapsFolder;
@@ -30,7 +51,7 @@ let
 
   renderConfigFolder = name: value: pkgs.linkFarm "bluemap-${name}-config" {
     "maps" = pkgs.linkFarm "maps" {
-      "${name}.conf" = (format.generate "${name}.conf" value.settings);
+      "${name}.conf" = generateMapConfigWithMarkerData name value;
     };
     "storages" = storageFolder;
     "core.conf" = coreConfig;
@@ -160,6 +181,18 @@ in {
             defaultText = lib.literalExpression "config.services.bluemap.packs";
             description = "A set of resourcepacks, datapacks, and mods to extract resources from, loaded in alphabetical order.";
           };
+
+          extraHoconMarkersFile = mkOption {
+            type = lib.types.nullOr lib.types.path;
+            default = null;
+            description = ''
+              Path to a hocon file containing marker data.
+              The content of this file will be injected into the map config file in a separate derivation.
+
+              DO NOT SEND THIS TO NIXPKGS, IT'S AN UGLY HACK.
+            '';
+          };
+
           settings = mkOption {
             type = (lib.types.submodule {
               freeformType = format.type;

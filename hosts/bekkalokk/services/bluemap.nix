@@ -21,6 +21,7 @@ in {
       inherit (inputs.minecraft-kartverket.packages.${pkgs.stdenv.hostPlatform.system}) bluemap-export;
     in {
       "verden" = {
+        extraHoconMarkersFile = "${bluemap-export}/overworld.hocon";
         settings = {
           world = vanillaSurvival;
           dimension = "minecraft:overworld";
@@ -32,12 +33,10 @@ in {
           };
           ambient-light = 0.1;
           cave-detection-ocean-floor = -5;
-          marker-sets = {
-            _includes = [ (format.lib.mkInclude "${bluemap-export}/overworld.hocon") ];
-          };
         };
       };
       "underverden" = {
+        extraHoconMarkersFile = "${bluemap-export}/nether.hocon";
         settings = {
           world = vanillaSurvival;
           dimension = "minecraft:the_nether";
@@ -57,12 +56,10 @@ in {
           render-mask = [{
             max-y = 90;
           }];
-          marker-sets = {
-            _includes = [ (format.lib.mkInclude "${bluemap-export}/nether.hocon") ];
-          };
         };
       };
       "enden" = {
+        extraHoconMarkersFile = "${bluemap-export}/the-end.hocon";
         settings = {
           world = vanillaSurvival;
           dimension = "minecraft:the_end";
@@ -78,9 +75,6 @@ in {
           ambient-light = 0.6;
           remove-caves-below-y = -10000;
           cave-detection-ocean-floor = -5;
-          marker-sets = {
-            _includes = [ (format.lib.mkInclude "${bluemap-export}/the-end.hocon") ];
-          };
         };
       };
     };
