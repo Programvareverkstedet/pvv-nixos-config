@@ -4,6 +4,8 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       (fp /base)
+
+      ./services/nfs-mounts.nix
     ];
 
   # sops.defaultSopsFile = fp /secrets/shark/shark.yaml;
