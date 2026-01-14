@@ -173,6 +173,7 @@
       #ildkule-unstable = unstableNixosConfig "ildkule" { };
       shark = stableNixosConfig "shark" { };
       wenche = stableNixosConfig "wenche" { };
+      temmie = stableNixosConfig "temmie" { };
 
       kommode = stableNixosConfig "kommode" {
         overlays = [
