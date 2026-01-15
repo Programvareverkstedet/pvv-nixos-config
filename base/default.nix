@@ -53,6 +53,7 @@
     gnupg
     htop
     nano
+    net-tools
     ripgrep
     rsync
     screen
