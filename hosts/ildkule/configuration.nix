@@ -7,6 +7,7 @@
 
       ./services/monitoring
       ./services/nginx
+      ./services/journald-remote.nix
     ];
 
   sops.defaultSopsFile = fp /secrets/ildkule/ildkule.yaml;

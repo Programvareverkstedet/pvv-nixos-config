@@ -20,6 +20,7 @@
     ./services/dbus.nix
     ./services/fwupd.nix
     ./services/irqbalance.nix
+    ./services/journald-upload.nix
     ./services/logrotate.nix
     ./services/nginx.nix
     ./services/openssh.nix
