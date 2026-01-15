@@ -6,7 +6,8 @@ in
   services.journald.upload = {
     enable = lib.mkDefault true;
     settings.Upload = {
-      URL = "https://journald.pvv.ntnu.no:${toString config.services.journald.remote.port}";
+      # URL = "https://journald.pvv.ntnu.no:${toString config.services.journald.remote.port}";
+      URL = "https://${values.hosts.ildkule.ipv4}:${toString config.services.journald.remote.port}";
       ServerKeyFile = "-";
       ServerCertificateFile = "-";
       TrustedCertificateFile = "-";
@@ -16,10 +17,8 @@ in
   systemd.services."systemd-journal-upload".serviceConfig = lib.mkIf cfg.enable {
     IPAddressDeny = "any";
     IPAddressAllow = [
-      "127.0.0.1"
-      "::1"
-      values.ipv4-space
-      values.ipv6-space
+      values.hosts.ildkule.ipv4
+      values.hosts.ildkule.ipv6
     ];
   };
 }
