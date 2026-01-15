@@ -31,22 +31,28 @@ in
     };
   };
 
+  systemd.sockets."systemd-journal-remote" = {
+    socketConfig = {
+      IPAddressDeny = "any";
+      IPAddressAllow = [
+        "127.0.0.1"
+        "::1"
+        values.ipv4-space
+        values.ipv6-space
+      ];
+    };
+  };
+
   networking.firewall.allowedTCPPorts = [ cfg.port ];
 
-  systemd.sockets."systemd-journal-remote".socketConfig = {
-    IPAddressDeny = "any";
-    IPAddressAllow = [
-      "127.0.0.1"
-      "::1"
-      values.ipv4-space
-      values.ipv6-space
-    ];
-
-    LoadCredential = let
-      inherit (config.security.acme.certs.${domainName}) directory;
-    in [
-      "key.pem:${directory}/key.pem"
-      "cert.pem:${directory}/cert.pem"
-    ];
+  systemd.services."systemd-journal-remote" = {
+    socketConfig = {
+      LoadCredential = let
+        inherit (config.security.acme.certs.${domainName}) directory;
+      in [
+        "key.pem:${directory}/key.pem"
+        "cert.pem:${directory}/cert.pem"
+      ];
+    };
   };
 }
