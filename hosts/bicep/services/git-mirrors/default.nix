@@ -66,6 +66,7 @@ in
       package = pkgs.callPackage (fp /packages/cgit.nix) { };
       group = "gickup";
       scanPath = "${cfg.dataDir}/linktree";
+      gitHttpBackend.checkExportOkFiles = false;
       settings = {
         enable-commit-graph = true;
         enable-follow-links = true;
