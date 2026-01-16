@@ -1,26 +1,5 @@
 {
   "nodes": {
-    "devshell": {
-      "inputs": {
-        "nixpkgs": [
-          "nix-topology",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1764011051,
-        "narHash": "sha256-M7SZyPZiqZUR/EiiBJnmyUbOi5oE/03tCeFrTiUZchI=",
-        "owner": "numtide",
-        "repo": "devshell",
-        "rev": "17ed8d9744ebe70424659b0ef74ad6d41fc87071",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "devshell",
-        "type": "github"
-      }
-    },
     "dibbler": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -29,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767906875,
-        "narHash": "sha256-S88Qh7TJwuTkMQqAdXmF3JMkuV2e5GHTdom02QrtdIs=",
+        "lastModified": 1768138611,
+        "narHash": "sha256-KfZX6wpuwE2IRKLjh0DrEviE4f6kqLJWwKIE5QJSqa4=",
         "ref": "main",
-        "rev": "b86962ef0e15d1a7de445172d4acea454b119a91",
-        "revCount": 220,
+        "rev": "cb385097dcda5fb9772f903688d078b30a66ccd4",
+        "revCount": 221,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/dibbler.git"
       },
@@ -64,19 +43,21 @@
         "type": "github"
       }
     },
-    "flake-compat": {
-      "flake": false,
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib"
+      },
       "locked": {
-        "lastModified": 1761588595,
-        "narHash": "sha256-XKUZz9zewJNUj46b4AJdiRZJAvSZ0Dqj2BNfXvFlJC4=",
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "rev": "f387cd2afec9419c8ee37694406ca490c3f34ee5",
+        "lastModified": 1765835352,
+        "narHash": "sha256-XswHlK/Qtjasvhd1nOa1e8MgZ8GS//jBoTqWtrS1Giw=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "a34fae9c08a15ad73f295041fec82323541400a9",
         "type": "github"
       },
       "original": {
-        "owner": "edolstra",
-        "repo": "flake-compat",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
         "type": "github"
       }
     },
@@ -95,24 +76,6 @@
       "original": {
         "id": "flake-utils",
         "type": "indirect"
-      }
-    },
-    "flake-utils_2": {
-      "inputs": {
-        "systems": "systems_2"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
       }
     },
     "gergle": {
@@ -134,28 +97,6 @@
         "ref": "main",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
-      }
-    },
-    "gitignore": {
-      "inputs": {
-        "nixpkgs": [
-          "nix-topology",
-          "pre-commit-hooks",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1709087332,
-        "narHash": "sha256-HG2cCnktfHsKV0s4XW83gU3F57gaTljL9KNSuG6bnQs=",
-        "owner": "hercules-ci",
-        "repo": "gitignore.nix",
-        "rev": "637db329424fd7e46cf4185293b9cc8c88c95394",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "gitignore.nix",
-        "type": "github"
       }
     },
     "greg-ng": {
@@ -251,11 +192,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767906653,
-        "narHash": "sha256-KMiVvnlkRpW4/MVloLURfjv3bvjcae0X9skext2jKVE=",
+        "lastModified": 1768403146,
+        "narHash": "sha256-0uBkxuxlYdecwESmmITf8fi7G5IGpqX6LDNF/SMtmK8=",
         "ref": "main",
-        "rev": "584fd6379c905a6370484c5b5ba0623b4fcb778f",
-        "revCount": 27,
+        "rev": "1ca8495fa2b088c7220147ffabc80b4a611c2dcc",
+        "revCount": 29,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
       },
@@ -288,19 +229,17 @@
     },
     "nix-topology": {
       "inputs": {
-        "devshell": "devshell",
-        "flake-utils": "flake-utils_2",
+        "flake-parts": "flake-parts",
         "nixpkgs": [
           "nixpkgs"
-        ],
-        "pre-commit-hooks": "pre-commit-hooks"
+        ]
       },
       "locked": {
-        "lastModified": 1767888340,
-        "narHash": "sha256-CccRg4d8TpOUGz2HefBZLNYtGrcAyCMa7GVJHcUd8W4=",
+        "lastModified": 1768068512,
+        "narHash": "sha256-pH5wkcNOiXy4MBjDTe6A1gml+7m+ULC3lYMBPMqdS1w=",
         "owner": "oddlama",
         "repo": "nix-topology",
-        "rev": "416ff06f72e810c554761e3f5dbf33b4f331e73e",
+        "rev": "4367a2093c5ff74fc478466aebf41d47ce0cacb4",
         "type": "github"
       },
       "original": {
@@ -312,51 +251,43 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1767871818,
-        "narHash": "sha256-SOIHRu1sk+dW5f5DNTN5xYoeuZCyGIlKqxZ8RRj4lCM=",
-        "rev": "6eb8dee465373971d4495d92e23c2f0979384f76",
+        "lastModified": 1768455256,
+        "narHash": "sha256-SICycDVtn3ZeGlXftXZhzHvBE13OOGNfKY7M1wPN7Cg=",
+        "rev": "0ac615ad4da024ace7fa5e0be5b01a3414c2295f",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/25.11-small/nixos-25.11.3412.6eb8dee46537/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/25.11-small/nixos-25.11.4038.0ac615ad4da0/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
         "url": "https://nixos.org/channels/nixos-25.11-small/nixexprs.tar.xz"
       }
     },
+    "nixpkgs-lib": {
+      "locked": {
+        "lastModified": 1765674936,
+        "narHash": "sha256-k00uTP4JNfmejrCLJOwdObYC9jHRrr/5M/a/8L2EIdo=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "2075416fcb47225d9b68ac469a5c4801a9c4dd85",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1767870855,
-        "narHash": "sha256-SmrGFE9SdHFz60YbSCF7TtZ+GV8nIiYiI8fTEDyUouc=",
-        "rev": "719f19e8e447a52152aee8061c7a2951f9254f14",
+        "lastModified": 1768467226,
+        "narHash": "sha256-XPA6XxeUhpguND9N2iMoafbWxC4hlX/XyJT/nt0tJkk=",
+        "rev": "0827ca4b685736d2de7f7b1f80f3be996514ef59",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.05pre924399.719f19e8e447/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.05pre928109.0827ca4b6857/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
         "url": "https://nixos.org/channels/nixos-unstable-small/nixexprs.tar.xz"
-      }
-    },
-    "pre-commit-hooks": {
-      "inputs": {
-        "flake-compat": "flake-compat",
-        "gitignore": "gitignore",
-        "nixpkgs": [
-          "nix-topology",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1765911976,
-        "narHash": "sha256-t3T/xm8zstHRLx+pIHxVpQTiySbKqcQbK+r+01XVKc0=",
-        "owner": "cachix",
-        "repo": "pre-commit-hooks.nix",
-        "rev": "b68b780b69702a090c8bb1b973bab13756cc7a27",
-        "type": "github"
-      },
-      "original": {
-        "owner": "cachix",
-        "repo": "pre-commit-hooks.nix",
-        "type": "github"
       }
     },
     "pvv-calendar-bot": {
@@ -387,11 +318,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1768301954,
-        "narHash": "sha256-qRmrsx0k6Hc0BLM0I/f3YnTg19Sofjk2l1Kp/0Xfhc8=",
+        "lastModified": 1768302565,
+        "narHash": "sha256-VoH5i72/8EP53ApaNKMZD2OgkEn79nPxuxhaP9dPfLA=",
         "ref": "main",
-        "rev": "c997ad4b47993dfd2368c3bbd07a0f71d55e3f5a",
-        "revCount": 569,
+        "rev": "f3c13b1aee073a83238ef13aceccd7dfce13d1fa",
+        "revCount": 570,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/nettsiden.git"
       },
@@ -429,11 +360,11 @@
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1767903580,
-        "narHash": "sha256-UtulIUyFv6HcU5BUcQONtyG29XPTOBMsJ4N0nJGNOUk=",
+        "lastModified": 1768140181,
+        "narHash": "sha256-HfZzup5/jlu8X5vMUglTovVTSwhHGHwwV1YOFIL/ksA=",
         "ref": "main",
-        "rev": "dd23346bda46629788b08aba2e8af3b3f13335af",
-        "revCount": 38,
+        "rev": "834463ed64773939798589ee6fd4adfe3a97dddd",
+        "revCount": 43,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/roowho2.git"
       },
@@ -513,11 +444,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767826491,
-        "narHash": "sha256-WSBENPotD2MIhZwolL6GC9npqgaS5fkM7j07V2i/Ur8=",
+        "lastModified": 1768481291,
+        "narHash": "sha256-NjKtkJraCZEnLHAJxLTI+BfdU//9coAz9p5TqveZwPU=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "ea3adcb6d2a000d9a69d0e23cad1f2cacb3a9fbe",
+        "rev": "e085e303dfcce21adcb5fec535d65aacb066f101",
         "type": "github"
       },
       "original": {
@@ -528,21 +459,6 @@
       }
     },
     "systems": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems_2": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
