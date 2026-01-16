@@ -16,7 +16,7 @@ in
 
     # TODO: update symlink for one repo at a time (e.g. gickup-linktree@<instance>.service)
     systemd.services."gickup-linktree" = {
-      after = map ({ slug, ... }: "gickup@${slug}.service") (lib.attrValues cfg.instances)
+      after = map ({ slug, ... }: "gickup@${slug}.service") (lib.attrValues cfg.instances);
       wantedBy = [ "gickup.target" ];
       serviceConfig = {
         Type = "oneshot";
