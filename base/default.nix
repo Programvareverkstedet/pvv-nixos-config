@@ -24,6 +24,7 @@
     ./services/logrotate.nix
     ./services/nginx.nix
     ./services/openssh.nix
+    ./services/polkit.nix
     ./services/postfix.nix
     ./services/prometheus-node-exporter.nix
     ./services/prometheus-systemd-exporter.nix
