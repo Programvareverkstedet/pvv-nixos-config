@@ -16,6 +16,7 @@
     ./services/webmail
     ./services/website
     ./services/well-known
+    ./services/qotd
   ];
 
   sops.defaultSopsFile = fp /secrets/bekkalokk/bekkalokk.yaml;

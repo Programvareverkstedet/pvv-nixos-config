@@ -44,6 +44,9 @@
 
     minecraft-kartverket.url = "git+https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git?ref=main";
     minecraft-kartverket.inputs.nixpkgs.follows = "nixpkgs";
+
+    qotd.url = "git+https://git.pvv.ntnu.no/Projects/qotd.git?ref=main";
+    qotd.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ... }@inputs:
@@ -163,10 +166,12 @@
             bluemap = final.callPackage ./packages/bluemap.nix { };
           })
           inputs.pvv-nettsiden.overlays.default
+          inputs.qotd.overlays.default
         ];
         modules = [
           inputs.pvv-nettsiden.nixosModules.default
           self.nixosModules.bluemap
+          inputs.qotd.nixosModules.default
         ];
       };
       ildkule = stableNixosConfig "ildkule" { };

@@ -332,6 +332,27 @@
         "url": "https://git.pvv.ntnu.no/Projects/nettsiden.git"
       }
     },
+    "qotd": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1768684204,
+        "narHash": "sha256-TErBiXxTRPUtZ/Mw8a5p+KCeGCFXa0o8fzwGoo75//Y=",
+        "ref": "main",
+        "rev": "a86f361bb8cfac3845b96d49fcbb2faea669844f",
+        "revCount": 11,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/qotd.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/qotd.git"
+      }
+    },
     "root": {
       "inputs": {
         "dibbler": "dibbler",
@@ -348,6 +369,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "pvv-calendar-bot": "pvv-calendar-bot",
         "pvv-nettsiden": "pvv-nettsiden",
+        "qotd": "qotd",
         "roowho2": "roowho2",
         "sops-nix": "sops-nix"
       }
