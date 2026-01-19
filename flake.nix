@@ -179,6 +179,7 @@
       shark = stableNixosConfig "shark" { };
       wenche = stableNixosConfig "wenche" { };
       temmie = stableNixosConfig "temmie" { };
+      gluttony = stableNixosConfig "gluttony" { };
 
       kommode = stableNixosConfig "kommode" {
         overlays = [
