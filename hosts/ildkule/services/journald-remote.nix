@@ -46,7 +46,7 @@ in
   networking.firewall.allowedTCPPorts = [ cfg.port ];
 
   systemd.services."systemd-journal-remote" = {
-    socketConfig = {
+    serviceConfig = {
       LoadCredential = let
         inherit (config.security.acme.certs.${domainName}) directory;
       in [
