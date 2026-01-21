@@ -8,6 +8,7 @@
     ./element.nix
     ./coturn.nix
     ./mjolnir.nix
+    ./well-known.nix
 
     # ./discord.nix
     ./out-of-your-element.nix

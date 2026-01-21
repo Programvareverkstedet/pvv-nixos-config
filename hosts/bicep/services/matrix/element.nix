@@ -2,6 +2,13 @@
 let
   synapse-cfg = config.services.matrix-synapse-next;
 in {
+  services.pvv-matrix-well-known.client = {
+    "m.homeserver" = {
+      base_url = "https://matrix.pvv.ntnu.no";
+      server_name = "pvv.ntnu.no";
+    };
+  };
+
   services.nginx.virtualHosts."chat.pvv.ntnu.no" = {
     enableACME = true;
     forceSSL = true;
