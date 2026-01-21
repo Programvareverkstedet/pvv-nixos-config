@@ -16,10 +16,10 @@ in {
 
     root = pkgs.element-web.override {
       conf = {
-        default_server_config."m.homeserver" = {
-          base_url = "https://matrix.pvv.ntnu.no";
-          server_name = "pvv.ntnu.no";
-        };
+        # Tries to look up well-known first, else uses bundled config.
+        default_server_name = "pvv.ntnu.no";
+        default_server_config = config.services.pvv-matrix-well-known.client;
+
         disable_3pid_login = true;
 #        integrations_ui_url = "https://dimension.dodsorf.as/riot";
 #        integrations_rest_url = "https://dimension.dodsorf.as/api/v1/scalar";
