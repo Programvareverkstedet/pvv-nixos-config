@@ -275,7 +275,7 @@
 
         bluemap = pkgs.callPackage ./packages/bluemap.nix { };
 
-        out-of-your-element = pkgs.callPackage ./packages/out-of-your-element.nix { };
+        out-of-your-element = pkgs.callPackage ./packages/ooye/package.nix { };
       }
       //
       # Mediawiki extensions

@@ -2,31 +2,28 @@
   lib,
   fetchFromGitea,
   makeWrapper,
-  nodejs,
+  nodejs_24,
   buildNpmPackage,
-  fetchpatch,
 }:
+let
+  nodejs = nodejs_24;
+in
 buildNpmPackage {
   pname = "delete-your-element";
-  version = "3.3-unstable-2025-12-09";
+  version = "3.3-unstable-2026-01-21";
   src = fetchFromGitea {
     domain = "git.pvv.ntnu.no";
     owner = "Drift";
     repo = "delete-your-element";
-    rev = "1c0c545a024ef7215a1a3483c10acce853f79765";
-    hash = "sha256-ow/PdlHfU7PCwsjJUEzoETzONs1KoKTRMRQ9ADN0tGk=";
+    rev = "d8fdb27feefa07ede43c24e6d17c2c111cf1dde1";
+    hash = "sha256-C2J8N8q2bcNAd4rVD4hONkU0x4iIS2b3MevTgs09/iM=";
   };
 
-  patches = [
-    (fetchpatch {
-      name = "ooye-fix-package-lock-0001.patch";
-      url = "https://cgit.rory.gay/nix/OOYE-module.git/plain/pl.patch?h=ee126389d997ba14be3fe3ef360ba37b3617a9b2";
-      hash = "sha256-dP6WEHb0KksDraYML+jcR5DftH9BiXvwevUg38ALOrc=";
-    })
-  ];
+  inherit nodejs;
 
-  npmDepsHash = "sha256-OXOyO6LxK/WYYVysSxkol0ilMUZB+osLYUE5DpJlbps=";
-  # npmDepsHash = "sha256-Y+vgp7+7pIDm64AYSs8ltoAiON0EPpJInbmgn3/LkVA=";
+  patches = [ ./fix-lockfile.patch ];
+
+  npmDepsHash = "sha256-tiGXr86x9QNAwhZcxSOox6sP9allyz9QSH3XOZOb3z8=";
   dontNpmBuild = true;
   makeCacheWritable = true;
 
