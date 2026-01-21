@@ -44,7 +44,6 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.sshguard.enable = true;
 
   # Do not change, even during upgrades.
   # See https://search.nixos.org/options?show=system.stateVersion
