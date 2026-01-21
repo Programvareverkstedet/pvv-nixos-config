@@ -1,7 +1,5 @@
 { config, ... }:
-
 {
-
   imports = [
     ./synapse.nix
     ./synapse-admin.nix
@@ -15,7 +13,4 @@
     ./out-of-your-element.nix
     ./hookshot
   ];
-
-
-
 }
