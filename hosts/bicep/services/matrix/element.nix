@@ -17,7 +17,7 @@ in {
     root = pkgs.element-web.override {
       conf = {
         # Tries to look up well-known first, else uses bundled config.
-        default_server_name = "pvv.ntnu.no";
+        default_server_name = "matrix.pvv.ntnu.no";
         default_server_config = config.services.pvv-matrix-well-known.client;
 
         disable_3pid_login = true;
