@@ -6,7 +6,6 @@ in
 {
   config.topology.self.services.postgresql = lib.mkIf cfg.enable {
     name = "PostgreSQL";
-    icon = "${unstablePkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/postgresql.svg";
 
     details.listen.text = lib.mkIf cfg.enableTCPIP "0.0.0.0:${toString cfg.settings.port}";
     details.socket.text = "/run/postgresql/.s.PGSQL.${toString cfg.settings.port}";
