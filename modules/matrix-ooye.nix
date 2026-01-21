@@ -181,6 +181,9 @@ in
           #NoNewPrivileges = true;
           #PrivateDevices = true;
           Restart = "on-failure";
+          RestartSec = "5s";
+          StartLimitIntervalSec = "5s";
+          StartLimitBurst = "5";
           DynamicUser = true;
         };
       };
