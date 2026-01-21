@@ -15,11 +15,16 @@ in {
     group = config.users.users.matrix-synapse.group;
   };
 
-  sops.secrets."matrix/synapse/user_registration" = {
+  sops.secrets."matrix/synapse/user_registration/registration_shared_secret" = {
     sopsFile = fp /secrets/bicep/matrix.yaml;
-    key = "synapse/signing_key";
+    key = "synapse/user_registration/registration_shared_secret";
+  };
+  sops.templates."matrix-synapse-user-registration" = {
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;
+    content = ''
+      registration_shared_secret: ${config.sops.placeholder."matrix/synapse/user_registration/registration_shared_secret"}
+    '';
   };
 
   services.matrix-synapse-next = {
@@ -83,7 +88,7 @@ in {
       mau_stats_only = true;
 
       enable_registration = false;
-      registration_shared_secret_path = config.sops.secrets."matrix/synapse/user_registration".path;
+      registration_shared_secret_path = config.sops.templates."matrix-synapse-user-registration".path;
 
       password_config.enabled = true;
 

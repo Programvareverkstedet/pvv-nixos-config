@@ -1,13 +1,6 @@
 { config, lib, fp, pkgs, secrets, values, ... }:
 
 {
-  sops.secrets."matrix/synapse/turnconfig" = {
-    sopsFile = fp /secrets/bicep/matrix.yaml;
-    key = "synapse/turnconfig";
-    owner = config.users.users.matrix-synapse.name;
-    group = config.users.users.matrix-synapse.group;
-    restartUnits = [ "coturn.service" ];
-  };
   sops.secrets."matrix/coturn/static-auth-secret" = {
     sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "coturn/static-auth-secret";
@@ -16,9 +9,18 @@
     restartUnits = [ "coturn.service" ];
   };
 
+  sops.templates."matrix-synapse-turnconfig" = {
+    owner = config.users.users.matrix-synapse.name;
+    group = config.users.users.matrix-synapse.group;
+    content = ''
+      turn_shared_secret: ${config.sops.placeholder."matrix/coturn/static-auth-secret"}
+    '';
+    restartUnits = [ "matrix-synapse.target" ];
+  };
+
   services.matrix-synapse-next = {
     extraConfigFiles = [
-      config.sops.secrets."matrix/synapse/turnconfig".path
+      config.sops.templates."matrix-synapse-turnconfig".path
     ];
 
     settings = {
