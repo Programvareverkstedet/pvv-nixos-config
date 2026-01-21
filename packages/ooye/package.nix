@@ -15,8 +15,8 @@ buildNpmPackage {
     domain = "git.pvv.ntnu.no";
     owner = "Drift";
     repo = "delete-your-element";
-    rev = "d8fdb27feefa07ede43c24e6d17c2c111cf1dde1";
-    hash = "sha256-C2J8N8q2bcNAd4rVD4hONkU0x4iIS2b3MevTgs09/iM=";
+    rev = "04d7872acb933254c0a4703064b2e08de31cfeb4";
+    hash = "sha256-CkKt+8VYjIhNM76c3mTf7X6d4ob8tB2w8T6xYS7+LuY=";
   };
 
   inherit nodejs;
