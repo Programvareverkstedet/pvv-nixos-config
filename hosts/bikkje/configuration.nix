@@ -25,6 +25,7 @@
       ];
 
       networking = {
+        hostName = "bikkje";
         firewall = {
           enable = true;
           # Allow SSH and HTTP and ports for email and irc
