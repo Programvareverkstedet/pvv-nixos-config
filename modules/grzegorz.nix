@@ -37,9 +37,13 @@ in {
   services.nginx.enable = true;
   services.nginx.virtualHosts = {
     ${config.networking.fqdn} = {
+      # NOTE: this overrides the default config in base/services/nginx.nix
+      addSSL = false;
       forceSSL = true;
       enableACME = true;
+
       kTLS = true;
+
       serverAliases = [
         "${machine}.pvv.org"
       ];

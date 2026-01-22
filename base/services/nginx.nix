@@ -67,10 +67,10 @@
     };
 
     ${config.networking.fqdn} = {
-      sslCertificate = "/etc/certs/nginx.crt";
-      sslCertificateKey = "/etc/certs/nginx.key";
-      addSSL = true;
-      extraConfig = "return 444;";
+      sslCertificate = lib.mkDefault "/etc/certs/nginx.crt";
+      sslCertificateKey = lib.mkDefault "/etc/certs/nginx.key";
+      addSSL = lib.mkDefault true;
+      extraConfig = lib.mkDefault "return 444;";
     };
   };
 }
