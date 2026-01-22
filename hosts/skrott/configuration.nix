@@ -5,6 +5,8 @@
     (fp /base)
   ];
 
+  sops.defaultSopsFile = fp /secrets/skrott/skrott.yaml;
+
   boot = {
     consoleLogLevel = 0;
     enableContainers = false;
