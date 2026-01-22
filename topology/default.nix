@@ -53,7 +53,7 @@ in {
   nodes.ntnu-pvv-router = mkRouter "NTNU PVV Gateway" {
     interfaceGroups = [ ["wan1"] ["eth1"] ];
     connections.eth1 = mkConnection "knutsen" "em1";
-    interfaces.eth1.network = "pvv";
+    interfaces.eth1.network = "ntnu";
   };
 
   nodes.knutsen = mkRouter "knutsen" {
