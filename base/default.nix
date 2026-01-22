@@ -10,11 +10,12 @@
     (fp /users)
     (fp /modules/snakeoil-certs.nix)
 
+    ./flake-input-exporter.nix
     ./networking.nix
     ./nix.nix
-    ./vm.nix
-    ./flake-input-exporter.nix
     ./programs.nix
+    ./sops.nix
+    ./vm.nix
 
     ./services/acme.nix
     ./services/auto-upgrade.nix

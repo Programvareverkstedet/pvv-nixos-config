@@ -10,11 +10,6 @@
       ./services/journald-remote.nix
     ];
 
-  sops.defaultSopsFile = fp /secrets/ildkule/ildkule.yaml;
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-  sops.age.generateKey = true;
-
   boot.loader.systemd-boot.enable = false;
   boot.loader.grub.device = "/dev/vda";
   boot.tmp.cleanOnBoot = true;

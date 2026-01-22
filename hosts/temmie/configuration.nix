@@ -8,11 +8,6 @@
       ./services/nfs-mounts.nix
     ];
 
-  # sops.defaultSopsFile = fp /secrets/shark/shark.yaml;
-  # sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  # sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-  # sops.age.generateKey = true;
-
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens18";
     address = with values.hosts.temmie; [ (ipv4 + "/25") (ipv6 + "/64") ];

@@ -19,11 +19,6 @@
     ./services/qotd
   ];
 
-  sops.defaultSopsFile = fp /secrets/bekkalokk/bekkalokk.yaml;
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-  sops.age.generateKey = true;
-
   systemd.network.networks."30-enp2s0" = values.defaultNetworkConfig // {
     matchConfig.Name = "enp2s0";
     address = with values.hosts.bekkalokk; [ (ipv4 + "/25") (ipv6 + "/64") ];
