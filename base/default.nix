@@ -86,6 +86,12 @@
     Defaults lecture = never
   '';
 
+  # These are servers, sleep is for the weak
+  systemd.sleep.extraConfig = lib.mkDefault ''
+    AllowSuspend=no
+    AllowHibernation=no
+  '';
+
   users.mutableUsers = lib.mkDefault false;
 
   users.groups."drift".name = "drift";
