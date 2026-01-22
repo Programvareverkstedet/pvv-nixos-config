@@ -52,6 +52,9 @@
     keyMap = "no";
   };
 
+  # Don't install the /lib/ld-linux.so.2 stub
+  environment.ldso32 = null;
+
   # .bash_profile already works, but lets also use .bashrc like literally every other distro
   # https://man.archlinux.org/man/core/bash/bash.1.en#INVOCATION
   # home-manager usually handles this for you: https://github.com/nix-community/home-manager/blob/22a36aa709de7dd42b562a433b9cefecf104a6ee/modules/programs/bash.nix#L203-L209
