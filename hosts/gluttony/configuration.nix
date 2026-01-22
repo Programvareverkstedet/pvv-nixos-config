@@ -10,8 +10,6 @@
     (fp /base)
   ];
 
-  boot.loader.systemd-boot.enable = false;
-
   systemd.network.enable = lib.mkForce false;
   networking =
     let
