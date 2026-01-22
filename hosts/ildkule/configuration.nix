@@ -43,8 +43,7 @@
     };
   };
 
-  # No devices with SMART
-  services.smartd.enable = false;
+  services.qemuGuest.enable = true;
 
   # Don't change (even during upgrades) unless you know what you are doing.
   # See https://search.nixos.org/options?show=system.stateVersion

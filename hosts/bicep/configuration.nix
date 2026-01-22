@@ -31,10 +31,6 @@
     anyInterface = true;
   };
 
-  # There are no smart devices
-  services.smartd.enable = false;
-
-  # we are a vm now
   services.qemuGuest.enable = true;
 
   # Don't change (even during upgrades) unless you know what you are doing.

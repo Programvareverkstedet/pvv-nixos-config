@@ -1,7 +1,9 @@
 { config, pkgs, lib, ... }:
 {
   services.smartd = {
-    enable = lib.mkDefault true;
+    # NOTE: qemu guests tend not to have SMART-reporting disks. Please override for the
+    #       hosts with disk passthrough.
+    enable = lib.mkDefault (!config.services.qemuGuest.enable);
     notifications = {
       mail = {
         enable = true;

@@ -16,6 +16,8 @@
     address = with values.hosts.shark; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
+  services.qemuGuest.enable = true;
+
   # Don't change (even during upgrades) unless you know what you are doing.
   # See https://search.nixos.org/options?show=system.stateVersion
   system.stateVersion = "23.05";

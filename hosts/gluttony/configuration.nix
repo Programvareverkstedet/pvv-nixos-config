@@ -45,6 +45,8 @@
       };
     };
 
+  services.qemuGuest.enable = true;
+
   # Don't change (even during upgrades) unless you know what you are doing.
   # See https://search.nixos.org/options?show=system.stateVersion
   system.stateVersion = "25.11";
