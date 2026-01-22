@@ -92,6 +92,8 @@
     AllowHibernation=no
   '';
 
+  fonts.fontconfig.enable = lib.mkDefault false;
+
   users.mutableUsers = lib.mkDefault false;
 
   users.groups."drift".name = "drift";

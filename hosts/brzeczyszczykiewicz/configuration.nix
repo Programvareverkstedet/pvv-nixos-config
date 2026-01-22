@@ -22,6 +22,8 @@
   environment.systemPackages = with pkgs; [
   ];
 
+  fonts.fontconfig.enable = true;
+
   # List services that you want to enable:
 
   # This value determines the NixOS release from which the default
