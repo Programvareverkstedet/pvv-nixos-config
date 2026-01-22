@@ -69,6 +69,10 @@ in rec {
       ipv4 = pvv-ipv4 223;
       ipv6 = pvv-ipv6 223;
     };
+    microbel = {
+      ipv4 = pvv-ipv4 179;
+      ipv6 = pvv-ipv6 "1:2";
+    };
     ustetind = {
       ipv4 = pvv-ipv4 234;
       ipv6 = pvv-ipv6 234;
