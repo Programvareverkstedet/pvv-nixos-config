@@ -35,5 +35,7 @@
     package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
-  system.stateVersion = "24.11"; # Did you read the comment?
+  # Don't change (even during upgrades) unless you know what you are doing.
+  # See https://search.nixos.org/options?show=system.stateVersion
+  system.stateVersion = "24.11";
 }

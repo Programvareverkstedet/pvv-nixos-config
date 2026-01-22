@@ -17,5 +17,7 @@
     address = with values.hosts.bakke; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
+  # Don't change (even during upgrades) unless you know what you are doing.
+  # See https://search.nixos.org/options?show=system.stateVersion
   system.stateVersion = "24.05";
 }

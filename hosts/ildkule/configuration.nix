@@ -43,13 +43,10 @@
     };
   };
 
-  # List packages installed in system profile
-  environment.systemPackages = with pkgs; [
-  ];
-
   # No devices with SMART
   services.smartd.enable = false;
 
-  system.stateVersion = "23.11"; # Did you read the comment?
-
+  # Don't change (even during upgrades) unless you know what you are doing.
+  # See https://search.nixos.org/options?show=system.stateVersion
+  system.stateVersion = "23.11";
 }

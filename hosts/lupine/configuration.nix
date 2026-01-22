@@ -25,7 +25,7 @@
   # There are no smart devices
   services.smartd.enable = false;
 
-  # Do not change, even during upgrades.
+  # Don't change (even during upgrades) unless you know what you are doing.
   # See https://search.nixos.org/options?show=system.stateVersion
   system.stateVersion = "25.05";
 }

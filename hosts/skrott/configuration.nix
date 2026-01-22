@@ -22,8 +22,6 @@
 
   # TODO: can we reduce further?
 
-  system.stateVersion = "25.05";
-
   sops.defaultSopsFile = fp /secrets/skrott/skrott.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
@@ -71,4 +69,8 @@
     wantedBy = [ "getty.target" ]; # to start at boot
     serviceConfig.Restart = "always"; # restart when session is closed
   };
+
+  # Don't change (even during upgrades) unless you know what you are doing.
+  # See https://search.nixos.org/options?show=system.stateVersion
+  system.stateVersion = "25.05";
 }

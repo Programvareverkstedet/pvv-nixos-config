@@ -1,6 +1,6 @@
 { config, pkgs, values, ... }:
 {
-    networking.nat = {
+  networking.nat = {
     enable = true;
     internalInterfaces = ["ve-+"];
     externalInterface = "ens3";
@@ -37,9 +37,11 @@
         useHostResolvConf = mkForce false;
       };
 
-      system.stateVersion = "23.11";
       services.resolved.enable = true;
+
+      # Don't change (even during upgrades) unless you know what you are doing.
+      # See https://search.nixos.org/options?show=system.stateVersion
+      system.stateVersion = "23.11";
     };
   };
-
 };

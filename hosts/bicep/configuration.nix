@@ -37,10 +37,7 @@
   # we are a vm now
   services.qemuGuest.enable = true;
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
-  # Do not change, even during upgrades.
+  # Don't change (even during upgrades) unless you know what you are doing.
   # See https://search.nixos.org/options?show=system.stateVersion
   system.stateVersion = "22.11";
 }

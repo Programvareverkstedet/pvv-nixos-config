@@ -13,10 +13,6 @@
     address = with values.hosts.georg; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
-  # List services that you want to enable:
-
-
-
   services.spotifyd = {
     enable = true;
     settings.global = {
@@ -32,16 +28,9 @@
     5353 # spotifyd is its own mDNS service wtf
   ];
 
-
   fonts.fontconfig.enable = true;
 
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It's perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
-
+  # Don't change (even during upgrades) unless you know what you are doing.
+  # See https://search.nixos.org/options?show=system.stateVersion
+  system.stateVersion = "23.05";
 }

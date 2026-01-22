@@ -45,5 +45,7 @@
       };
     };
 
-  system.stateVersion = "25.11"; # Don't change unless you know what you are doing.
+  # Don't change (even during upgrades) unless you know what you are doing.
+  # See https://search.nixos.org/options?show=system.stateVersion
+  system.stateVersion = "25.11";
 }

@@ -39,5 +39,7 @@
     };
   };
 
+  # Don't change (even during upgrades) unless you know what you are doing.
+  # See https://search.nixos.org/options?show=system.stateVersion
   system.stateVersion = "24.11";
 }
