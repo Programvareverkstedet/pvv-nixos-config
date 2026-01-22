@@ -105,6 +105,9 @@
           } // specialArgs;
 
           modules = [
+            {
+              networking.hostName = lib.mkDefault name;
+            }
             configurationPath
           ] ++ (lib.optionals enableDefaults [
             sops-nix.nixosModules.sops

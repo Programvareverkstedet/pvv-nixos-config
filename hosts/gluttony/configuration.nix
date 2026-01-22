@@ -18,7 +18,6 @@
       hostConf = values.hosts.gluttony;
     in
     {
-      hostName = "gluttony";
       tempAddresses = "disabled";
       useDHCP = false;
 

@@ -11,7 +11,6 @@
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
 
-  networking.hostName = "bakke";
   networking.hostId = "99609ffc";
   systemd.network.networks."30-enp2s0" = values.defaultNetworkConfig // {
     matchConfig.Name = "enp2s0";

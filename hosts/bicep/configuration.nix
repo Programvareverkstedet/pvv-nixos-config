@@ -20,8 +20,6 @@
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
 
-  networking.hostName = "bicep";
-
   #systemd.network.networks."30-enp6s0f0" = values.defaultNetworkConfig // {
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     #matchConfig.Name = "enp6s0f0";

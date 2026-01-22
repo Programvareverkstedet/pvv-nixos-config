@@ -12,8 +12,6 @@
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
 
-  networking.hostName = "ustetind";
-
   boot.loader.systemd-boot.enable = false;
 
   networking.useHostResolvConf = lib.mkForce false;

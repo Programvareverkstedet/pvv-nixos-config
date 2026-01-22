@@ -25,7 +25,6 @@
   networking = let
     hostConf = values.hosts.ildkule;
   in {
-    hostName = "ildkule";
     tempAddresses = "disabled";
     useDHCP = lib.mkForce true;
 

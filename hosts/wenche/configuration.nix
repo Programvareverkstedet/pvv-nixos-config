@@ -22,8 +22,6 @@
   boot.loader.systemd-boot.enable = false;
   boot.loader.grub.device = "/dev/sda";
 
-  networking.hostName = "wenche"; # Define your hostname.
-
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens18";
     address = with values.hosts.wenche; [ (ipv4 + "/25") (ipv6 + "/64") ];

@@ -8,8 +8,6 @@
       ./services/grzegorz.nix
     ];
 
-  networking.hostName = "brzeczyszczykiewicz";
-
   systemd.network.networks."30-eno1" = values.defaultNetworkConfig // {
     matchConfig.Name = "eno1";
     address = with values.hosts.brzeczyszczykiewicz; [ (ipv4 + "/25") (ipv6 + "/64") ];

@@ -11,8 +11,6 @@
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
 
-  networking.hostName = "shark"; # Define your hostname.
-
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens18";
     address = with values.hosts.shark; [ (ipv4 + "/25") (ipv6 + "/64") ];
