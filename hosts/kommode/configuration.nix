@@ -26,7 +26,5 @@
 
   services.btrfs.autoScrub.enable = true;
 
-  environment.systemPackages = with pkgs; [];
-
   system.stateVersion = "24.11";
 }

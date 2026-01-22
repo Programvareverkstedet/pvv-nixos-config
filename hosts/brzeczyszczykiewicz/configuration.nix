@@ -18,10 +18,6 @@
     address = with values.hosts.brzeczyszczykiewicz; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
-  # List packages installed in system profile
-  environment.systemPackages = with pkgs; [
-  ];
-
   fonts.fontconfig.enable = true;
 
   # List services that you want to enable:

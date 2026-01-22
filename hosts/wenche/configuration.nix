@@ -36,9 +36,5 @@
     package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
-  # List packages installed in system profile
-  environment.systemPackages = with pkgs; [
-  ];
-
   system.stateVersion = "24.11"; # Did you read the comment?
 }

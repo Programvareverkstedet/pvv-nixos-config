@@ -21,10 +21,6 @@
     address = with values.hosts.shark; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
-  # List packages installed in system profile
-  environment.systemPackages = with pkgs; [
-  ];
-
   # List services that you want to enable:
 
   # This value determines the NixOS release from which the default

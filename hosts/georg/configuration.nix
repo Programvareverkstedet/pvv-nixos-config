@@ -18,10 +18,6 @@
     address = with values.hosts.georg; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
-  # List packages installed in system profile
-  environment.systemPackages = with pkgs; [
-  ];
-
   # List services that you want to enable:
 
 
