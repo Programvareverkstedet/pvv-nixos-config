@@ -1,17 +1,20 @@
 { config, fp, pkgs, values, ... }:
 {
   imports = [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      (fp /base)
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    (fp /base)
 
-      ./services/nfs-mounts.nix
-    ];
+    ./services/nfs-mounts.nix
+    ./services/userweb.nix
+  ];
 
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens18";
     address = with values.hosts.temmie; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
+
+  services.nginx.enable = false;
 
   services.qemuGuest.enable = true;
 
