@@ -258,6 +258,12 @@ in {
 
     interfaces.ens4.network = "ntnu";
   };
+  nodes.gluttony = {
+    guestType = "openstack";
+    parent = config.nodes.stackit.id;
+
+    interfaces.ens3.network = "ntnu";
+  };
   nodes.wenche = {
     guestType = "openstack";
     parent = config.nodes.stackit.id;
@@ -265,12 +271,6 @@ in {
     interfaces.ens18.network = "pvv";
   };
   nodes.bakke = {
-    guestType = "openstack";
-    parent = config.nodes.stackit.id;
-
-    interfaces.enp2s0.network = "pvv";
-  };
-  nodes.gluttony = {
     guestType = "openstack";
     parent = config.nodes.stackit.id;
 
