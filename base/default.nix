@@ -48,22 +48,59 @@
     keyMap = "no";
   };
 
-  environment.systemPackages = with pkgs; [
-    file
-    git
-    gnupg
-    htop
-    nano
-    net-tools
-    ripgrep
-    rsync
-    screen
-    tmux
-    vim
-    wget
+  environment.enableAllTerminfo = true;
 
-    kitty.terminfo
+  environment.systemPackages = with pkgs; [
+    # Debug dns outside resolvectl
+    dig
+
+    # Debug and find files
+    file
+
+    # Check computer specs
+    lshw
+
+    # Scan for open ports with netstat
+    net-tools
+
+    # Grep for files quickly
+    ripgrep
+
+    # Copy files over the network
+    rsync
+
+    # Access various state, often in /var/lib
+    sqlite-interactive
+
+    # Debug software which won't debug itself
+    strace
+
+    # Download files from the internet
+    wget
   ];
+
+  # Clone/push nix config and friends
+  programs.git.enable = true;
+
+  # Gitea gpg, oysteikt sops, etc.
+  programs.gnupg.agent.enable = true;
+
+  # Monitor the wellbeing of the machines
+  programs.htop.enable = true;
+
+  # Keep sessions running during work over SSH
+  programs.tmux.enable = true;
+
+  # Same reasoning as tmux
+  programs.screen.enable = true;
+
+  # Edit files on the system without resorting to joe(1)
+  programs.nano.enable = true;
+  # Same reasoning as nano
+  programs.vim.enable = true;
+
+  # Some people like this shell for some reason
+  programs.zsh.enable = true;
 
   # .bash_profile already works, but lets also use .bashrc like literally every other distro
   # https://man.archlinux.org/man/core/bash/bash.1.en#INVOCATION
@@ -76,8 +113,6 @@
       fi
     fi
   '';
-
-  programs.zsh.enable = true;
 
   # security.lockKernelModules = true;
   security.protectKernelImage = true;
