@@ -86,6 +86,8 @@
     Defaults lecture = never
   '';
 
+  users.mutableUsers = lib.mkDefault false;
+
   users.groups."drift".name = "drift";
 
   # Trusted users on the nix builder machines
