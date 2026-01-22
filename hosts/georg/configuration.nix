@@ -8,9 +8,6 @@
       (fp /modules/grzegorz.nix)
     ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   networking.hostName = "georg";
 
   systemd.network.networks."30-eno1" = values.defaultNetworkConfig // {

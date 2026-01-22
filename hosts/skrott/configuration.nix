@@ -9,6 +9,7 @@
     consoleLogLevel = 0;
     enableContainers = false;
     loader.grub.enable = false;
+    loader.systemd-boot.enable = false;
     kernelPackages = pkgs.linuxPackages;
   };
 

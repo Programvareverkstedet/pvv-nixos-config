@@ -20,9 +20,6 @@
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   networking.hostName = "bicep";
 
   #systemd.network.networks."30-enp6s0f0" = values.defaultNetworkConfig // {

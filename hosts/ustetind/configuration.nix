@@ -14,6 +14,8 @@
 
   networking.hostName = "ustetind";
 
+  boot.loader.systemd-boot.enable = false;
+
   networking.useHostResolvConf = lib.mkForce false;
 
   systemd.network.networks = {
