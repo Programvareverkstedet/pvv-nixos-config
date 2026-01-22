@@ -14,6 +14,7 @@
     ./nix.nix
     ./vm.nix
     ./flake-input-exporter.nix
+    ./programs.nix
 
     ./services/acme.nix
     ./services/auto-upgrade.nix
@@ -48,60 +49,6 @@
     keyMap = "no";
   };
 
-  environment.enableAllTerminfo = true;
-
-  environment.systemPackages = with pkgs; [
-    # Debug dns outside resolvectl
-    dig
-
-    # Debug and find files
-    file
-
-    # Check computer specs
-    lshw
-
-    # Scan for open ports with netstat
-    net-tools
-
-    # Grep for files quickly
-    ripgrep
-
-    # Copy files over the network
-    rsync
-
-    # Access various state, often in /var/lib
-    sqlite-interactive
-
-    # Debug software which won't debug itself
-    strace
-
-    # Download files from the internet
-    wget
-  ];
-
-  # Clone/push nix config and friends
-  programs.git.enable = true;
-
-  # Gitea gpg, oysteikt sops, etc.
-  programs.gnupg.agent.enable = true;
-
-  # Monitor the wellbeing of the machines
-  programs.htop.enable = true;
-
-  # Keep sessions running during work over SSH
-  programs.tmux.enable = true;
-
-  # Same reasoning as tmux
-  programs.screen.enable = true;
-
-  # Edit files on the system without resorting to joe(1)
-  programs.nano.enable = true;
-  # Same reasoning as nano
-  programs.vim.enable = true;
-
-  # Some people like this shell for some reason
-  programs.zsh.enable = true;
-
   # .bash_profile already works, but lets also use .bashrc like literally every other distro
   # https://man.archlinux.org/man/core/bash/bash.1.en#INVOCATION
   # home-manager usually handles this for you: https://github.com/nix-community/home-manager/blob/22a36aa709de7dd42b562a433b9cefecf104a6ee/modules/programs/bash.nix#L203-L209
@@ -126,8 +73,6 @@
     AllowSuspend=no
     AllowHibernation=no
   '';
-
-  fonts.fontconfig.enable = lib.mkDefault false;
 
   users.mutableUsers = lib.mkDefault false;
 
