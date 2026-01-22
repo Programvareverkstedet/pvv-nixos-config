@@ -1,4 +1,4 @@
-{ config, pkgs, lib, fp, ... }: {
+{ config, pkgs, lib, fp, values, ... }: {
   imports = [
     # ./hardware-configuration.nix
 
@@ -36,7 +36,11 @@
     interfaces.eth0 = {
       useDHCP = false;
       ipv4.addresses = [{
-        address = "129.241.210.235";
+        address = values.hosts.skrott.ipv4;
+        prefixLength = 25;
+      }];
+      ipv6.addresses = [{
+        address = values.hosts.skrott.ipv6;
         prefixLength = 25;
       }];
     };
