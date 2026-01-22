@@ -82,6 +82,8 @@ in {
         (mkConnection "buskerud" "eth1")
         # (mkConnection "knutsen" "eth1")
         (mkConnection "powerpuff-cluster" "eth1")
+        (mkConnection "powerpuff-cluster" "eth2")
+        (mkConnection "powerpuff-cluster" "eth3")
         (mkConnection "lupine-1" "enp0s31f6")
         (mkConnection "lupine-2" "enp0s31f6")
         (mkConnection "lupine-3" "enp0s31f6")
@@ -139,7 +141,7 @@ in {
 
     hardware.info = "Dell PowerEdge R730 x 3";
 
-    interfaceGroups = [ [ "eth1" ] ];
+    interfaceGroups = [ [ "eth1" "eth2" "eth3" ] ];
 
     services = {
       proxmox = {
