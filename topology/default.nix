@@ -167,6 +167,13 @@ in {
     interfaces.ens18.network = "pvv";
   };
 
+  nodes.temmie = {
+    guestType = "proxmox";
+    parent = config.nodes.powerpuff-cluster.id;
+
+    interfaces.ens18.network = "pvv";
+  };
+
   nodes.ustetind = {
     guestType = "proxmox LXC";
     parent = config.nodes.powerpuff-cluster.id;
@@ -219,7 +226,7 @@ in {
         (mkConnection "demiurgen" "eno1")
         (mkConnection "sanctuary" "ethernet_0")
         (mkConnection "torskas" "eth0")
-        (mkConnection "skrott" "eth0")
+        (mkConnection "skrot" "eth0")
         (mkConnection "homeassistant" "eth0")
         (mkConnection "orchid" "eth0")
         (mkConnection "principal" "em0")
@@ -256,6 +263,12 @@ in {
     interfaces.ens18.network = "pvv";
   };
   nodes.bakke = {
+    guestType = "openstack";
+    parent = config.nodes.stackit.id;
+
+    interfaces.enp2s0.network = "pvv";
+  };
+  nodes.gluttony = {
     guestType = "openstack";
     parent = config.nodes.stackit.id;
 

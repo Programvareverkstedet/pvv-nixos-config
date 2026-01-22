@@ -290,21 +290,6 @@ in {
     };
   };
 
-  nodes.skrott = mkDevice "skrott" {
-    # TODO: the interface name is likely wrong
-    interfaceGroups = [ [ "eth0" ] ];
-    interfaces.eth0 = {
-      # mac = "";
-      addresses = [
-        "129.241.210.235"
-      ];
-      gateways = [
-        values.hosts.gateway
-        values.hosts.gateway6
-      ];
-    };
-  };
-
   nodes.torskas = mkDevice "torskas" {
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/arch_linux.svg";
 
