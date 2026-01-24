@@ -11,6 +11,15 @@
   ];
 
   systemd.network.enable = lib.mkForce false;
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
+  boot.loader = {
+    systemd-boot.enable = false; # no uefi support on this device
+    grub.device = "/dev/sda";
+    grub.enable = true;
+  };
+  boot.tmp.cleanOnBoot = true;
+
   networking =
     let
       hostConf = values.hosts.gluttony;
