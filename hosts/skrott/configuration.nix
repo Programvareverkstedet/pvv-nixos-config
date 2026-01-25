@@ -69,7 +69,7 @@
         postgresql = {
           username = "pvv_vv";
           dbname = "pvv_vv";
-          host = "postgresql.pvv.ntnu.no";
+          host = "postgres.pvv.ntnu.no";
           password_file = config.sops.secrets."dibbler/postgresql/password".path;
         };
       };
