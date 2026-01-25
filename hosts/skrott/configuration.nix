@@ -1,9 +1,12 @@
-{ config, pkgs, lib, fp, values, ... }: {
+{ config, pkgs, lib, modulesPath, fp, values, ... }: {
   imports = [
-    # ./hardware-configuration.nix
+    (modulesPath + "/profiles/perlless.nix")
 
     (fp /base)
   ];
+
+  # Disable import of a bunch of tools we don't need from nixpkgs.
+  disabledModules = [ "profiles/base.nix" ];
 
   sops.defaultSopsFile = fp /secrets/skrott/skrott.yaml;
 
@@ -16,6 +19,8 @@
   };
 
   # Now turn off a bunch of stuff lol
+  # TODO: can we reduce further?
+  # See also https://nixcademy.com/posts/minimizing-nixos-images/
   system.autoUpgrade.enable = lib.mkForce false;
   services.irqbalance.enable = lib.mkForce false;
   services.logrotate.enable = lib.mkForce false;
@@ -25,10 +30,16 @@
   services.udisks2.enable = lib.mkForce false;
   services.thermald.enable = lib.mkForce false;
   services.promtail.enable = lib.mkForce false;
-  boot.supportedFilesystems.zfs = lib.mkForce false;
+  # There aren't really that many firmware updates for rbpi3 anyway
+  services.fwupd.enable = lib.mkForce false;
+
   documentation.enable = lib.mkForce false;
 
-  # TODO: can we reduce further?
+  environment.enableAllTerminfo = lib.mkForce false;
+
+  programs.neovim.enable = lib.mkForce false;
+  programs.zsh.enable = lib.mkForce false;
+  programs.git.package = pkgs.gitMinimal;
 
   sops.secrets = {
     "dibbler/postgresql/password" = {
