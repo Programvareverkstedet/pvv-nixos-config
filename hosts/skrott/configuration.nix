@@ -25,7 +25,7 @@
   # TODO: can we reduce further?
 
   sops.secrets = {
-    "dibbler/postgresql/url" = {
+    "dibbler/postgresql/password" = {
       owner = "dibbler";
       group = "dibbler";
     };
@@ -56,7 +56,15 @@
 
     settings = {
       general.quit_allowed = false;
-      database.url = config.sops.secrets."dibbler/postgresql/url".path;
+      database = {
+        type = "postgresql";
+        postgresql = {
+          username = "pvv_vv";
+          dbname = "pvv_vv";
+          host = "postgresql.pvv.ntnu.no";
+          password_file = config.sops.secrets."dibbler/postgresql/password".path;
+        };
+      };
     };
   };
 

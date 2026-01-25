@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1768138611,
-        "narHash": "sha256-KfZX6wpuwE2IRKLjh0DrEviE4f6kqLJWwKIE5QJSqa4=",
+        "lastModified": 1769333902,
+        "narHash": "sha256-f3HiO+3XoiXhrcnKdNA/oVY6qKJ3n/sswFxzarBlgiw=",
         "ref": "main",
-        "rev": "cb385097dcda5fb9772f903688d078b30a66ccd4",
-        "revCount": 221,
+        "rev": "e771fb02400fde38f11e740830c842fce6388d7b",
+        "revCount": 226,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/dibbler.git"
       },
