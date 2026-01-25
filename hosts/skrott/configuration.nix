@@ -35,6 +35,8 @@
 
   networking = {
     hostName = "skrot";
+    defaultGateway = values.hosts.gateway;
+    defaultGateway6 = values.hosts.gateway6;
     interfaces.eth0 = {
       useDHCP = false;
       ipv4.addresses = [{
