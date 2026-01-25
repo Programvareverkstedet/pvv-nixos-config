@@ -23,6 +23,7 @@
   services.postfix.enable = lib.mkForce false;
   services.smartd.enable = lib.mkForce false;
   services.udisks2.enable = lib.mkForce false;
+  services.thermald.enable = lib.mkForce false;
   boot.supportedFilesystems.zfs = lib.mkForce false;
 
   # TODO: can we reduce further?
