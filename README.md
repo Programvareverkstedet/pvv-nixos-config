@@ -43,6 +43,7 @@ revert the changes on the next nightly rebuild (tends to happen when everybody i
 | [kommode][kom]             | Virtual  | Gitea + Gitea pages                                       |
 | [lupine][lup]              | Physical | Gitea CI/CD runners                                       |
 |  shark                     | Virtual  | Test host for authentication, absolutely horrendous       |
+| [skrott][skr]              | Physical | Kiosk, snacks and soda                                    |
 | [wenche][wen]              | Virtual  | Nix-builders, general purpose compute                     |
 
 ## Documentation
@@ -59,4 +60,5 @@ revert the changes on the next nightly rebuild (tends to happen when everybody i
 [ild]: https://wiki.pvv.ntnu.no/wiki/Maskiner/ildkule
 [kom]: https://wiki.pvv.ntnu.no/wiki/Maskiner/kommode
 [lup]: https://wiki.pvv.ntnu.no/wiki/Maskiner/lupine
+[skr]: https://wiki.pvv.ntnu.no/wiki/Maskiner/Skrott
 [wen]: https://wiki.pvv.ntnu.no/wiki/Maskiner/wenche
