@@ -21,6 +21,7 @@
   services.logrotate.enable = lib.mkForce false;
   services.nginx.enable = lib.mkForce false;
   services.postfix.enable = lib.mkForce false;
+  services.smartd.enable = lib.mkForce false;
 
   # TODO: can we reduce further?
 
