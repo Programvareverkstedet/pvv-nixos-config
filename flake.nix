@@ -69,37 +69,54 @@
   in {
     inputs = lib.mapAttrs (_: src: src.outPath) inputs;
 
-    pkgs = forAllSystems (system:
-      import nixpkgs {
-        inherit system;
-        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
-          [
-            "nvidia-x11"
-            "nvidia-settings"
-          ];
-      });
+    pkgs = forAllSystems (system: import nixpkgs {
+      inherit system;
+      config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
+        [
+          "nvidia-x11"
+          "nvidia-settings"
+        ];
+    });
 
     nixosConfigurations = let
-      unstablePkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
-
       nixosConfig =
         nixpkgs:
         name:
         configurationPath:
         extraArgs@{
-          system ? "x86_64-linux",
+          localSystem ? "x86_64-linux", # buildPlatform
+          crossSystem ? "x86_64-linux", # hostPlatform
           specialArgs ? { },
           modules ? [ ],
           overlays ? [ ],
           enableDefaults ? true,
           ...
         }:
+        let
+          commonPkgsConfig = {
+            inherit localSystem crossSystem;
+            config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
+              [
+                "nvidia-x11"
+                "nvidia-settings"
+              ];
+            overlays = (lib.optionals enableDefaults [
+              # Global overlays go here
+              inputs.roowho2.overlays.default
+            ]) ++ overlays;
+          };
+
+          pkgs = import nixpkgs commonPkgsConfig;
+          unstablePkgs = import nixpkgs-unstable commonPkgsConfig;
+        in
         lib.nixosSystem (lib.recursiveUpdate
         {
-          inherit system;
+          system = crossSystem;
+
+          inherit pkgs;
 
           specialArgs = {
-            inherit unstablePkgs inputs;
+            inherit inputs unstablePkgs;
             values = import ./values.nix;
             fp = path: ./${path};
           } // specialArgs;
@@ -113,22 +130,10 @@
             sops-nix.nixosModules.sops
             inputs.roowho2.nixosModules.default
           ]) ++ modules;
-
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
-              [
-                "nvidia-x11"
-                "nvidia-settings"
-              ];
-            overlays = (lib.optionals enableDefaults [
-              # Global overlays go here
-              inputs.roowho2.overlays.default
-            ]) ++ overlays;
-          };
         }
         (builtins.removeAttrs extraArgs [
-          "system"
+          "localSystem"
+          "crossSystem"
           "modules"
           "overlays"
           "specialArgs"
@@ -163,7 +168,6 @@
       bekkalokk = stableNixosConfig "bekkalokk" {
         overlays = [
           (final: prev: {
-            heimdal = unstablePkgs.heimdal;
             mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
             simplesamlphp = final.callPackage ./packages/simplesamlphp { };
             bluemap = final.callPackage ./packages/bluemap.nix { };
@@ -222,7 +226,7 @@
         ];
       };
       skrott = stableNixosConfig "skrott" {
-        system = "aarch64-linux";
+        crossSystem = "aarch64-linux";
         modules = [
           (nixpkgs + "/nixos/modules/installer/sd-card/sd-image-aarch64.nix")
           inputs.dibbler.nixosModules.default
