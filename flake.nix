@@ -236,9 +236,10 @@
         overlays = [
           inputs.dibbler.overlays.default
           (final: prev: {
-            # NOTE: Yeetus
+            # NOTE: Yeetus (these break crosscompile ¯\_(ツ)_/¯)
             atool = prev.emptyDirectory;
             micro = prev.emptyDirectory;
+            ncdu = prev.emptyDirectory;
           })
         ];
       };
