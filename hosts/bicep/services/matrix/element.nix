@@ -37,6 +37,7 @@ in {
           # element call group calls
           feature_group_calls = true;
         };
+        default_country_code = "NO";
         default_theme = "dark";
         # Servers in this list should provide some sort of valuable scoping
         # matrix.org is not useful compared to matrixrooms.info,
