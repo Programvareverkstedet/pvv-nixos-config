@@ -1,17 +1,17 @@
-{ config, pkgs, lib, ... }:
+{ pkgs,... }:
 {
   # Boot drives:
   boot.swraid.enable = true;
 
   # ZFS Data pool:
-  environment.systemPackages = with pkgs; [ zfs ];
   boot = {
     zfs = {
       extraPools = [ "tank" ];
       requestEncryptionCredentials = false;
     };
-    supportedFilesystems = [ "zfs" ];
-    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+    supportedFilesystems.zfs = true;
+    # Use stable linux packages, these work with zfs
+    kernelPackages = pkgs.linuxPackages;
   };
   services.zfs.autoScrub = {
     enable = true;
