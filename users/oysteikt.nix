@@ -12,9 +12,6 @@
     packages = with pkgs; [
       bottom
       eza
-      neovim
-      ripgrep
-      tmux
     ];
 
     openssh.authorizedKeys.keys = [

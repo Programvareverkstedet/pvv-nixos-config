@@ -14,14 +14,9 @@
       bat
       edir
       fd
-      htop
-      jq
       micro
       ncdu
-      ripgrep
       sd
-      tmux
-      wget
       xe
       yq
     ];

@@ -237,7 +237,6 @@
           inputs.dibbler.overlays.default
           (final: prev: {
             atool = prev.emptyDirectory;
-            neovim = prev.vim;
             micro = prev.vim;
           })
         ];

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   users.users.adriangl = {
     isNormalUser = true;
@@ -7,14 +7,6 @@
       "wheel"
       "drift"
       "nix-builder-users"
-    ];
-
-    packages = with pkgs; [
-      neovim
-      htop
-      ripgrep
-      vim
-      foot.terminfo
     ];
 
     openssh.authorizedKeys.keys = [

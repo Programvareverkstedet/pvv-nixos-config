@@ -13,6 +13,9 @@
     # Debug and find files
     file
 
+    # Process json data
+    jq
+
     # Check computer specs
     lshw
 
@@ -54,6 +57,8 @@
   programs.nano.enable = true;
   # Same reasoning as nano
   programs.vim.enable = true;
+  # Same reasoning as vim
+  programs.neovim.enable = true;
 
   # Some people like this shell for some reason
   programs.zsh.enable = true;

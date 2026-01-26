@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ config, pkgs, lib, ... }:
 {
   users.users.felixalb = {
     isNormalUser = true;
@@ -7,7 +7,7 @@
     ] ++ lib.optionals ( config.users.groups ? "libvirtd" ) [
       "libvirtd"
     ];
-    shell = pkgs.zsh;
+    shell = if config.programs.zsh.enable then pkgs.zsh else pkgs.bash;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBTXSL0w7OUcz1LzEt1T3I3K5RgyNV+MYz0x/1RbpDHQ felixalb@worf"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDKzPICGew7uN0cmvRmbwkwTCodTBUgEhkoftQnZuO4Q felixalb@pvv.ntnu.no"
