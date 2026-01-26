@@ -18,6 +18,11 @@
     kernelPackages = pkgs.linuxPackages;
   };
 
+  hardware = {
+    enableAllHardware = lib.mkForce false;
+    firmware = [ pkgs.raspberrypiWirelessFirmware ];
+  };
+
   # Now turn off a bunch of stuff lol
   # TODO: can we reduce further?
   # See also https://nixcademy.com/posts/minimizing-nixos-images/
