@@ -34,6 +34,7 @@ in {
   services.idp.sp-remote-metadata = [ "https://wiki.pvv.ntnu.no/simplesaml/" ];
 
   sops.secrets = lib.pipe [
+    "mediawiki/secret-key"
     "mediawiki/password"
     "mediawiki/postgres_password"
     "mediawiki/simplesamlphp/postgres_password"
@@ -179,15 +180,15 @@ in {
 
   # Cache directory for simplesamlphp
   # systemd.services.phpfpm-mediawiki.serviceConfig.CacheDirectory = "mediawiki/simplesamlphp";
-  systemd.tmpfiles.settings."10-mediawiki"."/var/cache/mediawiki/simplesamlphp".d = {
+  systemd.tmpfiles.settings."10-mediawiki"."/var/cache/mediawiki/simplesamlphp".d = lib.mkIf cfg.enable {
     user = "mediawiki";
     group = "mediawiki";
     mode = "0770";
   };
 
-  users.groups.mediawiki.members = [ "nginx" ];
+  users.groups.mediawiki.members = lib.mkIf cfg.enable [ "nginx" ];
 
-  services.nginx.virtualHosts."wiki.pvv.ntnu.no" = {
+  services.nginx.virtualHosts."wiki.pvv.ntnu.no" = lib.mkIf cfg.enable {
     kTLS = true;
     forceSSL = true;
     enableACME = true;
@@ -232,5 +233,21 @@ in {
       '';
     };
 
+  };
+
+  systemd.services.mediawiki-init = lib.mkIf cfg.enable {
+    after = [ "sops-install-secrets.service" ];
+    serviceConfig = {
+      BindReadOnlyPaths = [ "/run/credentials/mediawiki-init.service/secret-key:/var/lib/mediawiki/secret.key" ];
+      LoadCredential = [ "secret-key:${config.sops.secrets."mediawiki/secret-key".path}" ];
+    };
+  };
+
+  systemd.services.phpfpm-mediawiki = lib.mkIf cfg.enable {
+    after = [ "sops-install-secrets.service" ];
+    serviceConfig = {
+      BindReadOnlyPaths = [ "/run/credentials/phpfpm-mediawiki.service/secret-key:/var/lib/mediawiki/secret.key" ];
+      LoadCredential = [ "secret-key:${config.sops.secrets."mediawiki/secret-key".path}" ];
+    };
   };
 }
