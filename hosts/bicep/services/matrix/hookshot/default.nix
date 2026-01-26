@@ -14,6 +14,10 @@ in
     sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "hookshot/hs_token";
   };
+  sops.secrets."matrix/hookshot/passkey" = {
+    sopsFile = fp /secrets/bicep/matrix.yaml;
+    key = "hookshot/passkey";
+  };
 
   sops.templates."hookshot-registration.yaml" = {
     owner = config.users.users.matrix-synapse.name;
@@ -44,9 +48,14 @@ in
   };
 
   systemd.services.matrix-hookshot = {
-    serviceConfig.SupplementaryGroups = [
-      config.users.groups.keys-matrix-registrations.name
-    ];
+    serviceConfig = {
+      SupplementaryGroups = [
+        config.users.groups.keys-matrix-registrations.name
+      ];
+      LoadCredential = [
+        "passkey.pem:${config.sops.secrets."matrix/hookshot/passkey".path}"
+      ];
+    };
   };
 
   services.matrix-hookshot = {
@@ -54,6 +63,8 @@ in
     package = unstablePkgs.matrix-hookshot;
     registrationFile = config.sops.templates."hookshot-registration.yaml".path;
     settings = {
+      passFile = "/run/credentials/matrix-hookshot.service/passkey.pem";
+
       bridge = {
         bindAddress = "127.0.0.1";
         domain = "pvv.ntnu.no";
@@ -61,6 +72,7 @@ in
         mediaUrl = "https://matrix.pvv.ntnu.no";
         port = 9993;
       };
+
       listeners = [
         {
           bindAddress = webhookListenAddress;
@@ -73,6 +85,7 @@ in
           ];
         }
       ];
+
       generic = {
         enabled = true;
         outbound = true;
