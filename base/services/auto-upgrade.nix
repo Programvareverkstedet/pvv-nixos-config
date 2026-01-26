@@ -28,7 +28,7 @@ in
 
   # workaround for https://github.com/NixOS/nix/issues/6895
   # via https://git.lix.systems/lix-project/lix/issues/400
-  environment.etc = lib.mkIf (!config.virtualisation.isVmVariant) {
+  environment.etc = lib.mkIf (!config.virtualisation.isVmVariant && config.system.autoUpgrade.enable) {
     "current-system-flake-inputs.json".source
       = pkgs.writers.writeJSON "flake-inputs.json" (
         lib.flip lib.mapAttrs inputs (name: input:
