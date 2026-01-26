@@ -49,6 +49,24 @@ in {
     lib.listToAttrs
   ];
 
+  services.rsync-pull-targets = {
+    enable = true;
+    locations.${cfg.uploadsDir} = {
+      user = config.services.root;
+      rrsyncArgs.ro = true;
+      authorizedKeysAttrs = [
+        "restrict"
+        "no-agent-forwarding"
+        "no-port-forwarding"
+        "no-pty"
+        "no-X11-forwarding"
+      ];
+      # TODO: create new key on principal
+      enable = false;
+      publicKey = "";
+    };
+  };
+
   services.mediawiki = {
     enable = true;
     name = "Programvareverkstedet";

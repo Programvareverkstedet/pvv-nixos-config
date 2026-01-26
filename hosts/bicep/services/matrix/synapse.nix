@@ -27,6 +27,24 @@ in {
     '';
   };
 
+  services.rsync-pull-targets = {
+    enable = true;
+    locations.${cfg.settings.media_store_path} = {
+      user = config.services.root;
+      rrsyncArgs.ro = true;
+      authorizedKeysAttrs = [
+        "restrict"
+        "no-agent-forwarding"
+        "no-port-forwarding"
+        "no-pty"
+        "no-X11-forwarding"
+      ];
+      # TODO: create new key on principal
+      enable = false;
+      publicKey = "";
+    };
+  };
+
   services.matrix-synapse-next = {
     enable = true;
 
