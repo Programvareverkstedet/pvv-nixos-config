@@ -29,6 +29,8 @@ in {
       (mkHostScrapeConfig "lupine-4" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
       (mkHostScrapeConfig "lupine-5" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
 
+      (mkHostScrapeConfig "skrott" [ defaultNodeExporterPort defaultSystemdExporterPort ])
+
       (mkHostScrapeConfig "hildring" [ defaultNodeExporterPort ])
       (mkHostScrapeConfig "isvegg" [ defaultNodeExporterPort ])
       (mkHostScrapeConfig "microbel" [ defaultNodeExporterPort ])
