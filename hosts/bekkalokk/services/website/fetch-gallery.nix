@@ -3,13 +3,21 @@ let
   galleryDir = config.services.pvv-nettsiden.settings.GALLERY.DIR;
   transferDir = "${config.services.pvv-nettsiden.settings.GALLERY.DIR}-transfer";
 in {
-  users.users.${config.services.pvv-nettsiden.user} = {
-    useDefaultShell = true;
-
-    # This is pushed from microbel:/var/www/www-gallery/build-gallery.sh
-    openssh.authorizedKeys.keys = [
-    ''command="${pkgs.rrsync}/bin/rrsync -wo ${transferDir}",restrict,no-agent-forwarding,no-port-forwarding,no-pty,no-X11-forwarding ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIjHhC2dikhWs/gG+m7qP1eSohWzTehn4ToNzDSOImyR gallery-publish''
-    ];
+  # This is pushed from microbel:/var/www/www-gallery/build-gallery.sh
+  services.rsync-pull-targets = {
+    enable = true;
+    locations.${transferDir} = {
+      user = config.services.pvv-nettsiden.user;
+      rrsyncArgs.wo = true;
+      authorizedKeysAttrs = [
+        "restrict"
+        "no-agent-forwarding"
+        "no-port-forwarding"
+        "no-pty"
+        "no-X11-forwarding"
+      ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIjHhC2dikhWs/gG+m7qP1eSohWzTehn4ToNzDSOImyR gallery-publish";
+    };
   };
 
   systemd.paths.pvv-nettsiden-gallery-update = {

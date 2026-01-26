@@ -129,6 +129,7 @@
           ] ++ (lib.optionals enableDefaults [
             sops-nix.nixosModules.sops
             inputs.roowho2.nixosModules.default
+            self.nixosModules.rsync-pull-targets
           ]) ++ modules;
         }
         (builtins.removeAttrs extraArgs [
@@ -270,11 +271,12 @@
 
     nixosModules = {
       bluemap = ./modules/bluemap.nix;
-      snakeoil-certs = ./modules/snakeoil-certs.nix;
-      snappymail = ./modules/snappymail.nix;
-      robots-txt = ./modules/robots-txt.nix;
       gickup = ./modules/gickup;
       matrix-ooye = ./modules/matrix-ooye.nix;
+      robots-txt = ./modules/robots-txt.nix;
+      rsync-pull-targets = ./modules/rsync-pull-targets.nix;
+      snakeoil-certs = ./modules/snakeoil-certs.nix;
+      snappymail = ./modules/snappymail.nix;
     };
 
     devShells = forAllSystems (system: {
