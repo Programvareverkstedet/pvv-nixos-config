@@ -111,6 +111,16 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # assertions = lib.pipe cfg.locations [
+    #   (lib.filterAttrs (_: value: value.enable))
+      # TODO: assert that there are no duplicate (user, publicKey) pairs.
+      #       if there are then ssh won't know which command to provide and might provide a random one, not sure.
+      # (lib.mapAttrsToList (_: { user, location, publicKey, ... }: {
+      #   assertion =
+      #   message = "";
+      # })
+    # ];
+
     services.openssh.enable = true;
     users.users = lib.pipe cfg.locations [
       (lib.filterAttrs (_: value: value.enable))
