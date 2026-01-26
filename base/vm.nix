@@ -11,5 +11,6 @@
   };
   config.virtualisation.vmVariant = {
     virtualisation.isVmVariant = true;
+    virtualisation.graphics = false;
   };
 }
