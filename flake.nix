@@ -320,10 +320,12 @@
       //
       # Skrott is exception
       {
-        skrott = self.packages.${system}.skrott-native;
-        skrott-native = self.nixosConfigurations.skrott-native.config.system.build.sdImage;
-        skrott-cross = self.nixosConfigurations.skrott.config.system.build.sdImage;
-        skrott-x86_64 = self.nixosConfigurations.skrott.config.system.build.toplevel;
+        skrott = self.packages.${system}.skrott-native-sd;
+        skrott-native = self.nixosConfigurations.skrott-native.config.system.build.toplevel;
+        skrott-native-sd = self.nixosConfigurations.skrott-native.config.system.build.sdImage;
+        skrott-cross = self.nixosConfigurations.skrott-cross.config.system.build.toplevel;
+        skrott-cross-sd = self.nixosConfigurations.skrott-cross.config.system.build.sdImage;
+        skrott-x86_64 = self.nixosConfigurations.skrott-x86_64.config.system.build.toplevel;
       }
       //
       # Nix-topology
