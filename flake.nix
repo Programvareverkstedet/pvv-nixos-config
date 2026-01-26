@@ -242,17 +242,18 @@
         ];
       };
     in {
-      skrott = stableNixosConfig "skrott" (skrottConfig // {
+      skrott = self.nixosConfigurations.skrott-native;
+      skrott-native = stableNixosConfig "skrott" (skrottConfig // {
+        localSystem = "aarch64-linux";
+        crossSystem = "aarch64-linux";
+      });
+      skrott-cross = stableNixosConfig "skrott" (skrottConfig // {
         localSystem = "x86_64-linux";
         crossSystem = "aarch64-linux";
       });
       skrott-x86_64 = stableNixosConfig "skrott" (skrottConfig // {
         localSystem = "x86_64-linux";
         crossSystem = "x86_64-linux";
-      });
-      skrott-native = stableNixosConfig "skrott" (skrottConfig // {
-        localSystem = "aarch64-linux";
-        crossSystem = "aarch64-linux";
       });
     })
     //
@@ -289,13 +290,14 @@
 
     packages = {
       "x86_64-linux" = let
-        pkgs = nixpkgs.legacyPackages."x86_64-linux";
+        system = "x86_64-linux";
+        pkgs = nixpkgs.legacyPackages.${system};
       in rec {
         default = important-machines;
         important-machines = pkgs.linkFarm "important-machines"
-          (lib.getAttrs importantMachines self.packages.x86_64-linux);
+          (lib.getAttrs importantMachines self.packages.${system});
         all-machines = pkgs.linkFarm "all-machines"
-          (lib.getAttrs allMachines self.packages.x86_64-linux);
+          (lib.getAttrs allMachines self.packages.${system});
 
         simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
 
@@ -317,19 +319,21 @@
       //
       # Skrott is exception
       {
-        skrott = self.nixosConfigurations.skrott.config.system.build.sdImage;
+        skrott = self.packages.${system}.skrott-native;
         skrott-native = self.nixosConfigurations.skrott-native.config.system.build.sdImage;
+        skrott-cross = self.nixosConfigurations.skrott.config.system.build.sdImage;
+        skrott-x86_64 = self.nixosConfigurations.skrott.config.system.build.toplevel;
       }
       //
       # Nix-topology
       (let
         topology' = import inputs.nix-topology {
           pkgs = import nixpkgs {
-            system = "x86_64-linux";
+            inherit system;
             overlays = [
               inputs.nix-topology.overlays.default
               (final: prev: {
-                inherit (nixpkgs-unstable.legacyPackages.x86_64-linux) super-tiny-icons;
+                inherit (nixpkgs-unstable.legacyPackages.${system}) super-tiny-icons;
               })
             ];
           };
