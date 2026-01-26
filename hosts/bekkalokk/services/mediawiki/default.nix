@@ -1,4 +1,4 @@
-{ pkgs, lib, fp, config, values, pkgs-unstable, ... }: let
+{ pkgs, lib, fp, config, values, ... }: let
   cfg = config.services.mediawiki;
 
   # "mediawiki"
