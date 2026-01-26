@@ -20,6 +20,7 @@ keys:
   - &host_lupine-3 age1j2u876z8hu87q5npfxzzpfgllyw8ypj66d7cgelmzmnrf3xud34qzkntp9
   - &host_lupine-4 age1t8zlawqkmhye737pn8yx0z3p9cl947d9ktv2cajdc6hnvn52d3fsc59s2k
   - &host_lupine-5 age199zkqq4jp4yc3d0hx2q0ksxdtp42xhmjsqwyngh8tswuck34ke3smrfyqu
+  - &host_skrott age1hlvwswsljxsvrtp4leuw8a8rf8l2q6y06xvxtafvzpq54xm9aegs0kqw2e
   - &host_ustetind age1hffjafs4slznksefmtqrlj7rdaqgzqncn4un938rhr053237ry8s3rs0v8
 
 creation_rules:
@@ -137,6 +138,7 @@ creation_rules:
   - path_regex: secrets/skrott/[^/]+\.yaml$
     key_groups:
     - age:
+      - *host_skrott
       - *user_danio
       - *user_felixalb
       - *user_pederbs_sopp
