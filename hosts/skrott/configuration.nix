@@ -96,11 +96,11 @@
   };
 
   # https://github.com/NixOS/nixpkgs/issues/84105
-  boot.kernelParams = [
+  boot.kernelParams = lib.mkIf (!config.virtualisation.isVmVariant) [
     "console=ttyUSB0,9600"
     # "console=tty1" # Already part of the module
   ];
-  systemd.services."serial-getty@ttyUSB0" = {
+  systemd.services."serial-getty@ttyUSB0" = lib.mkIf (!config.virtualisation.isVmVariant) {
     enable = true;
     wantedBy = [ "getty.target" ]; # to start at boot
     serviceConfig.Restart = "always"; # restart when session is closed
