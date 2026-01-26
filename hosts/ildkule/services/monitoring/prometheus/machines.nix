@@ -19,15 +19,16 @@ in {
       (mkHostScrapeConfig "bicep" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
       (mkHostScrapeConfig "brzeczyszczykiewicz" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
       (mkHostScrapeConfig "georg" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
+      (mkHostScrapeConfig "gluttony" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
       (mkHostScrapeConfig "kommode" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "ustetind" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "wenche" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-
       (mkHostScrapeConfig "lupine-1" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      # (mkHostScrapeConfig "lupine-2" [ defaultNodeExporterPort defaultSystemdExporterPort ])
+      (mkHostScrapeConfig "lupine-2" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
       (mkHostScrapeConfig "lupine-3" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
       (mkHostScrapeConfig "lupine-4" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
       (mkHostScrapeConfig "lupine-5" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
+      (mkHostScrapeConfig "temmie" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
+      (mkHostScrapeConfig "ustetind" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
+      (mkHostScrapeConfig "wenche" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
 
       (mkHostScrapeConfig "skrott" [ defaultNodeExporterPort defaultSystemdExporterPort ])
 
