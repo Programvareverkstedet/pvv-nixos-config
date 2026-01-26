@@ -236,8 +236,9 @@
         overlays = [
           inputs.dibbler.overlays.default
           (final: prev: {
+            # NOTE: Yeetus
             atool = prev.emptyDirectory;
-            micro = prev.vim;
+            micro = prev.emptyDirectory;
           })
         ];
       };
