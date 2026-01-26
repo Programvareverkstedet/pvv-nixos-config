@@ -41,6 +41,9 @@
   programs.zsh.enable = lib.mkForce false;
   programs.git.package = pkgs.gitMinimal;
 
+  nix.registry = lib.mkForce { };
+  nix.nixPath = lib.mkForce [ ];
+
   sops.secrets = {
     "dibbler/postgresql/password" = {
       owner = "dibbler";
