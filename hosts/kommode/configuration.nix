@@ -4,6 +4,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     (fp /base)
+    ./disks.nix
 
     ./services/gitea
     ./services/nginx.nix
