@@ -124,16 +124,22 @@ in
     services.openssh.enable = true;
     users.users = lib.pipe cfg.locations [
       (lib.filterAttrs (_: value: value.enable))
-      (lib.mapAttrs' (_: { user, location, rrsyncPackage, rrsyncArgs, authorizedKeysAttrs, publicKey, ... }: let
-        rrsyncArgString = lib.cli.toCommandLineShellGNU {
-          isLong = _: false;
-        } rrsyncArgs;
-        # TODO: handle " in location
-      in {
-        name = user;
-        value.openssh.authorizedKeys.keys = [
-          "command=\"${lib.getExe rrsyncPackage} ${rrsyncArgString} ${location}\",${lib.concatStringsSep "," authorizedKeysAttrs} ${publicKey}"
-        ];
+
+      lib.attrValues
+
+      # Index locations by SSH user
+      (lib.foldl (acc: location: acc // {
+        ${location.user} = (acc.${location.user} or [ ]) ++ [ location ];
+      }) { })
+
+      (lib.mapAttrs (_name: locations: {
+        openssh.authorizedKeys.keys = map ({ user, location, rrsyncPackage, rrsyncArgs, authorizedKeysAttrs, publicKey, ... }: let
+          rrsyncArgString = lib.cli.toCommandLineShellGNU {
+            isLong = _: false;
+          } rrsyncArgs;
+          # TODO: handle " in location
+        in "command=\"${lib.getExe rrsyncPackage} ${rrsyncArgString} ${location}\",${lib.concatStringsSep "," authorizedKeysAttrs} ${publicKey}"
+        ) locations;
       }))
     ];
   };
