@@ -195,6 +195,22 @@ in {
 
   networking.firewall.allowedTCPPorts = [ sshPort ];
 
+  services.rsync-pull-targets = {
+    enable = true;
+    locations.${cfg.dump.backupDir} = {
+      user = "root";
+      rrsyncArgs.ro = true;
+      authorizedKeysAttrs = [
+        "restrict"
+        "no-agent-forwarding"
+        "no-port-forwarding"
+        "no-pty"
+        "no-X11-forwarding"
+      ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGpMVrOppyqYaDiAhqmAuOaRsubFvcQGBGyz+NHB6+0o gitea rsync backup";
+    };
+  };
+
   systemd.services.gitea-dump = {
     serviceConfig.ExecStart = let
       args = lib.cli.toGNUCommandLineShell { } {
