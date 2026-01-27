@@ -147,7 +147,7 @@
     in {
       bakke = stableNixosConfig "bakke" {
         modules = [
-          disko.nixosModules.disko
+          inputs.disko.nixosModules.disko
         ];
       };
       bicep = stableNixosConfig "bicep" {
@@ -195,6 +195,7 @@
         ];
         modules = [
           inputs.nix-gitea-themes.nixosModules.default
+          inputs.disko.nixosModules.disko
         ];
       };
 
