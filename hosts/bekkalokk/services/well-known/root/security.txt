@@ -6,7 +6,11 @@ Contact: mailto:cert@pvv.ntnu.no
 Preferred-Languages: no, en
 
 Expires: 2032-12-31T23:59:59.000Z
-# This file was last updated 2024-09-14.
+# This file was last updated 2026-02-27.
 
 # You can find a wikipage for our security policies at:
 # https://wiki.pvv.ntnu.no/wiki/CERT
+
+# Please note that we are a student organization, and unfortunately we do not
+# have a bug bounty program or offer monetary compensation for disclosure of
+# security vulnerabilities.
