@@ -52,7 +52,7 @@ in {
   services.rsync-pull-targets = {
     enable = true;
     locations.${cfg.uploadsDir} = {
-      user = config.services.root;
+      user = "root";
       rrsyncArgs.ro = true;
       authorizedKeysAttrs = [
         "restrict"
@@ -61,9 +61,7 @@ in {
         "no-pty"
         "no-X11-forwarding"
       ];
-      # TODO: create new key on principal
-      enable = false;
-      publicKey = "";
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICHFHa3Iq1oKPhbKCAIHgOoWOTkLmIc7yqxeTbut7ig/ mediawiki rsync backup";
     };
   };
 

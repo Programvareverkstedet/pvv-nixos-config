@@ -30,7 +30,7 @@ in {
   services.rsync-pull-targets = {
     enable = true;
     locations.${cfg.settings.media_store_path} = {
-      user = config.services.root;
+      user = "root";
       rrsyncArgs.ro = true;
       authorizedKeysAttrs = [
         "restrict"
@@ -39,9 +39,7 @@ in {
         "no-pty"
         "no-X11-forwarding"
       ];
-      # TODO: create new key on principal
-      enable = false;
-      publicKey = "";
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIASnjI9b3j4ZS3BL/D1ggHfws1BkE8iS0v0cGpEmbG+k matrix_media_store rsync backup";
     };
   };
 
