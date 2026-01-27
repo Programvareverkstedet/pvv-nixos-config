@@ -41,7 +41,7 @@ in
 
   services.mysqlBackup = lib.mkIf cfg.enable {
     enable = true;
-    location = "/var/lib/mysql/backups";
+    location = "/var/lib/mysql-backups";
   };
 
   services.rsync-pull-targets = lib.mkIf cfg.enable {
