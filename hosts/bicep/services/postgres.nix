@@ -1,4 +1,7 @@
-{ config, pkgs, values, ... }:
+{ config, lib, pkgs, values, ... }:
+let
+  cfg = config.services.postgresql;
+in
 {
   services.postgresql = {
     enable = true;
@@ -74,13 +77,13 @@
     };
   };
 
-  systemd.tmpfiles.settings."10-postgresql"."/data/postgresql".d = {
+  systemd.tmpfiles.settings."10-postgresql"."/data/postgresql".d = lib.mkIf cfg.enable {
     user = config.systemd.services.postgresql.serviceConfig.User;
     group = config.systemd.services.postgresql.serviceConfig.Group;
     mode = "0700";
   };
 
-  systemd.services.postgresql-setup = {
+  systemd.services.postgresql-setup = lib.mkIf cfg.enable {
     after = [
       "systemd-tmpfiles-setup.service"
       "systemd-tmpfiles-resetup.service"
@@ -95,7 +98,7 @@
     };
   };
 
-  systemd.services.postgresql = {
+  systemd.services.postgresql = lib.mkIf cfg.enable {
     after = [
       "systemd-tmpfiles-setup.service"
       "systemd-tmpfiles-resetup.service"
@@ -110,22 +113,22 @@
     };
   };
 
-  environment.snakeoil-certs."/etc/certs/postgres" = {
+  environment.snakeoil-certs."/etc/certs/postgres" = lib.mkIf cfg.enable {
     owner = "postgres";
     group = "postgres";
     subject = "/C=NO/O=Programvareverkstedet/CN=postgres.pvv.ntnu.no/emailAddress=drift@pvv.ntnu.no";
   };
 
-  networking.firewall.allowedTCPPorts = [ 5432 ];
-  networking.firewall.allowedUDPPorts = [ 5432 ];
+  networking.firewall.allowedTCPPorts = lib.mkIf cfg.enable [ 5432 ];
+  networking.firewall.allowedUDPPorts = lib.mkIf cfg.enable [ 5432 ];
 
-  services.postgresqlBackup = {
+  services.postgresqlBackup = lib.mkIf cfg.enable {
     enable = true;
     location = "/var/lib/postgres-backups";
     backupAll = true;
   };
 
-  services.rsync-pull-targets = {
+  services.rsync-pull-targets = lib.mkIf cfg.enable {
     enable = true;
     locations.${config.services.postgresqlBackup.location} = {
       user = "root";
