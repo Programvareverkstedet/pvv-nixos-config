@@ -1,15 +1,16 @@
 { pkgs ? import <nixpkgs> {} }:
 pkgs.mkShellNoCC {
   packages = with pkgs; [
-    just
-    jq
+    disko
+    editorconfig-checker
+    gnupg
     gum
+    jq
+    just
+    openstackclient
     sops
     ssh-to-age
-    gnupg
     statix
-    openstackclient
-    editorconfig-checker
   ];
 
   env = {

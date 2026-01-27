@@ -280,7 +280,16 @@
     };
 
     devShells = forAllSystems (system: {
-      default = nixpkgs-unstable.legacyPackages.${system}.callPackage ./shell.nix { };
+      default = let
+        pkgs = import nixpkgs-unstable {
+          inherit system;
+          overlays = [
+            (final: prev: {
+              inherit (inputs.disko.packages.${system}) disko;
+            })
+          ];
+        };
+      in pkgs.callPackage ./shell.nix { };
       cuda = let
         cuda-pkgs = import nixpkgs-unstable {
           inherit system;
