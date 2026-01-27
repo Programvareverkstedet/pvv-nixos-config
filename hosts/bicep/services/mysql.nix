@@ -1,4 +1,8 @@
-{ pkgs, lib, config, values, ... }:
+{ config, pkgs, lib, values, ... }:
+let
+  cfg = config.services.mysql;
+  dataDir = "/data/mysql";
+in
 {
   sops.secrets."mysql/password" = {
     owner = "mysql";
@@ -9,7 +13,6 @@
 
   services.mysql = {
     enable = true;
-    dataDir = "/data/mysql";
     package = pkgs.mariadb;
     settings = {
       mysqld = {
@@ -36,20 +39,34 @@
     }];
   };
 
-  services.mysqlBackup = {
+  services.mysqlBackup = lib.mkIf cfg.enable {
     enable = true;
     location = "/var/lib/mysql/backups";
   };
 
-  networking.firewall.allowedTCPPorts = [ 3306 ];
+  networking.firewall.allowedTCPPorts = lib.mkIf cfg.enable [ 3306 ];
 
-  systemd.services.mysql.serviceConfig = {
-    IPAddressDeny = "any";
-    IPAddressAllow = [
-      values.ipv4-space
-      values.ipv6-space
-      values.hosts.ildkule.ipv4
-      values.hosts.ildkule.ipv6
+  systemd.tmpfiles.settings."10-mysql".${dataDir}.d = lib.mkIf cfg.enable {
+    inherit (cfg) user group;
+    mode = "0700";
+  };
+
+  systemd.services.mysql = lib.mkIf cfg.enable {
+    after = [
+      "systemd-tmpfiles-setup.service"
+      "systemd-tmpfiles-resetup.service"
     ];
+
+    serviceConfig = {
+      BindPaths = [ "${dataDir}:${cfg.dataDir}" ];
+
+      IPAddressDeny = "any";
+      IPAddressAllow = [
+        values.ipv4-space
+        values.ipv6-space
+        values.hosts.ildkule.ipv4
+        values.hosts.ildkule.ipv6
+      ];
+    };
   };
 }
