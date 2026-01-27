@@ -22,7 +22,7 @@ in
     };
   };
 
-  systemd.services.minecraft-heatmap-ingest-logs = {
+  systemd.services.minecraft-heatmap-ingest-logs = lib.mkIf cfg.enable {
     serviceConfig.LoadCredential = [
       "sshkey:${config.sops.secrets."minecraft-heatmap/ssh-key/private".path}"
     ];
