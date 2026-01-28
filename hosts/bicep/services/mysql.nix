@@ -13,7 +13,7 @@ in
 
   services.mysql = {
     enable = true;
-    package = pkgs.mariadb;
+    package = pkgs.mariadb_118;
     settings = {
       mysqld = {
         # PVV allows a lot of connections at the same time
