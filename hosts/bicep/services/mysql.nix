@@ -24,6 +24,9 @@ in
         # This was needed in order to be able to use all of the old users
         # during migration from knakelibrak to bicep in Sep. 2023
         secure_auth = 0;
+
+        slow-query-log = 1;
+        slow-query-log-file = "/var/log/mysql/mysql-slow.log";
       };
     };
 
@@ -75,6 +78,8 @@ in
 
     serviceConfig = {
       BindPaths = [ "${dataDir}:${cfg.dataDir}" ];
+
+      LogsDirectory = "mysql";
 
       IPAddressDeny = "any";
       IPAddressAllow = [
