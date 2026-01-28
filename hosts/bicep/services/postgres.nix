@@ -5,7 +5,7 @@ in
 {
   services.postgresql = {
     enable = true;
-    package = pkgs.postgresql_15;
+    package = pkgs.postgresql_18;
     enableTCPIP = true;
 
     authentication = ''
