@@ -1,8 +1,9 @@
 { config, ... }:
 {
   imports = [
-    ./synapse.nix
     ./synapse-admin.nix
+    ./synapse-auto-compressor.nix
+    ./synapse.nix
     ./element.nix
     ./coturn.nix
     ./livekit.nix
