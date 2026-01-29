@@ -1,17 +1,18 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   cfg = config.services.postgresql;
+  backupDir = "/var/lib/postgresql-backups";
 in
 {
-  services.postgresqlBackup = lib.mkIf cfg.enable {
-    enable = true;
-    location = "/var/lib/postgres-backups";
-    backupAll = true;
-  };
+  # services.postgresqlBackup = lib.mkIf cfg.enable {
+  #   enable = true;
+  #   location = "/var/lib/postgresql-backups";
+  #   backupAll = true;
+  # };
 
   services.rsync-pull-targets = lib.mkIf cfg.enable {
     enable = true;
-    locations.${config.services.postgresqlBackup.location} = {
+    locations.${backupDir} = {
       user = "root";
       rrsyncArgs.ro = true;
       authorizedKeysAttrs = [
@@ -23,5 +24,48 @@ in
       ];
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGvO7QX7QmwSiGLXEsaxPIOpAqnJP3M+qqQRe5dzf8gJ postgresql rsync backup";
     };
+  };
+
+  # NOTE: instead of having the upstream nixpkgs postgres backup unit trigger
+  #       another unit, it was easier to just make one ourselves
+  systemd.services."backup-postgresql" = {
+    description = "Backup PostgreSQL data";
+    requires = [ "postgresql.service" ];
+
+    path = with pkgs; [
+      coreutils
+      gzip
+      cfg.package
+    ];
+
+    script = let
+      rotations = 1;
+    in ''
+      set -eo pipefail
+
+      pg_dumpall -U postgres | gzip -c -9 --rsyncable > "${backupDir}/postgresql-dump.sql.gz"
+    '';
+
+    # pg_dumpall -U postgres | gzip -c -9 --rsyncable > "${backupDir}/$(date --iso-8601)-dump.sql.gz"
+    # while [ $(ls -1 "${backupDir}" | wc -l) -gt ${toString rotations} ]; do
+    #   rm $(find "${backupDir}" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)
+    # done
+
+    serviceConfig = {
+      Type = "oneshot";
+      User = "postgres";
+      Group = "postgres";
+      UMask = "0077";
+
+      Nice = 19;
+      IOSchedulingClass = "best-effort";
+      IOSchedulingPriority = 7;
+
+      StateDirectory = [ (builtins.baseNameOf backupDir) ];
+
+      # TODO: hardening
+    };
+
+    startAt = "*-*-* 01:15:00";
   };
 }
