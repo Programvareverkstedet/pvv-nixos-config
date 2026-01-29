@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.services.postgresql;
-  backupDir = "/var/lib/postgresql-backups";
+  backupDir = "/data/postgresql-backups";
 in
 {
   # services.postgresqlBackup = lib.mkIf cfg.enable {
@@ -9,6 +9,12 @@ in
   #   location = "/var/lib/postgresql-backups";
   #   backupAll = true;
   # };
+
+  systemd.tmpfiles.settings."10-postgresql-backups".${backupDir}.d = {
+	  user = "postgres";
+	  group = "postgres";
+	  mode = "700";
+	};
 
   services.rsync-pull-targets = lib.mkIf cfg.enable {
     enable = true;
@@ -43,7 +49,7 @@ in
     in ''
       set -eo pipefail
 
-      pg_dumpall -U postgres | gzip -c -9 --rsyncable > "${backupDir}/postgresql-dump.sql.gz"
+      pg_dumpall -U postgres | gzip -c -9 --rsyncable > "/var/lib//postgresql-backups/postgresql-dump.sql.gz"
     '';
 
     # pg_dumpall -U postgres | gzip -c -9 --rsyncable > "${backupDir}/$(date --iso-8601)-dump.sql.gz"
@@ -61,7 +67,8 @@ in
       IOSchedulingClass = "best-effort";
       IOSchedulingPriority = 7;
 
-      StateDirectory = [ (builtins.baseNameOf backupDir) ];
+      StateDirectory = [ "postgresql-backups" ];
+      BindPaths = [ "${backupDir}:/var/lib/postgresql-backups" ];
 
       # TODO: hardening
     };

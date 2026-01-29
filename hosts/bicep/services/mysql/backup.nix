@@ -1,13 +1,19 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.services.mysql;
-  backupDir = "/var/lib/mysql-backups";
+  backupDir = "/data/mysql-backups";
 in
 {
   # services.mysqlBackup = lib.mkIf cfg.enable {
   #   enable = true;
   #   location = "/var/lib/mysql-backups";
   # };
+
+  systemd.tmpfiles.settings."10-mysql-backups".${backupDir}.d = {
+	  user = "mysql";
+	  group = "mysql";
+	  mode = "700";
+	};
 
   services.rsync-pull-targets = lib.mkIf cfg.enable {
     enable = true;
@@ -42,8 +48,7 @@ in
     in ''
       set -eo pipefail
 
-      mysqldump --all-databases | gzip -c -9 --rsyncable > "${backupDir}/mysql-dump.sql.gz"
-
+      mysqldump --all-databases | gzip -c -9 --rsyncable > "/var/lib/mysql-backups/mysql-dump.sql.gz"
     '';
 
     # NOTE: keep multiple backups and symlink latest one once we have more disk again
@@ -63,7 +68,8 @@ in
       IOSchedulingClass = "best-effort";
       IOSchedulingPriority = 7;
 
-      StateDirectory = [ (builtins.baseNameOf backupDir) ];
+      StateDirectory = [ "mysql-backups" ];
+      BindPaths = [ "${backupDir}:/var/lib/mysql-backups" ];
 
       # TODO: hardening
     };
