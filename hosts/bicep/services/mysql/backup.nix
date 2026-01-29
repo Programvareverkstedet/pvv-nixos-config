@@ -44,19 +44,21 @@ in
     ];
 
     script = let
-      rotations = 1;
+      rotations = 2;
     in ''
-      set -eo pipefail
+      set -euo pipefail
 
-      mysqldump --all-databases | zstd --compress -9 --rsyncable -o "/var/lib/mysql-backups/mysql-dump.sql.zst"
+      OUT_FILE="$STATE_DIRECTORY/mysql-dump-$(date --iso-8601).sql.zst"
+
+      mysqldump --all-databases | zstd --compress -9 --rsyncable -o "$OUT_FILE"
+
+      rm "$STATE_DIRECTORY/mysql-dump-latest.sql.zst" ||:
+      ln -s -T "$OUT_FILE" "$STATE_DIRECTORY/mysql-dump-latest.sql.zst"
+
+      while [ $(find -type f "$STATE_DIRECTORY" -printf '.' | wc -c) -gt ${toString rotations} ]; do
+        rm $(find "$STATE_DIRECTORY" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)
+      done
     '';
-
-    # NOTE: keep multiple backups and symlink latest one once we have more disk again
-    # mysqldump --all-databases | zstd --compress -9 --rsyncable -o "${backupDir}/$(date --iso-8601)-dump.sql.zst"
-
-    # while [ $(ls -1 "${backupDir}" | wc -l) -gt ${toString rotations} ]; do
-    #   rm $(find "${backupDir}" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)
-    # done
 
     serviceConfig = {
       Type = "oneshot";
