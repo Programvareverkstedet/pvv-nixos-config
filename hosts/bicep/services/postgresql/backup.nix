@@ -40,7 +40,7 @@ in
 
     path = with pkgs; [
       coreutils
-      gzip
+      zstd
       cfg.package
     ];
 
@@ -49,10 +49,10 @@ in
     in ''
       set -eo pipefail
 
-      pg_dumpall -U postgres | gzip -c -9 --rsyncable > "/var/lib//postgresql-backups/postgresql-dump.sql.gz"
+      pg_dumpall -U postgres | zstd --compress -9 --rsyncable -o "/var/lib//postgresql-backups/postgresql-dump.sql.zstd"
     '';
 
-    # pg_dumpall -U postgres | gzip -c -9 --rsyncable > "${backupDir}/$(date --iso-8601)-dump.sql.gz"
+    # pg_dumpall -U postgres | zstd --compress -9 --rsyncable -o "${backupDir}/$(date --iso-8601)-dump.sql.zst"
     # while [ $(ls -1 "${backupDir}" | wc -l) -gt ${toString rotations} ]; do
     #   rm $(find "${backupDir}" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)
     # done

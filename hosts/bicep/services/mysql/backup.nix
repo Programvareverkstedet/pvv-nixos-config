@@ -40,7 +40,7 @@ in
     path = with pkgs; [
       cfg.package
       coreutils
-      gzip
+      zstd
     ];
 
     script = let
@@ -48,11 +48,11 @@ in
     in ''
       set -eo pipefail
 
-      mysqldump --all-databases | gzip -c -9 --rsyncable > "/var/lib/mysql-backups/mysql-dump.sql.gz"
+      mysqldump --all-databases | zstd --compress -9 --rsyncable -o "/var/lib/mysql-backups/mysql-dump.sql.zst"
     '';
 
     # NOTE: keep multiple backups and symlink latest one once we have more disk again
-    # mysqldump --all-databases | gzip -c -9 --rsyncable > "${backupDir}/$(date --iso-8601)-dump.sql.gz"
+    # mysqldump --all-databases | zstd --compress -9 --rsyncable -o "${backupDir}/$(date --iso-8601)-dump.sql.zst"
 
     # while [ $(ls -1 "${backupDir}" | wc -l) -gt ${toString rotations} ]; do
     #   rm $(find "${backupDir}" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)
