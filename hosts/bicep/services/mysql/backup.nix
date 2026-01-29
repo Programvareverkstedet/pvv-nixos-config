@@ -52,8 +52,9 @@ in
 
       mysqldump --all-databases | zstd --compress -9 --rsyncable -o "$OUT_FILE"
 
+      # NOTE: this needs to be a hardlink for rrsync to allow sending it
       rm "$STATE_DIRECTORY/mysql-dump-latest.sql.zst" ||:
-      ln -s -T "$OUT_FILE" "$STATE_DIRECTORY/mysql-dump-latest.sql.zst"
+      ln -T "$OUT_FILE" "$STATE_DIRECTORY/mysql-dump-latest.sql.zst"
 
       while [ $(find -type f "$STATE_DIRECTORY" -printf '.' | wc -c) -gt ${toString rotations} ]; do
         rm $(find "$STATE_DIRECTORY" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)
