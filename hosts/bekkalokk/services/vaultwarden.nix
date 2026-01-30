@@ -99,4 +99,20 @@ in {
       ];
     };
   };
+
+  services.rsync-pull-targets = {
+    enable = true;
+    locations."/var/lib/vaultwarden" = {
+      user = "root";
+      rrsyncArgs.ro = true;
+      authorizedKeysAttrs = [
+        "restrict"
+        "no-agent-forwarding"
+        "no-port-forwarding"
+        "no-pty"
+        "no-X11-forwarding"
+      ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2cDaW52gBtLVaNqoGijvN2ZAVkAWlII5AXUzT3Dswj vaultwarden rsync backup";
+    };
+  };
 }
