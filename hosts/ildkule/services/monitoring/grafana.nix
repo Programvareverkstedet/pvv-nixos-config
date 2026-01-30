@@ -47,13 +47,13 @@ in {
         {
           name = "Node Exporter Full";
           type = "file";
-          url = "https://grafana.com/api/dashboards/1860/revisions/29/download";
+          url = "https://grafana.com/api/dashboards/1860/revisions/42/download";
           options.path = dashboards/node-exporter-full.json;
         }
         {
           name = "Matrix Synapse";
           type = "file";
-          url = "https://raw.githubusercontent.com/matrix-org/synapse/develop/contrib/grafana/synapse.json";
+          url = "https://github.com/element-hq/synapse/raw/refs/heads/develop/contrib/grafana/synapse.json";
           options.path = dashboards/synapse.json;
         }
         {
@@ -65,7 +65,7 @@ in {
         {
           name = "Postgresql";
           type = "file";
-          url = "https://grafana.com/api/dashboards/9628/revisions/7/download";
+          url = "https://grafana.com/api/dashboards/9628/revisions/8/download";
           options.path = dashboards/postgres.json;
         }
         {
