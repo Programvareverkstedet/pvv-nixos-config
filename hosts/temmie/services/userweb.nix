@@ -9,13 +9,13 @@ let
     extensions = { all, ... }: with all; [
       imagick
       opcache
+      protobuf
     ];
 
     extraConfig = ''
       display_errors=0
       post_max_size = 40M
       upload_max_filesize = 40M
-      extension=sysvsem.so
     '';
   };
 
@@ -73,24 +73,95 @@ let
     name = "userweb-env";
     paths = with pkgs; [
       bash
-      coreutils-full
 
       perlEnv
-      phpEnv
       pythonEnv
 
-      gnused
-      gawk
-      file
-      diffutils
-      gnugrep
-      util-linux
-      iproute2
+      phpEnv
+    ]
+    ++ (with phpEnv.packages; [
+      # composer
+    ])
+    ++ [
+      acl
+      aspell
+      autoconf
+      autotrash
+      bazel
+      bintools
+      bison
+      bsd-finger
+      catdoc
+      ccache
+      clang
+      cmake
+      coreutils-full
       curl
-      less
-
+      devcontainer
+      diffutils
+      emacs
+      # exiftags
+      exiftool
+      ffmpeg
+      file
+      findutils
+      gawk
+      gcc
+      glibc
+      gnugrep
+      gnumake
+      gnupg
       gnuplot
+      gnused
+      gnutar
+      gzip
+      html-tidy
+      inetutils
+      iproute2
+      jhead
+      less
+      libgcc
+      lndir
+      mailutils
+      man # TODO: does this one want a mandb instance?
+      meson
+      more
+      mpc
+      mpi
+      mplayer
+      ninja
+      nix
+      openssh
+      openssl
+      patchelf
+      pkg-config
+      ppp
+      procmail
+      procps
+      qemu
+      rc
+      rhash
+      rsync
+      ruby # TODO: does this one want systemwide packages?
+      salt
+      sccache
+      spamassassin
+      strace
+      subversion
       system-sendmail
+      systemdMinimal
+      texliveMedium
+      tmux
+      unzip
+      util-linux
+      valgrind
+      vim
+      wget
+      which
+      wine
+      xdg-utils
+      zip
+      zstd
     ];
 
     extraOutputsToInstall = [
