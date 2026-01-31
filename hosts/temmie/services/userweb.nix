@@ -161,6 +161,7 @@ in
 
       ConfigurationDirectory = [ "httpd" ];
       LogsDirectory = [ "httpd" ];
+      LogsDirectoryMode = "0700";
 
       CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
       LockPersonality = true;
