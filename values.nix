@@ -73,6 +73,10 @@ in rec {
       ipv4 = pvv-ipv4 179;
       ipv6 = pvv-ipv6 "1:2";
     };
+    principal = {
+      ipv4 = pvv-ipv4 233;
+      ipv6 = pvv-ipv6 "4:233";
+    };
     ustetind = {
       ipv4 = pvv-ipv4 234;
       ipv6 = pvv-ipv6 234;

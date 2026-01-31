@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, values, ... }:
 let
   cfg = config.services.vaultwarden;
   domain = "pw.pvv.ntnu.no";
@@ -107,6 +107,7 @@ in {
       rrsyncArgs.ro = true;
       authorizedKeysAttrs = [
         "restrict"
+        "from=\"principal.pvv.ntnu.no,${values.hosts.principal.ipv6},${values.hosts.principal.ipv4}\""
         "no-agent-forwarding"
         "no-port-forwarding"
         "no-pty"

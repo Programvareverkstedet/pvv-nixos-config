@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, values, ... }:
 let
   cfg = config.services.mysql;
   backupDir = "/data/mysql-backups";
@@ -22,6 +22,7 @@ in
       rrsyncArgs.ro = true;
       authorizedKeysAttrs = [
         "restrict"
+        "from=\"principal.pvv.ntnu.no,${values.hosts.principal.ipv6},${values.hosts.principal.ipv4}\""
         "no-agent-forwarding"
         "no-port-forwarding"
         "no-pty"
