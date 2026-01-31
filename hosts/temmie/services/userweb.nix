@@ -29,6 +29,8 @@ let
   # https://nixos.org/manual/nixpkgs/stable/#python.buildenv-function
   pythonEnv = pkgs.python3.buildEnv.override {
     extraLibs = with pkgs.python3Packages; [
+      legacy-cgi
+
       matplotlib
       requests
     ];
