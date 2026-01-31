@@ -21,6 +21,7 @@ let
 
   perlEnv = pkgs.perl.withPackages (ps: with ps; [
     pkgs.exiftool
+    pkgs.ikiwiki
     pkgs.irssi
     pkgs.nix.libs.nix-perl-bindings
 
@@ -43,6 +44,7 @@ let
     HTMLTagset
     HTTPDAV
     HTTPDaemon
+    ImageMagick
     JSON
     LWP
     MozillaCA
@@ -116,6 +118,7 @@ let
       gnutar
       gzip
       html-tidy
+      imagemagick
       inetutils
       iproute2
       jhead
@@ -145,6 +148,7 @@ let
       ruby # TODO: does this one want systemwide packages?
       salt
       sccache
+      sourceHighlight
       spamassassin
       strace
       subversion
