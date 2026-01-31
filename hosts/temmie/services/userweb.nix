@@ -220,6 +220,7 @@ in
         UserDir ${lib.concatMapStringsSep " " (l: "/home/pvv/${l}/*/web-docs") homeLetters}
         UserDir disabled root
         AddHandler cgi-script .cgi
+        DirectoryIndex index.html index.html.var index.php index.php3 index.cgi index.phtml index.shtml meg.html
 
         <Directory "/home/pvv/?/*/web-docs">
           Options MultiViews Indexes SymLinksIfOwnerMatch ExecCGI IncludesNoExec
