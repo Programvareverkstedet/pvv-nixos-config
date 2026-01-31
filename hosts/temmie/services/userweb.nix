@@ -20,9 +20,40 @@ let
   };
 
   perlEnv = pkgs.perl.withPackages (ps: with ps; [
-    TextPDF
+    pkgs.exiftool
+    pkgs.irssi
+    pkgs.nix.libs.nix-perl-bindings
+
+    AlgorithmDiff
+    AnyEvent
+    AnyEventI3
+    ArchiveZip
     CGI
+    CPAN
+    CPANPLUS
+    DBDPg
+    DBDSQLite
+    DBI
+    EmailAddress
+    EmailSimple
+    Env
+    Git
+    HTMLMason
+    HTMLParser
+    HTMLTagset
+    HTTPDAV
+    HTTPDaemon
+    JSON
     LWP
+    MozillaCA
+    PathTiny
+    Switch
+    SysSyslog
+    TestPostgreSQL
+    TextPDF
+    TieFile
+    Tk
+    URI
     XMLLibXML
   ]);
 
