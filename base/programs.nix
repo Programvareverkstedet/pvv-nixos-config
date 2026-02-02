@@ -19,6 +19,9 @@
     # Check computer specs
     lshw
 
+    # Check who is keeping open files
+    lsof
+
     # Scan for open ports with netstat
     net-tools
 
