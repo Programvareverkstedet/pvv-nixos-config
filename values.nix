@@ -91,7 +91,7 @@ in rec {
     };
     gluttony = {
       ipv4 = "129.241.100.118";
-      ipv4_internal = "192.168.20.11";
+      ipv4_internal = "192.168.20.77";
       ipv4_internal_gw = "192.168.20.1";
       ipv6 = "2001:700:305:aa07::3b3";
     };
