@@ -1,8 +1,14 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, values, ... }:
 let
   galleryDir = config.services.pvv-nettsiden.settings.GALLERY.DIR;
   transferDir = "${config.services.pvv-nettsiden.settings.GALLERY.DIR}-transfer";
 in {
+  users.users.${config.services.pvv-nettsiden.user} = {
+    # NOTE: the user unfortunately needs a registered shell for rrsync to function...
+    #       is there anything we can do to remove this?
+    useDefaultShell = true;
+  };
+
   # This is pushed from microbel:/var/www/www-gallery/build-gallery.sh
   services.rsync-pull-targets = {
     enable = true;
@@ -11,6 +17,7 @@ in {
       rrsyncArgs.wo = true;
       authorizedKeysAttrs = [
         "restrict"
+        "from=\"microbel.pvv.ntnu.no,${values.hosts.microbel.ipv6},${values.hosts.microbel.ipv4}\""
         "no-agent-forwarding"
         "no-port-forwarding"
         "no-pty"
