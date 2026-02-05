@@ -28,7 +28,7 @@ in
   users.users."gitea-web" = {
     group = "gitea-web";
     isSystemUser = true;
-    shell = pkgs.bash;
+    useDefaultShell = true;
   };
 
   sops.secrets."gitea/web-secret-provider/token" = {
