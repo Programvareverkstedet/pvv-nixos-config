@@ -162,6 +162,24 @@ in {
       $wgDBserver = "${toString cfg.database.host}";
       $wgAllowCopyUploads = true;
 
+      # Files
+      $wgFileExtensions = [
+        'bmp',
+        'gif',
+        'jpeg',
+        'jpg',
+        'mp3',
+        'odg',
+        'odp',
+        'ods',
+        'odt',
+        'pdf',
+        'png',
+        'tiff',
+        'webm',
+        'webp',
+      ];
+
       # Misc program paths
       $wgFFmpegLocation = '${pkgs.ffmpeg}/bin/ffmpeg';
       $wgExiftool = '${pkgs.exiftool}/bin/exiftool';
