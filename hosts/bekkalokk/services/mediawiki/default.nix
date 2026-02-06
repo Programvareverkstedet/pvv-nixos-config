@@ -275,6 +275,7 @@ in {
     serviceConfig = {
       BindReadOnlyPaths = [ "/run/credentials/mediawiki-init.service/secret-key:/var/lib/mediawiki/secret.key" ];
       LoadCredential = [ "secret-key:${config.sops.secrets."mediawiki/secret-key".path}" ];
+      UMask = lib.mkForce "0007";
     };
   };
 
@@ -283,6 +284,7 @@ in {
     serviceConfig = {
       BindReadOnlyPaths = [ "/run/credentials/phpfpm-mediawiki.service/secret-key:/var/lib/mediawiki/secret.key" ];
       LoadCredential = [ "secret-key:${config.sops.secrets."mediawiki/secret-key".path}" ];
+      UMask = lib.mkForce "0007";
     };
   };
 }
