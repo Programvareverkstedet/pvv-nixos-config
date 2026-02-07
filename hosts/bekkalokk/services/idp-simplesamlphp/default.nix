@@ -1,8 +1,24 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
+  themePvv = pkgs.fetchFromGitea {
+    domain = "git.pvv.ntnu.no";
+    owner = "Drift";
+    repo = "ssp-theme";
+    rev = "bda4314030be5f81aeaf2fb1927aee582f1194d9";
+    hash = "sha256-naNRyPL6PAsZKW2w1Vt9wrHT9inCL/yAFnvpy4glv+c=";
+  };
+
   pwAuthScript = pkgs.writeShellApplication {
     name = "pwauth";
-    runtimeInputs = with pkgs; [ coreutils heimdal ];
+    runtimeInputs = with pkgs; [
+      coreutils
+      heimdal
+    ];
     text = ''
       read -r user1
       user2="$(echo -n "$user1" | tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz')"
@@ -33,7 +49,7 @@ let
 
       "metadata/saml20-sp-remote.php" = pkgs.writeText "saml20-sp-remote.php" ''
         <?php
-          ${ lib.pipe config.services.idp.sp-remote-metadata [
+          ${lib.pipe config.services.idp.sp-remote-metadata [
             (map (url: ''
               $metadata['${url}'] = [
                 'SingleLogoutService' => [
@@ -85,18 +101,27 @@ let
 
         substituteInPlace "$out" \
           --replace-warn '$SAML_COOKIE_SECURE' 'true' \
-          --replace-warn '$SAML_COOKIE_SALT' 'file_get_contents("${config.sops.secrets."idp/cookie_salt".path}")' \
+          --replace-warn '$SAML_COOKIE_SALT' 'file_get_contents("${
+            config.sops.secrets."idp/cookie_salt".path
+          }")' \
           --replace-warn '$SAML_ADMIN_NAME' '"Drift"' \
           --replace-warn '$SAML_ADMIN_EMAIL' '"drift@pvv.ntnu.no"' \
-          --replace-warn '$SAML_ADMIN_PASSWORD' 'file_get_contents("${config.sops.secrets."idp/admin_password".path}")' \
+          --replace-warn '$SAML_ADMIN_PASSWORD' 'file_get_contents("${
+            config.sops.secrets."idp/admin_password".path
+          }")' \
           --replace-warn '$SAML_TRUSTED_DOMAINS' 'array( "idp.pvv.ntnu.no" )' \
           --replace-warn '$SAML_DATABASE_DSN' '"pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=idp"' \
           --replace-warn '$SAML_DATABASE_USERNAME' '"idp"' \
-          --replace-warn '$SAML_DATABASE_PASSWORD' 'file_get_contents("${config.sops.secrets."idp/postgres_password".path}")' \
+          --replace-warn '$SAML_DATABASE_PASSWORD' 'file_get_contents("${
+            config.sops.secrets."idp/postgres_password".path
+          }")' \
           --replace-warn '$CACHE_DIRECTORY' '/var/cache/idp'
       '';
 
       "modules/authpwauth/src/Auth/Source/PwAuth.php" = ./authpwauth.php;
+
+      # PVV theme module (themepvv).
+      "modules/themepvv" = themePvv;
     };
   };
 in
@@ -158,23 +183,25 @@ in
     services.phpfpm.pools.idp = {
       user = "idp";
       group = "idp";
-      settings = let
-        listenUser = config.services.nginx.user;
-        listenGroup = config.services.nginx.group;
-      in {
-        "pm" = "dynamic";
-        "pm.max_children" = 32;
-        "pm.max_requests" = 500;
-        "pm.start_servers" = 2;
-        "pm.min_spare_servers" = 2;
-        "pm.max_spare_servers" = 4;
-        "listen.owner" = listenUser;
-        "listen.group" = listenGroup;
+      settings =
+        let
+          listenUser = config.services.nginx.user;
+          listenGroup = config.services.nginx.group;
+        in
+        {
+          "pm" = "dynamic";
+          "pm.max_children" = 32;
+          "pm.max_requests" = 500;
+          "pm.start_servers" = 2;
+          "pm.min_spare_servers" = 2;
+          "pm.max_spare_servers" = 4;
+          "listen.owner" = listenUser;
+          "listen.group" = listenGroup;
 
-        "catch_workers_output" = true;
-        "php_admin_flag[log_errors]" = true;
-        # "php_admin_value[error_log]" = "stderr";
-      };
+          "catch_workers_output" = true;
+          "php_admin_flag[log_errors]" = true;
+          # "php_admin_value[error_log]" = "stderr";
+        };
     };
 
     services.nginx.virtualHosts."idp.pvv.ntnu.no" = {
@@ -182,7 +209,7 @@ in
       enableACME = true;
       kTLS = true;
       root = "${package}/share/php/simplesamlphp/public";
-      locations =  {
+      locations = {
         # based on https://simplesamlphp.org/docs/stable/simplesamlphp-install.html#configuring-nginx
         "/" = {
           alias = "${package}/share/php/simplesamlphp/public/";

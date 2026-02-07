@@ -556,6 +556,7 @@ $config = [
     'module.enable' => [
         'admin' => true,
 	'authpwauth' => true,
+	'themepvv' => true,
     ],
 
 
@@ -858,7 +859,7 @@ $config = [
     /*
      * Which theme directory should be used?
      */
-    'theme.use' => 'default',
+    'theme.use' => 'themepvv:pvv',
 
     /*
      * Set this option to the text you would like to appear at the header of each page. Set to false if you don't want
