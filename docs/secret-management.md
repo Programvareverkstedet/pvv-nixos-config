@@ -151,7 +151,7 @@ is up to date, you can do the following:
 
 ```console
 # Fetch gpg (unless you have it already)
-nix-shell -p gpg
+nix shell nixpkgs#gnupg
 
 # Import oysteikts key to the gpg keychain
 gpg --import ./keys/oysteikt.pub
