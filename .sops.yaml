@@ -144,5 +144,6 @@ creation_rules:
       - *user_pederbs_sopp
       - *user_pederbs_nord
       - *user_pederbs_bjarte
+      - *user_vegardbm
       pgp:
       - *user_oysteikt
