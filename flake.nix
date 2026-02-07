@@ -184,6 +184,7 @@
       };
       ildkule = stableNixosConfig "ildkule" { };
       #ildkule-unstable = unstableNixosConfig "ildkule" { };
+      skrot = stableNixosConfig "skrot" { };
       shark = stableNixosConfig "shark" { };
       wenche = stableNixosConfig "wenche" { };
       temmie = stableNixosConfig "temmie" { };

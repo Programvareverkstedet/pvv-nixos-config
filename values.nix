@@ -85,6 +85,10 @@ in rec {
       ipv4 = pvv-ipv4 235;
       ipv6 = pvv-ipv6 235;
     };
+    skrot = {
+      ipv4 = pvv-ipv4 237;
+      ipv6 = pvv-ipv6 237;
+    };
     temmie = {
       ipv4 = pvv-ipv4 167;
       ipv6 = pvv-ipv6 167;
