@@ -81,7 +81,7 @@ in
 
         if [[ ! -f ''${REGISTRATION_FILE} ]]; then
           echo "No registration file found at '$REGISTRATION_FILE'"
-          cp --no-preserve=mode,ownership ${baseConfig} ''${REGISTRATION_FILE}
+          cp --no-preserve=mode,ownership "${baseConfig}" ''${REGISTRATION_FILE}
         fi
 
         echo "After if statement"
@@ -116,7 +116,7 @@ in
         fi
 
         shred -u ''${REGISTRATION_FILE}
-        cp --no-preserve=mode,ownership ${baseConfig} ''${REGISTRATION_FILE}
+        cp --no-preserve=mode,ownership "${baseConfig}" ''${REGISTRATION_FILE}
 
         ${lib.getExe pkgs.jq} '.as_token = "'$AS_TOKEN'" | .hs_token = "'$HS_TOKEN'" | .ooye.discord_token = "'$DISCORD_TOKEN'" | .ooye.discord_client_secret = "'$DISCORD_CLIENT_SECRET'"' ''${REGISTRATION_FILE} > ''${REGISTRATION_FILE}.tmp
 

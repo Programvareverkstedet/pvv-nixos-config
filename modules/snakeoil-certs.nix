@@ -51,8 +51,8 @@ in
       script = let
         openssl = lib.getExe pkgs.openssl;
       in lib.concatMapStringsSep "\n" ({ name, value }: ''
-        mkdir -p $(dirname "${value.certificate}") $(dirname "${value.certificateKey}")
-        if ! ${openssl} x509 -checkend 86400 -noout -in ${value.certificate}
+        mkdir -p "$(dirname "${value.certificate}")" "$(dirname "${value.certificateKey}")"
+        if ! ${openssl} x509 -checkend 86400 -noout -in "${value.certificate}"
         then
           echo "Regenerating '${value.certificate}'"
           ${openssl} req \

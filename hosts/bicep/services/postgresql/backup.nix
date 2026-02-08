@@ -58,7 +58,7 @@ in
       rm "$STATE_DIRECTORY/postgresql-dump-latest.sql.zst" ||:
       ln -T "$OUT_FILE" "$STATE_DIRECTORY/postgresql-dump-latest.sql.zst"
 
-      while [ "$(find "$STATE_DIRECTORY" -type f -printf '.' | wc -c)" -gt ${toString (rotations + 1)} ]; do
+      while [ "$(find "$STATE_DIRECTORY" -type f -printf '.' | wc -c)" -gt "${toString (rotations + 1)}" ]; do
         rm "$(find "$STATE_DIRECTORY" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)"
       done
     '';
