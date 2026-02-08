@@ -77,29 +77,29 @@ in
 
         id
         echo "Before if statement"
-        stat ''${REGISTRATION_FILE}
+        stat "''${REGISTRATION_FILE}"
 
-        if [[ ! -f ''${REGISTRATION_FILE} ]]; then
+        if [[ ! -f "''${REGISTRATION_FILE}" ]]; then
           echo "No registration file found at '$REGISTRATION_FILE'"
-          cp --no-preserve=mode,ownership ${baseConfig} ''${REGISTRATION_FILE}
+          cp --no-preserve=mode,ownership "${baseConfig}" "''${REGISTRATION_FILE}"
         fi
 
         echo "After if statement"
-        stat ''${REGISTRATION_FILE}
+        stat "''${REGISTRATION_FILE}"
 
-        AS_TOKEN=$(${lib.getExe pkgs.jq} -r .as_token ''${REGISTRATION_FILE})
-        HS_TOKEN=$(${lib.getExe pkgs.jq} -r .hs_token ''${REGISTRATION_FILE})
-        DISCORD_TOKEN=$(cat /run/credentials/matrix-ooye-pre-start.service/discord_token)
-        DISCORD_CLIENT_SECRET=$(cat /run/credentials/matrix-ooye-pre-start.service/discord_client_secret)
+        AS_TOKEN="$('${lib.getExe pkgs.jq}' -r .as_token "''${REGISTRATION_FILE}")"
+        HS_TOKEN="$('${lib.getExe pkgs.jq}' -r .hs_token "''${REGISTRATION_FILE}")"
+        DISCORD_TOKEN="$(cat /run/credentials/matrix-ooye-pre-start.service/discord_token)"
+        DISCORD_CLIENT_SECRET="$(cat /run/credentials/matrix-ooye-pre-start.service/discord_client_secret)"
 
         # Check if we have all required tokens
         if [[ -z "$AS_TOKEN" || "$AS_TOKEN" == "null" ]]; then
-          AS_TOKEN=$(${lib.getExe pkgs.openssl} rand -hex 64)
+          AS_TOKEN="$('${lib.getExe pkgs.openssl}' rand -hex 64)"
           echo "Generated new AS token: ''${AS_TOKEN}"
         fi
 
         if [[ -z "$HS_TOKEN" || "$HS_TOKEN" == "null" ]]; then
-          HS_TOKEN=$(${lib.getExe pkgs.openssl} rand -hex 64)
+          HS_TOKEN="$('${lib.getExe pkgs.openssl}' rand -hex 64)"
           echo "Generated new HS token: ''${HS_TOKEN}"
         fi
 
@@ -115,13 +115,13 @@ in
           exit 1
         fi
 
-        shred -u ''${REGISTRATION_FILE}
-        cp --no-preserve=mode,ownership ${baseConfig} ''${REGISTRATION_FILE}
+        shred -u "''${REGISTRATION_FILE}"
+        cp --no-preserve=mode,ownership "${baseConfig}" "''${REGISTRATION_FILE}"
 
-        ${lib.getExe pkgs.jq} '.as_token = "'$AS_TOKEN'" | .hs_token = "'$HS_TOKEN'" | .ooye.discord_token = "'$DISCORD_TOKEN'" | .ooye.discord_client_secret = "'$DISCORD_CLIENT_SECRET'"' ''${REGISTRATION_FILE} > ''${REGISTRATION_FILE}.tmp
+        '${lib.getExe pkgs.jq}' '.as_token = "'$AS_TOKEN'" | .hs_token = "'$HS_TOKEN'" | .ooye.discord_token = "'$DISCORD_TOKEN'" | .ooye.discord_client_secret = "'$DISCORD_CLIENT_SECRET'"' "''${REGISTRATION_FILE}" > "''${REGISTRATION_FILE}.tmp"
 
-        shred -u ''${REGISTRATION_FILE}
-        mv ''${REGISTRATION_FILE}.tmp ''${REGISTRATION_FILE}
+        shred -u "''${REGISTRATION_FILE}"
+        mv "''${REGISTRATION_FILE}.tmp" "''${REGISTRATION_FILE}"
       '';
 
     in

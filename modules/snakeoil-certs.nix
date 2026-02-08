@@ -51,24 +51,24 @@ in
       script = let
         openssl = lib.getExe pkgs.openssl;
       in lib.concatMapStringsSep "\n" ({ name, value }: ''
-        mkdir -p $(dirname "${value.certificate}") $(dirname "${value.certificateKey}")
-        if ! ${openssl} x509 -checkend 86400 -noout -in ${value.certificate}
+        mkdir -p "$(dirname '${value.certificate}')" "$(dirname '${value.certificateKey}')"
+        if ! ${openssl} x509 -checkend 86400 -noout -in '${value.certificate}'
         then
           echo "Regenerating '${value.certificate}'"
           ${openssl} req \
             -newkey rsa:4096 \
             -new -x509 \
-            -days "${toString value.daysValid}" \
+            -days '${toString value.daysValid}' \
             -nodes \
-            -subj "${value.subject}" \
-            -out "${value.certificate}" \
-            -keyout "${value.certificateKey}" \
+            -subj '${value.subject}' \
+            -out '${value.certificate}' \
+            -keyout '${value.certificateKey}' \
             ${lib.escapeShellArgs value.extraOpenSSLArgs}
         fi
-        chown "${value.owner}:${value.group}" "${value.certificate}"
-        chown "${value.owner}:${value.group}" "${value.certificateKey}"
-        chmod "${value.mode}" "${value.certificate}"
-        chmod "${value.mode}" "${value.certificateKey}"
+        chown '${value.owner}:${value.group}' '${value.certificate}'
+        chown '${value.owner}:${value.group}' '${value.certificateKey}'
+        chmod '${value.mode}' '${value.certificate}'
+        chmod '${value.mode}' '${value.certificateKey}'
 
         echo "\n-----------------\n"
       '') (lib.attrsToList cfg);

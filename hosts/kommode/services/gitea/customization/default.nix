@@ -99,23 +99,23 @@ in
         ];
       } ''
         # Bigger icons
-        install -Dm444 "${cfg.package.src}/templates/repo/icon.tmpl" "$out/repo/icon.tmpl"
+        install -Dm444 '${cfg.package.src}/templates/repo/icon.tmpl' "$out/repo/icon.tmpl"
         sed -i -e 's/24/60/g' "$out/repo/icon.tmpl"
       '';
     in ''
-      install -Dm444 ${logo-svg} ${cfg.customDir}/public/assets/img/logo.svg
-      install -Dm444 ${logo-png} ${cfg.customDir}/public/assets/img/logo.png
-      install -Dm444 ${./loading.apng} ${cfg.customDir}/public/assets/img/loading.png
-      install -Dm444 ${extraLinks} ${cfg.customDir}/templates/custom/extra_links.tmpl
-      install -Dm444 ${extraLinksFooter} ${cfg.customDir}/templates/custom/extra_links_footer.tmpl
-      install -Dm444 ${project-labels} ${cfg.customDir}/options/label/project-labels.yaml
+      install -Dm444 '${logo-svg}' '${cfg.customDir}/public/assets/img/logo.svg'
+      install -Dm444 '${logo-png}' '${cfg.customDir}/public/assets/img/logo.png'
+      install -Dm444 '${./loading.apng}' '${cfg.customDir}/public/assets/img/loading.png'
+      install -Dm444 '${extraLinks}' '${cfg.customDir}/templates/custom/extra_links.tmpl'
+      install -Dm444 '${extraLinksFooter}' '${cfg.customDir}/templates/custom/extra_links_footer.tmpl'
+      install -Dm444 '${project-labels}' '${cfg.customDir}/options/label/project-labels.yaml'
 
-      install -Dm644 ${./emotes/bruh.png} ${cfg.customDir}/public/assets/img/emoji/bruh.png
-      install -Dm644 ${./emotes/huh.gif} ${cfg.customDir}/public/assets/img/emoji/huh.png
-      install -Dm644 ${./emotes/grr.png} ${cfg.customDir}/public/assets/img/emoji/grr.png
-      install -Dm644 ${./emotes/okiedokie.jpg} ${cfg.customDir}/public/assets/img/emoji/okiedokie.png
+      install -Dm644 '${./emotes/bruh.png}' '${cfg.customDir}/public/assets/img/emoji/bruh.png'
+      install -Dm644 '${./emotes/huh.gif}' '${cfg.customDir}/public/assets/img/emoji/huh.png'
+      install -Dm644 '${./emotes/grr.png}' '${cfg.customDir}/public/assets/img/emoji/grr.png'
+      install -Dm644 '${./emotes/okiedokie.jpg}' '${cfg.customDir}/public/assets/img/emoji/okiedokie.png'
 
-      "${lib.getExe pkgs.rsync}" -a "${customTemplates}/" ${cfg.customDir}/templates/
+      '${lib.getExe pkgs.rsync}' -a '${customTemplates}/' '${cfg.customDir}/templates/'
     '';
   };
 }
