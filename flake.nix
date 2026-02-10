@@ -187,7 +187,9 @@
       skrot = stableNixosConfig "skrot" {
         modules = [
           inputs.disko.nixosModules.disko
+          inputs.dibbler.nixosModules.default
         ];
+        overlays = [inputs.dibbler.overlays.default];
       };
       shark = stableNixosConfig "shark" { };
       wenche = stableNixosConfig "wenche" { };

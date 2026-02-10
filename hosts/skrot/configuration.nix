@@ -1,7 +1,9 @@
 {
   fp,
   lib,
+  config,
   values,
+  pkgs,
   ...
 }:
 
@@ -13,6 +15,8 @@
     (fp /base)
   ];
 
+  sops.defaultSopsFile = fp /secrets/skrot/skrot.yaml;
+
   systemd.network.networks."enp2s0" = values.defaultNetworkConfig // {
     matchConfig.Name = "enp2s0";
     address = with values.hosts.skrot; [
@@ -21,5 +25,32 @@
     ];
   };
 
-  system.stateVersion = "26.05"; # Did you read the comment?
+  sops.secrets = {
+    "dibbler/postgresql/password" = {
+      owner = "dibbler";
+      group = "dibbler";
+    };
+  };
+
+  services.dibbler = {
+    enable = true;
+    kioskMode = false;
+    limitScreenWidth = 80;
+    limitScreenHeight = 42;
+
+    settings = {
+      general.quit_allowed = false;
+      database = {
+        type = "postgresql";
+        postgresql = {
+          username = "pvv_vv";
+          dbname = "pvv_vv";
+          host = "postgres.pvv.ntnu.no";
+          password = config.sops.secrets."dibbler/postgresql/password".path;
+        };
+      };
+    };
+  };
+
+  system.stateVersion = "25.11"; # Did you read the comment? Nah bro
 }
