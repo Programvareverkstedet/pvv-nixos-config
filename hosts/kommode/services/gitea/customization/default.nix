@@ -10,6 +10,15 @@ in
     catppuccin = pkgs.gitea-theme-catppuccin;
   };
 
+  services.gitea.settings.ui = {
+    CUSTOM_EMOJIS = lib.concatStringsSep "," [
+      "bruh"
+      "grr"
+      "huh"
+      "ohyeah"
+    ];
+  };
+
   systemd.services.gitea-customization = lib.mkIf cfg.enable {
     description = "Install extra customization in gitea's CUSTOM_DIR";
     wantedBy = [ "gitea.service" ];
@@ -56,6 +65,11 @@ in
       install -Dm444 ${extraLinks} ${cfg.customDir}/templates/custom/extra_links.tmpl
       install -Dm444 ${extraLinksFooter} ${cfg.customDir}/templates/custom/extra_links_footer.tmpl
       install -Dm444 ${project-labels} ${cfg.customDir}/options/label/project-labels.yaml
+
+      install -Dm644 ${./emotes/bruh.png} ${cfg.customDir}/public/assets/img/emoji/bruh.png
+      install -Dm644 ${./emotes/huh.gif} ${cfg.customDir}/public/assets/img/emoji/huh.png
+      install -Dm644 ${./emotes/grr.png} ${cfg.customDir}/public/assets/img/emoji/grr.png
+      install -Dm644 ${./emotes/okiedokie.jpg} ${cfg.customDir}/public/assets/img/emoji/okiedokie.png
 
       "${lib.getExe pkgs.rsync}" -a "${customTemplates}/" ${cfg.customDir}/templates/
     '';

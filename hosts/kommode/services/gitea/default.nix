@@ -150,6 +150,10 @@ in {
           "skull"
           "upside_down_face"
           "shrug"
+          "huh"
+          "bruh"
+          "okiedokie"
+          "grr"
         ];
       };
       "ui.meta" = {
