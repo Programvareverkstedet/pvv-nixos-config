@@ -152,7 +152,20 @@ in {
           "shrug"
         ];
       };
-      "ui.meta".DESCRIPTION = "Bokstavelig talt programvareverkstedet";
+      "ui.meta" = {
+        AUTHOR = "Programvareverkstedet";
+        DESCRIPTION = "Bokstavelig talt programvareverkstedet";
+        KEYWORDS = lib.concatStringsSep "," [
+          "git"
+          "hackerspace"
+          "nix"
+          "open source"
+          "foss"
+          "organization"
+          "software"
+          "student"
+        ];
+      };
     };
 
     dump = {
