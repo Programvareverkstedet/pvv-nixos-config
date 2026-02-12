@@ -88,6 +88,11 @@ in {
         SECRET_KEY = lib.mkForce "";
         SECRET_KEY_URI = "file:${config.sops.secrets."gitea/secret-key".path}";
       };
+      cache = {
+        ADAPTER = "redis";
+        HOST = "network=unix,addr=${config.services.redis.servers.gitea.unixSocket},db=1";
+        ITEM_TTL = "72h";
+      };
       database.LOG_SQL = false;
       repository = {
         PREFERRED_LICENSES = lib.concatStringsSep "," [
@@ -181,12 +186,26 @@ in {
 
   environment.systemPackages = [ cfg.package ];
 
-  systemd.services.gitea.serviceConfig.CPUSchedulingPolicy = "batch";
+  systemd.services.gitea = lib.mkIf cfg.enable {
+    wants = [ "redis-gitea.service" ];
+    after = [ "redis-gitea.service" ];
 
-  systemd.services.gitea.serviceConfig.CacheDirectory = "gitea/repo-archive";
-  systemd.services.gitea.serviceConfig.BindPaths = [
-    "%C/gitea/repo-archive:${cfg.stateDir}/data/repo-archive"
-  ];
+    serviceConfig = {
+      CPUSchedulingPolicy = "batch";
+      CacheDirectory = "gitea/repo-archive";
+      BindPaths = [
+        "%C/gitea/repo-archive:${cfg.stateDir}/data/repo-archive"
+      ];
+    };
+  };
+
+  services.redis.servers.gitea = lib.mkIf cfg.enable {
+    enable = true;
+    user = config.services.gitea.user;
+    save = [ ];
+    openFirewall = false;
+    port = 5698;
+  };
 
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
