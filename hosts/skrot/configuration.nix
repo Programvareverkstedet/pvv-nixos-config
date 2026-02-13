@@ -14,6 +14,8 @@
     (fp /base)
   ];
 
+  boot.consoleLogLevel = 0;
+
   sops.defaultSopsFile = fp /secrets/skrot/skrot.yaml;
 
   systemd.network.networks."enp2s0" = values.defaultNetworkConfig // {
@@ -49,6 +51,12 @@
         };
       };
     };
+  };
+
+  systemd.services."serial-getty@ttyUSB0" = lib.mkIf (!config.virtualisation.isVmVariant) {
+    enable = true;
+    wantedBy = [ "getty.target" ]; # to start at boot
+    serviceConfig.Restart = "always"; # restart when session is closed
   };
 
   system.stateVersion = "25.11"; # Did you read the comment? Nah bro
