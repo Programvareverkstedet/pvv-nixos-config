@@ -10,13 +10,56 @@ in
     catppuccin = pkgs.gitea-theme-catppuccin;
   };
 
-  services.gitea.settings.ui = {
-    CUSTOM_EMOJIS = lib.concatStringsSep "," [
-      "bruh"
-      "grr"
-      "huh"
-      "ohyeah"
-    ];
+  services.gitea.settings = {
+    ui = {
+      REACTIONS = lib.concatStringsSep "," [
+        "+1"
+        "-1"
+        "laugh"
+        "confused"
+        "heart"
+        "hooray"
+        "rocket"
+        "eyes"
+        "100"
+        "anger"
+        "astonished"
+        "no_good"
+        "ok_hand"
+        "pensive"
+        "pizza"
+        "point_up"
+        "sob"
+        "skull"
+        "upside_down_face"
+        "shrug"
+        "huh"
+        "bruh"
+        "okiedokie"
+        "grr"
+      ];
+
+      CUSTOM_EMOJIS = lib.concatStringsSep "," [
+        "bruh"
+        "grr"
+        "huh"
+        "ohyeah"
+      ];
+    };
+    "ui.meta" = {
+      AUTHOR = "Programvareverkstedet";
+      DESCRIPTION = "Bokstavelig talt programvareverkstedet";
+      KEYWORDS = lib.concatStringsSep "," [
+        "git"
+        "hackerspace"
+        "nix"
+        "open source"
+        "foss"
+        "organization"
+        "software"
+        "student"
+      ];
+    };
   };
 
   systemd.services.gitea-customization = lib.mkIf cfg.enable {

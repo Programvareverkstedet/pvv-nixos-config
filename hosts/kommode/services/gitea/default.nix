@@ -133,48 +133,6 @@ in {
         AVATAR_MAX_ORIGIN_SIZE = 1024 * 1024 * 2;
       };
       actions.ENABLED = true;
-      ui = {
-        REACTIONS = lib.concatStringsSep "," [
-          "+1"
-          "-1"
-          "laugh"
-          "confused"
-          "heart"
-          "hooray"
-          "rocket"
-          "eyes"
-          "100"
-          "anger"
-          "astonished"
-          "no_good"
-          "ok_hand"
-          "pensive"
-          "pizza"
-          "point_up"
-          "sob"
-          "skull"
-          "upside_down_face"
-          "shrug"
-          "huh"
-          "bruh"
-          "okiedokie"
-          "grr"
-        ];
-      };
-      "ui.meta" = {
-        AUTHOR = "Programvareverkstedet";
-        DESCRIPTION = "Bokstavelig talt programvareverkstedet";
-        KEYWORDS = lib.concatStringsSep "," [
-          "git"
-          "hackerspace"
-          "nix"
-          "open source"
-          "foss"
-          "organization"
-          "software"
-          "student"
-        ];
-      };
     };
 
     dump = {
