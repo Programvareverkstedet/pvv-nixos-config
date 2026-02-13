@@ -2,7 +2,7 @@
 {
   security.acme = {
     acceptTerms = true;
-    defaults.email = "drift@pvv.ntnu.no";
+    defaults.email = "acme-drift@pvv.ntnu.no";
   };
 
   # Let's not spam LetsEncrypt in `nixos-rebuild build-vm` mode:
