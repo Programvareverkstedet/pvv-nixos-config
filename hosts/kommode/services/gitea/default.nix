@@ -83,15 +83,23 @@ in {
         AUTO_WATCH_NEW_REPOS = false;
       };
       admin.DEFAULT_EMAIL_NOTIFICATIONS = "onmention";
-      session.COOKIE_SECURE = true;
       security = {
         SECRET_KEY = lib.mkForce "";
         SECRET_KEY_URI = "file:${config.sops.secrets."gitea/secret-key".path}";
       };
       cache = {
         ADAPTER = "redis";
-        HOST = "network=unix,addr=${config.services.redis.servers.gitea.unixSocket},db=1";
+        HOST = "redis+socket://${config.services.redis.servers.gitea.unixSocket}?db=0";
         ITEM_TTL = "72h";
+      };
+      session = {
+        COOKIE_SECURE = true;
+        PROVIDER = "redis";
+        PROVIDER_CONFIG = "redis+socket://${config.services.redis.servers.gitea.unixSocket}?db=1";
+      };
+      queue = {
+        TYPE = "redis";
+        CONN_STR = "redis+socket://${config.services.redis.servers.gitea.unixSocket}?db=2";
       };
       database.LOG_SQL = false;
       repository = {
