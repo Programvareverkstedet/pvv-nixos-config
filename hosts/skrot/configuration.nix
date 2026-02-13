@@ -3,7 +3,6 @@
   lib,
   config,
   values,
-  pkgs,
   ...
 }:
 
@@ -34,7 +33,7 @@
 
   services.dibbler = {
     enable = true;
-    kioskMode = false;
+    kioskMode = true;
     limitScreenWidth = 80;
     limitScreenHeight = 42;
 
@@ -46,7 +45,7 @@
           username = "pvv_vv";
           dbname = "pvv_vv";
           host = "postgres.pvv.ntnu.no";
-          password = config.sops.secrets."dibbler/postgresql/password".path;
+          password_file = config.sops.secrets."dibbler/postgresql/password".path;
         };
       };
     };
