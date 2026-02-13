@@ -195,11 +195,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767906352,
-        "narHash": "sha256-wYsH9MMAPFG3XTL+3DwI39XMG0F2fTmn/5lt265a3Es=",
+        "lastModified": 1770960722,
+        "narHash": "sha256-IdhPsWFZUKSJh/nLjGLJvGM5d5Uta+k1FlVYPxTZi0E=",
         "ref": "main",
-        "rev": "d054c5d064b8ed6d53a0adb0cf6c0a72febe212e",
-        "revCount": 13,
+        "rev": "c2e4aca7e1ba27cd09eeaeab47010d32a11841b2",
+        "revCount": 15,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Drift/nix-gitea-themes.git"
       },

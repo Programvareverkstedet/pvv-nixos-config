@@ -12,6 +12,7 @@ in
 
   services.gitea.settings = {
     ui = {
+      DEFAULT_THEME = "gitea-auto";
       REACTIONS = lib.concatStringsSep "," [
         "+1"
         "-1"
