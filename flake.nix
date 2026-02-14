@@ -184,6 +184,13 @@
       };
       ildkule = stableNixosConfig "ildkule" { };
       #ildkule-unstable = unstableNixosConfig "ildkule" { };
+      skrot = stableNixosConfig "skrot" {
+        modules = [
+          inputs.disko.nixosModules.disko
+          inputs.dibbler.nixosModules.default
+        ];
+        overlays = [inputs.dibbler.overlays.default];
+      };
       shark = stableNixosConfig "shark" { };
       wenche = stableNixosConfig "wenche" { };
       temmie = stableNixosConfig "temmie" { };

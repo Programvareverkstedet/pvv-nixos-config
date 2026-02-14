@@ -22,6 +22,7 @@ keys:
   - &host_lupine-5 age199zkqq4jp4yc3d0hx2q0ksxdtp42xhmjsqwyngh8tswuck34ke3smrfyqu
   - &host_skrott age1lpkju2e053aaddpgsr4ef83epclf4c9tp4m98d35ft2fswr8p4tq2ua0mf
   - &host_ustetind age1hffjafs4slznksefmtqrlj7rdaqgzqncn4un938rhr053237ry8s3rs0v8
+  - &host_skrot age1hzkvnktkr8t5gvtq0ccw69e44z5z6wf00n3xhk3hj24emf07je5s6q2evr
 
 creation_rules:
   # Global secrets
@@ -139,6 +140,18 @@ creation_rules:
     key_groups:
     - age:
       - *host_skrott
+      - *user_danio
+      - *user_felixalb
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
+      - *user_vegardbm
+      pgp:
+      - *user_oysteikt
+  - path_regex: secrets/skrot/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *host_skrot
       - *user_danio
       - *user_felixalb
       - *user_pederbs_sopp
