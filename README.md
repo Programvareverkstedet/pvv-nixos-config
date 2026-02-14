@@ -43,7 +43,7 @@ revert the changes on the next nightly rebuild (tends to happen when everybody i
 | [kommode][kom]             | Virtual  | Gitea + Gitea pages                                       |
 | [lupine][lup]              | Physical | Gitea CI/CD runners                                       |
 |  shark                     | Virtual  | Test host for authentication, absolutely horrendous       |
-| [skrott][skr]              | Physical | Kiosk, snacks and soda                                    |
+| [skrott/skrot][skr]        | Physical | Kiosk, snacks and soda                                    |
 | [wenche][wen]              | Virtual  | Nix-builders, general purpose compute                     |
 
 ## Documentation
