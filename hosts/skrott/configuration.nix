@@ -59,7 +59,7 @@
   # zramSwap.enable = true;
 
   networking = {
-    hostName = "skrot";
+    hostName = "skrott";
     defaultGateway = values.hosts.gateway;
     defaultGateway6 = values.hosts.gateway6;
     interfaces.eth0 = {
