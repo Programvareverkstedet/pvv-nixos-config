@@ -854,7 +854,11 @@ $config = [
     /**************
      | APPEARANCE |
      **************/
+    'module.enable' => [
+	    'themepvv' => TRUE,
+    ],
 
+    'theme.use' => 'themepvv:pvv',
     /*
      * Which theme directory should be used?
      */
