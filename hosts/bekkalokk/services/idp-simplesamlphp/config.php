@@ -854,15 +854,15 @@ $config = [
     /**************
      | APPEARANCE |
      **************/
+
+    /*
+     * Which theme directory should be used?
+     */
     'module.enable' => [
 	    'themepvv' => TRUE,
     ],
 
     'theme.use' => 'themepvv:pvv',
-    /*
-     * Which theme directory should be used?
-     */
-    'theme.use' => 'default',
 
     /*
      * Set this option to the text you would like to appear at the header of each page. Set to false if you don't want
