@@ -171,6 +171,7 @@
           (final: prev: {
             mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
             simplesamlphp = final.callPackage ./packages/simplesamlphp { };
+            simplesamlphptheme = final.callPackage ./packages/simplesamlphptheme { };
             bluemap = final.callPackage ./packages/bluemap.nix { };
           })
           inputs.pvv-nettsiden.overlays.default
