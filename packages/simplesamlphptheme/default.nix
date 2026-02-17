@@ -1,5 +1,6 @@
 { lib
 , php
+, stdenv
 , writeText
 , fetchFromGitea
 , extra_files ? { }
