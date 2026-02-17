@@ -19,5 +19,9 @@ stdenv.mkDerivation {
     hash = "sha256-4d0TwJubfJrThctvE50HpPg0gqdJy595hewEcjfXlrs=";
     domain = "git.pvv.ntnu.no";
   };
+  
+   installPhase = ''
+    cp -r * $out/
+   '';
 
 }
