@@ -859,10 +859,10 @@ $config = [
      * Which theme directory should be used?
      */
     'module.enable' => [
-	    'themepvv' => TRUE,
+	    'pvv' => TRUE,
     ],
 
-    'theme.use' => 'themepvv:pvv',
+    'theme.use' => 'ssp-theme:pvv',
 
     /*
      * Set this option to the text you would like to appear at the header of each page. Set to false if you don't want
