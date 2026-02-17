@@ -16,7 +16,7 @@ stdenv.mkDerivation {
     owner = "drift";
     repo = "ssp-theme";
     rev = "master";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-4d0TwJubfJrThctvE50HpPg0gqdJy595hewEcjfXlrs=";
     domain = "git.pvv.ntnu.no";
   };
 
