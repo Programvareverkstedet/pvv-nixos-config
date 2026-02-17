@@ -97,6 +97,7 @@ let
       '';
 
       "modules/authpwauth/src/Auth/Source/PwAuth.php" = ./authpwauth.php;
+      "modules/ssp-theme" = pkgs.simplesamlphptheme;
     };
   };
 in
