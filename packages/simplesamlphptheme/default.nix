@@ -21,7 +21,9 @@ stdenv.mkDerivation {
   };
   
    installPhase = ''
-    cp -r * $out/
-   '';
+    mkdir -p $out/bin
+    cp -r ssp-theme $out/bin/
+    chmod -R +x $out/bin/
+  '';
 
 }
