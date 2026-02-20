@@ -1,13 +1,23 @@
-{ config, lib, fp, pkgs, values, inputs, ... }:
+{
+  config,
+  lib,
+  fp,
+  pkgs,
+  values,
+  inputs,
+  ...
+}:
 
 let
   cfg = config.services.matrix-synapse-next;
 
   matrix-lib = inputs.matrix-next.lib;
 
-  imap0Attrs = with lib; f: set:
-    listToAttrs (imap0 (i: attr: nameValuePair attr (f i attr set.${attr})) (attrNames set));
-in {
+  imap0Attrs =
+    with lib;
+    f: set: listToAttrs (imap0 (i: attr: nameValuePair attr (f i attr set.${attr})) (attrNames set));
+in
+{
   sops.secrets."matrix/synapse/signing_key" = {
     key = "synapse/signing_key";
     sopsFile = fp /secrets/bicep/matrix.yaml;
@@ -23,7 +33,9 @@ in {
     owner = config.users.users.matrix-synapse.name;
     group = config.users.users.matrix-synapse.group;
     content = ''
-      registration_shared_secret: ${config.sops.placeholder."matrix/synapse/user_registration/registration_shared_secret"}
+      registration_shared_secret: ${
+        config.sops.placeholder."matrix/synapse/user_registration/registration_shared_secret"
+      }
     '';
   };
 
@@ -68,7 +80,7 @@ in {
 
       signing_key_path = config.sops.secrets."matrix/synapse/signing_key".path;
 
-      media_store_path =  "${cfg.dataDir}/media";
+      media_store_path = "${cfg.dataDir}/media";
 
       database = {
         name = "psycopg2";
@@ -110,7 +122,8 @@ in {
       password_config.enabled = true;
 
       modules = [
-        { module = "smtp_auth_provider.SMTPAuthProvider";
+        {
+          module = "smtp_auth_provider.SMTPAuthProvider";
           config = {
             smtp_host = "smtp.pvv.ntnu.no";
           };
@@ -183,61 +196,79 @@ in {
   services.pvv-matrix-well-known.server."m.server" = "matrix.pvv.ntnu.no:443";
 
   services.nginx.virtualHosts."matrix.pvv.ntnu.no" = lib.mkMerge [
-  {
-    kTLS = true;
-  }
-  {
-    locations."/_synapse/admin" = {
-      proxyPass = "http://$synapse_backend";
-      extraConfig = ''
-        allow 127.0.0.1;
-        allow ::1;
-        allow ${values.hosts.bicep.ipv4};
-        allow ${values.hosts.bicep.ipv6};
-        deny all;
-      '';
-    };
-  }
-  {
-    locations = let
-      connectionInfo = w: matrix-lib.workerConnectionResource "metrics" w;
-      socketAddress = w: let c = connectionInfo w; in "${c.host}:${toString c.port}";
+    {
+      kTLS = true;
+    }
+    {
+      locations."/_synapse/admin" = {
+        proxyPass = "http://$synapse_backend";
+        extraConfig = ''
+          allow 127.0.0.1;
+          allow ::1;
+          allow ${values.hosts.bicep.ipv4};
+          allow ${values.hosts.bicep.ipv6};
+          deny all;
+        '';
+      };
+    }
+    {
+      locations =
+        let
+          connectionInfo = w: matrix-lib.workerConnectionResource "metrics" w;
+          socketAddress =
+            w:
+            let
+              c = connectionInfo w;
+            in
+            "${c.host}:${toString c.port}";
 
-      metricsPath = w: "/metrics/${w.type}/${toString w.index}";
-      proxyPath = w: "http://${socketAddress w}/_synapse/metrics";
-    in lib.mapAttrs' (n: v: lib.nameValuePair
-      (metricsPath v) {
-        proxyPass = proxyPath v;
+          metricsPath = w: "/metrics/${w.type}/${toString w.index}";
+          proxyPath = w: "http://${socketAddress w}/_synapse/metrics";
+        in
+        lib.mapAttrs' (
+          n: v:
+          lib.nameValuePair (metricsPath v) {
+            proxyPass = proxyPath v;
+            extraConfig = ''
+              allow ${values.hosts.ildkule.ipv4};
+              allow ${values.hosts.ildkule.ipv6};
+              deny all;
+            '';
+          }
+        ) cfg.workers.instances;
+    }
+    {
+      locations."/metrics/master/1" = {
+        proxyPass = "http://127.0.0.1:9000/_synapse/metrics";
         extraConfig = ''
           allow ${values.hosts.ildkule.ipv4};
           allow ${values.hosts.ildkule.ipv6};
           deny all;
         '';
-      })
-      cfg.workers.instances;
-  }
-  {
-    locations."/metrics/master/1" = {
-      proxyPass = "http://127.0.0.1:9000/_synapse/metrics";
-      extraConfig = ''
-        allow ${values.hosts.ildkule.ipv4};
-        allow ${values.hosts.ildkule.ipv6};
-        deny all;
-      '';
-    };
+      };
 
-    locations."/metrics/" = let
-      endpoints = lib.pipe cfg.workers.instances [
-        (lib.mapAttrsToList (_: v: v))
-        (map (w: "${w.type}/${toString w.index}"))
-        (map (w: "matrix.pvv.ntnu.no/metrics/${w}"))
-      ] ++ [ "matrix.pvv.ntnu.no/metrics/master/1" ];
-    in {
-      alias = pkgs.writeTextDir "/config.json"
-        (builtins.toJSON [
-          { targets = endpoints;
-            labels = { };
-          }]) + "/";
-    };
-  }];
+      locations."/metrics/" =
+        let
+          endpoints =
+            lib.pipe cfg.workers.instances [
+              (lib.mapAttrsToList (_: v: v))
+              (map (w: "${w.type}/${toString w.index}"))
+              (map (w: "matrix.pvv.ntnu.no/metrics/${w}"))
+            ]
+            ++ [ "matrix.pvv.ntnu.no/metrics/master/1" ];
+        in
+        {
+          alias =
+            pkgs.writeTextDir "/config.json" (
+              builtins.toJSON [
+                {
+                  targets = endpoints;
+                  labels = { };
+                }
+              ]
+            )
+            + "/";
+        };
+    }
+  ];
 }

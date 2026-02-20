@@ -1,4 +1,9 @@
-{ config, lib, fp, ... }:
+{
+  config,
+  lib,
+  fp,
+  ...
+}:
 
 let
   cfg = config.services.mx-puppet-discord;
@@ -44,7 +49,6 @@ in
     ];
   };
 
-
   services.mx-puppet-discord.enable = false;
   services.mx-puppet-discord.settings = {
     bridge = {
@@ -52,15 +56,20 @@ in
       domain = "pvv.ntnu.no";
       homeserverUrl = "https://matrix.pvv.ntnu.no";
     };
-    provisioning.whitelist = [ "@dandellion:dodsorf\\.as" "@danio:pvv\\.ntnu\\.no"];
+    provisioning.whitelist = [
+      "@dandellion:dodsorf\\.as"
+      "@danio:pvv\\.ntnu\\.no"
+    ];
     relay.whitelist = [ ".*" ];
-    selfService.whitelist = [ "@danio:pvv\\.ntnu\\.no" "@dandellion:dodsorf\\.as" ];
+    selfService.whitelist = [
+      "@danio:pvv\\.ntnu\\.no"
+      "@dandellion:dodsorf\\.as"
+    ];
   };
   services.mx-puppet-discord.serviceDependencies = [
     "matrix-synapse.target"
     "nginx.service"
   ];
-
 
   services.matrix-synapse-next.settings = {
     app_service_config_files = [

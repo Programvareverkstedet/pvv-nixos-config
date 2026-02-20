@@ -1,11 +1,26 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
-  inherit (lib) mkDefault mkEnableOption mkForce mkIf mkOption mkPackageOption generators types;
+  inherit (lib)
+    mkDefault
+    mkEnableOption
+    mkForce
+    mkIf
+    mkOption
+    mkPackageOption
+    generators
+    types
+    ;
 
   cfg = config.services.snappymail;
   maxUploadSize = "256M";
-in {
+in
+{
   options.services.snappymail = {
     enable = mkEnableOption "Snappymail";
 
@@ -48,13 +63,13 @@ in {
     };
 
     users.groups = mkIf (cfg.group == "snappymail") {
-      snappymail = {};
+      snappymail = { };
     };
 
     services.phpfpm.pools.snappymail = {
       user = cfg.user;
       group = cfg.group;
-      phpOptions = generators.toKeyValue {} {
+      phpOptions = generators.toKeyValue { } {
         upload_max_filesize = maxUploadSize;
         post_max_size = maxUploadSize;
         memory_limit = maxUploadSize;
@@ -91,13 +106,14 @@ in {
           client_max_body_size ${maxUploadSize};
         '';
 
-        root = if (cfg.package == pkgs.snappymail) then
-          pkgs.snappymail.override {
-            dataPath = cfg.dataDir;
-          }
-        else cfg.package;
+        root =
+          if (cfg.package == pkgs.snappymail) then
+            pkgs.snappymail.override {
+              dataPath = cfg.dataDir;
+            }
+          else
+            cfg.package;
       };
     };
   };
 }
-

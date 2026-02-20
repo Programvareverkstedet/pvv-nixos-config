@@ -1,31 +1,33 @@
 { pkgs, lib }:
 let
-  kebab-case-name = project-name: lib.pipe project-name [
-    (builtins.replaceStrings
-      lib.upperChars
-      (map (x: "-${x}") lib.lowerChars)
-    )
-    (lib.removePrefix "-")
-  ];
+  kebab-case-name =
+    project-name:
+    lib.pipe project-name [
+      (builtins.replaceStrings lib.upperChars (map (x: "-${x}") lib.lowerChars))
+      (lib.removePrefix "-")
+    ];
 
-  mw-ext = {
-    name
-  , commit
-  , hash
-  , tracking-branch ? "REL1_44"
-  , kebab-name ? kebab-case-name name
-  , fetchgit ? pkgs.fetchgit
-  }:
-  {
-    ${name} = (fetchgit {
-      name = "mediawiki-${kebab-name}-source";
-      url = "https://gerrit.wikimedia.org/r/mediawiki/extensions/${name}";
-      rev = commit;
-      inherit hash;
-    }).overrideAttrs (_: {
-      passthru = { inherit name kebab-name tracking-branch; };
-    });
-  };
+  mw-ext =
+    {
+      name,
+      commit,
+      hash,
+      tracking-branch ? "REL1_44",
+      kebab-name ? kebab-case-name name,
+      fetchgit ? pkgs.fetchgit,
+    }:
+    {
+      ${name} =
+        (fetchgit {
+          name = "mediawiki-${kebab-name}-source";
+          url = "https://gerrit.wikimedia.org/r/mediawiki/extensions/${name}";
+          rev = commit;
+          inherit hash;
+        }).overrideAttrs
+          (_: {
+            passthru = { inherit name kebab-name tracking-branch; };
+          });
+    };
 in
 # NOTE: to add another extension, you can add an mw-ext expression
 #       with an empty (or even wrong) commit and empty hash, and

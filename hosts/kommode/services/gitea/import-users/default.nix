@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.services.gitea;
 in
@@ -11,7 +16,7 @@ in
 
   systemd.services.gitea-import-users = lib.mkIf cfg.enable {
     enable = true;
-    preStart=''${pkgs.rsync}/bin/rsync -e "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=$CREDENTIALS_DIRECTORY/ssh-known-hosts -i $CREDENTIALS_DIRECTORY/sshkey" -a pvv@smtp.pvv.ntnu.no:/etc/passwd /run/gitea-import-users/passwd'';
+    preStart = ''${pkgs.rsync}/bin/rsync -e "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=$CREDENTIALS_DIRECTORY/ssh-known-hosts -i $CREDENTIALS_DIRECTORY/sshkey" -a pvv@smtp.pvv.ntnu.no:/etc/passwd /run/gitea-import-users/passwd'';
     environment.PASSWD_FILE_PATH = "/run/gitea-import-users/passwd";
     serviceConfig = {
       ExecStart = pkgs.writers.writePython3 "gitea-import-users" {
@@ -20,12 +25,12 @@ in
         ];
         libraries = with pkgs.python3Packages; [ requests ];
       } (builtins.readFile ./gitea-import-users.py);
-      LoadCredential=[
+      LoadCredential = [
         "sshkey:${config.sops.secrets."gitea/passwd-ssh-key".path}"
         "ssh-known-hosts:${config.sops.secrets."gitea/ssh-known-hosts".path}"
       ];
-      DynamicUser="yes";
-      EnvironmentFile=config.sops.secrets."gitea/import-user-env".path;
+      DynamicUser = "yes";
+      EnvironmentFile = config.sops.secrets."gitea/import-user-env".path;
       RuntimeDirectory = "gitea-import-users";
     };
   };

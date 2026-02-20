@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 # This service requires you to have access to endpoints not available over the internet
 # Use an ssh proxy or similar to access this dashboard.

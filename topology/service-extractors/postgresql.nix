@@ -1,4 +1,9 @@
-{ config, unstablePkgs, lib, ... }:
+{
+  config,
+  unstablePkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.services.postgresql;
   cfgBak = config.services.postgresqlBackup;

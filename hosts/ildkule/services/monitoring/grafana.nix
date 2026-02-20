@@ -1,32 +1,43 @@
-{ config, pkgs, values, ... }: let
+{
+  config,
+  pkgs,
+  values,
+  ...
+}:
+let
   cfg = config.services.grafana;
-in {
-  sops.secrets = let
-    owner = "grafana";
-    group = "grafana";
-  in {
-    "keys/grafana/secret_key" = { inherit owner group; };
-    "keys/grafana/admin_password" = { inherit owner group; };
-  };
+in
+{
+  sops.secrets =
+    let
+      owner = "grafana";
+      group = "grafana";
+    in
+    {
+      "keys/grafana/secret_key" = { inherit owner group; };
+      "keys/grafana/admin_password" = { inherit owner group; };
+    };
 
   services.grafana = {
     enable = true;
 
-    settings = let
-      # See https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/#file-provider
-      secretFile = path: "$__file{${path}}";
-    in {
-      server = {
-        domain = "grafana.pvv.ntnu.no";
-        http_port = 2342;
-        http_addr = "127.0.0.1";
-      };
+    settings =
+      let
+        # See https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/#file-provider
+        secretFile = path: "$__file{${path}}";
+      in
+      {
+        server = {
+          domain = "grafana.pvv.ntnu.no";
+          http_port = 2342;
+          http_addr = "127.0.0.1";
+        };
 
-      security = {
-        secret_key = secretFile config.sops.secrets."keys/grafana/secret_key".path;
-        admin_password = secretFile config.sops.secrets."keys/grafana/admin_password".path;
+        security = {
+          secret_key = secretFile config.sops.secrets."keys/grafana/secret_key".path;
+          admin_password = secretFile config.sops.secrets."keys/grafana/admin_password".path;
+        };
       };
-    };
 
     provision = {
       enable = true;

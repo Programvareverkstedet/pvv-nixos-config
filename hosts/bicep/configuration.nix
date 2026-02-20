@@ -1,4 +1,9 @@
-{ fp, pkgs, values, ... }:
+{
+  fp,
+  pkgs,
+  values,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
@@ -19,8 +24,16 @@
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     #matchConfig.Name = "enp6s0f0";
     matchConfig.Name = "ens18";
-    address = with values.hosts.bicep; [ (ipv4 + "/25") (ipv6 + "/64") ]
-      ++ (with values.services.turn; [ (ipv4 + "/25") (ipv6 + "/64") ]);
+    address =
+      with values.hosts.bicep;
+      [
+        (ipv4 + "/25")
+        (ipv6 + "/64")
+      ]
+      ++ (with values.services.turn; [
+        (ipv4 + "/25")
+        (ipv6 + "/64")
+      ]);
   };
   systemd.network.wait-online = {
     anyInterface = true;

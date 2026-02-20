@@ -1,7 +1,19 @@
 { lib, values, ... }:
 let
   # See microbel:/etc/exports
-  letters = [ "a" "b" "c" "d" "h" "i" "j" "k" "l" "m" "z" ];
+  letters = [
+    "a"
+    "b"
+    "c"
+    "d"
+    "h"
+    "i"
+    "j"
+    "k"
+    "l"
+    "m"
+    "z"
+  ];
 in
 {
   systemd.targets."pvv-homedirs" = {

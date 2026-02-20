@@ -1,9 +1,17 @@
-{ pkgs, lib, config, values, ... }: let
+{
+  pkgs,
+  lib,
+  config,
+  values,
+  ...
+}:
+let
   cfg = config.services.prometheus;
-in {
+in
+{
   sops.secrets = {
-    "keys/postgres/postgres_exporter_env" = {};
-    "keys/postgres/postgres_exporter_knakelibrak_env" = {};
+    "keys/postgres/postgres_exporter_env" = { };
+    "keys/postgres/postgres_exporter_knakelibrak_env" = { };
   };
 
   services.prometheus = {
@@ -11,22 +19,26 @@ in {
       {
         job_name = "postgres";
         scrape_interval = "15s";
-        static_configs = [{
-          targets = [ "localhost:${toString cfg.exporters.postgres.port}" ];
-          labels = {
-            server = "bicep";
-          };
-        }];
+        static_configs = [
+          {
+            targets = [ "localhost:${toString cfg.exporters.postgres.port}" ];
+            labels = {
+              server = "bicep";
+            };
+          }
+        ];
       }
       {
         job_name = "postgres-knakelibrak";
         scrape_interval = "15s";
-        static_configs = [{
-          targets = [ "localhost:${toString (cfg.exporters.postgres.port + 1)}" ];
-          labels = {
-            server = "knakelibrak";
-          };
-        }];
+        static_configs = [
+          {
+            targets = [ "localhost:${toString (cfg.exporters.postgres.port + 1)}" ];
+            labels = {
+              server = "knakelibrak";
+            };
+          }
+        ];
       }
     ];
 
@@ -37,9 +49,11 @@ in {
     };
   };
 
-  systemd.services.prometheus-postgres-exporter-knakelibrak.serviceConfig = let
-    localCfg = config.services.prometheus.exporters.postgres;
-  in lib.recursiveUpdate config.systemd.services.prometheus-postgres-exporter.serviceConfig {
+  systemd.services.prometheus-postgres-exporter-knakelibrak.serviceConfig =
+    let
+      localCfg = config.services.prometheus.exporters.postgres;
+    in
+    lib.recursiveUpdate config.systemd.services.prometheus-postgres-exporter.serviceConfig {
       EnvironmentFile = config.sops.secrets."keys/postgres/postgres_exporter_knakelibrak_env".path;
       ExecStart = ''
         ${pkgs.prometheus-postgres-exporter}/bin/postgres_exporter \

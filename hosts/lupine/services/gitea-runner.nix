@@ -67,5 +67,8 @@
 
   networking.dhcpcd.IPv6rs = false;
 
-  networking.firewall.interfaces."podman+".allowedUDPPorts = [53 5353];
+  networking.firewall.interfaces."podman+".allowedUDPPorts = [
+    53
+    5353
+  ];
 }

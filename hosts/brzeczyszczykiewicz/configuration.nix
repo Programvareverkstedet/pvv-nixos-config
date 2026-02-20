@@ -1,16 +1,25 @@
-{ config, fp, pkgs, values, ... }:
+{
+  config,
+  fp,
+  pkgs,
+  values,
+  ...
+}:
 {
   imports = [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      (fp /base)
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    (fp /base)
 
-      ./services/grzegorz.nix
-    ];
+    ./services/grzegorz.nix
+  ];
 
   systemd.network.networks."30-eno1" = values.defaultNetworkConfig // {
     matchConfig.Name = "eno1";
-    address = with values.hosts.brzeczyszczykiewicz; [ (ipv4 + "/25") (ipv6 + "/64") ];
+    address = with values.hosts.brzeczyszczykiewicz; [
+      (ipv4 + "/25")
+      (ipv6 + "/64")
+    ];
   };
 
   fonts.fontconfig.enable = true;

@@ -1,4 +1,12 @@
-{ config, lib, fp, pkgs, secrets, values, ... }:
+{
+  config,
+  lib,
+  fp,
+  pkgs,
+  secrets,
+  values,
+  ...
+}:
 
 {
   sops.secrets."matrix/coturn/static-auth-secret" = {
@@ -127,18 +135,31 @@
   };
 
   networking.firewall = {
-    interfaces.enp6s0f0 = let
-      range = with config.services.coturn; [ {
-      from = min-port;
-      to = max-port;
-    } ];
-    in
-    {
-      allowedUDPPortRanges = range;
-      allowedUDPPorts = [ 443 3478 3479 5349 ];
-      allowedTCPPortRanges = range;
-      allowedTCPPorts = [ 443 3478 3479 5349 ];
-    };
+    interfaces.enp6s0f0 =
+      let
+        range = with config.services.coturn; [
+          {
+            from = min-port;
+            to = max-port;
+          }
+        ];
+      in
+      {
+        allowedUDPPortRanges = range;
+        allowedUDPPorts = [
+          443
+          3478
+          3479
+          5349
+        ];
+        allowedTCPPortRanges = range;
+        allowedTCPPorts = [
+          443
+          3478
+          3479
+          5349
+        ];
+      };
   };
 
 }

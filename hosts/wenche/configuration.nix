@@ -1,10 +1,17 @@
-{ config, fp, pkgs, values, lib, ... }:
+{
+  config,
+  fp,
+  pkgs,
+  values,
+  lib,
+  ...
+}:
 {
   imports = [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      (fp /base)
-    ];
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    (fp /base)
+  ];
 
   nix.settings.trusted-users = [ "@nix-builder-users" ];
   nix.daemonCPUSchedPolicy = "batch";
@@ -19,7 +26,10 @@
 
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens18";
-    address = with values.hosts.wenche; [ (ipv4 + "/25") (ipv6 + "/64") ];
+    address = with values.hosts.wenche; [
+      (ipv4 + "/25")
+      (ipv6 + "/64")
+    ];
   };
 
   hardware.graphics.enable = true;

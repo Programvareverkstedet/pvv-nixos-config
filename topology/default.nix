@@ -1,14 +1,21 @@
-{ config, pkgs, lib, values, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  values,
+  ...
+}:
 let
-  inherit
-    (config.lib.topology)
+  inherit (config.lib.topology)
     mkInternet
     mkRouter
     mkSwitch
     mkDevice
     mkConnection
-    mkConnectionRev;
-in {
+    mkConnectionRev
+    ;
+in
+{
   imports = [
     ./non-nixos-machines.nix
   ];
@@ -41,7 +48,14 @@ in {
   };
 
   nodes.ntnu = mkRouter "NTNU" {
-    interfaceGroups = [ ["wan1"] ["eth1" "eth2" "eth3"] ];
+    interfaceGroups = [
+      [ "wan1" ]
+      [
+        "eth1"
+        "eth2"
+        "eth3"
+      ]
+    ];
     connections.eth1 = mkConnection "ntnu-pvv-router" "wan1";
     connections.eth2 = mkConnection "ntnu-veggen" "wan1";
     connections.eth3 = mkConnection "stackit" "*";
@@ -51,7 +65,10 @@ in {
   ### Brus
 
   nodes.ntnu-pvv-router = mkRouter "NTNU PVV Gateway" {
-    interfaceGroups = [ ["wan1"] ["eth1"] ];
+    interfaceGroups = [
+      [ "wan1" ]
+      [ "eth1" ]
+    ];
     connections.eth1 = mkConnection "knutsen" "em1";
     interfaces.eth1.network = "ntnu";
   };
@@ -59,7 +76,11 @@ in {
   nodes.knutsen = mkRouter "knutsen" {
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/freebsd.svg";
 
-    interfaceGroups = [ ["em0"] ["em1"] ["vpn1"] ];
+    interfaceGroups = [
+      [ "em0" ]
+      [ "em1" ]
+      [ "vpn1" ]
+    ];
 
     connections.em0 = mkConnection "nintendo" "eth0";
 
@@ -73,36 +94,36 @@ in {
   };
 
   nodes.nintendo = mkSwitch "Nintendo (brus switch)" {
-    interfaceGroups =  [ (lib.genList (i: "eth${toString i}") 16) ];
+    interfaceGroups = [ (lib.genList (i: "eth${toString i}") 16) ];
 
-    connections = let
-      connections' = [
-        (mkConnection "bekkalokk" "enp2s0")
-        # (mkConnection "bicep" "enp6s0f0") # NOTE: physical machine is dead at the moment
-        (mkConnection "buskerud" "eth1")
-        # (mkConnection "knutsen" "eth1")
-        (mkConnection "powerpuff-cluster" "eth1")
-        (mkConnection "powerpuff-cluster" "eth2")
-        (mkConnection "powerpuff-cluster" "eth3")
-        (mkConnection "lupine-1" "enp0s31f6")
-        (mkConnection "lupine-2" "enp0s31f6")
-        (mkConnection "lupine-3" "enp0s31f6")
-        (mkConnection "lupine-4" "enp0s31f6")
-        (mkConnection "lupine-5" "enp0s31f6")
-        (mkConnection "innovation" "em0")
-        (mkConnection "microbel" "eth0")
-        (mkConnection "isvegg" "eth0")
-        (mkConnection "ameno" "eth0")
-        (mkConnection "sleipner" "eno0")
-      ];
-    in
-    assert (lib.length connections' <= 15);
-    builtins.listToAttrs (
-      lib.zipListsWith
-        (a: b: lib.nameValuePair a b)
-        (lib.genList (i: "eth${toString (i + 1)}") 15)
-        connections'
-    );
+    connections =
+      let
+        connections' = [
+          (mkConnection "bekkalokk" "enp2s0")
+          # (mkConnection "bicep" "enp6s0f0") # NOTE: physical machine is dead at the moment
+          (mkConnection "buskerud" "eth1")
+          # (mkConnection "knutsen" "eth1")
+          (mkConnection "powerpuff-cluster" "eth1")
+          (mkConnection "powerpuff-cluster" "eth2")
+          (mkConnection "powerpuff-cluster" "eth3")
+          (mkConnection "lupine-1" "enp0s31f6")
+          (mkConnection "lupine-2" "enp0s31f6")
+          (mkConnection "lupine-3" "enp0s31f6")
+          (mkConnection "lupine-4" "enp0s31f6")
+          (mkConnection "lupine-5" "enp0s31f6")
+          (mkConnection "innovation" "em0")
+          (mkConnection "microbel" "eth0")
+          (mkConnection "isvegg" "eth0")
+          (mkConnection "ameno" "eth0")
+          (mkConnection "sleipner" "eno0")
+        ];
+      in
+      assert (lib.length connections' <= 15);
+      builtins.listToAttrs (
+        lib.zipListsWith (a: b: lib.nameValuePair a b) (lib.genList (
+          i: "eth${toString (i + 1)}"
+        ) 15) connections'
+      );
   };
 
   nodes.bekkalokk.hardware.info = "Supermicro X9SCL/X9SCM";
@@ -141,7 +162,13 @@ in {
 
     hardware.info = "Dell PowerEdge R730 x 3";
 
-    interfaceGroups = [ [ "eth1" "eth2" "eth3" ] ];
+    interfaceGroups = [
+      [
+        "eth1"
+        "eth2"
+        "eth3"
+      ]
+    ];
 
     services = {
       proxmox = {
@@ -199,14 +226,21 @@ in {
   ### PVV
 
   nodes.ntnu-veggen = mkRouter "NTNU-Veggen" {
-    interfaceGroups = [ ["wan1"] ["eth1"] ];
+    interfaceGroups = [
+      [ "wan1" ]
+      [ "eth1" ]
+    ];
     connections.eth1 = mkConnection "ludvigsen" "re0";
   };
 
   nodes.ludvigsen = mkRouter "ludvigsen" {
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/freebsd.svg";
 
-    interfaceGroups = [ [ "re0" ] [ "em0" ] [ "vpn1" ] ];
+    interfaceGroups = [
+      [ "re0" ]
+      [ "em0" ]
+      [ "vpn1" ]
+    ];
 
     connections.em0 = mkConnection "pvv-switch" "eth0";
 
@@ -219,30 +253,29 @@ in {
   };
 
   nodes.pvv-switch = mkSwitch "PVV Switch (Terminalrommet)" {
-    interfaceGroups =  [ (lib.genList (i: "eth${toString i}") 16) ];
-    connections = let
-      connections' = [
-        (mkConnection "brzeczyszczykiewicz" "eno1")
-        (mkConnection "georg" "eno1")
-        (mkConnection "wegonke" "enp4s0")
-        (mkConnection "demiurgen" "eno1")
-        (mkConnection "sanctuary" "ethernet_0")
-        (mkConnection "torskas" "eth0")
-        (mkConnection "skrott" "eth0")
-        (mkConnection "homeassistant" "eth0")
-        (mkConnection "orchid" "eth0")
-        (mkConnection "principal" "em0")
-      ];
-    in
-    assert (lib.length connections' <= 15);
-    builtins.listToAttrs (
-      lib.zipListsWith
-        (a: b: lib.nameValuePair a b)
-        (lib.genList (i: "eth${toString (i + 1)}") 15)
-        connections'
-    );
+    interfaceGroups = [ (lib.genList (i: "eth${toString i}") 16) ];
+    connections =
+      let
+        connections' = [
+          (mkConnection "brzeczyszczykiewicz" "eno1")
+          (mkConnection "georg" "eno1")
+          (mkConnection "wegonke" "enp4s0")
+          (mkConnection "demiurgen" "eno1")
+          (mkConnection "sanctuary" "ethernet_0")
+          (mkConnection "torskas" "eth0")
+          (mkConnection "skrott" "eth0")
+          (mkConnection "homeassistant" "eth0")
+          (mkConnection "orchid" "eth0")
+          (mkConnection "principal" "em0")
+        ];
+      in
+      assert (lib.length connections' <= 15);
+      builtins.listToAttrs (
+        lib.zipListsWith (a: b: lib.nameValuePair a b) (lib.genList (
+          i: "eth${toString (i + 1)}"
+        ) 15) connections'
+      );
   };
-
 
   ### Openstack
 

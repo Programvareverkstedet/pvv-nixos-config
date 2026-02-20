@@ -1,11 +1,18 @@
-{ config, pkgs, lib, values, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  values,
+  ...
+}:
 let
   cfg = config.services.vaultwarden;
   domain = "pw.pvv.ntnu.no";
   address = "127.0.1.2";
   port = 3011;
   wsPort = 3012;
-in {
+in
+{
   sops.secrets."vaultwarden/environ" = {
     owner = "vaultwarden";
     group = "vaultwarden";

@@ -1,4 +1,4 @@
-{ pkgs,... }:
+{ pkgs, ... }:
 {
   # Boot drives:
   boot.swraid.enable = true;

@@ -1,4 +1,10 @@
-{ config, pkgs, lib, values, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  values,
+  ...
+}:
 let
   cfg = config.services.mysql;
   dataDir = "/data/mysql";
@@ -36,12 +42,14 @@ in
     #       a password which can be found in /secrets/ildkule/ildkule.yaml
     #       We have also changed both the host and auth plugin of this user
     #       to be 'ildkule.pvv.ntnu.no' and 'mysql_native_password' respectively.
-    ensureUsers = [{
-      name = "prometheus_mysqld_exporter";
-      ensurePermissions = {
-        "*.*" = "PROCESS, REPLICATION CLIENT, SELECT, SLAVE MONITOR";
-      };
-    }];
+    ensureUsers = [
+      {
+        name = "prometheus_mysqld_exporter";
+        ensurePermissions = {
+          "*.*" = "PROCESS, REPLICATION CLIENT, SELECT, SLAVE MONITOR";
+        };
+      }
+    ];
   };
 
   networking.firewall.allowedTCPPorts = lib.mkIf cfg.enable [ 3306 ];

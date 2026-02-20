@@ -1,4 +1,9 @@
-{ config, lib, utils, ... }:
+{
+  config,
+  lib,
+  utils,
+  ...
+}:
 let
   cfg = config.services.synapse-auto-compressor;
 in

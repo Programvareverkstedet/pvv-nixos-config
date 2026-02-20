@@ -58,7 +58,8 @@ in
           sender_localpart = "${cfg.namespace}bot";
           rate_limited = false;
           socket = cfg.socket; # Can either be a TCP port or a unix socket path
-          url = if (lib.hasPrefix "/" cfg.socket) then "unix:${cfg.socket}" else "http://localhost:${cfg.socket}";
+          url =
+            if (lib.hasPrefix "/" cfg.socket) then "unix:${cfg.socket}" else "http://localhost:${cfg.socket}";
           ooye = {
             server_name = cfg.homeserverName;
             namespace_prefix = cfg.namespace;
@@ -66,7 +67,8 @@ in
             content_length_workaround = false;
             include_user_id_in_mxid = true;
             server_origin = cfg.homeserver;
-            bridge_origin = if (cfg.bridgeOrigin == "") then "http://localhost:${cfg.socket}" else cfg.bridgeOrigin;
+            bridge_origin =
+              if (cfg.bridgeOrigin == "") then "http://localhost:${cfg.socket}" else cfg.bridgeOrigin;
           };
         }
       );

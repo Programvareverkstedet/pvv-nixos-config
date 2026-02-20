@@ -1,4 +1,9 @@
-{ config, lib, fp, ... }:
+{
+  config,
+  lib,
+  fp,
+  ...
+}:
 let
   synapseConfig = config.services.matrix-synapse-next;
   matrixDomain = "matrix.pvv.ntnu.no";
@@ -20,10 +25,12 @@ in
   };
 
   services.pvv-matrix-well-known.client = lib.mkIf cfg.enable {
-    "org.matrix.msc4143.rtc_foci" = [{
-      type = "livekit";
-      livekit_service_url = "https://${matrixDomain}/livekit/jwt";
-    }];
+    "org.matrix.msc4143.rtc_foci" = [
+      {
+        type = "livekit";
+        livekit_service_url = "https://${matrixDomain}/livekit/jwt";
+      }
+    ];
   };
 
   services.livekit = {
@@ -43,7 +50,12 @@ in
     keyFile = config.sops.templates."matrix-livekit-keyfile".path;
   };
 
-  systemd.services.lk-jwt-service.environment.LIVEKIT_FULL_ACCESS_HOMESERVERS = lib.mkIf cfg.enable (builtins.concatStringsSep "," [ "pvv.ntnu.no" "dodsorf.as" ]);
+  systemd.services.lk-jwt-service.environment.LIVEKIT_FULL_ACCESS_HOMESERVERS = lib.mkIf cfg.enable (
+    builtins.concatStringsSep "," [
+      "pvv.ntnu.no"
+      "dodsorf.as"
+    ]
+  );
 
   services.nginx.virtualHosts.${matrixDomain} = lib.mkIf cfg.enable {
     locations."^~ /livekit/jwt/" = {

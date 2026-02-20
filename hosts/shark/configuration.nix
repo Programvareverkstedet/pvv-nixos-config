@@ -1,14 +1,23 @@
-{ config, fp, pkgs, values, ... }:
+{
+  config,
+  fp,
+  pkgs,
+  values,
+  ...
+}:
 {
   imports = [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      (fp /base)
-    ];
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    (fp /base)
+  ];
 
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens18";
-    address = with values.hosts.shark; [ (ipv4 + "/25") (ipv6 + "/64") ];
+    address = with values.hosts.shark; [
+      (ipv4 + "/25")
+      (ipv6 + "/64")
+    ];
   };
 
   services.qemuGuest.enable = true;

@@ -1,7 +1,14 @@
-{ config, fp, lib, pkgs, ... }:
+{
+  config,
+  fp,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.services.pvv-calendar-bot;
-in {
+in
+{
   sops.secrets = {
     "calendar-bot/matrix_token" = {
       sopsFile = fp /secrets/bicep/bicep.yaml;

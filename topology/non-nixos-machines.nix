@@ -1,7 +1,14 @@
-{ config, pkgs, lib, values, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  values,
+  ...
+}:
 let
   inherit (config.lib.topology) mkDevice;
-in {
+in
+{
   nodes.balduzius = mkDevice "balduzius" {
     guestType = "proxmox";
     parent = config.nodes.powerpuff-cluster.id;
@@ -108,7 +115,12 @@ in {
 
     hardware.info = "Supermicro X8ST3";
 
-    interfaceGroups = [ [ "eth0" "eth1" ] ];
+    interfaceGroups = [
+      [
+        "eth0"
+        "eth1"
+      ]
+    ];
     interfaces.eth0 = {
       mac = "00:25:90:24:76:2c";
       addresses = [
@@ -215,7 +227,12 @@ in {
   nodes.sleipner = mkDevice "sleipner" {
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/debian.svg";
 
-    interfaceGroups = [ [ "eno0" "enp2s0" ] ];
+    interfaceGroups = [
+      [
+        "eno0"
+        "enp2s0"
+      ]
+    ];
     interfaces.enp2s0 = {
       mac = "00:25:90:57:35:8e";
       addresses = [

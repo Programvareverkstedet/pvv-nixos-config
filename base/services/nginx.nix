@@ -11,7 +11,10 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = lib.mkIf config.services.nginx.enable [ 80 443 ];
+  networking.firewall.allowedTCPPorts = lib.mkIf config.services.nginx.enable [
+    80
+    443
+  ];
 
   services.nginx = {
     recommendedTlsSettings = true;

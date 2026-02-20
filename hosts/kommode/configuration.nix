@@ -1,4 +1,9 @@
-{ pkgs, values, fp, ... }:
+{
+  pkgs,
+  values,
+  fp,
+  ...
+}:
 {
   imports = [
     # Include the results of the hardware scan.
@@ -12,7 +17,10 @@
 
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens18";
-    address = with values.hosts.kommode; [ (ipv4 + "/25") (ipv6 + "/64") ];
+    address = with values.hosts.kommode; [
+      (ipv4 + "/25")
+      (ipv6 + "/64")
+    ];
   };
 
   services.btrfs.autoScrub.enable = true;

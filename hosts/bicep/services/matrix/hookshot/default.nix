@@ -1,4 +1,11 @@
-{ config, lib, fp, unstablePkgs, inputs, ... }:
+{
+  config,
+  lib,
+  fp,
+  unstablePkgs,
+  inputs,
+  ...
+}:
 
 let
   cfg = config.services.matrix-hookshot;
@@ -100,7 +107,8 @@ in
       };
 
       serviceBots = [
-        { localpart = "bot_feeds";
+        {
+          localpart = "bot_feeds";
           displayname = "Aya";
           avatar = ./feeds.png;
           prefix = "!aya";
@@ -115,20 +123,44 @@ in
 
       permissions = [
         # Users of the PVV Server
-        { actor = "pvv.ntnu.no";
-          services = [ { service = "*"; level = "commands"; } ];
+        {
+          actor = "pvv.ntnu.no";
+          services = [
+            {
+              service = "*";
+              level = "commands";
+            }
+          ];
         }
         # Members of Medlem space (for people with their own hs)
-        { actor = "!pZOTJQinWyyTWaeOgK:pvv.ntnu.no";
-          services = [ { service = "*"; level = "commands"; } ];
+        {
+          actor = "!pZOTJQinWyyTWaeOgK:pvv.ntnu.no";
+          services = [
+            {
+              service = "*";
+              level = "commands";
+            }
+          ];
         }
         # Members of Drift
-        { actor = "!eYgeufLrninXxQpYml:pvv.ntnu.no";
-          services = [ { service = "*"; level = "admin"; } ];
+        {
+          actor = "!eYgeufLrninXxQpYml:pvv.ntnu.no";
+          services = [
+            {
+              service = "*";
+              level = "admin";
+            }
+          ];
         }
         # Dan bootstrap
-        { actor = "@dandellion:dodsorf.as";
-          services = [ { service = "*"; level = "admin"; } ];
+        {
+          actor = "@dandellion:dodsorf.as";
+          services = [
+            {
+              service = "*";
+              level = "admin";
+            }
+          ];
         }
       ];
     };

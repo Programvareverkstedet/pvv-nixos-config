@@ -1,4 +1,10 @@
-{ lib, stdenvNoCC, fetchurl, makeWrapper, jre }:
+{
+  lib,
+  stdenvNoCC,
+  fetchurl,
+  makeWrapper,
+  jre,
+}:
 
 stdenvNoCC.mkDerivation rec {
   pname = "bluemap";

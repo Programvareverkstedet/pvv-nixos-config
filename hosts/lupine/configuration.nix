@@ -1,4 +1,9 @@
-{ fp, values, lupineName, ... }:
+{
+  fp,
+  values,
+  lupineName,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration/${lupineName}.nix
@@ -12,7 +17,10 @@
 
   systemd.network.networks."30-enp0s31f6" = values.defaultNetworkConfig // {
     matchConfig.Name = "enp0s31f6";
-    address = with values.hosts.${lupineName}; [ (ipv4 + "/25") (ipv6 + "/64") ];
+    address = with values.hosts.${lupineName}; [
+      (ipv4 + "/25")
+      (ipv6 + "/64")
+    ];
     networkConfig.LLDP = false;
   };
   systemd.network.wait-online = {

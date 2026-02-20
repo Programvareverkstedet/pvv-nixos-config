@@ -1,4 +1,9 @@
-{ config, lib, fp, ... }:
+{
+  config,
+  lib,
+  fp,
+  ...
+}:
 
 {
   sops.secrets."matrix/mjolnir/access_token" = {

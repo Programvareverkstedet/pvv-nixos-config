@@ -3,7 +3,11 @@
 {
   users.users.danio = {
     isNormalUser = true;
-    extraGroups = [ "drift" "nix-builder-users" "wheel" ];
+    extraGroups = [
+      "drift"
+      "nix-builder-users"
+      "wheel"
+    ];
     shell = if config.programs.zsh.enable then pkgs.zsh else pkgs.bash;
 
     openssh.authorizedKeys.keys = [

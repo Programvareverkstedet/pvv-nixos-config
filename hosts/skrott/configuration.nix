@@ -1,4 +1,13 @@
-{ config, pkgs, lib, modulesPath, fp, values, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  modulesPath,
+  fp,
+  values,
+  ...
+}:
+{
   imports = [
     (modulesPath + "/profiles/perlless.nix")
 
@@ -64,14 +73,18 @@
     defaultGateway6 = values.hosts.gateway6;
     interfaces.eth0 = {
       useDHCP = false;
-      ipv4.addresses = [{
-        address = values.hosts.skrott.ipv4;
-        prefixLength = 25;
-      }];
-      ipv6.addresses = [{
-        address = values.hosts.skrott.ipv6;
-        prefixLength = 25;
-      }];
+      ipv4.addresses = [
+        {
+          address = values.hosts.skrott.ipv4;
+          prefixLength = 25;
+        }
+      ];
+      ipv6.addresses = [
+        {
+          address = values.hosts.skrott.ipv6;
+          prefixLength = 25;
+        }
+      ];
     };
   };
 

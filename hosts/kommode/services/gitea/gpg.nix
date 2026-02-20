@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.services.gitea;
   GNUPGHOME = "${config.users.users.gitea.home}/gnupg";

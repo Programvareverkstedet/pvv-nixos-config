@@ -1,4 +1,11 @@
-{ config, fp, pkgs, lib, values, ... }:
+{
+  config,
+  fp,
+  pkgs,
+  lib,
+  values,
+  ...
+}:
 
 {
   imports = [
@@ -20,7 +27,10 @@
           "eth*"
         ];
       };
-      address = with values.hosts.ustetind; [ (ipv4 + "/25") (ipv6 + "/64") ];
+      address = with values.hosts.ustetind; [
+        (ipv4 + "/25")
+        (ipv6 + "/64")
+      ];
     };
     "40-podman-veth" = values.defaultNetworkConfig // {
       matchConfig = {

@@ -1,4 +1,10 @@
-{ config, lib, pkgs, values, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  values,
+  ...
+}:
 let
   cfg = config.services.postgresql;
 in

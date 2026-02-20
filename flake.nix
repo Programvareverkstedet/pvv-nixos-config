@@ -49,348 +49,403 @@
     qotd.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, sops-nix, disko, ... }@inputs:
-  let
-    inherit (nixpkgs) lib;
-    systems = [
-      "x86_64-linux"
-      "aarch64-linux"
-      "aarch64-darwin"
-    ];
-    forAllSystems = f: lib.genAttrs systems f;
-    allMachines = builtins.attrNames self.nixosConfigurations;
-    importantMachines = [
-      "bekkalokk"
-      "bicep"
-      "brzeczyszczykiewicz"
-      "georg"
-      "ildkule"
-    ];
-  in {
-    inputs = lib.mapAttrs (_: src: src.outPath) inputs;
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nixpkgs-unstable,
+      sops-nix,
+      disko,
+      ...
+    }@inputs:
+    let
+      inherit (nixpkgs) lib;
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
+      forAllSystems = f: lib.genAttrs systems f;
+      allMachines = builtins.attrNames self.nixosConfigurations;
+      importantMachines = [
+        "bekkalokk"
+        "bicep"
+        "brzeczyszczykiewicz"
+        "georg"
+        "ildkule"
+      ];
+    in
+    {
+      inputs = lib.mapAttrs (_: src: src.outPath) inputs;
 
-    pkgs = forAllSystems (system: import nixpkgs {
-      inherit system;
-      config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
-        [
-          "nvidia-x11"
-          "nvidia-settings"
-        ];
-    });
-
-    nixosConfigurations = let
-      nixosConfig =
-        nixpkgs:
-        name:
-        configurationPath:
-        extraArgs@{
-          localSystem ? "x86_64-linux", # buildPlatform
-          crossSystem ? "x86_64-linux", # hostPlatform
-          specialArgs ? { },
-          modules ? [ ],
-          overlays ? [ ],
-          enableDefaults ? true,
-          ...
-        }:
-        let
-          commonPkgsConfig = {
-            inherit localSystem crossSystem;
-            config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
-              [
-                "nvidia-x11"
-                "nvidia-settings"
-              ];
-            overlays = (lib.optionals enableDefaults [
-              # Global overlays go here
-              inputs.roowho2.overlays.default
-            ]) ++ overlays;
-          };
-
-          pkgs = import nixpkgs commonPkgsConfig;
-          unstablePkgs = import nixpkgs-unstable commonPkgsConfig;
-        in
-        lib.nixosSystem (lib.recursiveUpdate
-        {
-          system = crossSystem;
-
-          inherit pkgs;
-
-          specialArgs = {
-            inherit inputs unstablePkgs;
-            values = import ./values.nix;
-            fp = path: ./${path};
-          } // specialArgs;
-
-          modules = [
-            {
-              networking.hostName = lib.mkDefault name;
-            }
-            configurationPath
-          ] ++ (lib.optionals enableDefaults [
-            sops-nix.nixosModules.sops
-            inputs.roowho2.nixosModules.default
-            self.nixosModules.rsync-pull-targets
-          ]) ++ modules;
+      pkgs = forAllSystems (
+        system:
+        import nixpkgs {
+          inherit system;
+          config.allowUnfreePredicate =
+            pkg:
+            builtins.elem (lib.getName pkg) [
+              "nvidia-x11"
+              "nvidia-settings"
+            ];
         }
-        (builtins.removeAttrs extraArgs [
-          "localSystem"
-          "crossSystem"
-          "modules"
-          "overlays"
-          "specialArgs"
-          "enableDefaults"
-        ])
       );
 
-      stableNixosConfig = name: extraArgs:
-          nixosConfig nixpkgs name ./hosts/${name}/configuration.nix extraArgs;
-    in {
-      bakke = stableNixosConfig "bakke" {
-        modules = [
-          inputs.disko.nixosModules.disko
-        ];
-      };
-      bicep = stableNixosConfig "bicep" {
-        modules = [
-          inputs.matrix-next.nixosModules.default
-          inputs.pvv-calendar-bot.nixosModules.default
-          inputs.minecraft-heatmap.nixosModules.default
-          self.nixosModules.gickup
-          self.nixosModules.matrix-ooye
-        ];
-        overlays = [
-          inputs.pvv-calendar-bot.overlays.default
-          inputs.minecraft-heatmap.overlays.default
-          (final: prev: {
-            inherit (self.packages.${prev.stdenv.hostPlatform.system}) out-of-your-element;
-          })
-        ];
-      };
-      bekkalokk = stableNixosConfig "bekkalokk" {
-        overlays = [
-          (final: prev: {
-            mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
-            simplesamlphp = final.callPackage ./packages/simplesamlphp { };
-            bluemap = final.callPackage ./packages/bluemap.nix { };
-          })
-          inputs.pvv-nettsiden.overlays.default
-          inputs.qotd.overlays.default
-        ];
-        modules = [
-          inputs.pvv-nettsiden.nixosModules.default
-          self.nixosModules.bluemap
-          inputs.qotd.nixosModules.default
-        ];
-      };
-      ildkule = stableNixosConfig "ildkule" { };
-      #ildkule-unstable = unstableNixosConfig "ildkule" { };
-      skrot = stableNixosConfig "skrot" {
-        modules = [
-          inputs.disko.nixosModules.disko
-          inputs.dibbler.nixosModules.default
-        ];
-        overlays = [inputs.dibbler.overlays.default];
-      };
-      shark = stableNixosConfig "shark" { };
-      wenche = stableNixosConfig "wenche" { };
-      temmie = stableNixosConfig "temmie" { };
-      gluttony = stableNixosConfig "gluttony" { };
+      nixosConfigurations =
+        let
+          nixosConfig =
+            nixpkgs: name: configurationPath:
+            extraArgs@{
+              localSystem ? "x86_64-linux", # buildPlatform
+              crossSystem ? "x86_64-linux", # hostPlatform
+              specialArgs ? { },
+              modules ? [ ],
+              overlays ? [ ],
+              enableDefaults ? true,
+              ...
+            }:
+            let
+              commonPkgsConfig = {
+                inherit localSystem crossSystem;
+                config.allowUnfreePredicate =
+                  pkg:
+                  builtins.elem (lib.getName pkg) [
+                    "nvidia-x11"
+                    "nvidia-settings"
+                  ];
+                overlays =
+                  (lib.optionals enableDefaults [
+                    # Global overlays go here
+                    inputs.roowho2.overlays.default
+                  ])
+                  ++ overlays;
+              };
 
-      kommode = stableNixosConfig "kommode" {
-        overlays = [
-          inputs.nix-gitea-themes.overlays.default
-        ];
-        modules = [
-          inputs.nix-gitea-themes.nixosModules.default
-          inputs.disko.nixosModules.disko
-        ];
-      };
+              pkgs = import nixpkgs commonPkgsConfig;
+              unstablePkgs = import nixpkgs-unstable commonPkgsConfig;
+            in
+            lib.nixosSystem (
+              lib.recursiveUpdate
+                {
+                  system = crossSystem;
 
-      ustetind = stableNixosConfig "ustetind" {
-        modules = [
-         "${nixpkgs}/nixos/modules/virtualisation/lxc-container.nix"
-        ];
-      };
+                  inherit pkgs;
 
-      brzeczyszczykiewicz = stableNixosConfig "brzeczyszczykiewicz" {
-        modules = [
-          inputs.grzegorz-clients.nixosModules.grzegorz-webui
-          inputs.gergle.nixosModules.default
-          inputs.greg-ng.nixosModules.default
-        ];
-        overlays = [
-          inputs.greg-ng.overlays.default
-          inputs.gergle.overlays.default
-        ];
-      };
-      georg = stableNixosConfig "georg" {
-        modules = [
-          inputs.grzegorz-clients.nixosModules.grzegorz-webui
-          inputs.gergle.nixosModules.default
-          inputs.greg-ng.nixosModules.default
-        ];
-        overlays = [
-          inputs.greg-ng.overlays.default
-          inputs.gergle.overlays.default
-        ];
-      };
-    }
-    //
-    (let
-      skrottConfig = {
-        modules = [
-          (nixpkgs + "/nixos/modules/installer/sd-card/sd-image-aarch64.nix")
-          inputs.dibbler.nixosModules.default
-        ];
-        overlays = [
-          inputs.dibbler.overlays.default
-          (final: prev: {
-            # NOTE: Yeetus (these break crosscompile ¯\_(ツ)_/¯)
-            atool = prev.emptyDirectory;
-            micro = prev.emptyDirectory;
-            ncdu = prev.emptyDirectory;
-          })
-        ];
-      };
-    in {
-      skrott = self.nixosConfigurations.skrott-native;
-      skrott-native = stableNixosConfig "skrott" (skrottConfig // {
-        localSystem = "aarch64-linux";
-        crossSystem = "aarch64-linux";
-      });
-      skrott-cross = stableNixosConfig "skrott" (skrottConfig // {
-        localSystem = "x86_64-linux";
-        crossSystem = "aarch64-linux";
-      });
-      skrott-x86_64 = stableNixosConfig "skrott" (skrottConfig // {
-        localSystem = "x86_64-linux";
-        crossSystem = "x86_64-linux";
-      });
-    })
-    //
-    (let
-      machineNames = map (i: "lupine-${toString i}") (lib.range 1 5);
-      stableLupineNixosConfig = name: extraArgs:
-          nixosConfig nixpkgs name ./hosts/lupine/configuration.nix extraArgs;
-    in lib.genAttrs machineNames (name: stableLupineNixosConfig name {
-      modules = [{ networking.hostName = name; }];
-      specialArgs.lupineName = name;
-    }));
+                  specialArgs = {
+                    inherit inputs unstablePkgs;
+                    values = import ./values.nix;
+                    fp = path: ./${path};
+                  }
+                  // specialArgs;
 
-    nixosModules = {
-      bluemap = ./modules/bluemap.nix;
-      gickup = ./modules/gickup;
-      matrix-ooye = ./modules/matrix-ooye.nix;
-      robots-txt = ./modules/robots-txt.nix;
-      rsync-pull-targets = ./modules/rsync-pull-targets.nix;
-      snakeoil-certs = ./modules/snakeoil-certs.nix;
-      snappymail = ./modules/snappymail.nix;
-    };
+                  modules = [
+                    {
+                      networking.hostName = lib.mkDefault name;
+                    }
+                    configurationPath
+                  ]
+                  ++ (lib.optionals enableDefaults [
+                    sops-nix.nixosModules.sops
+                    inputs.roowho2.nixosModules.default
+                    self.nixosModules.rsync-pull-targets
+                  ])
+                  ++ modules;
+                }
+                (
+                  builtins.removeAttrs extraArgs [
+                    "localSystem"
+                    "crossSystem"
+                    "modules"
+                    "overlays"
+                    "specialArgs"
+                    "enableDefaults"
+                  ]
+                )
+            );
 
-    devShells = forAllSystems (system: {
-      default = let
-        pkgs = import nixpkgs-unstable {
-          inherit system;
-          overlays = [
-            (final: prev: {
-              inherit (inputs.disko.packages.${system}) disko;
-            })
-          ];
-        };
-      in pkgs.callPackage ./shell.nix { };
-      cuda = let
-        cuda-pkgs = import nixpkgs-unstable {
-          inherit system;
-          config = {
-            allowUnfree = true;
-            cudaSupport = true;
+          stableNixosConfig =
+            name: extraArgs: nixosConfig nixpkgs name ./hosts/${name}/configuration.nix extraArgs;
+        in
+        {
+          bakke = stableNixosConfig "bakke" {
+            modules = [
+              inputs.disko.nixosModules.disko
+            ];
           };
-        };
-      in cuda-pkgs.callPackage ./shells/cuda.nix { };
-    });
-
-    packages = {
-      "x86_64-linux" = let
-        system = "x86_64-linux";
-        pkgs = nixpkgs.legacyPackages.${system};
-      in rec {
-        default = important-machines;
-        important-machines = pkgs.linkFarm "important-machines"
-          (lib.getAttrs importantMachines self.packages.${system});
-        all-machines = pkgs.linkFarm "all-machines"
-          (lib.getAttrs allMachines self.packages.${system});
-
-        simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
-
-        bluemap = pkgs.callPackage ./packages/bluemap.nix { };
-
-        out-of-your-element = pkgs.callPackage ./packages/ooye/package.nix { };
-      }
-      //
-      # Mediawiki extensions
-      (lib.pipe null [
-        (_: pkgs.callPackage ./packages/mediawiki-extensions { })
-        (lib.flip builtins.removeAttrs ["override" "overrideDerivation"])
-        (lib.mapAttrs' (name: lib.nameValuePair "mediawiki-${name}"))
-      ])
-      //
-      # Machines
-      lib.genAttrs allMachines
-        (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel)
-      //
-      # Skrott is exception
-      {
-        skrott = self.packages.${system}.skrott-native-sd;
-        skrott-native = self.nixosConfigurations.skrott-native.config.system.build.toplevel;
-        skrott-native-sd = self.nixosConfigurations.skrott-native.config.system.build.sdImage;
-        skrott-cross = self.nixosConfigurations.skrott-cross.config.system.build.toplevel;
-        skrott-cross-sd = self.nixosConfigurations.skrott-cross.config.system.build.sdImage;
-        skrott-x86_64 = self.nixosConfigurations.skrott-x86_64.config.system.build.toplevel;
-      }
-      //
-      # Nix-topology
-      (let
-        topology' = import inputs.nix-topology {
-          pkgs = import nixpkgs {
-            inherit system;
+          bicep = stableNixosConfig "bicep" {
+            modules = [
+              inputs.matrix-next.nixosModules.default
+              inputs.pvv-calendar-bot.nixosModules.default
+              inputs.minecraft-heatmap.nixosModules.default
+              self.nixosModules.gickup
+              self.nixosModules.matrix-ooye
+            ];
             overlays = [
-              inputs.nix-topology.overlays.default
+              inputs.pvv-calendar-bot.overlays.default
+              inputs.minecraft-heatmap.overlays.default
               (final: prev: {
-                inherit (nixpkgs-unstable.legacyPackages.${system}) super-tiny-icons;
+                inherit (self.packages.${prev.stdenv.hostPlatform.system}) out-of-your-element;
               })
             ];
           };
+          bekkalokk = stableNixosConfig "bekkalokk" {
+            overlays = [
+              (final: prev: {
+                mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions { };
+                simplesamlphp = final.callPackage ./packages/simplesamlphp { };
+                bluemap = final.callPackage ./packages/bluemap.nix { };
+              })
+              inputs.pvv-nettsiden.overlays.default
+              inputs.qotd.overlays.default
+            ];
+            modules = [
+              inputs.pvv-nettsiden.nixosModules.default
+              self.nixosModules.bluemap
+              inputs.qotd.nixosModules.default
+            ];
+          };
+          ildkule = stableNixosConfig "ildkule" { };
+          #ildkule-unstable = unstableNixosConfig "ildkule" { };
+          skrot = stableNixosConfig "skrot" {
+            modules = [
+              inputs.disko.nixosModules.disko
+              inputs.dibbler.nixosModules.default
+            ];
+            overlays = [ inputs.dibbler.overlays.default ];
+          };
+          shark = stableNixosConfig "shark" { };
+          wenche = stableNixosConfig "wenche" { };
+          temmie = stableNixosConfig "temmie" { };
+          gluttony = stableNixosConfig "gluttony" { };
 
-          specialArgs = {
-            values = import ./values.nix;
+          kommode = stableNixosConfig "kommode" {
+            overlays = [
+              inputs.nix-gitea-themes.overlays.default
+            ];
+            modules = [
+              inputs.nix-gitea-themes.nixosModules.default
+              inputs.disko.nixosModules.disko
+            ];
           };
 
-          modules = [
-            ./topology
-            {
-              nixosConfigurations = lib.mapAttrs (_name: nixosCfg: nixosCfg.extendModules {
-                modules = [
-                  inputs.nix-topology.nixosModules.default
-                  ./topology/service-extractors/greg-ng.nix
-                  ./topology/service-extractors/postgresql.nix
-                  ./topology/service-extractors/mysql.nix
-                  ./topology/service-extractors/gitea-runners.nix
-                ];
-              }) self.nixosConfigurations;
+          ustetind = stableNixosConfig "ustetind" {
+            modules = [
+              "${nixpkgs}/nixos/modules/virtualisation/lxc-container.nix"
+            ];
+          };
+
+          brzeczyszczykiewicz = stableNixosConfig "brzeczyszczykiewicz" {
+            modules = [
+              inputs.grzegorz-clients.nixosModules.grzegorz-webui
+              inputs.gergle.nixosModules.default
+              inputs.greg-ng.nixosModules.default
+            ];
+            overlays = [
+              inputs.greg-ng.overlays.default
+              inputs.gergle.overlays.default
+            ];
+          };
+          georg = stableNixosConfig "georg" {
+            modules = [
+              inputs.grzegorz-clients.nixosModules.grzegorz-webui
+              inputs.gergle.nixosModules.default
+              inputs.greg-ng.nixosModules.default
+            ];
+            overlays = [
+              inputs.greg-ng.overlays.default
+              inputs.gergle.overlays.default
+            ];
+          };
+        }
+        // (
+          let
+            skrottConfig = {
+              modules = [
+                (nixpkgs + "/nixos/modules/installer/sd-card/sd-image-aarch64.nix")
+                inputs.dibbler.nixosModules.default
+              ];
+              overlays = [
+                inputs.dibbler.overlays.default
+                (final: prev: {
+                  # NOTE: Yeetus (these break crosscompile ¯\_(ツ)_/¯)
+                  atool = prev.emptyDirectory;
+                  micro = prev.emptyDirectory;
+                  ncdu = prev.emptyDirectory;
+                })
+              ];
+            };
+          in
+          {
+            skrott = self.nixosConfigurations.skrott-native;
+            skrott-native = stableNixosConfig "skrott" (
+              skrottConfig
+              // {
+                localSystem = "aarch64-linux";
+                crossSystem = "aarch64-linux";
+              }
+            );
+            skrott-cross = stableNixosConfig "skrott" (
+              skrottConfig
+              // {
+                localSystem = "x86_64-linux";
+                crossSystem = "aarch64-linux";
+              }
+            );
+            skrott-x86_64 = stableNixosConfig "skrott" (
+              skrottConfig
+              // {
+                localSystem = "x86_64-linux";
+                crossSystem = "x86_64-linux";
+              }
+            );
+          }
+        )
+        // (
+          let
+            machineNames = map (i: "lupine-${toString i}") (lib.range 1 5);
+            stableLupineNixosConfig =
+              name: extraArgs: nixosConfig nixpkgs name ./hosts/lupine/configuration.nix extraArgs;
+          in
+          lib.genAttrs machineNames (
+            name:
+            stableLupineNixosConfig name {
+              modules = [ { networking.hostName = name; } ];
+              specialArgs.lupineName = name;
             }
-          ];
-        };
-      in {
-        topology = topology'.config.output;
-        topology-png = pkgs.runCommand "pvv-config-topology-png" {
-          nativeBuildInputs = [ pkgs.writableTmpDirAsHomeHook ];
-        } ''
-          mkdir -p "$out"
-          for file in '${topology'.config.output}'/*.svg; do
-            ${lib.getExe pkgs.imagemagick} -density 300 -background none "$file" "$out"/"$(basename "''${file%.svg}.png")"
-          done
-        '';
+          )
+        );
+
+      nixosModules = {
+        bluemap = ./modules/bluemap.nix;
+        gickup = ./modules/gickup;
+        matrix-ooye = ./modules/matrix-ooye.nix;
+        robots-txt = ./modules/robots-txt.nix;
+        rsync-pull-targets = ./modules/rsync-pull-targets.nix;
+        snakeoil-certs = ./modules/snakeoil-certs.nix;
+        snappymail = ./modules/snappymail.nix;
+      };
+
+      devShells = forAllSystems (system: {
+        default =
+          let
+            pkgs = import nixpkgs-unstable {
+              inherit system;
+              overlays = [
+                (final: prev: {
+                  inherit (inputs.disko.packages.${system}) disko;
+                })
+              ];
+            };
+          in
+          pkgs.callPackage ./shell.nix { };
+        cuda =
+          let
+            cuda-pkgs = import nixpkgs-unstable {
+              inherit system;
+              config = {
+                allowUnfree = true;
+                cudaSupport = true;
+              };
+            };
+          in
+          cuda-pkgs.callPackage ./shells/cuda.nix { };
       });
+
+      packages = {
+        "x86_64-linux" =
+          let
+            system = "x86_64-linux";
+            pkgs = nixpkgs.legacyPackages.${system};
+          in
+          rec {
+            default = important-machines;
+            important-machines = pkgs.linkFarm "important-machines" (
+              lib.getAttrs importantMachines self.packages.${system}
+            );
+            all-machines = pkgs.linkFarm "all-machines" (lib.getAttrs allMachines self.packages.${system});
+
+            simplesamlphp = pkgs.callPackage ./packages/simplesamlphp { };
+
+            bluemap = pkgs.callPackage ./packages/bluemap.nix { };
+
+            out-of-your-element = pkgs.callPackage ./packages/ooye/package.nix { };
+          }
+          //
+            # Mediawiki extensions
+            (lib.pipe null [
+              (_: pkgs.callPackage ./packages/mediawiki-extensions { })
+              (lib.flip builtins.removeAttrs [
+                "override"
+                "overrideDerivation"
+              ])
+              (lib.mapAttrs' (name: lib.nameValuePair "mediawiki-${name}"))
+            ])
+          //
+            # Machines
+            lib.genAttrs allMachines (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel)
+          //
+            # Skrott is exception
+            {
+              skrott = self.packages.${system}.skrott-native-sd;
+              skrott-native = self.nixosConfigurations.skrott-native.config.system.build.toplevel;
+              skrott-native-sd = self.nixosConfigurations.skrott-native.config.system.build.sdImage;
+              skrott-cross = self.nixosConfigurations.skrott-cross.config.system.build.toplevel;
+              skrott-cross-sd = self.nixosConfigurations.skrott-cross.config.system.build.sdImage;
+              skrott-x86_64 = self.nixosConfigurations.skrott-x86_64.config.system.build.toplevel;
+            }
+          //
+            # Nix-topology
+            (
+              let
+                topology' = import inputs.nix-topology {
+                  pkgs = import nixpkgs {
+                    inherit system;
+                    overlays = [
+                      inputs.nix-topology.overlays.default
+                      (final: prev: {
+                        inherit (nixpkgs-unstable.legacyPackages.${system}) super-tiny-icons;
+                      })
+                    ];
+                  };
+
+                  specialArgs = {
+                    values = import ./values.nix;
+                  };
+
+                  modules = [
+                    ./topology
+                    {
+                      nixosConfigurations = lib.mapAttrs (
+                        _name: nixosCfg:
+                        nixosCfg.extendModules {
+                          modules = [
+                            inputs.nix-topology.nixosModules.default
+                            ./topology/service-extractors/greg-ng.nix
+                            ./topology/service-extractors/postgresql.nix
+                            ./topology/service-extractors/mysql.nix
+                            ./topology/service-extractors/gitea-runners.nix
+                          ];
+                        }
+                      ) self.nixosConfigurations;
+                    }
+                  ];
+                };
+              in
+              {
+                topology = topology'.config.output;
+                topology-png =
+                  pkgs.runCommand "pvv-config-topology-png"
+                    {
+                      nativeBuildInputs = [ pkgs.writableTmpDirAsHomeHook ];
+                    }
+                    ''
+                      mkdir -p "$out"
+                      for file in '${topology'.config.output}'/*.svg; do
+                        ${lib.getExe pkgs.imagemagick} -density 300 -background none "$file" "$out"/"$(basename "''${file%.svg}.png")"
+                      done
+                    '';
+              }
+            );
+      };
     };
-  };
 }

@@ -1,10 +1,16 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   users.users.felixalb = {
     isNormalUser = true;
     extraGroups = [
       "wheel"
-    ] ++ lib.optionals ( config.users.groups ? "libvirtd" ) [
+    ]
+    ++ lib.optionals (config.users.groups ? "libvirtd") [
       "libvirtd"
     ];
     shell = if config.programs.zsh.enable then pkgs.zsh else pkgs.bash;

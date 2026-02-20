@@ -1,7 +1,13 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   synapse-cfg = config.services.matrix-synapse-next;
-in {
+in
+{
   services.pvv-matrix-well-known.client = {
     "m.homeserver" = {
       base_url = "https://matrix.pvv.ntnu.no";
@@ -21,12 +27,12 @@ in {
         default_server_config = config.services.pvv-matrix-well-known.client;
 
         disable_3pid_login = true;
-#        integrations_ui_url = "https://dimension.dodsorf.as/riot";
-#        integrations_rest_url = "https://dimension.dodsorf.as/api/v1/scalar";
-#        integrations_widgets_urls = [
-#          "https://dimension.dodsorf.as/widgets"
-#        ];
-#        integration_jitsi_widget_url = "https://dimension.dodsorf.as/widgets/jitsi";
+        #        integrations_ui_url = "https://dimension.dodsorf.as/riot";
+        #        integrations_rest_url = "https://dimension.dodsorf.as/api/v1/scalar";
+        #        integrations_widgets_urls = [
+        #          "https://dimension.dodsorf.as/widgets"
+        #        ];
+        #        integration_jitsi_widget_url = "https://dimension.dodsorf.as/widgets/jitsi";
         defaultCountryCode = "NO";
         showLabsSettings = true;
         features = {

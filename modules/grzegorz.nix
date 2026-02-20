@@ -1,10 +1,18 @@
-{config, lib, pkgs, unstablePkgs, values, ...}:
+{
+  config,
+  lib,
+  pkgs,
+  unstablePkgs,
+  values,
+  ...
+}:
 let
   grg = config.services.greg-ng;
   grgw = config.services.grzegorz-webui;
 
   machine = config.networking.hostName;
-in {
+in
+{
   services.greg-ng = {
     enable = true;
     settings.host = "localhost";
@@ -124,4 +132,3 @@ in {
     };
   };
 }
-

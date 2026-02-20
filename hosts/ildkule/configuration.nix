@@ -1,14 +1,21 @@
-{ config, fp, pkgs, lib, values, ... }:
+{
+  config,
+  fp,
+  pkgs,
+  lib,
+  values,
+  ...
+}:
 {
   imports = [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      (fp /base)
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    (fp /base)
 
-      ./services/monitoring
-      ./services/nginx
-      ./services/journald-remote.nix
-    ];
+    ./services/monitoring
+    ./services/nginx
+    ./services/journald-remote.nix
+  ];
 
   boot.loader.systemd-boot.enable = false;
   boot.loader.grub.device = "/dev/vda";
@@ -17,26 +24,37 @@
 
   # Openstack Neutron and systemd-networkd are not best friends, use something else:
   systemd.network.enable = lib.mkForce false;
-  networking = let
-    hostConf = values.hosts.ildkule;
-  in {
-    tempAddresses = "disabled";
-    useDHCP = lib.mkForce true;
+  networking =
+    let
+      hostConf = values.hosts.ildkule;
+    in
+    {
+      tempAddresses = "disabled";
+      useDHCP = lib.mkForce true;
 
-    search = values.defaultNetworkConfig.domains;
-    nameservers = values.defaultNetworkConfig.dns;
-    defaultGateway.address = hostConf.ipv4_internal_gw;
+      search = values.defaultNetworkConfig.domains;
+      nameservers = values.defaultNetworkConfig.dns;
+      defaultGateway.address = hostConf.ipv4_internal_gw;
 
-    interfaces."ens4" = {
-      ipv4.addresses = [
-        { address = hostConf.ipv4;          prefixLength = 32; }
-        { address = hostConf.ipv4_internal; prefixLength = 24; }
-      ];
-      ipv6.addresses = [
-        { address = hostConf.ipv6;          prefixLength = 64; }
-      ];
+      interfaces."ens4" = {
+        ipv4.addresses = [
+          {
+            address = hostConf.ipv4;
+            prefixLength = 32;
+          }
+          {
+            address = hostConf.ipv4_internal;
+            prefixLength = 24;
+          }
+        ];
+        ipv6.addresses = [
+          {
+            address = hostConf.ipv6;
+            prefixLength = 64;
+          }
+        ];
+      };
     };
-  };
 
   services.qemuGuest.enable = true;
 

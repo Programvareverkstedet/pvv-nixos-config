@@ -1,4 +1,12 @@
-{ pkgs, lib, fp, config, values, ... }: let
+{
+  pkgs,
+  lib,
+  fp,
+  config,
+  values,
+  ...
+}:
+let
   cfg = config.services.mediawiki;
 
   # "mediawiki"
@@ -9,7 +17,9 @@
 
   simplesamlphp = pkgs.simplesamlphp.override {
     extra_files = {
-      "metadata/saml20-idp-remote.php" = pkgs.writeText "mediawiki-saml20-idp-remote.php" (import ../idp-simplesamlphp/metadata.php.nix);
+      "metadata/saml20-idp-remote.php" = pkgs.writeText "mediawiki-saml20-idp-remote.php" (
+        import ../idp-simplesamlphp/metadata.php.nix
+      );
 
       "config/authsources.php" = ./simplesaml-authsources.php;
 
@@ -18,36 +28,49 @@
 
         substituteInPlace "$out" \
           --replace-warn '$SAML_COOKIE_SECURE' 'true' \
-          --replace-warn '$SAML_COOKIE_SALT' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/cookie_salt".path}")' \
+          --replace-warn '$SAML_COOKIE_SALT' 'file_get_contents("${
+            config.sops.secrets."mediawiki/simplesamlphp/cookie_salt".path
+          }")' \
           --replace-warn '$SAML_ADMIN_NAME' '"Drift"' \
           --replace-warn '$SAML_ADMIN_EMAIL' '"drift@pvv.ntnu.no"' \
-          --replace-warn '$SAML_ADMIN_PASSWORD' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/admin_password".path}")' \
+          --replace-warn '$SAML_ADMIN_PASSWORD' 'file_get_contents("${
+            config.sops.secrets."mediawiki/simplesamlphp/admin_password".path
+          }")' \
           --replace-warn '$SAML_TRUSTED_DOMAINS' 'array( "wiki.pvv.ntnu.no" )' \
           --replace-warn '$SAML_DATABASE_DSN' '"pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=mediawiki_simplesamlphp"' \
           --replace-warn '$SAML_DATABASE_USERNAME' '"mediawiki_simplesamlphp"' \
-          --replace-warn '$SAML_DATABASE_PASSWORD' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/postgres_password".path}")' \
+          --replace-warn '$SAML_DATABASE_PASSWORD' 'file_get_contents("${
+            config.sops.secrets."mediawiki/simplesamlphp/postgres_password".path
+          }")' \
           --replace-warn '$CACHE_DIRECTORY' '/var/cache/mediawiki/idp'
       '';
     };
   };
-in {
+in
+{
   services.idp.sp-remote-metadata = [ "https://wiki.pvv.ntnu.no/simplesaml/" ];
 
-  sops.secrets = lib.pipe [
-    "mediawiki/secret-key"
-    "mediawiki/password"
-    "mediawiki/postgres_password"
-    "mediawiki/simplesamlphp/postgres_password"
-    "mediawiki/simplesamlphp/cookie_salt"
-    "mediawiki/simplesamlphp/admin_password"
-  ] [
-    (map (key: lib.nameValuePair key {
-      owner = user;
-      group = group;
-      restartUnits = [ "phpfpm-mediawiki.service" ];
-    }))
-    lib.listToAttrs
-  ];
+  sops.secrets =
+    lib.pipe
+      [
+        "mediawiki/secret-key"
+        "mediawiki/password"
+        "mediawiki/postgres_password"
+        "mediawiki/simplesamlphp/postgres_password"
+        "mediawiki/simplesamlphp/cookie_salt"
+        "mediawiki/simplesamlphp/admin_password"
+      ]
+      [
+        (map (
+          key:
+          lib.nameValuePair key {
+            owner = user;
+            group = group;
+            restartUnits = [ "phpfpm-mediawiki.service" ];
+          }
+        ))
+        lib.listToAttrs
+      ];
 
   services.rsync-pull-targets = {
     enable = true;
@@ -215,11 +238,13 @@ in {
 
   # Cache directory for simplesamlphp
   # systemd.services.phpfpm-mediawiki.serviceConfig.CacheDirectory = "mediawiki/simplesamlphp";
-  systemd.tmpfiles.settings."10-mediawiki"."/var/cache/mediawiki/simplesamlphp".d = lib.mkIf cfg.enable {
-    user = "mediawiki";
-    group = "mediawiki";
-    mode = "0770";
-  };
+  systemd.tmpfiles.settings."10-mediawiki"."/var/cache/mediawiki/simplesamlphp".d =
+    lib.mkIf cfg.enable
+      {
+        user = "mediawiki";
+        group = "mediawiki";
+        mode = "0770";
+      };
 
   users.groups.mediawiki.members = lib.mkIf cfg.enable [ "nginx" ];
 
@@ -227,7 +252,7 @@ in {
     kTLS = true;
     forceSSL = true;
     enableACME = true;
-    locations =  {
+    locations = {
       "= /wiki/Main_Page" = lib.mkForce {
         return = "301 /wiki/Programvareverkstedet";
       };
@@ -253,19 +278,22 @@ in {
 
       "= /PNG/PVV-logo.svg".alias = fp /assets/logo_blue_regular.svg;
       "= /PNG/PVV-logo.png".alias = fp /assets/logo_blue_regular.png;
-      "= /favicon.ico".alias = pkgs.runCommandLocal "mediawiki-favicon.ico" {
-        buildInputs = with pkgs; [ imagemagick ];
-      } ''
-        magick \
-          ${fp /assets/logo_blue_regular.png} \
-          -resize x64 \
-          -gravity center \
-          -crop 64x64+0+0 \
-          -flatten \
-          -colors 256 \
-          -background transparent \
-          $out
-      '';
+      "= /favicon.ico".alias =
+        pkgs.runCommandLocal "mediawiki-favicon.ico"
+          {
+            buildInputs = with pkgs; [ imagemagick ];
+          }
+          ''
+            magick \
+              ${fp /assets/logo_blue_regular.png} \
+              -resize x64 \
+              -gravity center \
+              -crop 64x64+0+0 \
+              -flatten \
+              -colors 256 \
+              -background transparent \
+              $out
+          '';
     };
 
   };
@@ -273,7 +301,9 @@ in {
   systemd.services.mediawiki-init = lib.mkIf cfg.enable {
     after = [ "sops-install-secrets.service" ];
     serviceConfig = {
-      BindReadOnlyPaths = [ "/run/credentials/mediawiki-init.service/secret-key:/var/lib/mediawiki/secret.key" ];
+      BindReadOnlyPaths = [
+        "/run/credentials/mediawiki-init.service/secret-key:/var/lib/mediawiki/secret.key"
+      ];
       LoadCredential = [ "secret-key:${config.sops.secrets."mediawiki/secret-key".path}" ];
       UMask = lib.mkForce "0007";
     };
@@ -282,7 +312,9 @@ in {
   systemd.services.phpfpm-mediawiki = lib.mkIf cfg.enable {
     after = [ "sops-install-secrets.service" ];
     serviceConfig = {
-      BindReadOnlyPaths = [ "/run/credentials/phpfpm-mediawiki.service/secret-key:/var/lib/mediawiki/secret.key" ];
+      BindReadOnlyPaths = [
+        "/run/credentials/phpfpm-mediawiki.service/secret-key:/var/lib/mediawiki/secret.key"
+      ];
       LoadCredential = [ "secret-key:${config.sops.secrets."mediawiki/secret-key".path}" ];
       UMask = lib.mkForce "0007";
     };

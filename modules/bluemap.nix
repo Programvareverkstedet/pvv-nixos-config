@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.services.bluemap;
   format = pkgs.formats.hocon { };
@@ -7,36 +12,48 @@ let
   webappConfig = format.generate "webapp.conf" cfg.webappSettings;
   webserverConfig = format.generate "webserver.conf" cfg.webserverSettings;
 
-  storageFolder = pkgs.linkFarm "storage"
-    (lib.attrsets.mapAttrs' (name: value:
-      lib.nameValuePair "${name}.conf"
-        (format.generate "${name}.conf" value))
-      cfg.storage);
+  storageFolder = pkgs.linkFarm "storage" (
+    lib.attrsets.mapAttrs' (
+      name: value: lib.nameValuePair "${name}.conf" (format.generate "${name}.conf" value)
+    ) cfg.storage
+  );
 
-  generateMapConfigWithMarkerData = name: { extraHoconMarkersFile, settings, ... }:
+  generateMapConfigWithMarkerData =
+    name:
+    { extraHoconMarkersFile, settings, ... }:
     assert (extraHoconMarkersFile == null) != ((settings.marker-sets or { }) == { });
     lib.pipe settings (
       (lib.optionals (extraHoconMarkersFile != null) [
-        (settings: lib.recursiveUpdate settings {
-          marker-placeholder = "###ASDF###";
-        })
-      ]) ++ [
+        (
+          settings:
+          lib.recursiveUpdate settings {
+            marker-placeholder = "###ASDF###";
+          }
+        )
+      ])
+      ++ [
         (format.generate "${name}.conf")
-      ] ++ (lib.optionals (extraHoconMarkersFile != null) [
-        (hoconFile: pkgs.runCommand "${name}-patched.conf" { } ''
-          mkdir -p "$(dirname "$out")"
-          cp '${hoconFile}' "$out"
-          substituteInPlace "$out" \
-            --replace-fail '"marker-placeholder" = "###ASDF###"' "\"marker-sets\" = $(cat '${extraHoconMarkersFile}')"
-        '')
+      ]
+      ++ (lib.optionals (extraHoconMarkersFile != null) [
+        (
+          hoconFile:
+          pkgs.runCommand "${name}-patched.conf" { } ''
+            mkdir -p "$(dirname "$out")"
+            cp '${hoconFile}' "$out"
+            substituteInPlace "$out" \
+              --replace-fail '"marker-placeholder" = "###ASDF###"' "\"marker-sets\" = $(cat '${extraHoconMarkersFile}')"
+          ''
+        )
       ])
     );
 
   mapsFolder = lib.pipe cfg.maps [
-    (lib.attrsets.mapAttrs' (name: value: {
-      name = "${name}.conf";
-      value = generateMapConfigWithMarkerData name value;
-    }))
+    (lib.attrsets.mapAttrs' (
+      name: value: {
+        name = "${name}.conf";
+        value = generateMapConfigWithMarkerData name value;
+      }
+    ))
     (pkgs.linkFarm "maps")
   ];
 
@@ -49,19 +66,24 @@ let
     "packs" = cfg.packs;
   };
 
-  renderConfigFolder = name: value: pkgs.linkFarm "bluemap-${name}-config" {
-    "maps" = pkgs.linkFarm "maps" {
-      "${name}.conf" = generateMapConfigWithMarkerData name value;
+  renderConfigFolder =
+    name: value:
+    pkgs.linkFarm "bluemap-${name}-config" {
+      "maps" = pkgs.linkFarm "maps" {
+        "${name}.conf" = generateMapConfigWithMarkerData name value;
+      };
+      "storages" = storageFolder;
+      "core.conf" = coreConfig;
+      "webapp.conf" = format.generate "webapp.conf" (
+        cfg.webappSettings // { "update-settings-file" = false; }
+      );
+      "webserver.conf" = webserverConfig;
+      "packs" = value.packs;
     };
-    "storages" = storageFolder;
-    "core.conf" = coreConfig;
-    "webapp.conf" = format.generate "webapp.conf" (cfg.webappSettings // { "update-settings-file" = false; });
-    "webserver.conf" = webserverConfig;
-    "packs" = value.packs;
-  };
 
   inherit (lib) mkOption;
-in {
+in
+{
   options.services.bluemap = {
     enable = lib.mkEnableOption "bluemap";
     package = lib.mkPackageOption pkgs "bluemap" { };
@@ -173,70 +195,77 @@ in {
     };
 
     maps = mkOption {
-      type = lib.types.attrsOf (lib.types.submodule ({ name, ... }: {
-        options = {
-          packs = mkOption {
-            type = lib.types.path;
-            default = cfg.packs;
-            defaultText = lib.literalExpression "config.services.bluemap.packs";
-            description = "A set of resourcepacks, datapacks, and mods to extract resources from, loaded in alphabetical order.";
-          };
-
-          extraHoconMarkersFile = mkOption {
-            type = lib.types.nullOr lib.types.path;
-            default = null;
-            description = ''
-              Path to a hocon file containing marker data.
-              The content of this file will be injected into the map config file in a separate derivation.
-
-              DO NOT SEND THIS TO NIXPKGS, IT'S AN UGLY HACK.
-            '';
-          };
-
-          settings = mkOption {
-            type = (lib.types.submodule {
-              freeformType = format.type;
-              options = {
-                world = mkOption {
-                  type = lib.types.path;
-                  description = "Path to world folder containing the dimension to render";
-                };
-                name = mkOption {
-                  type = lib.types.str;
-                  description = "The display name of this map (how this map will be named on the webapp)";
-                  default = name;
-                  defaultText = lib.literalExpression "<name>";
-                };
-                render-mask = mkOption {
-                  type = with lib.types; listOf (attrsOf format.type);
-                  description = "Limits for the map render";
-                  default = [ ];
-                  example = [
-                    {
-                      min-x = -4000;
-                      max-x = 4000;
-                      min-z = -4000;
-                      max-z = 4000;
-                      min-y = 50;
-                      max-y = 100;
-                    }
-                    {
-                      subtract = true;
-                      min-y = 90;
-                      max-y = 127;
-                    }
-                  ];
-                };
+      type = lib.types.attrsOf (
+        lib.types.submodule (
+          { name, ... }:
+          {
+            options = {
+              packs = mkOption {
+                type = lib.types.path;
+                default = cfg.packs;
+                defaultText = lib.literalExpression "config.services.bluemap.packs";
+                description = "A set of resourcepacks, datapacks, and mods to extract resources from, loaded in alphabetical order.";
               };
-            });
-            description = ''
-              Settings for files in `maps/`.
-              See the default for an example with good options for the different world types.
-              For valid values [consult upstream docs](https://github.com/BlueMap-Minecraft/BlueMap/blob/master/common/src/main/resources/de/bluecolored/bluemap/config/maps/map.conf).
-            '';
-          };
-        };
-      }));
+
+              extraHoconMarkersFile = mkOption {
+                type = lib.types.nullOr lib.types.path;
+                default = null;
+                description = ''
+                  Path to a hocon file containing marker data.
+                  The content of this file will be injected into the map config file in a separate derivation.
+
+                  DO NOT SEND THIS TO NIXPKGS, IT'S AN UGLY HACK.
+                '';
+              };
+
+              settings = mkOption {
+                type = (
+                  lib.types.submodule {
+                    freeformType = format.type;
+                    options = {
+                      world = mkOption {
+                        type = lib.types.path;
+                        description = "Path to world folder containing the dimension to render";
+                      };
+                      name = mkOption {
+                        type = lib.types.str;
+                        description = "The display name of this map (how this map will be named on the webapp)";
+                        default = name;
+                        defaultText = lib.literalExpression "<name>";
+                      };
+                      render-mask = mkOption {
+                        type = with lib.types; listOf (attrsOf format.type);
+                        description = "Limits for the map render";
+                        default = [ ];
+                        example = [
+                          {
+                            min-x = -4000;
+                            max-x = 4000;
+                            min-z = -4000;
+                            max-z = 4000;
+                            min-y = 50;
+                            max-y = 100;
+                          }
+                          {
+                            subtract = true;
+                            min-y = 90;
+                            max-y = 127;
+                          }
+                        ];
+                      };
+                    };
+                  }
+                );
+                description = ''
+                  Settings for files in `maps/`.
+                  See the default for an example with good options for the different world types.
+                  For valid values [consult upstream docs](https://github.com/BlueMap-Minecraft/BlueMap/blob/master/common/src/main/resources/de/bluecolored/bluemap/config/maps/map.conf).
+                '';
+              };
+            };
+          }
+        )
+      );
       default = {
         "overworld".settings = {
           world = cfg.defaultWorld;
@@ -320,16 +349,21 @@ in {
     };
 
     storage = mkOption {
-      type = lib.types.attrsOf (lib.types.submodule {
-        freeformType = format.type;
-        options = {
-          storage-type = mkOption {
-            type = lib.types.enum [ "FILE" "SQL" ];
-            description = "Type of storage config";
-            default = "FILE";
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          freeformType = format.type;
+          options = {
+            storage-type = mkOption {
+              type = lib.types.enum [
+                "FILE"
+                "SQL"
+              ];
+              description = "Type of storage config";
+              default = "FILE";
+            };
           };
-        };
-      });
+        }
+      );
       description = ''
         Where the rendered map will be stored.
         Unless you are doing something advanced you should probably leave this alone and configure webRoot instead.
@@ -359,16 +393,16 @@ in {
     };
   };
 
-
   config = lib.mkIf cfg.enable {
-    assertions =
-      [ { assertion = config.services.bluemap.eula;
-          message = ''
-            You have enabled bluemap but have not accepted minecraft's EULA.
-            You can achieve this through setting `services.bluemap.eula = true`
-          '';
-        }
-      ];
+    assertions = [
+      {
+        assertion = config.services.bluemap.eula;
+        message = ''
+          You have enabled bluemap but have not accepted minecraft's EULA.
+          You can achieve this through setting `services.bluemap.eula = true`
+        '';
+      }
+    ];
 
     services.bluemap.coreSettings.accept-download = cfg.eula;
 
@@ -384,9 +418,9 @@ in {
         ]
         ++
           # Render each minecraft map
-          lib.attrsets.mapAttrsToList
-            (name: value: "${lib.getExe cfg.package} -c ${renderConfigFolder name value} -r")
-            cfg.maps
+          lib.attrsets.mapAttrsToList (
+            name: value: "${lib.getExe cfg.package} -c ${renderConfigFolder name value} -r"
+          ) cfg.maps
         ++ [
           # Generate updated webapp
           "${lib.getExe cfg.package} -c ${webappConfigFolder} -gs"
@@ -417,6 +451,9 @@ in {
   };
 
   meta = {
-    maintainers = with lib.maintainers; [ dandellion h7x4 ];
+    maintainers = with lib.maintainers; [
+      dandellion
+      h7x4
+    ];
   };
 }

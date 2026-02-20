@@ -1,4 +1,9 @@
-{ fp, pkgs, values, ... }:
+{
+  fp,
+  pkgs,
+  values,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
@@ -21,7 +26,10 @@
 
   systemd.network.networks."30-enp2s0" = values.defaultNetworkConfig // {
     matchConfig.Name = "enp2s0";
-    address = with values.hosts.bekkalokk; [ (ipv4 + "/25") (ipv6 + "/64") ];
+    address = with values.hosts.bekkalokk; [
+      (ipv4 + "/25")
+      (ipv6 + "/64")
+    ];
   };
 
   services.btrfs.autoScrub.enable = true;

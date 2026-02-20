@@ -1,4 +1,9 @@
-{ config, lib, values, ... }:
+{
+  config,
+  lib,
+  values,
+  ...
+}:
 let
   mkRunner = name: {
     # This is unfortunately state, and has to be generated one at a time :(
@@ -13,7 +18,8 @@ let
     services.gitea-actions-runner.instances = {
       ${name} = {
         enable = true;
-        name = "git-runner-${name}"; url = "https://git.pvv.ntnu.no";
+        name = "git-runner-${name}";
+        url = "https://git.pvv.ntnu.no";
         labels = [
           "debian-latest:docker://node:current-bookworm"
           "ubuntu-latest:docker://node:current-bookworm"
@@ -36,6 +42,9 @@ lib.mkMerge [
 
     networking.dhcpcd.IPv6rs = false;
 
-    networking.firewall.interfaces."podman+".allowedUDPPorts = [53 5353];
+    networking.firewall.interfaces."podman+".allowedUDPPorts = [
+      53
+      5353
+    ];
   }
 ]

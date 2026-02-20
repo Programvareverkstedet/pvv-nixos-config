@@ -1,4 +1,10 @@
-{ config, values, pkgs, lib, ... }:
+{
+  config,
+  values,
+  pkgs,
+  lib,
+  ...
+}:
 {
   imports = [
     ./roundcube.nix

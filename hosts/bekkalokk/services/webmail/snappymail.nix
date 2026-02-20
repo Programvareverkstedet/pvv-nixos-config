@@ -1,7 +1,15 @@
-{ config, lib, fp, pkgs, values, ... }:
+{
+  config,
+  lib,
+  fp,
+  pkgs,
+  values,
+  ...
+}:
 let
   cfg = config.services.snappymail;
-in {
+in
+{
   imports = [ (fp /modules/snappymail.nix) ];
 
   services.snappymail = {

@@ -2,7 +2,11 @@
 {
   users.users.albertba = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "drift" "nix-builder-users" ];
+    extraGroups = [
+      "wheel"
+      "drift"
+      "nix-builder-users"
+    ];
 
     packages = with pkgs; [
       fd

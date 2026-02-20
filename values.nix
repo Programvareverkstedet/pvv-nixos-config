@@ -4,7 +4,8 @@ let
   ntnu-ipv6 = suffix: "2001:700:300:${toString suffix}";
   pvv-ipv4 = suffix: ntnu-ipv4 "210.${toString suffix}";
   pvv-ipv6 = suffix: ntnu-ipv6 "1900::${toString suffix}";
-in rec {
+in
+rec {
   ntnu.ipv4-space = ntnu-ipv4 "0.0/16"; # https://ipinfo.io/ips/129.241.0.0/16
   ntnu.ipv6-space = ntnu-ipv6 ":/48"; # https://ipinfo.io/2001:700:300::
 
@@ -126,9 +127,20 @@ in rec {
   };
 
   defaultNetworkConfig = {
-    dns = [ "129.241.0.200" "129.241.0.201" "2001:700:300:1900::200" "2001:700:300:1900::201" ];
-    domains = [ "pvv.ntnu.no" "pvv.org" ];
-    gateway = [ hosts.gateway hosts.gateway6 ];
+    dns = [
+      "129.241.0.200"
+      "129.241.0.201"
+      "2001:700:300:1900::200"
+      "2001:700:300:1900::201"
+    ];
+    domains = [
+      "pvv.ntnu.no"
+      "pvv.org"
+    ];
+    gateway = [
+      hosts.gateway
+      hosts.gateway6
+    ];
 
     networkConfig.IPv6AcceptRA = "no";
     DHCP = "no";

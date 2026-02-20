@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 with lib;
 let
@@ -14,14 +19,24 @@ in
   services.roundcube = {
     enable = true;
 
-    package = pkgs.roundcube.withPlugins (plugins: with plugins; [
-      persistent_login
-      thunderbird_labels
-      contextmenu
-      custom_from
-    ]);
+    package = pkgs.roundcube.withPlugins (
+      plugins: with plugins; [
+        persistent_login
+        thunderbird_labels
+        contextmenu
+        custom_from
+      ]
+    );
 
-    dicts = with pkgs.aspellDicts; [ en en-computers nb nn fr de it ];
+    dicts = with pkgs.aspellDicts; [
+      en
+      en-computers
+      nb
+      nn
+      fr
+      de
+      it
+    ];
     maxAttachmentSize = 20;
     hostName = "roundcubeplaceholder.example.com";
 
@@ -54,21 +69,23 @@ in
         ln -s ${cfg.package} $out/roundcube
       '';
       extraConfig = ''
-        location ~ ^/roundcube/(${builtins.concatStringsSep "|" [
-        # https://wiki.archlinux.org/title/Roundcube
-        "README"
-        "INSTALL"
-        "LICENSE"
-        "CHANGELOG"
-        "UPGRADING"
-        "bin"
-        "SQL"
-        ".+\\.md"
-        "\\."
-        "config"
-        "temp"
-        "logs"
-        ]})/? {
+        location ~ ^/roundcube/(${
+          builtins.concatStringsSep "|" [
+            # https://wiki.archlinux.org/title/Roundcube
+            "README"
+            "INSTALL"
+            "LICENSE"
+            "CHANGELOG"
+            "UPGRADING"
+            "bin"
+            "SQL"
+            ".+\\.md"
+            "\\."
+            "config"
+            "temp"
+            "logs"
+          ]
+        })/? {
           deny all;
         }
 

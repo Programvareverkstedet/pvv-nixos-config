@@ -1,4 +1,9 @@
-{ lib, buildPythonPackage, fetchFromGitHub, setuptools }:
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  setuptools,
+}:
 
 buildPythonPackage rec {
   pname = "matrix-synapse-smtp-auth";

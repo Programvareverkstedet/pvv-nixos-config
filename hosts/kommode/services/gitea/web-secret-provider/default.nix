@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   organizations = [
     "Drift"
@@ -36,7 +41,8 @@ in
     group = "gitea-web";
     restartUnits = [
       "gitea-web-secret-provider@"
-    ] ++ (map (org: "gitea-web-secret-provider@${org}") organizations);
+    ]
+    ++ (map (org: "gitea-web-secret-provider@${org}") organizations);
   };
 
   systemd.slices.system-giteaweb = {
@@ -48,25 +54,30 @@ in
   # %d - secrets directory
   systemd.services."gitea-web-secret-provider@" = {
     description = "Ensure all repos in %i has an SSH key to push web content";
-    requires = [ "gitea.service" "network.target" ];
+    requires = [
+      "gitea.service"
+      "network.target"
+    ];
     serviceConfig = {
       Slice = "system-giteaweb.slice";
       Type = "oneshot";
-      ExecStart = let
-        args = lib.cli.toGNUCommandLineShell { } {
-          org = "%i";
-          token-path = "%d/token";
-          api-url = "${giteaCfg.settings.server.ROOT_URL}api/v1";
-          key-dir = "/var/lib/gitea-web/keys/%i";
-          authorized-keys-path = "/var/lib/gitea-web/authorized_keys.d/%i";
-          rrsync-script = pkgs.writeShellScript "rrsync-chown" ''
-            mkdir -p "$1"
-            ${lib.getExe pkgs.rrsync} -wo "$1"
-            ${pkgs.coreutils}/bin/chown -R gitea-web:gitea-web "$1"
-          '';
-          web-dir = "/var/lib/gitea-web/web";
-        };
-      in "${giteaWebSecretProviderScript} ${args}";
+      ExecStart =
+        let
+          args = lib.cli.toGNUCommandLineShell { } {
+            org = "%i";
+            token-path = "%d/token";
+            api-url = "${giteaCfg.settings.server.ROOT_URL}api/v1";
+            key-dir = "/var/lib/gitea-web/keys/%i";
+            authorized-keys-path = "/var/lib/gitea-web/authorized_keys.d/%i";
+            rrsync-script = pkgs.writeShellScript "rrsync-chown" ''
+              mkdir -p "$1"
+              ${lib.getExe pkgs.rrsync} -wo "$1"
+              ${pkgs.coreutils}/bin/chown -R gitea-web:gitea-web "$1"
+            '';
+            web-dir = "/var/lib/gitea-web/web";
+          };
+        in
+        "${giteaWebSecretProviderScript} ${args}";
 
       User = "gitea-web";
       Group = "gitea-web";
@@ -85,7 +96,10 @@ in
       ProtectControlGroups = true;
       ProtectKernelModules = true;
       ProtectKernelTunables = true;
-      RestrictAddressFamilies = [ "AF_INET" "AF_INET6" ];
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_INET6"
+      ];
       RestrictRealtime = true;
       RestrictSUIDSGID = true;
       MemoryDenyWriteExecute = true;
@@ -105,7 +119,9 @@ in
 
   systemd.targets.timers.wants = map (org: "gitea-web-secret-provider@${org}.timer") organizations;
 
-  services.openssh.authorizedKeysFiles = map (org: "/var/lib/gitea-web/authorized_keys.d/${org}") organizations;
+  services.openssh.authorizedKeysFiles = map (
+    org: "/var/lib/gitea-web/authorized_keys.d/${org}"
+  ) organizations;
 
   users.users.nginx.extraGroups = [ "gitea-web" ];
   services.nginx.virtualHosts."pages.pvv.ntnu.no" = {

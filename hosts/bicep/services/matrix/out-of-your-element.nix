@@ -1,4 +1,11 @@
-{ config, pkgs, lib, values, fp, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  values,
+  fp,
+  ...
+}:
 let
   cfg = config.services.matrix-ooye;
 in

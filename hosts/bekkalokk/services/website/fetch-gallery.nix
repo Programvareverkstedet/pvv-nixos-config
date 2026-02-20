@@ -1,8 +1,15 @@
-{ pkgs, lib, config, values, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  values,
+  ...
+}:
 let
   galleryDir = config.services.pvv-nettsiden.settings.GALLERY.DIR;
   transferDir = "${config.services.pvv-nettsiden.settings.GALLERY.DIR}-transfer";
-in {
+in
+{
   users.users.${config.services.pvv-nettsiden.user} = {
     # NOTE: the user unfortunately needs a registered shell for rrsync to function...
     #       is there anything we can do to remove this?
@@ -37,14 +44,20 @@ in {
   };
 
   systemd.services.pvv-nettsiden-gallery-update = {
-    path = with pkgs; [ imagemagick gnutar gzip ];
+    path = with pkgs; [
+      imagemagick
+      gnutar
+      gzip
+    ];
 
     script = ''
-      tar ${lib.cli.toGNUCommandLineShell {} {
-        extract = true;
-        file = "${transferDir}/gallery.tar.gz";
-        directory = ".";
-      }}
+      tar ${
+        lib.cli.toGNUCommandLineShell { } {
+          extract = true;
+          file = "${transferDir}/gallery.tar.gz";
+          directory = ".";
+        }
+      }
 
       # Delete files and directories that exists in the gallery that don't exist in the tarball
       filesToRemove=$(uniq -u <(sort <(find . -not -path "./.thumbnails*") <(tar -tf ${transferDir}/gallery.tar.gz | sed 's|/$||')))

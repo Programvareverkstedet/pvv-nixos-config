@@ -1,4 +1,10 @@
-{ config, fp, pkgs, values, ... }:
+{
+  config,
+  fp,
+  pkgs,
+  values,
+  ...
+}:
 {
   imports = [
     # Include the results of the hardware scan.
@@ -11,7 +17,10 @@
 
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens18";
-    address = with values.hosts.temmie; [ (ipv4 + "/25") (ipv6 + "/64") ];
+    address = with values.hosts.temmie; [
+      (ipv4 + "/25")
+      (ipv6 + "/64")
+    ];
   };
 
   services.nginx.enable = false;

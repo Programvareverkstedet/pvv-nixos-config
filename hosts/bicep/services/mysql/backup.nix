@@ -1,4 +1,10 @@
-{ config, lib, pkgs, values, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  values,
+  ...
+}:
 let
   cfg = config.services.mysql;
   backupDir = "/data/mysql-backups";
@@ -10,10 +16,10 @@ in
   # };
 
   systemd.tmpfiles.settings."10-mysql-backups".${backupDir}.d = {
-	  user = "mysql";
-	  group = "mysql";
-	  mode = "700";
-	};
+    user = "mysql";
+    group = "mysql";
+    mode = "700";
+  };
 
   services.rsync-pull-targets = lib.mkIf cfg.enable {
     enable = true;
@@ -44,23 +50,25 @@ in
       zstd
     ];
 
-    script = let
-      rotations = 2;
-    in ''
-      set -euo pipefail
+    script =
+      let
+        rotations = 2;
+      in
+      ''
+        set -euo pipefail
 
-      OUT_FILE="$STATE_DIRECTORY/mysql-dump-$(date --iso-8601).sql.zst"
+        OUT_FILE="$STATE_DIRECTORY/mysql-dump-$(date --iso-8601).sql.zst"
 
-      mysqldump --all-databases | zstd --compress -9 --rsyncable -o "$OUT_FILE"
+        mysqldump --all-databases | zstd --compress -9 --rsyncable -o "$OUT_FILE"
 
-      # NOTE: this needs to be a hardlink for rrsync to allow sending it
-      rm "$STATE_DIRECTORY/mysql-dump-latest.sql.zst" ||:
-      ln -T "$OUT_FILE" "$STATE_DIRECTORY/mysql-dump-latest.sql.zst"
+        # NOTE: this needs to be a hardlink for rrsync to allow sending it
+        rm "$STATE_DIRECTORY/mysql-dump-latest.sql.zst" ||:
+        ln -T "$OUT_FILE" "$STATE_DIRECTORY/mysql-dump-latest.sql.zst"
 
-      while [ "$(find "$STATE_DIRECTORY" -type f -printf '.' | wc -c)" -gt ${toString (rotations + 1)} ]; do
-        rm "$(find "$STATE_DIRECTORY" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)"
-      done
-    '';
+        while [ "$(find "$STATE_DIRECTORY" -type f -printf '.' | wc -c)" -gt ${toString (rotations + 1)} ]; do
+          rm "$(find "$STATE_DIRECTORY" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)"
+        done
+      '';
 
     serviceConfig = {
       Type = "oneshot";

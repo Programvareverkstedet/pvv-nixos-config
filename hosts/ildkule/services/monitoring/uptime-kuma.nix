@@ -1,9 +1,15 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.services.uptime-kuma;
   domain = "status.pvv.ntnu.no";
   stateDir = "/data/monitoring/uptime-kuma";
-in {
+in
+{
   services.uptime-kuma = {
     enable = true;
     settings = {

@@ -3,7 +3,8 @@
 let
   cfg = config.services.loki;
   stateDir = "/data/monitoring/loki";
-in {
+in
+{
   services.loki = {
     enable = true;
     configuration = {

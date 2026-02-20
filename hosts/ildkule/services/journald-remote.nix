@@ -1,4 +1,9 @@
-{ config, lib, values, ... }:
+{
+  config,
+  lib,
+  values,
+  ...
+}:
 let
   cfg = config.services.journald.remote;
   domainName = "journald.pvv.ntnu.no";
@@ -22,13 +27,15 @@ in
 
   services.journald.remote = {
     enable = true;
-    settings.Remote = let
-      inherit (config.security.acme.certs.${domainName}) directory;
-    in {
-      ServerKeyFile = "/run/credentials/systemd-journal-remote.service/key.pem";
-      ServerCertificateFile = "/run/credentials/systemd-journal-remote.service/cert.pem";
-      TrustedCertificateFile = "-";
-    };
+    settings.Remote =
+      let
+        inherit (config.security.acme.certs.${domainName}) directory;
+      in
+      {
+        ServerKeyFile = "/run/credentials/systemd-journal-remote.service/key.pem";
+        ServerCertificateFile = "/run/credentials/systemd-journal-remote.service/cert.pem";
+        TrustedCertificateFile = "-";
+      };
   };
 
   systemd.sockets."systemd-journal-remote" = {
@@ -47,12 +54,14 @@ in
 
   systemd.services."systemd-journal-remote" = {
     serviceConfig = {
-      LoadCredential = let
-        inherit (config.security.acme.certs.${domainName}) directory;
-      in [
-        "key.pem:${directory}/key.pem"
-        "cert.pem:${directory}/cert.pem"
-      ];
+      LoadCredential =
+        let
+          inherit (config.security.acme.certs.${domainName}) directory;
+        in
+        [
+          "key.pem:${directory}/key.pem"
+          "cert.pem:${directory}/cert.pem"
+        ];
     };
   };
 }

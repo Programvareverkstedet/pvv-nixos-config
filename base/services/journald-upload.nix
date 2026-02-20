@@ -1,4 +1,9 @@
-{ config, lib, values, ... }:
+{
+  config,
+  lib,
+  values,
+  ...
+}:
 let
   cfg = config.services.journald.upload;
 in

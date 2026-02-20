@@ -1,6 +1,8 @@
-{ config, ... }: let
+{ config, ... }:
+let
   stateDir = "/data/monitoring/prometheus";
-in {
+in
+{
   imports = [
     ./exim.nix
     ./gitea.nix

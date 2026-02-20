@@ -1,9 +1,17 @@
-{ config, values, lib, pkgs, unstablePkgs, ... }:
+{
+  config,
+  values,
+  lib,
+  pkgs,
+  unstablePkgs,
+  ...
+}:
 let
   cfg = config.services.gitea;
   domain = "git.pvv.ntnu.no";
-  sshPort  = 2222;
-in {
+  sshPort = 2222;
+in
+{
   imports = [
     ./customization
     ./gpg.nix
@@ -11,19 +19,21 @@ in {
     ./web-secret-provider
   ];
 
-  sops.secrets = let
-    defaultConfig = {
-      owner = "gitea";
-      group = "gitea";
-      restartUnits = [ "gitea.service" ];
+  sops.secrets =
+    let
+      defaultConfig = {
+        owner = "gitea";
+        group = "gitea";
+        restartUnits = [ "gitea.service" ];
+      };
+    in
+    {
+      "gitea/database" = defaultConfig;
+      "gitea/email-password" = defaultConfig;
+      "gitea/lfs-jwt-secret" = defaultConfig;
+      "gitea/oauth2-jwt-secret" = defaultConfig;
+      "gitea/secret-key" = defaultConfig;
     };
-  in {
-    "gitea/database" = defaultConfig;
-    "gitea/email-password" = defaultConfig;
-    "gitea/lfs-jwt-secret" = defaultConfig;
-    "gitea/oauth2-jwt-secret" = defaultConfig;
-    "gitea/secret-key" = defaultConfig;
-  };
 
   services.gitea = {
     enable = true;
@@ -44,7 +54,7 @@ in {
     # https://docs.gitea.com/administration/config-cheat-sheet
     settings = {
       server = {
-        DOMAIN   = domain;
+        DOMAIN = domain;
         ROOT_URL = "https://${domain}/";
         PROTOCOL = "http+unix";
         SSH_PORT = sshPort;
@@ -215,29 +225,33 @@ in {
   };
 
   systemd.services.gitea-dump = {
-    serviceConfig.ExecStart = let
-      args = lib.cli.toGNUCommandLineShell { } {
-        type = cfg.dump.type;
+    serviceConfig.ExecStart =
+      let
+        args = lib.cli.toGNUCommandLineShell { } {
+          type = cfg.dump.type;
 
-        # This should be declarative on nixos, no need to backup.
-        skip-custom-dir = true;
+          # This should be declarative on nixos, no need to backup.
+          skip-custom-dir = true;
 
-        # This can be regenerated, no need to backup
-        skip-index = true;
+          # This can be regenerated, no need to backup
+          skip-index = true;
 
-        # Logs are stored in the systemd journal
-        skip-log = true;
-      };
-    in lib.mkForce "${lib.getExe cfg.package} ${args}";
+          # Logs are stored in the systemd journal
+          skip-log = true;
+        };
+      in
+      lib.mkForce "${lib.getExe cfg.package} ${args}";
 
     # Only keep n backup files at a time
-    postStop = let
-      cu = prog: "'${lib.getExe' pkgs.coreutils prog}'";
-      backupCount = 3;
-    in ''
-      for file in $(${cu "ls"} -t1 '${cfg.dump.backupDir}' | ${cu "sort"} --reverse | ${cu "tail"} -n+${toString (backupCount + 1)}); do
-        ${cu "rm"} "$file"
-      done
+    postStop =
+      let
+        cu = prog: "'${lib.getExe' pkgs.coreutils prog}'";
+        backupCount = 3;
+      in
+      ''
+        for file in $(${cu "ls"} -t1 '${cfg.dump.backupDir}' | ${cu "sort"} --reverse | ${cu "tail"} -n+${toString (backupCount + 1)}); do
+          ${cu "rm"} "$file"
+        done
       '';
   };
 }

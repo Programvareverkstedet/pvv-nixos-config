@@ -1,16 +1,36 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.services.httpd;
 
-  homeLetters = [ "a" "b" "c" "d" "h" "i" "j" "k" "l" "m" "z" ];
+  homeLetters = [
+    "a"
+    "b"
+    "c"
+    "d"
+    "h"
+    "i"
+    "j"
+    "k"
+    "l"
+    "m"
+    "z"
+  ];
 
   # https://nixos.org/manual/nixpkgs/stable/#ssec-php-user-guide-installing-with-extensions
   phpEnv = pkgs.php.buildEnv {
-    extensions = { all, ... }: with all; [
-      imagick
-      opcache
-      protobuf
-    ];
+    extensions =
+      { all, ... }:
+      with all;
+      [
+        imagick
+        opcache
+        protobuf
+      ];
 
     extraConfig = ''
       display_errors=0
@@ -19,45 +39,47 @@ let
     '';
   };
 
-  perlEnv = pkgs.perl.withPackages (ps: with ps; [
-    pkgs.exiftool
-    pkgs.ikiwiki
-    pkgs.irssi
-    pkgs.nix.libs.nix-perl-bindings
+  perlEnv = pkgs.perl.withPackages (
+    ps: with ps; [
+      pkgs.exiftool
+      pkgs.ikiwiki
+      pkgs.irssi
+      pkgs.nix.libs.nix-perl-bindings
 
-    AlgorithmDiff
-    AnyEvent
-    AnyEventI3
-    ArchiveZip
-    CGI
-    CPAN
-    CPANPLUS
-    DBDPg
-    DBDSQLite
-    DBI
-    EmailAddress
-    EmailSimple
-    Env
-    Git
-    HTMLMason
-    HTMLParser
-    HTMLTagset
-    HTTPDAV
-    HTTPDaemon
-    ImageMagick
-    JSON
-    LWP
-    MozillaCA
-    PathTiny
-    Switch
-    SysSyslog
-    TestPostgreSQL
-    TextPDF
-    TieFile
-    Tk
-    URI
-    XMLLibXML
-  ]);
+      AlgorithmDiff
+      AnyEvent
+      AnyEventI3
+      ArchiveZip
+      CGI
+      CPAN
+      CPANPLUS
+      DBDPg
+      DBDSQLite
+      DBI
+      EmailAddress
+      EmailSimple
+      Env
+      Git
+      HTMLMason
+      HTMLParser
+      HTMLTagset
+      HTTPDAV
+      HTTPDaemon
+      ImageMagick
+      JSON
+      LWP
+      MozillaCA
+      PathTiny
+      Switch
+      SysSyslog
+      TestPostgreSQL
+      TextPDF
+      TieFile
+      Tk
+      URI
+      XMLLibXML
+    ]
+  );
 
   # https://nixos.org/manual/nixpkgs/stable/#python.buildenv-function
   pythonEnv = pkgs.python3.buildEnv.override {
@@ -73,100 +95,102 @@ let
   # https://nixos.org/manual/nixpkgs/stable/#sec-building-environment
   fhsEnv = pkgs.buildEnv {
     name = "userweb-env";
-    paths = with pkgs; [
-      bash
+    paths =
+      with pkgs;
+      [
+        bash
 
-      perlEnv
-      pythonEnv
+        perlEnv
+        pythonEnv
 
-      phpEnv
-    ]
-    ++ (with phpEnv.packages; [
-      # composer
-    ])
-    ++ [
-      acl
-      aspell
-      autoconf
-      autotrash
-      bazel
-      bintools
-      bison
-      bsd-finger
-      catdoc
-      ccache
-      clang
-      cmake
-      coreutils-full
-      curl
-      devcontainer
-      diffutils
-      emacs
-      # exiftags
-      exiftool
-      ffmpeg
-      file
-      findutils
-      gawk
-      gcc
-      glibc
-      gnugrep
-      gnumake
-      gnupg
-      gnuplot
-      gnused
-      gnutar
-      gzip
-      html-tidy
-      imagemagick
-      inetutils
-      iproute2
-      jhead
-      less
-      libgcc
-      lndir
-      mailutils
-      man # TODO: does this one want a mandb instance?
-      meson
-      more
-      mpc
-      mpi
-      mplayer
-      ninja
-      nix
-      openssh
-      openssl
-      patchelf
-      pkg-config
-      ppp
-      procmail
-      procps
-      qemu
-      rc
-      rhash
-      rsync
-      ruby # TODO: does this one want systemwide packages?
-      salt
-      sccache
-      sourceHighlight
-      spamassassin
-      strace
-      subversion
-      system-sendmail
-      systemdMinimal
-      texliveMedium
-      tmux
-      unzip
-      util-linux
-      valgrind
-      vim
-      wget
-      which
-      wine
-      xdg-utils
-      zip
-      zstd
-    ];
+        phpEnv
+      ]
+      ++ (with phpEnv.packages; [
+        # composer
+      ])
+      ++ [
+        acl
+        aspell
+        autoconf
+        autotrash
+        bazel
+        bintools
+        bison
+        bsd-finger
+        catdoc
+        ccache
+        clang
+        cmake
+        coreutils-full
+        curl
+        devcontainer
+        diffutils
+        emacs
+        # exiftags
+        exiftool
+        ffmpeg
+        file
+        findutils
+        gawk
+        gcc
+        glibc
+        gnugrep
+        gnumake
+        gnupg
+        gnuplot
+        gnused
+        gnutar
+        gzip
+        html-tidy
+        imagemagick
+        inetutils
+        iproute2
+        jhead
+        less
+        libgcc
+        lndir
+        mailutils
+        man # TODO: does this one want a mandb instance?
+        meson
+        more
+        mpc
+        mpi
+        mplayer
+        ninja
+        nix
+        openssh
+        openssl
+        patchelf
+        pkg-config
+        ppp
+        procmail
+        procps
+        qemu
+        rc
+        rhash
+        rsync
+        ruby # TODO: does this one want systemwide packages?
+        salt
+        sccache
+        sourceHighlight
+        spamassassin
+        strace
+        subversion
+        system-sendmail
+        systemdMinimal
+        texliveMedium
+        tmux
+        unzip
+        util-linux
+        valgrind
+        vim
+        wget
+        which
+        wine
+        xdg-utils
+        zip
+        zstd
+      ];
 
     extraOutputsToInstall = [
       "man"
@@ -299,7 +323,7 @@ in
       ];
       SystemCallArchitectures = "native";
       SystemCallFilter = [
-         "@system-service"
+        "@system-service"
       ];
       UMask = "0077";
 
@@ -317,7 +341,8 @@ in
         "${fhsEnv}/sbin:/sbin"
         "${fhsEnv}/lib:/lib"
         "${fhsEnv}/share:/share"
-      ] ++ (lib.mapCartesianProduct ({ parent, child }: "${fhsEnv}${child}:${parent}${child}") {
+      ]
+      ++ (lib.mapCartesianProduct ({ parent, child }: "${fhsEnv}${child}:${parent}${child}") {
         parent = [
           "/local"
           "/opt"

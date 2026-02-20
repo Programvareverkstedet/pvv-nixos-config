@@ -1,4 +1,9 @@
-{ config, unstablePkgs, lib, ... }:
+{
+  config,
+  unstablePkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.services.gitea-actions-runner;
 in
