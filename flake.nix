@@ -94,7 +94,6 @@
         }:
         let
           commonPkgsConfig = {
-            inherit localSystem crossSystem;
             config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg)
               [
                 "nvidia-x11"
@@ -104,8 +103,11 @@
               # Global overlays go here
               inputs.roowho2.overlays.default
             ]) ++ overlays;
-          };
-
+          } // (if localSystem != crossSystem then {
+            inherit localSystem crossSystem;
+          } else {
+            system = crossSystem;
+          });
           pkgs = import nixpkgs commonPkgsConfig;
           unstablePkgs = import nixpkgs-unstable commonPkgsConfig;
         in
