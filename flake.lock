@@ -161,6 +161,27 @@
         "url": "https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git"
       }
     },
+    "libdib": {
+      "inputs": {
+        "nixpkgs": [
+          "worblehat",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1769338528,
+        "narHash": "sha256-t18ZoSt9kaI1yde26ok5s7aFLkap1Q9+/2icVh2zuaE=",
+        "ref": "refs/heads/main",
+        "rev": "7218348163fd8d84df4a6f682c634793e67a3fed",
+        "revCount": 13,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/libdib.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/libdib.git"
+      }
+    },
     "matrix-next": {
       "inputs": {
         "nixpkgs": [
@@ -391,7 +412,8 @@
         "pvv-nettsiden": "pvv-nettsiden",
         "qotd": "qotd",
         "roowho2": "roowho2",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "worblehat": "worblehat"
       }
     },
     "roowho2": {
@@ -521,6 +543,28 @@
         "ref": "master",
         "repo": "sops-nix",
         "type": "github"
+      }
+    },
+    "worblehat": {
+      "inputs": {
+        "libdib": "libdib",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1770887951,
+        "narHash": "sha256-6LGqM9yhONtfCXHtPNn3S0GFsmB2dCchyozHDevwmiQ=",
+        "ref": "main",
+        "rev": "911063041f24d594a772a2a699d71d3d94953ce8",
+        "revCount": 101,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/worblehat.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/worblehat.git"
       }
     }
   },

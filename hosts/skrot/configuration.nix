@@ -28,18 +28,22 @@
 
   sops.secrets = {
     "dibbler/postgresql/password" = {
-      owner = "dibbler";
-      group = "dibbler";
+      owner = "drumknotty";
+      group = "drumknotty";
+    };
+    "worblehat/postgresql/password" = {
+      owner = "drumknotty";
+      group = "drumknotty";
     };
   };
 
-  services.dibbler = {
+  services.drumknotty = {
     enable = true;
     kioskMode = true;
     limitScreenWidth = 80;
     limitScreenHeight = 42;
 
-    settings = {
+    dibblerSettings = {
       general.quit_allowed = false;
       database = {
         type = "postgresql";
@@ -48,6 +52,18 @@
           dbname = "pvv_vv";
           host = "postgres.pvv.ntnu.no";
           password_file = config.sops.secrets."dibbler/postgresql/password".path;
+        };
+      };
+    };
+    worblehatSettings = {
+      general.quit_allowed = false;
+      database = {
+        type = "postgresql";
+        postgresql = {
+          username = "pvv_vv";
+          dbname = "pvv_vv";
+          host = "postgres.pvv.ntnu.no";
+          password = config.sops.secrets."worblehat/postgresql/password".path;
         };
       };
     };

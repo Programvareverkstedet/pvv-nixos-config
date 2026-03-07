@@ -23,6 +23,9 @@
     dibbler.url = "git+https://git.pvv.ntnu.no/Projects/dibbler.git?ref=main";
     dibbler.inputs.nixpkgs.follows = "nixpkgs";
 
+    worblehat.url = "git+https://git.pvv.ntnu.no/Projects/worblehat.git?ref=main";
+    worblehat.inputs.nixpkgs.follows = "nixpkgs";
+
     matrix-next.url = "github:dali99/nixos-matrix-modules/v0.8.0";
     matrix-next.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -210,10 +213,13 @@
         };
         skrot = stableNixosConfig "skrot" {
           modules = [
+            self.nixosModules.drumknotty
             inputs.disko.nixosModules.disko
-            inputs.dibbler.nixosModules.default
           ];
-          overlays = [inputs.dibbler.overlays.default];
+          overlays = [
+            inputs.dibbler.overlays.default
+            inputs.worblehat.overlays.default
+          ];
         };
         shark = stableNixosConfig "shark" {};
         wenche = stableNixosConfig "wenche" {};
@@ -284,6 +290,7 @@
       rsync-pull-targets = ./modules/rsync-pull-targets.nix;
       snakeoil-certs = ./modules/snakeoil-certs.nix;
       snappymail = ./modules/snappymail.nix;
+      drumknotty = ./modules/drumknotty.nix;
     };
 
     devShells = forAllSystems (system: {
