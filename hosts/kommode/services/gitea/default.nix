@@ -131,6 +131,7 @@ in {
           "repo.pulls"
           "repo.releases"
         ];
+        ALLOW_FORK_INTO_SAME_OWNER = true;
       };
       picture = {
         DISABLE_GRAVATAR = true;
