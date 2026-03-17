@@ -79,6 +79,28 @@ in
       };
     };
 
+    deadline-daemon = {
+      enable = lib.mkEnableOption "" // {
+        description = ''
+          Whether to enable the worblehat deadline-daemon service,
+          which periodically checks for upcoming deadlines and notifies users.
+
+          Note that this service is independent of the main worblehat service,
+          and must be enabled separately.
+        '';
+      };
+
+      onCalendar = lib.mkOption {
+        type = lib.types.str;
+        description = ''
+          How often to trigger rendering the map,
+          in the format of a systemd timer onCalendar configuration.
+
+          See {manpage}`systemd.timer(5)`.
+        '';
+        default = "*-*-* 10:15:00";
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable (
@@ -256,6 +278,40 @@ in
 
         services.getty.autologinUser = "drumknotty";
       })
+      (lib.mkIf cfg.deadline-daemon.enable {
+        systemd.timers.worblehat-deadline-daemon = {
+          description = "Worblehat Deadline Daemon";
+          wantedBy = [ "timers.target" ];
+          timerConfig = {
+            OnCalendar = cfg.deadline-daemon.onCalendar;
+            Persistent = true;
+          };
+        };
+
+        systemd.services.worblehat-deadline-daemon = {
+          description = "Worblehat Deadline Daemon";
+          wantedBy = [ "multi-user.target" ];
+          after = [ "network.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            CPUSchedulingPolicy = "idle";
+            IOSchedulingClass = "idle";
+
+            ExecStart =
+              let
+                worblehatArgs = lib.cli.toCommandLineShellGNU { } {
+                  config = "/etc/worblehat/config.toml";
+                };
+              in
+              "${lib.getExe cfg.package} ${worblehatArgs} deadline-daemon";
+
+            User = "worblehat";
+            Group = "worblehat";
+          };
+        };
+      })
+
     ]
   );
+
 }
