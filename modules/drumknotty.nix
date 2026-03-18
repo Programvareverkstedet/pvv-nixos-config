@@ -123,7 +123,69 @@ in
           groups.drumknotty = { };
         };
 
-        services.dibbler.settings.database = lib.mkIf cfg.createLocalDatabase {
+        services.drumknotty.dibblerSettings = {
+          limits = {
+            low_credit_warning_limit = lib.mkDefault (-100);
+            user_recent_transaction_limit = lib.mkDefault 100;
+          };
+
+          printer = {
+            label_type = lib.mkDefault "62";
+            label_rotate = lib.mkDefault false;
+          };
+        };
+
+        services.drumknotty.worblehatSettings = {
+          logging = {
+            debug = lib.mkDefault true;
+            debug_sql = lib.mkDefault false;
+          };
+
+          database = {
+            type = lib.mkDefault "sqlite";
+            sqlite.path = lib.mkDefault "./worblehat.sqlite";
+            postgresql = {
+              host = lib.mkDefault "localhost";
+              port = lib.mkDefault 5432;
+              username = lib.mkDefault "worblehat";
+              password = lib.mkDefault "/var/lib/worblehat/db-password";
+              database = lib.mkDefault "worblehat";
+            };
+          };
+
+          flask = {
+            TESTING = lib.mkDefault true;
+            DEBUG = lib.mkDefault true;
+            FLASK_ENV = lib.mkDefault "development";
+            SECRET_KEY = lib.mkDefault "change-me";
+          };
+
+          smtp = {
+            enabled = lib.mkDefault false;
+            host = lib.mkDefault "smtp.pvv.ntnu.no";
+            port = lib.mkDefault 587;
+            username = lib.mkDefault "worblehat";
+            password = lib.mkDefault "/var/lib/worblehat/smtp-password";
+            from = lib.mkDefault "worblehat@pvv.ntnu.no";
+            subject_prefix = lib.mkDefault "[Worblehat]";
+          };
+
+          deadline_daemon = {
+            enabled = lib.mkDefault true;
+            dryrun = lib.mkDefault false;
+            warn_days_before_borrowing_deadline = lib.mkDefault [
+              5
+              1
+            ];
+            days_before_queue_position_expires = lib.mkDefault 14;
+            warn_days_before_expiring_queue_position_deadline = lib.mkDefault [
+              3
+              1
+            ];
+          };
+        };
+
+        services.drumknotty.dibblerSettings.database = lib.mkIf cfg.createLocalDatabase {
           type = "postgresql";
           postgresql.host = "/run/postgresql";
         };

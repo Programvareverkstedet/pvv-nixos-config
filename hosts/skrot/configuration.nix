@@ -60,8 +60,8 @@
       database = {
         type = "postgresql";
         postgresql = {
-          username = "pvv_vv";
-          dbname = "pvv_vv";
+          username = "worblehat";
+          dbname = "worblehat";
           host = "postgres.pvv.ntnu.no";
           password = config.sops.secrets."worblehat/postgresql/password".path;
         };
