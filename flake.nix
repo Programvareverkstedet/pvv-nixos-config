@@ -23,7 +23,7 @@
     dibbler.url = "git+https://git.pvv.ntnu.no/Projects/dibbler.git?ref=main";
     dibbler.inputs.nixpkgs.follows = "nixpkgs";
 
-    worblehat.url = "git+https://git.pvv.ntnu.no/Projects/worblehat.git?ref=stable_deps";
+    worblehat.url = "git+https://git.pvv.ntnu.no/Projects/worblehat.git?ref=main";
     worblehat.inputs.nixpkgs.follows = "nixpkgs";
 
     matrix-next.url = "github:dali99/nixos-matrix-modules/v0.8.0";
