@@ -249,7 +249,7 @@ in
         users.users.drumknotty = {
           extraGroups = [ "lp" ];
           shell =
-            (pkgs.writeShellScriptBin "login-shell" "${lib.getExe' cfg.screenPackage "screen"} -x ${cfg.screenSessionName}")
+            (pkgs.writeShellScriptBin "login-shell" "${lib.getExe' cfg.screenPackage "screen"} -x ${cfg.screenSessionName} -p dibbler")
             // {
               shellPath = "/bin/login-shell";
             };
