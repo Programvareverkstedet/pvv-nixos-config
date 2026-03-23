@@ -1,12 +1,11 @@
-{ fp, values, lupineName, ... }:
+{ fp, values, lib, lupineName, ... }:
 {
   imports = [
     ./hardware-configuration/${lupineName}.nix
 
     (fp /base)
-
-    ./services/gitea-runner.nix
-  ];
+    # lupine-4 does not have enough ram for running nix flake check
+  ] ++ lib.optionals (lupineName != "lupine-4")  [ ./services/gitea-runner.nix ];
 
   sops.defaultSopsFile = fp /secrets/lupine/lupine.yaml;
 
