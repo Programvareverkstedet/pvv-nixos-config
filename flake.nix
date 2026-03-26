@@ -291,7 +291,7 @@
       rsync-pull-targets = ./modules/rsync-pull-targets.nix;
       snakeoil-certs = ./modules/snakeoil-certs.nix;
       snappymail = ./modules/snappymail.nix;
-      drumknotty = ./modules/drumknotty.nix;
+      drumknotty = ./modules/drumknotty;
     };
 
     devShells = forAllSystems (system: {

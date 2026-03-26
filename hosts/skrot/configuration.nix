@@ -40,30 +40,40 @@
   services.drumknotty = {
     enable = true;
     kioskMode = true;
-    limitScreenWidth = 80;
-    limitScreenHeight = 42;
 
-    dibblerSettings = {
-      general.quit_allowed = false;
-      database = {
-        type = "postgresql";
-        postgresql = {
-          username = "pvv_vv";
-          dbname = "pvv_vv";
-          host = "postgres.pvv.ntnu.no";
-          password_file = config.sops.secrets."dibbler/postgresql/password".path;
+    screen = {
+      limitWidth = 80;
+      limitHeight = 42;
+    };
+
+    dibbler = {
+      enable = true;
+      settings = {
+        general.quit_allowed = false;
+        database = {
+          type = "postgresql";
+          postgresql = {
+            username = "pvv_vv";
+            dbname = "pvv_vv";
+            host = "postgres.pvv.ntnu.no";
+            password_file = config.sops.secrets."dibbler/postgresql/password".path;
+          };
         };
       };
     };
-    worblehatSettings = {
-      general.quit_allowed = false;
-      database = {
-        type = "postgresql";
-        postgresql = {
-          username = "worblehat";
-          dbname = "worblehat";
-          host = "postgres.pvv.ntnu.no";
-          password = config.sops.secrets."worblehat/postgresql/password".path;
+
+    worblehat = {
+      enable = true;
+      settings = {
+        general.quit_allowed = false;
+        database = {
+          type = "postgresql";
+          postgresql = {
+            username = "worblehat";
+            dbname = "worblehat";
+            host = "postgres.pvv.ntnu.no";
+            password = config.sops.secrets."worblehat/postgresql/password".path;
+          };
         };
       };
     };
