@@ -10,22 +10,19 @@ let
 in
 buildNpmPackage {
   pname = "delete-your-element";
-  version = "3.3-unstable-2026-01-21";
+  version = "3.5.1";
   src = fetchFromGitea {
     domain = "git.pvv.ntnu.no";
     owner = "Drift";
     repo = "delete-your-element";
-    rev = "04d7872acb933254c0a4703064b2e08de31cfeb4";
-    hash = "sha256-CkKt+8VYjIhNM76c3mTf7X6d4ob8tB2w8T6xYS7+LuY=";
+    rev = "80ac1d9d79207b6327975a264fcd9747b99a2a5d";
+    hash = "sha256-fcBpUZ+WEMUXyyo/uaArl4D1NJmK95isWqhFSt6HzUU=";
   };
 
   inherit nodejs;
 
-  patches = [ ./fix-lockfile.patch ];
-
-  npmDepsHash = "sha256-tiGXr86x9QNAwhZcxSOox6sP9allyz9QSH3XOZOb3z8=";
+  npmDepsHash = "sha256-EYxJi6ObJQOLyiJq4C3mV6I62ns9l64ZHcdoQxmN5Ao=";
   dontNpmBuild = true;
-  makeCacheWritable = true;
 
   nativeBuildInputs = [ makeWrapper ];
 
