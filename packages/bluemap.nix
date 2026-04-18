@@ -1,12 +1,14 @@
-{ lib, stdenvNoCC, fetchurl, makeWrapper, jre }:
-
+{ lib, stdenvNoCC, fetchurl, makeWrapper, javaPackages }:
+let
+  jre = javaPackages.compiler.temurin-bin.jre-25;
+in
 stdenvNoCC.mkDerivation rec {
   pname = "bluemap";
-  version = "5.15";
+  version = "5.20";
 
   src = fetchurl {
     url = "https://github.com/BlueMap-Minecraft/BlueMap/releases/download/v${version}/BlueMap-${version}-cli.jar";
-    hash = "sha256-g50V/4LtHaHNRMTt+PK/ZTf4Tber2D6ZHJvuAXQLaFI=";
+    hash = "sha256-txDN/vG429BHT09TrSB8uQhmB8irrmvvOXX4OX3OSC0=";
   };
 
   dontUnpack = true;
@@ -15,7 +17,10 @@ stdenvNoCC.mkDerivation rec {
 
   installPhase = ''
     runHook preInstall
-    makeWrapper ${jre}/bin/java $out/bin/bluemap --add-flags "-jar $src"
+
+    makeWrapper ${jre}/bin/java $out/bin/bluemap \
+      --add-flags "-jar $src"
+
     runHook postInstall
   '';
 
