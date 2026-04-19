@@ -269,10 +269,4 @@ in {
 
     interfaces.ens18.network = "pvv";
   };
-  nodes.bakke = {
-    guestType = "openstack";
-    parent = config.nodes.stackit.id;
-
-    interfaces.enp2s0.network = "pvv";
-  };
 }
