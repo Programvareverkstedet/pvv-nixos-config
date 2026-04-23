@@ -39,17 +39,22 @@
         "debian-bullseye-slim:docker://node:current-bullseye-slim"
 
         "alpine-latest:docker://node:current-alpine"
+        "alpine-3.23:docker://node:current-alpine3.23"
         "alpine-3.22:docker://node:current-alpine3.22"
         "alpine-3.21:docker://node:current-alpine3.21"
 
         # See https://gitea.com/gitea/runner-images
         "ubuntu-latest:docker://docker.gitea.com/runner-images:ubuntu-latest"
+        "ubuntu-26.04:docker://docker.gitea.com/runner-images:ubuntu-26.04"
+        "ubuntu-resolute:docker://docker.gitea.com/runner-images:ubuntu-26.04"
         "ubuntu-24.04:docker://docker.gitea.com/runner-images:ubuntu-24.04"
         "ubuntu-noble:docker://docker.gitea.com/runner-images:ubuntu-24.04"
         "ubuntu-22.04:docker://docker.gitea.com/runner-images:ubuntu-22.04"
         "ubuntu-jammy:docker://docker.gitea.com/runner-images:ubuntu-22.04"
 
         "ubuntu-latest-slim:docker://docker.gitea.com/runner-images:ubuntu-latest-slim"
+        "ubuntu-26.04-slim:docker://docker.gitea.com/runner-images:ubuntu-26.04-slim"
+        "ubuntu-resolute-slim:docker://docker.gitea.com/runner-images:ubuntu-26.04-slim"
         "ubuntu-24.04-slim:docker://docker.gitea.com/runner-images:ubuntu-24.04-slim"
         "ubuntu-noble-slim:docker://docker.gitea.com/runner-images:ubuntu-24.04-slim"
         "ubuntu-22.04-slim:docker://docker.gitea.com/runner-images:ubuntu-22.04-slim"
