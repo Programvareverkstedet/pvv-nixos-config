@@ -78,15 +78,15 @@
     "gergle": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ]
       },
       "locked": {
-        "lastModified": 1770617355,
-        "narHash": "sha256-lauV1yKA67WxnlbiJiwhOT9xI8nTiUqqrrRlgA+rMis=",
+        "lastModified": 1777067150,
+        "narHash": "sha256-vqPz8jCS1zTQlvmgctUFpvnr6f9ISR5h7CPG/HgQvf0=",
         "ref": "main",
-        "rev": "36af0316a7370d19db05ef7c0a87e826f4a222d5",
-        "revCount": 24,
+        "rev": "b452a854fb78d6df9fe062b45e23a968657d115d",
+        "revCount": 35,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
       },
@@ -99,16 +99,16 @@
     "greg-ng": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1770617867,
-        "narHash": "sha256-xPLm4C13KUl0zmm1OA+A8UwDSixwtNQ/caRx/WjN+WY=",
+        "lastModified": 1777019032,
+        "narHash": "sha256-29lw7THThWb5DW01rVRj1b816Apwz/P4m2wVWaSIadU=",
         "ref": "main",
-        "rev": "155752914d81a3a3c02fcfc5d840cfdfda07216d",
-        "revCount": 62,
+        "rev": "55262afca46c96f75a834d4e00e30d5fb20affb6",
+        "revCount": 61,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       },
@@ -276,11 +276,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1775064351,
-        "narHash": "sha256-KHkwW/A1+H23YBMQGDmPb8cw5LwZFnszVKg5eZ4JWhg=",
-        "rev": "1e6f1bb5bb05d14aea16063ab587c599a68241c2",
+        "lastModified": 1777014002,
+        "narHash": "sha256-urhq48kYlNYbkGXQ/f3NjzJTGfMdG8GmJQbgFLcrcV0=",
+        "rev": "15ebe06759175c2e98dba23c0b125913589094e7",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.05pre973082.1e6f1bb5bb05/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.05pre986338.15ebe0675917/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -402,11 +402,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770606655,
-        "narHash": "sha256-rpJf+kxvLWv32ivcgu8d+JeJooog3boJCT8J3joJvvM=",
+        "lastModified": 1777000482,
+        "narHash": "sha256-CZ5FKUSA8FCJf0h9GWdPJXoVVDL9H5yC74GkVc5ubIM=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "11a396520bf911e4ed01e78e11633d3fc63b350e",
+        "rev": "403c09094a877e6c4816462d00b1a56ff8198e06",
         "type": "github"
       },
       "original": {

@@ -36,9 +36,9 @@
     roowho2.inputs.nixpkgs.follows = "nixpkgs";
 
     greg-ng.url = "git+https://git.pvv.ntnu.no/Grzegorz/greg-ng.git?ref=main";
-    greg-ng.inputs.nixpkgs.follows = "nixpkgs";
+    greg-ng.inputs.nixpkgs.follows = "nixpkgs-unstable";
     gergle.url = "git+https://git.pvv.ntnu.no/Grzegorz/gergle.git?ref=main";
-    gergle.inputs.nixpkgs.follows = "nixpkgs";
+    gergle.inputs.nixpkgs.follows = "nixpkgs-unstable";
     grzegorz-clients.url = "git+https://git.pvv.ntnu.no/Grzegorz/grzegorz-clients.git?ref=master";
     grzegorz-clients.inputs.nixpkgs.follows = "nixpkgs";
 
