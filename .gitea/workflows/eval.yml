@@ -6,8 +6,18 @@ jobs:
   evals:
     runs-on: debian-latest
     steps:
+    - name: Install sudo
+      run: apt-get install --update --assume-yes sudo
+
     - uses: actions/checkout@v6
-    - run: apt-get update && apt-get -y install sudo
+
     - uses: https://github.com/cachix/install-nix-action@v31
-    - run: echo -e "show-trace = true\nmax-jobs = auto\ntrusted-users = root\nexperimental-features = nix-command flakes\nbuild-users-group =" > /etc/nix/nix.conf
+      with:
+        extra_nix_config: |
+          show-trace = true
+          max-jobs = auto
+          trusted-users = root
+          experimental-features = nix-command flakes
+          build-users-group =
+
     - run: nix flake check
