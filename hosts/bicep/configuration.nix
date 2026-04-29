@@ -7,6 +7,7 @@
     ./services/nginx
 
     ./services/calendar-bot.nix
+    ./services/garage.nix
     #./services/git-mirrors
     ./services/minecraft-heatmap.nix
     ./services/mysql
