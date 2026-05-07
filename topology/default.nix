@@ -228,7 +228,6 @@ in {
         (mkConnection "demiurgen" "eno1")
         (mkConnection "sanctuary" "ethernet_0")
         (mkConnection "torskas" "eth0")
-        (mkConnection "skrott" "eth0")
         (mkConnection "homeassistant" "eth0")
         (mkConnection "orchid" "eth0")
         (mkConnection "principal" "em0")

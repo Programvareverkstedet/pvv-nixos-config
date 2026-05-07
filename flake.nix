@@ -241,38 +241,6 @@
     }
     //
     (let
-      skrottConfig = {
-        modules = [
-          (nixpkgs + "/nixos/modules/installer/sd-card/sd-image-aarch64.nix")
-          inputs.dibbler.nixosModules.default
-        ];
-        overlays = [
-          inputs.dibbler.overlays.default
-          (final: prev: {
-            # NOTE: Yeetus (these break crosscompile ¯\_(ツ)_/¯)
-            atool = prev.emptyDirectory;
-            micro = prev.emptyDirectory;
-            ncdu = prev.emptyDirectory;
-          })
-        ];
-      };
-    in {
-      skrott = self.nixosConfigurations.skrott-native;
-      skrott-native = stableNixosConfig "skrott" (skrottConfig // {
-        localSystem = "aarch64-linux";
-        crossSystem = "aarch64-linux";
-      });
-      skrott-cross = stableNixosConfig "skrott" (skrottConfig // {
-        localSystem = "x86_64-linux";
-        crossSystem = "aarch64-linux";
-      });
-      skrott-x86_64 = stableNixosConfig "skrott" (skrottConfig // {
-        localSystem = "x86_64-linux";
-        crossSystem = "x86_64-linux";
-      });
-    })
-    //
-    (let
       machineNames = map (i: "lupine-${toString i}") (lib.range 1 5);
       stableLupineNixosConfig = name: extraArgs:
           nixosConfig nixpkgs name ./hosts/lupine/configuration.nix extraArgs;
@@ -341,16 +309,6 @@
       # Machines
       lib.genAttrs allMachines
         (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel)
-      //
-      # Skrott is exception
-      {
-        skrott = self.packages.${system}.skrott-native-sd;
-        skrott-native = self.nixosConfigurations.skrott-native.config.system.build.toplevel;
-        skrott-native-sd = self.nixosConfigurations.skrott-native.config.system.build.sdImage;
-        skrott-cross = self.nixosConfigurations.skrott-cross.config.system.build.toplevel;
-        skrott-cross-sd = self.nixosConfigurations.skrott-cross.config.system.build.sdImage;
-        skrott-x86_64 = self.nixosConfigurations.skrott-x86_64.config.system.build.toplevel;
-      }
       //
       # Nix-topology
       (let

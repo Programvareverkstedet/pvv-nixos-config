@@ -30,8 +30,6 @@ in {
       (mkHostScrapeConfig "ustetind" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
       (mkHostScrapeConfig "wenche" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
 
-      (mkHostScrapeConfig "skrott" [ defaultNodeExporterPort defaultSystemdExporterPort ])
-
       (mkHostScrapeConfig "hildring" [ defaultNodeExporterPort ])
       (mkHostScrapeConfig "isvegg" [ defaultNodeExporterPort ])
       (mkHostScrapeConfig "microbel" [ defaultNodeExporterPort ])
