@@ -10,6 +10,8 @@
     (fp /users)
     (fp /modules/snakeoil-certs.nix)
 
+    ./mitigations.nix
+
     ./flake-input-exporter.nix
     ./networking.nix
     ./nix.nix

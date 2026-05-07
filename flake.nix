@@ -32,7 +32,7 @@
     minecraft-heatmap.url = "git+https://git.pvv.ntnu.no/Projects/minecraft-heatmap.git?ref=main";
     minecraft-heatmap.inputs.nixpkgs.follows = "nixpkgs";
 
-    roowho2.url = "git+https://git.pvv.ntnu.no/Projects/roowho2.git?ref=main";
+    roowho2.url = "git+https://git.pvv.ntnu.no/Projects/roowho2.git?ref=main&rev=16b2bc5c2759e20ecb952374509f1e1f9d6c06e7";
     roowho2.inputs.nixpkgs.follows = "nixpkgs";
 
     greg-ng.url = "git+https://git.pvv.ntnu.no/Grzegorz/greg-ng.git?ref=main";
@@ -62,9 +62,11 @@
     importantMachines = [
       "bekkalokk"
       "bicep"
-      "brzeczyszczykiewicz"
       "georg"
       "ildkule"
+      "kommode"
+      "lupine-1"
+      "skrot"
     ];
   in {
     inputs = lib.mapAttrs (_: src: src.outPath) inputs;
