@@ -60,5 +60,5 @@ revert the changes on the next nightly rebuild (tends to happen when everybody i
 [ild]: https://wiki.pvv.ntnu.no/wiki/Maskiner/ildkule
 [kom]: https://wiki.pvv.ntnu.no/wiki/Maskiner/kommode
 [lup]: https://wiki.pvv.ntnu.no/wiki/Maskiner/lupine
-[skr]: https://wiki.pvv.ntnu.no/wiki/Maskiner/Skrott
+[skr]: https://wiki.pvv.ntnu.no/wiki/Maskiner/Skrot
 [wen]: https://wiki.pvv.ntnu.no/wiki/Maskiner/wenche
