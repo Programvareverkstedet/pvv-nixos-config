@@ -20,7 +20,6 @@ keys:
   - &host_lupine-3 age1wmrrhd5deatmgflkas636u3rzuk46u9knl02v4t39ncs37xqquhq9vwzye
   - &host_lupine-4 age1ml48zztcmnrdrhrdsjrlyxf09jtmjgz46u8td4zm59wn3fm4g57qs4wg0l
   - &host_lupine-5 age12gws5nws69vxryd3kt7q0ayngch90efmhqcrfhnnsmj00lkgxd4qsdkvqn
-  - &host_skrott age1lpkju2e053aaddpgsr4ef83epclf4c9tp4m98d35ft2fswr8p4tq2ua0mf
   - &host_ustetind age1hffjafs4slznksefmtqrlj7rdaqgzqncn4un938rhr053237ry8s3rs0v8
   - &host_skrot age1hzkvnktkr8t5gvtq0ccw69e44z5z6wf00n3xhk3hj24emf07je5s6q2evr
 
@@ -136,18 +135,6 @@ creation_rules:
       pgp:
       - *user_oysteikt
 
-  - path_regex: secrets/skrott/[^/]+\.yaml$
-    key_groups:
-    - age:
-      - *host_skrott
-      - *user_danio
-      - *user_felixalb
-      - *user_pederbs_sopp
-      - *user_pederbs_nord
-      - *user_pederbs_bjarte
-      - *user_vegardbm
-      pgp:
-      - *user_oysteikt
   - path_regex: secrets/skrot/[^/]+\.yaml$
     key_groups:
     - age:
