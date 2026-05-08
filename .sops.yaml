@@ -10,7 +10,6 @@ keys:
   - &user_vegardbm age1sqs7urnzsdy64efmd0zukzv3gs5pnjksuxd7nqmdwdy5l0nqnunq6hyune
 
   # Hosts
-  - &host_bakke age1syted6kt48sumjjucggh6r3uca4x2ppp4mfungf3lamkt2le05csc99633
   - &host_bekkalokk age12nj59tguy9wg882updc2vjdusx5srnxmjyfaqve4zx6jnnsaw3qsyjq6zd
   - &host_bicep age19nk55kcs7s0358jpkn75xnr57dfq6fq3p43nartvsprx0su22v7qcgcjdx
   - &host_ildkule age1x28hmzvuv6f2n66c0jtqcca3h9rput8d7j5uek6jcpx8n9egd52sqpejq0
@@ -113,19 +112,6 @@ creation_rules:
       - *host_lupine-3
       - *host_lupine-4
       - *host_lupine-5
-      - *user_danio
-      - *user_felixalb
-      - *user_pederbs_sopp
-      - *user_pederbs_nord
-      - *user_pederbs_bjarte
-      - *user_vegardbm
-      pgp:
-      - *user_oysteikt
-
-  - path_regex: secrets/bakke/[^/]+\.yaml$
-    key_groups:
-    - age:
-      - *host_bakke
       - *user_danio
       - *user_felixalb
       - *user_pederbs_sopp
