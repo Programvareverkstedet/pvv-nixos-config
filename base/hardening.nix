@@ -58,4 +58,7 @@
     "nfc"
     "soundwire"
   ];
+
+  # security.lockKernelModules = true;
+  security.protectKernelImage = true;
 }

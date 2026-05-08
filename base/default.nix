@@ -71,8 +71,6 @@
     fi
   '';
 
-  # security.lockKernelModules = true;
-  security.protectKernelImage = true;
   security.sudo.execWheelOnly = true;
   security.sudo.extraConfig = ''
     Defaults lecture = never
