@@ -13,6 +13,7 @@
     ./mitigations.nix
 
     ./flake-input-exporter.nix
+    ./hardening.nix
     ./networking.nix
     ./nix.nix
     ./programs.nix
