@@ -226,6 +226,25 @@ in
           AllowOverride All
           Require all granted
         </Directory>
+
+        <DirectoryMatch "^/home/pvv/.*/web-docs/(${lib.concatStringsSep "|" [
+          "\\.git"
+          "\\.hg"
+          "\\.svn"
+          "\\.ssh"
+          "\\.env"
+          "\\.envrc"
+          "\\.bzr"
+          "\\.venv"
+          "CVS"
+          "RCS"
+          ".*\\.swp"
+          ".*\\.bak"
+          ".*~"
+        ]})(/|$)">
+            AllowOverride All
+            Require all denied
+        </DirectoryMatch>
       '';
     };
   };
