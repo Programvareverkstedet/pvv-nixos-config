@@ -83,7 +83,7 @@ def get_newest_commit(project_name: str, tracking_branch: str) -> str:
     content = requests.get(f"{BASE_WEB_URL}/{project_name}/+log/refs/heads/{tracking_branch}/").text
     soup = bs4.BeautifulSoup(content, features="html.parser")
     try:
-        a = soup.find('li').findChild('a')
+        a = soup.find('li').find('a')
         commit_sha = a['href'].split('/')[-1]
     except AttributeError:
         print(f"ERROR: Could not parse page for {project_name}:")
