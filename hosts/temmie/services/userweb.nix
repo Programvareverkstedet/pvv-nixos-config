@@ -68,6 +68,7 @@ let
   # https://nixos.org/manual/nixpkgs/stable/#sec-building-environment
   fhsEnv = pkgs.buildEnv {
     name = "userweb-env";
+    ignoreCollisions = true;
     paths = with pkgs; [
       bash
 
