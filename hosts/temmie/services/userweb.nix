@@ -7,9 +7,27 @@ let
   # https://nixos.org/manual/nixpkgs/stable/#ssec-php-user-guide-installing-with-extensions
   phpEnv = pkgs.php.buildEnv {
     extensions = { all, ... }: with all; [
+      bz2
+      curl
+      decimal
+      gd
       imagick
-      opcache
+      mysqli
+      mysqlnd
+      pgsql
+      posix
       protobuf
+      sqlite3
+      uuid
+      xml
+      xsl
+      zlib
+      zstd
+
+      pdo
+      pdo_mysql
+      pdo_pgsql
+      pdo_sqlite
     ];
 
     extraConfig = ''
@@ -25,38 +43,15 @@ let
     pkgs.irssi
     pkgs.nix.libs.nix-perl-bindings
 
-    AlgorithmDiff
-    AnyEvent
-    AnyEventI3
-    ArchiveZip
     CGI
-    CPAN
-    CPANPLUS
     DBDPg
     DBDSQLite
+    DBDmysql
     DBI
-    EmailAddress
-    EmailSimple
-    Env
     Git
-    HTMLMason
-    HTMLParser
-    HTMLTagset
-    HTTPDAV
-    HTTPDaemon
     ImageMagick
     JSON
-    LWP
-    MozillaCA
-    PathTiny
-    Switch
-    SysSyslog
-    TestPostgreSQL
-    TextPDF
-    TieFile
-    Tk
-    URI
-    XMLLibXML
+    TemplateToolkit
   ]);
 
   # https://nixos.org/manual/nixpkgs/stable/#python.buildenv-function
@@ -78,7 +73,6 @@ let
 
       perlEnv
       pythonEnv
-
       phpEnv
     ]
     ++ (with phpEnv.packages; [
