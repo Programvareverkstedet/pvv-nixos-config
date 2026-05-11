@@ -4,6 +4,13 @@ let
 
   homeLetters = [ "a" "b" "c" "d" "h" "i" "j" "k" "l" "m" "z" ];
 
+  phpOptions = lib.concatStringsSep "\n" (lib.mapAttrsToList (k: v: "${k} = ${v}"){
+    display_errors = "Off";
+    display_startup_errors = "Off";
+    post_max_size = "40M";
+    upload_max_filesize = "40M";
+  });
+
   # https://nixos.org/manual/nixpkgs/stable/#ssec-php-user-guide-installing-with-extensions
   phpEnv = pkgs.php.buildEnv {
     extensions = { all, ... }: with all; [
@@ -29,11 +36,7 @@ let
       pdo_sqlite
     ];
 
-    extraConfig = ''
-      display_errors=0
-      post_max_size = 40M
-      upload_max_filesize = 40M
-    '';
+    extraConfig = phpOptions;
   };
 
   perlEnv = pkgs.perl.withPackages (ps: with ps; [
@@ -173,6 +176,7 @@ in
 
     enablePHP = true;
     phpPackage = phpEnv;
+    inherit phpOptions;
 
     enablePerl = true;
 
