@@ -53,7 +53,7 @@ in
       Slice = "system-giteaweb.slice";
       Type = "oneshot";
       ExecStart = let
-        args = lib.cli.toGNUCommandLineShell { } {
+        args = lib.cli.toCommandLineShellGNU { } {
           org = "%i";
           token-path = "%d/token";
           api-url = "${giteaCfg.settings.server.ROOT_URL}api/v1";

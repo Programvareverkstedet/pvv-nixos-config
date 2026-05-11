@@ -40,7 +40,7 @@ in {
     path = with pkgs; [ imagemagick gnutar gzip ];
 
     script = ''
-      tar ${lib.cli.toGNUCommandLineShell {} {
+      tar ${lib.cli.toCommandLineShellGNU { } {
         extract = true;
         file = "${transferDir}/gallery.tar.gz";
         directory = ".";

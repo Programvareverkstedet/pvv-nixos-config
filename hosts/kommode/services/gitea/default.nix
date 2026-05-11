@@ -214,7 +214,7 @@ in {
 
   systemd.services.gitea-dump = {
     serviceConfig.ExecStart = let
-      args = lib.cli.toGNUCommandLineShell { } {
+      args = lib.cli.toCommandLineShellGNU { } {
         type = cfg.dump.type;
 
         # This should be declarative on nixos, no need to backup.
