@@ -70,9 +70,9 @@ let
     text = ''
       args=("$@")
 
-      if [[ "''${PWD:-}" =~ ^/home/pvv/[^/]+/([^/]+) ]] && [[ "''${BASH_REMATCH[1]}" != "pvv" ]]; then
+      if [[ -z "$USERDIR_USER" ]] && [[ "$USERDIR_USER" != "pvv" ]]; then
           # Prepend -fusername to the argument list, so bounces go to the user
-          args=("-f''${BASH_REMATCH[1]}" "''${args[@]}")
+          args=("-f$USERDIR_USER" "''${args[@]}")
       fi
 
       exec '${lib.getExe pkgs.system-sendmail}' "''${args[@]}"
@@ -209,6 +209,7 @@ in
         UserDir disabled root
         AddHandler cgi-script .cgi
         DirectoryIndex index.html index.html.var index.php index.php3 index.cgi index.phtml index.shtml meg.html
+        SetEnvIf Request_URI "^/~([^/]+)" USERDIR_USER=$1
 
         <Directory "/home/pvv/?/*/web-docs">
           Options MultiViews Indexes SymLinksIfOwnerMatch ExecCGI IncludesNoExec
