@@ -64,12 +64,29 @@ let
     ignoreCollisions = true;
   };
 
+  sendmailWrapper = pkgs.writeShellApplication {
+    name = "sendmail";
+    runtimeInputs = [ ];
+    text = ''
+      args=("$@")
+
+      if [[ "''${PWD:-}" =~ ^/home/pvv/[^/]+/([^/]+) ]] && [[ "''${BASH_REMATCH[1]}" != "pvv" ]]; then
+          # Prepend -fusername to the argument list, so bounces go to the user
+          args=("-f''${BASH_REMATCH[1]}" "''${args[@]}")
+      fi
+
+      exec '${lib.getExe pkgs.system-sendmail}' "''${args[@]}"
+    '';
+  };
+
   # https://nixos.org/manual/nixpkgs/stable/#sec-building-environment
   fhsEnv = pkgs.buildEnv {
     name = "userweb-env";
     ignoreCollisions = true;
     paths = with pkgs; [
       bash
+
+      sendmailWrapper
 
       perlEnv
       pythonEnv
