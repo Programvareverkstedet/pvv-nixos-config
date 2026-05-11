@@ -32,7 +32,7 @@
     minecraft-heatmap.url = "git+https://git.pvv.ntnu.no/Projects/minecraft-heatmap.git?ref=main";
     minecraft-heatmap.inputs.nixpkgs.follows = "nixpkgs";
 
-    roowho2.url = "git+https://git.pvv.ntnu.no/Projects/roowho2.git?ref=main&rev=16b2bc5c2759e20ecb952374509f1e1f9d6c06e7";
+    roowho2.url = "git+https://git.pvv.ntnu.no/Projects/roowho2.git?ref=main&rev=9b37c6b3c8193ab4cc778a26a78bcd14519cff2c";
     roowho2.inputs.nixpkgs.follows = "nixpkgs";
 
     greg-ng.url = "git+https://git.pvv.ntnu.no/Grzegorz/greg-ng.git?ref=main";
