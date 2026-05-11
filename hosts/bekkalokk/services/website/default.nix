@@ -80,9 +80,40 @@ in {
   };
 
   services.phpfpm.pools."pvv-nettsiden".settings = {
-    # "php_admin_value[error_log]" = "stderr";
+    "php_admin_value[error_log]" = "syslog";
     "php_admin_flag[log_errors]" = true;
     "catch_workers_output" = true;
+
+    "php_admin_value[max_execution_time]" = "30";
+    "request_terminate_timeout" = "60s";
+
+    "php_admin_value[sendmail_path]" = let
+      fakeSendmail = pkgs.writeShellApplication {
+        name = "fake-sendmail";
+        text = ''
+          TIMESTAMP="$(date +%Y-%m-%d-%H-%M-%S-%N)"
+          (
+            echo "SENDMAIL ARGS:"
+            echo "$@"
+            echo "SENDMAIL STDIN:"
+            cat -
+          ) > "/var/lib/pvv-nettsiden/emails/$TIMESTAMP.mail"
+        '';
+      };
+    in lib.getExe fakeSendmail;
+
+    "php_admin_value[disable_functions]" = lib.concatStringsSep "," [
+      "curl_exec"
+      "curl_multi_exec"
+      "exec"
+      "parse_ini_file"
+      "passthru"
+      "popen"
+      "proc_open"
+      "shell_exec"
+      "show_source"
+      "system"
+    ];
   };
 
   services.nginx.virtualHosts."pvv.ntnu.no" = {
