@@ -16,8 +16,7 @@ let
       mysqlnd
       pgsql
       posix
-      protobuf
-      sqlite3
+      protobuf sqlite3
       uuid
       xml
       xsl
@@ -80,87 +79,56 @@ let
       # composer
     ])
     ++ [
+      # Useful packages for homepages
+      exiftool
+      gnuplot
+      ikiwiki-full
+      imagemagick
+      jhead
+      ruby
+      sbcl
+      sourceHighlight
+
+      # Missing packages from tom
+      # blosxom
+      # pyblosxom
+      # mediawiki (TODO: do people host their own mediawikis in userweb?)
+      # nanoblogger
+
+      # Version control
+      cvs
+      rcs
+      git
+
+      # Compression/Archival
+      bzip2
+      gnutar
+      gzip
+      lz4
+      unzip
+      xz
+      zip
+      zstd
+
+      # Other tools you might expect to find on a normal system
       acl
-      aspell
-      autoconf
-      autotrash
-      bazel
-      bintools
-      bison
-      bsd-finger
-      catdoc
-      ccache
-      clang
-      cmake
       coreutils-full
       curl
-      devcontainer
       diffutils
-      emacs
-      # exiftags
-      exiftool
-      ffmpeg
       file
       findutils
       gawk
-      gcc
-      glibc
       gnugrep
       gnumake
       gnupg
-      gnuplot
       gnused
-      gnutar
-      gzip
-      html-tidy
-      imagemagick
-      inetutils
-      iproute2
-      jhead
       less
-      libgcc
-      lndir
-      mailutils
-      man # TODO: does this one want a mandb instance?
-      meson
-      more
-      mpc
-      mpi
-      mplayer
-      ninja
-      nix
-      openssh
-      openssl
-      patchelf
-      pkg-config
-      ppp
-      procmail
-      procps
-      qemu
-      rc
-      rhash
-      rsync
-      ruby # TODO: does this one want systemwide packages?
-      salt
-      sccache
-      sourceHighlight
-      spamassassin
-      strace
-      subversion
-      system-sendmail
-      systemdMinimal
-      texliveMedium
-      tmux
-      unzip
+      man
       util-linux
-      valgrind
       vim
       wget
       which
-      wine
       xdg-utils
-      zip
-      zstd
     ];
 
     extraOutputsToInstall = [
