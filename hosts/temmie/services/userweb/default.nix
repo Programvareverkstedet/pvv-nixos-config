@@ -155,6 +155,10 @@ let
   };
 in
 {
+  imports = [
+    ./mail.nix
+  ];
+
   services.httpd = {
     enable = true;
     adminAddr = "drift@pvv.ntnu.no";

@@ -6,7 +6,7 @@
     (fp /base)
 
     ./services/nfs-mounts.nix
-    ./services/userweb.nix
+    ./services/userweb
   ];
 
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
