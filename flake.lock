@@ -232,11 +232,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777808420,
-        "narHash": "sha256-hh9XBz0K1ypZ+neezgIPCSsnWFKEq8VfV/1aUSPu3OA=",
+        "lastModified": 1778407980,
+        "narHash": "sha256-r980BhsReZQe6FkmyNZkwCZpvzARo5jZgTl8HxjAssY=",
         "owner": "oddlama",
         "repo": "nix-topology",
-        "rev": "28e9dc901ff38a8fa2d24bccd5f89511d6d8324e",
+        "rev": "ca0a602f650306d00d6f3e3c76d0f4c48a5c5adc",
         "type": "github"
       },
       "original": {
@@ -248,11 +248,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1778125667,
-        "narHash": "sha256-swcxqlW+XrZFBqjcV3AV8AR64/eI234AZRFKs6q4DFo=",
-        "rev": "75636a69ad3115ff64d4cb3090e66c8275dda9c2",
+        "lastModified": 1778544512,
+        "narHash": "sha256-VIsPgfIpZ/01XUO6WN+o1NZbP5iKPKPHdHPWqfm4XIg=",
+        "rev": "c417517f9d525181ee5619c683419d308ee29fe8",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/25.11-small/nixos-25.11.10534.75636a69ad31/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/25.11-small/nixos-25.11.10745.c417517f9d52/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -276,11 +276,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1778157832,
-        "narHash": "sha256-lSl05j1UzI5MioSJWUa7oUp5a88zzv3sXMwWC4d1N70=",
-        "rev": "ec299c6a33eee9baf5b4d72881ca2f15c06b4f01",
+        "lastModified": 1778586796,
+        "narHash": "sha256-XmDljcG4x8slQDlsWOc77pCA1YVuYn8JGumkYlhfTxI=",
+        "rev": "b25e938b89759b5f9466fc53c4a970244f84dc39",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.05pre993859.ec299c6a33ee/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.05pre996582.b25e938b8975/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -380,17 +380,17 @@
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1778462170,
-        "narHash": "sha256-3ZxbuHDo8d6FOxU1G8IwRm0SIi3DLpj7hpTEcyXB2N8=",
+        "lastModified": 1778600367,
+        "narHash": "sha256-YB0b2xUf4D8792D5Ay//7C3AjHyv+9yoy8K1mTe+wvE=",
         "ref": "main",
-        "rev": "9b37c6b3c8193ab4cc778a26a78bcd14519cff2c",
-        "revCount": 87,
+        "rev": "8e5f2849ff7c9616100fe928261512a7ad647939",
+        "revCount": 91,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/roowho2.git"
       },
       "original": {
         "ref": "main",
-        "rev": "9b37c6b3c8193ab4cc778a26a78bcd14519cff2c",
+        "rev": "8e5f2849ff7c9616100fe928261512a7ad647939",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/roowho2.git"
       }
