@@ -1,17 +1,23 @@
-{ config, fp, pkgs, lib, values, ... }:
 {
+  config,
+  fp,
+  pkgs,
+  lib,
+  values,
+  ...
+}: {
   imports = [
-      ./hardware-configuration.nix
-      ./disks.nix
-      (fp /base)
+    ./hardware-configuration.nix
+    ./disks.nix
+    (fp /base)
 
-      ./services/monitoring
-      ./services/nginx
-      ./services/journald-remote.nix
-    ];
+    ./services/monitoring
+    ./services/nginx
+    ./services/journald-remote.nix
+  ];
 
-  boot.loader.systemd-boot.enable = false;
-  boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.enable = true;
+  boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
 
@@ -29,11 +35,20 @@
 
     interfaces."ens3" = {
       ipv4.addresses = [
-        { address = hostConf.ipv4;          prefixLength = 32; }
-        { address = hostConf.ipv4_internal; prefixLength = 24; }
+        {
+          address = hostConf.ipv4;
+          prefixLength = 32;
+        }
+        {
+          address = hostConf.ipv4_internal;
+          prefixLength = 24;
+        }
       ];
       ipv6.addresses = [
-        { address = hostConf.ipv6;          prefixLength = 64; }
+        {
+          address = hostConf.ipv6;
+          prefixLength = 64;
+        }
       ];
     };
   };

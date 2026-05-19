@@ -118,9 +118,9 @@ in rec {
   };
 
   defaultNetworkConfig = {
-    dns = [ "129.241.0.200" "129.241.0.201" "2001:700:300:1900::200" "2001:700:300:1900::201" ];
-    domains = [ "pvv.ntnu.no" "pvv.org" ];
-    gateway = [ hosts.gateway hosts.gateway6 ];
+    dns = ["129.241.0.200" "129.241.0.201" "2001:700:300:1900::200" "2001:700:300:1900::201"];
+    domains = ["pvv.ntnu.no" "pvv.org"];
+    gateway = [hosts.gateway hosts.gateway6];
 
     networkConfig.IPv6AcceptRA = "no";
     DHCP = "no";
