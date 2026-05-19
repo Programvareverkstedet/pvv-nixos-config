@@ -181,7 +181,11 @@
           inputs.qotd.nixosModules.default
         ];
       };
-      ildkule = stableNixosConfig "ildkule" { };
+      ildkule = stableNixosConfig "ildkule" {
+        modules = [
+          inputs.disko.nixosModules.disko
+        ];
+      };
       #ildkule-unstable = unstableNixosConfig "ildkule" { };
       skrot = stableNixosConfig "skrot" {
         modules = [

@@ -1,8 +1,8 @@
 { config, fp, pkgs, lib, values, ... }:
 {
   imports = [
-      # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./disks.nix
       (fp /base)
 
       ./services/monitoring
