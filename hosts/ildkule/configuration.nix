@@ -11,7 +11,7 @@
     ];
 
   boot.loader.systemd-boot.enable = false;
-  boot.loader.grub.device = "/dev/vda";
+  boot.loader.grub.device = "/dev/sda";
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
 
@@ -27,7 +27,7 @@
     nameservers = values.defaultNetworkConfig.dns;
     defaultGateway.address = hostConf.ipv4_internal_gw;
 
-    interfaces."ens4" = {
+    interfaces."ens3" = {
       ipv4.addresses = [
         { address = hostConf.ipv4;          prefixLength = 32; }
         { address = hostConf.ipv4_internal; prefixLength = 24; }

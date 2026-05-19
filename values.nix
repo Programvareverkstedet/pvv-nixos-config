@@ -37,10 +37,10 @@ in rec {
       ipv6 = pvv-ipv6 168;
     };
     ildkule = {
-      ipv4 = "129.241.153.213";
-      ipv4_internal = "192.168.12.209";
-      ipv4_internal_gw = "192.168.12.1";
-      ipv6 = "2001:700:300:6026:f816:3eff:fe58:f1e8";
+      ipv4 = "129.241.100.145";
+      ipv4_internal = "192.168.1.17";
+      ipv4_internal_gw = "192.168.1.1";
+      ipv6 = "2001:700:305:8a0f:f816:3eff:fef5:e400";
     };
     bicep = {
       ipv4 = pvv-ipv4 209;
