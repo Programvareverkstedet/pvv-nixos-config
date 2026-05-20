@@ -3,11 +3,15 @@ let
   cfg = config.services.postgresql;
 in
 {
-  imports = [ ./backup.nix ];
+  imports = [
+    ./backup.nix
+    ./cleanup-timers.nix
+  ];
 
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_18;
+    extensions = ps: with ps; [ pg_repack ];
     enableTCPIP = true;
 
     authentication = ''
