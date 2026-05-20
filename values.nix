@@ -86,10 +86,10 @@ in rec {
       ipv6 = pvv-ipv6 167;
     };
     gluttony = {
-      ipv4 = "129.241.100.118";
-      ipv4_internal = "192.168.20.77";
-      ipv4_internal_gw = "192.168.20.1";
-      ipv6 = "2001:700:305:aa07::3b3";
+      ipv4 = "129.241.100.37";
+      ipv4_internal = "192.168.1.219";
+      ipv4_internal_gw = "192.168.1.1";
+      ipv6 = "2001:700:305:8a0f:f816:3eff:fe9b:7a46";
     };
     wenche = {
       ipv4 = pvv-ipv4 240;
