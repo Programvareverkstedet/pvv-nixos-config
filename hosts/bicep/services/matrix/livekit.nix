@@ -64,4 +64,11 @@ in
       '';
     };
   };
+
+  networking.firewall.allowedUDPPortRanges = [
+    {
+      from = cfg.settings.rtc.port_range_start;
+      to = cfg.settings.rtc.port_range_end;
+    }
+  ];
 }
