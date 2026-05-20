@@ -101,6 +101,8 @@
 
   # users.mutableUsers = lib.mkDefault false;
 
+  users.users.root.initialHashedPassword = "$y$j9T$ahP6GAdttD17OMBo7Yqeh.$Ad7qBcFvTL7HrJ9uTtrQzksN3220Nj9t/CrP6DwgK34"; # generated using mkpasswd, see huttiheita root on vaultwarden
+
   users.groups."drift".name = "drift";
 
   # Trusted users on the nix builder machines
