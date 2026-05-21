@@ -226,7 +226,7 @@ in {
         # Logs are stored in the systemd journal
         skip-log = true;
       };
-    in lib.mkForce "${lib.getExe cfg.package} ${args}";
+    in lib.mkForce "${lib.getExe cfg.package} dump ${args}";
 
     # Only keep n backup files at a time
     postStop = let
