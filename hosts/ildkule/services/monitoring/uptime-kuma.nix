@@ -21,6 +21,7 @@ in {
 
   fileSystems."/var/lib/uptime-kuma" = {
     device = stateDir;
+    fsType = "bind";
     options = [ "bind" ];
   };
 }

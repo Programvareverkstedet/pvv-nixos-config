@@ -21,6 +21,7 @@ in {
 
   fileSystems."/var/lib/prometheus2" = {
     device = stateDir;
+    fsType = "bind";
     options = [ "bind" ];
   };
 }
