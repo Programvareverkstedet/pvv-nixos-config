@@ -79,40 +79,6 @@ in {
     };
   };
 
-  systemd.services.vaultwarden = lib.mkIf cfg.enable {
-    serviceConfig = {
-      AmbientCapabilities = [ "" ];
-      CapabilityBoundingSet = [ "" ];
-      DeviceAllow = [ "" ];
-      LockPersonality = true;
-      NoNewPrivileges = true;
-      # MemoryDenyWriteExecute = true;
-      PrivateMounts = true;
-      PrivateUsers = true;
-      ProcSubset = "pid";
-      ProtectClock = true;
-      ProtectControlGroups = true;
-      ProtectHostname = true;
-      ProtectKernelLogs = true;
-      ProtectKernelModules = true;
-      ProtectKernelTunables = true;
-      RestrictAddressFamilies = [
-        "AF_INET"
-        "AF_INET6"
-        "AF_UNIX"
-      ];
-      RemoveIPC = true;
-      RestrictNamespaces = true;
-      RestrictRealtime = true;
-      RestrictSUIDSGID = true;
-      SystemCallArchitectures = "native";
-      SystemCallFilter = [
-        "@system-service"
-        "~@privileged"
-      ];
-    };
-  };
-
   services.rsync-pull-targets = {
     enable = true;
     locations."/var/lib/vaultwarden" = {
