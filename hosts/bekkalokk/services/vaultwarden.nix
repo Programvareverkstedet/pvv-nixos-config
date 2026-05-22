@@ -10,11 +10,13 @@ in {
     owner = "vaultwarden";
     group = "vaultwarden";
     mode = "440";
+    restartUnits = [ "vaultwarden.service" ];
   };
   sops.secrets."vaultwarden/rsa_key.pub.pem" = {
     owner = "vaultwarden";
     group = "vaultwarden";
     mode = "440";
+    restartUnits = [ "vaultwarden.service" ];
   };
   sops.secrets."vaultwarden/env/DATABASE_PASSWORD" = { };
   sops.secrets."vaultwarden/env/SMTP_PASSWORD" = { };
@@ -22,6 +24,7 @@ in {
     owner = "vaultwarden";
     group = "vaultwarden";
     mode = "440";
+    restartUnits = [ "vaultwarden.service" ];
     content = ''
         DATABASE_URL=postgresql://vaultwarden:${config.sops.placeholder."vaultwarden/env/DATABASE_PASSWORD"}@postgres.pvv.ntnu.no/vaultwarden
         SMTP_PASSWORD=${config.sops.placeholder."vaultwarden/env/SMTP_PASSWORD"}
