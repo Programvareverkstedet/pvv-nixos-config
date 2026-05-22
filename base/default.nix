@@ -23,6 +23,7 @@
     ./services/acme.nix
     ./services/auto-upgrade.nix
     ./services/dbus.nix
+    ./services/fluentbit.nix
     ./services/fwupd.nix
     ./services/irqbalance.nix
     ./services/journald-upload.nix
