@@ -27,7 +27,6 @@ in {
       (mkHostScrapeConfig "lupine-4" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
       (mkHostScrapeConfig "lupine-5" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
       (mkHostScrapeConfig "temmie" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "ustetind" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
       (mkHostScrapeConfig "wenche" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
 
       (mkHostScrapeConfig "hildring" [ defaultNodeExporterPort ])

@@ -176,26 +176,6 @@ in {
     interfaces.ens18.network = "pvv";
   };
 
-  nodes.ustetind = {
-    guestType = "proxmox LXC";
-    parent = config.nodes.powerpuff-cluster.id;
-
-    # TODO: the interface name is likely wrong
-    # interfaceGroups = [ [ "eth0" ] ];
-    interfaces.eth0 = {
-      network = "pvv";
-      # mac = "";
-      addresses = [
-        "129.241.210.234"
-        "2001:700:300:1900::234"
-      ];
-      gateways = [
-        values.hosts.gateway
-        values.hosts.gateway6
-      ];
-    };
-  };
-
   ### PVV
 
   nodes.ntnu-veggen = mkRouter "NTNU-Veggen" {

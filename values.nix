@@ -73,10 +73,6 @@ in rec {
       ipv4 = pvv-ipv4 233;
       ipv6 = pvv-ipv6 "4:233";
     };
-    ustetind = {
-      ipv4 = pvv-ipv4 234;
-      ipv6 = pvv-ipv6 234;
-    };
     skrot = {
       ipv4 = pvv-ipv4 237;
       ipv6 = pvv-ipv6 237;
