@@ -10,6 +10,10 @@ in
     owner = "nginx";
     group = "nginx";
   };
+  sops.secrets."roundcube/des_key" = {
+    owner = "nginx";
+    group = "nginx";
+  };
 
   services.roundcube = {
     enable = true;
@@ -39,6 +43,7 @@ in
       $config['mail_domain'] = "pvv.ntnu.no";
       $config['smtp_user'] = "%u";
       $config['support_url'] = "";
+      $config['des_key'] = "${config.sops.secrets."roundcube/des_key".path}";
     '';
   };
 
