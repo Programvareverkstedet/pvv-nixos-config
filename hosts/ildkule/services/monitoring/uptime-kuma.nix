@@ -19,7 +19,7 @@ in {
     locations."/".proxyPass = "http://${cfg.settings.HOST}:${cfg.settings.PORT}";
   };
 
-  fileSystems."/var/lib/uptime-kuma" = {
+  fileSystems."/var/lib/private/uptime-kuma" = {
     device = stateDir;
     fsType = "bind";
     options = [ "bind" ];
