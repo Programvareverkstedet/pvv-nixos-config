@@ -16,30 +16,30 @@ in {
     dbBackend = "postgresql";
     environmentFile = config.sops.secrets."vaultwarden/environ".path;
     config = {
-      domain = "https://${domain}";
+      DOMAIN = "https://${domain}";
 
-      rocketAddress = address;
-      rocketPort = port;
+      ROCKET_ADDRESS = address;
+      ROCKET_PORT = port;
 
-      websocketEnabled = true;
-      websocketAddress = address;
-      websocketPort = wsPort;
+      WEBSOCKET_ENABLED = true;
+      WEBSOCKET_ADDRESS = address;
+      WEBSOCKET_PORT = wsPort;
 
-      signupsAllowed = true;
-      signupsVerify = true;
-      signupsDomainsWhitelist = "pvv.ntnu.no";
+      SIGNUPS_ALLOWED = true;
+      SIGNUPS_VERIFY = true;
+      SIGNUPS_DOMAINS_WHITELIST = "pvv.ntnu.no";
 
-      smtpFrom = "vaultwarden@pvv.ntnu.no";
-      smtpFromName = "VaultWarden PVV";
+      SMTP_FROM = "vaultwarden@pvv.ntnu.no";
+      SMTP_FROM_NAME = "VaultWarden PVV";
 
-      smtpHost = "smtp.pvv.ntnu.no";
-      smtpUsername = "vaultwarden";
-      smtpSecurity = "force_tls";
-      smtpAuthMechanism = "Login";
+      SMTP_HOST = "smtp.pvv.ntnu.no";
+      SMTP_USERNAME = "vaultwarden";
+      SMTP_SECURITY = "force_tls";
+      SMTP_AUTH_MECHANISM = "Login";
 
       # Configured in environ:
-      # databaseUrl = "postgresql://vaultwarden@/vaultwarden";
-      # smtpPassword = hemli
+      # DATABASE_URL = "postgresql://vaultwarden@/vaultwarden";
+      # SMTP_PASSWORD = hemli
     };
   };
 
