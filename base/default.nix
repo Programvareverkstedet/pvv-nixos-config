@@ -33,7 +33,6 @@
     ./services/postfix.nix
     ./services/prometheus-node-exporter.nix
     ./services/prometheus-systemd-exporter.nix
-    ./services/promtail.nix
     ./services/roowho2.nix
     ./services/smartd.nix
     ./services/thermald.nix
