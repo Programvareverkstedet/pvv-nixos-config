@@ -8,6 +8,6 @@
 
   services.resolved = {
     enable = lib.mkDefault true;
-    dnssec = "false"; # Supposdly this keeps breaking and the default is to allow downgrades anyways...
+    settings.Resolve.DNSSEC = false; # Supposdly this keeps breaking and the default is to allow downgrades anyways...
   };
 }
