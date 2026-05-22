@@ -210,6 +210,8 @@ in {
 
       # EXT:WikiEditor
       $wgWikiEditorRealtimePreview = true;
+
+      $wgSecretKey = file_get_contents("${config.sops.secrets."mediawiki/secret-key".path}");
     '';
   };
 
@@ -273,8 +275,6 @@ in {
   systemd.services.mediawiki-init = lib.mkIf cfg.enable {
     after = [ "sops-install-secrets.service" ];
     serviceConfig = {
-      BindReadOnlyPaths = [ "/run/credentials/mediawiki-init.service/secret-key:/var/lib/mediawiki/secret.key" ];
-      LoadCredential = [ "secret-key:${config.sops.secrets."mediawiki/secret-key".path}" ];
       UMask = lib.mkForce "0007";
     };
   };
@@ -282,8 +282,6 @@ in {
   systemd.services.phpfpm-mediawiki = lib.mkIf cfg.enable {
     after = [ "sops-install-secrets.service" ];
     serviceConfig = {
-      BindReadOnlyPaths = [ "/run/credentials/phpfpm-mediawiki.service/secret-key:/var/lib/mediawiki/secret.key" ];
-      LoadCredential = [ "secret-key:${config.sops.secrets."mediawiki/secret-key".path}" ];
       UMask = lib.mkForce "0007";
     };
   };
