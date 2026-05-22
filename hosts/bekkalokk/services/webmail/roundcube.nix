@@ -9,10 +9,12 @@ in
   sops.secrets."roundcube/postgres_password" = {
     owner = "nginx";
     group = "nginx";
+    restartUnits = [ "phpfpm-roundcube.service" ];
   };
   sops.secrets."roundcube/des_key" = {
     owner = "nginx";
     group = "nginx";
+    restartUnits = [ "phpfpm-roundcube.service" ];
   };
 
   services.roundcube = {
