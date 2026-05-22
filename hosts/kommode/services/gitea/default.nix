@@ -228,14 +228,9 @@ in {
       };
     in lib.mkForce "${lib.getExe cfg.package} dump ${args}";
 
-    # Only keep n backup files at a time
-    postStop = let
-      cu = prog: "'${lib.getExe' pkgs.coreutils prog}'";
-      backupCount = 3;
-    in ''
-      for file in $(${cu "ls"} -t1 '${cfg.dump.backupDir}' | ${cu "sort"} --reverse | ${cu "tail"} -n+${toString (backupCount + 1)}); do
-        ${cu "rm"} "$file"
-      done
-      '';
+    # Only keep a single backup file at a time.
+    postStop = ''
+      ${lib.getExe' pkgs.coreutils "mv"} '${cfg.dump.backupDir}'/gitea-dump-*.tar.gz gitea-dump.tar.gz
+    '';
   };
 }
