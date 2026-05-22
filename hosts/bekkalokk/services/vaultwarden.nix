@@ -6,11 +6,6 @@ let
   port = 3011;
   wsPort = 3012;
 in {
-  sops.secrets."vaultwarden/environ" = {
-    owner = "vaultwarden";
-    group = "vaultwarden";
-    mode = "440";
-  };
   sops.secrets."vaultwarden/rsa_key.pem" = {
     owner = "vaultwarden";
     group = "vaultwarden";
@@ -21,11 +16,22 @@ in {
     group = "vaultwarden";
     mode = "440";
   };
+  sops.secrets."vaultwarden/env/DATABASE_PASSWORD" = { };
+  sops.secrets."vaultwarden/env/SMTP_PASSWORD" = { };
+  sops.templates."vaultwarden/environment_file" = {
+    owner = "vaultwarden";
+    group = "vaultwarden";
+    mode = "440";
+    content = ''
+        DATABASE_URL=postgresql://vaultwarden:${config.sops.placeholder."vaultwarden/env/DATABASE_PASSWORD"}@postgres.pvv.ntnu.no/vaultwarden
+        SMTP_PASSWORD=${config.sops.placeholder."vaultwarden/env/SMTP_PASSWORD"}
+    '';
+  };
 
   services.vaultwarden = {
     enable = true;
     dbBackend = "postgresql";
-    environmentFile = config.sops.secrets."vaultwarden/environ".path;
+    environmentFile = config.sops.templates."vaultwarden/environment_file".path;
     config = {
       DOMAIN = "https://${domain}";
 
@@ -49,10 +55,6 @@ in {
       SMTP_AUTH_MECHANISM = "Login";
 
       RSA_KEY_FILENAME = lib.removeSuffix ".pem" config.sops.secrets."vaultwarden/rsa_key.pem".path;
-
-      # Configured in environ:
-      # DATABASE_URL = "postgresql://vaultwarden@/vaultwarden";
-      # SMTP_PASSWORD = hemli
     };
   };
 
