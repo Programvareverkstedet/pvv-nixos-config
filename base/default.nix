@@ -77,10 +77,10 @@
   '';
 
   # These are servers, sleep is for the weak
-  systemd.sleep.extraConfig = lib.mkDefault ''
-    AllowSuspend=no
-    AllowHibernation=no
-  '';
+  systemd.sleep.settings.Sleep = {
+    AllowSuspend = lib.mkDefault false;
+    AllowHibernation = lib.mkDefault false;
+  };
 
   # users.mutableUsers = lib.mkDefault false;
 
