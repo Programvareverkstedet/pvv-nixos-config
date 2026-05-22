@@ -15,7 +15,7 @@ in
           User = "postgres";
           Group = "postgres";
 
-          ExecStart = "${lib.getExe cfg.package.pkgs.pg_repack} --port=${builtins.toString cfg.settings.port} --all";
+          ExecStart = "${lib.getExe cfg.package.pkgs.pg_repack} --port=${builtins.toString cfg.settings.port} --no-kill-backend --wait-timeout=30 --all";
         };
       };
 
