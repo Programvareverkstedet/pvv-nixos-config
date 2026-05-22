@@ -9,6 +9,17 @@ in {
   sops.secrets."vaultwarden/environ" = {
     owner = "vaultwarden";
     group = "vaultwarden";
+    mode = "440";
+  };
+  sops.secrets."vaultwarden/rsa_key.pem" = {
+    owner = "vaultwarden";
+    group = "vaultwarden";
+    mode = "440";
+  };
+  sops.secrets."vaultwarden/rsa_key.pub.pem" = {
+    owner = "vaultwarden";
+    group = "vaultwarden";
+    mode = "440";
   };
 
   services.vaultwarden = {
@@ -36,6 +47,8 @@ in {
       SMTP_USERNAME = "vaultwarden";
       SMTP_SECURITY = "force_tls";
       SMTP_AUTH_MECHANISM = "Login";
+
+      RSA_KEY_FILENAME = lib.removeSuffix ".pem" config.sops.secrets."vaultwarden/rsa_key.pem".path;
 
       # Configured in environ:
       # DATABASE_URL = "postgresql://vaultwarden@/vaultwarden";
