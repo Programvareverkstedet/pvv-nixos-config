@@ -205,7 +205,6 @@
             inputs.disko.nixosModules.disko
           ];
         };
-        #ildkule-unstable = unstableNixosConfig "ildkule" { };
         skrot = stableNixosConfig "skrot" {
           modules = [
             inputs.disko.nixosModules.disko
@@ -216,7 +215,12 @@
         shark = stableNixosConfig "shark" {};
         wenche = stableNixosConfig "wenche" {};
         temmie = stableNixosConfig "temmie" {};
-        gluttony = stableNixosConfig "gluttony" {};
+        gluttony = stableNixosConfig "gluttony" {
+          overlays = [
+            (final: prev: { bluemap = final.callPackage ./packages/bluemap.nix {}; })
+          ];
+          modules = [ self.nixosModules.bluemap ];
+        };
 
         kommode = stableNixosConfig "kommode" {
           overlays = [
