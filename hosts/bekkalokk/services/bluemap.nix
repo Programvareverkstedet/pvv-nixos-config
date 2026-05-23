@@ -131,7 +131,7 @@ in {
         "no-pty"
         "no-X11-forwarding"
       ];
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGYpjmQYs3pKV29/hVCeNQQ/WRmwGdhMEUJvAC99sZEp root@nixos";
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH5jrqMovXlWaFWZAV/aKyQReHvUQp5kb+7Ja4gnevSr root@gluttony bluemap";
     };
   };
 
