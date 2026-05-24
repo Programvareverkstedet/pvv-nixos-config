@@ -189,14 +189,12 @@
             (final: prev: {
               mediawiki-extensions = final.callPackage ./packages/mediawiki-extensions {};
               simplesamlphp = final.callPackage ./packages/simplesamlphp {};
-              bluemap = final.callPackage ./packages/bluemap.nix {};
             })
             inputs.pvv-nettsiden.overlays.default
             inputs.qotd.overlays.default
           ];
           modules = [
             inputs.pvv-nettsiden.nixosModules.default
-            self.nixosModules.bluemap
             inputs.qotd.nixosModules.default
           ];
         };
