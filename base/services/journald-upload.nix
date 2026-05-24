@@ -6,8 +6,7 @@ in
   services.journald.upload = {
     enable = lib.mkDefault true;
     settings.Upload = {
-      # URL = "https://journald.pvv.ntnu.no:${toString config.services.journald.remote.port}";
-      URL = "https://${values.hosts.ildkule.ipv4}:${toString config.services.journald.remote.port}";
+      URL = "https://journald.pvv.ntnu.no:${toString config.services.journald.remote.port}";
       ServerKeyFile = "-";
       ServerCertificateFile = "-";
       TrustedCertificateFile = "-";
