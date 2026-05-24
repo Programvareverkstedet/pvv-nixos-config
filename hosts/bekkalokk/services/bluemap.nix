@@ -20,6 +20,13 @@ in {
       quic_retry on;
       add_header Alt-Svc 'h3=":$server_port"; ma=86400';
     '';
+    root = webExport;
+    locations = {
+      "~* ^/maps/[^/]*/tiles/".extraConfig = ''
+        error_page 404 = @empty;
+      '';
+      "@empty".return = "204";
+    };
   };
 
   services.rsync-pull-targets = {
