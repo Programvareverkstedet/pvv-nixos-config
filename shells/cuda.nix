@@ -22,12 +22,12 @@ pkgs.mkShell {
     stdenv.cc
     unzip
     util-linux
-    xorg.libX11
-    xorg.libXext
-    xorg.libXi
-    xorg.libXmu
-    xorg.libXrandr
-    xorg.libXv
+    libX11
+    libXext
+    libXi
+    libXmu
+    libXrandr
+    libXv
     zlib
 
     cudatoolkit
