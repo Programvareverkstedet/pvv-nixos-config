@@ -188,10 +188,13 @@ in
       ScriptLog ${cfg.logDir}/cgi.log
     '';
 
-    # virtualHosts."userweb.pvv.ntnu.no" = {
     virtualHosts."temmie.pvv.ntnu.no" = {
       forceSSL = true;
       enableACME = true;
+
+      serverAliases = [
+        "www2.pvv.ntnu.no"
+      ];
 
       extraConfig = ''
         UserDir ${lib.concatMapStringsSep " " (l: "/home/pvv/${l}/*/web-docs") homeLetters}
