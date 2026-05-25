@@ -39,7 +39,7 @@ let
     extraConfig = phpOptions;
   };
 
-  perlEnv = pkgs.perl.withPackages (ps: with ps; [
+  perlEnv = (pkgs.perl.withPackages (ps: with ps; [
     pkgs.exiftool
     pkgs.ikiwiki
     pkgs.irssi
@@ -54,7 +54,14 @@ let
     ImageMagick
     JSON
     TemplateToolkit
-  ]);
+  ])).overrideAttrs (prev: {
+    # NOTE: `pkgs.perl.propagatedBuildInputs` don't actually propagate through the
+    #       wrapper derivation created by `withPackages`. This should compensate
+    #       for that.
+    postBuild = prev.postBuild + ''
+      cp -r '${pkgs.perl}/nix-support' "$out"/nix-support
+    '';
+  });
 
   # https://nixos.org/manual/nixpkgs/stable/#python.buildenv-function
   pythonEnv = pkgs.python3.buildEnv.override {
