@@ -50,6 +50,8 @@ in
     SIGNING_NAME = "PVV Git";
     SIGNING_EMAIL = "gitea@git.pvv.ntnu.no";
     INITIAL_COMMIT = "always";
+    MERGES = lib.concatStringsSep "," [ "always" ];
+    CRUD_ACTIONS = lib.concatStringsSep "," [ "always" ];
     WIKI = "always";
   };
 }
