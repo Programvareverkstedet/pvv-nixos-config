@@ -243,6 +243,14 @@ in
   #   ];
   # };
 
+  # NOTE: 54 -> 33, this is the UID/GID we used for www-data on tom in the past.
+  #       Any files accessed by or created by httpd will do so over NFS with this
+  #       UID/GID pair as its credentials.
+  #       This overlaps with the hardcoded `disnix` uid in nixpkgs, but we *probably*
+  #       won't be using that for the foreseeable future.
+  users.users."wwwrun".uid = lib.mkForce 33;
+  users.groups."wwwrun".gid = lib.mkForce 33;
+
   systemd.services.httpd = {
     after = [ "pvv-homedirs.target" ];
     requires = [ "pvv-homedirs.target" ];
