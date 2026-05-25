@@ -40,7 +40,7 @@
                     args=("-f$USERDIR_USER" "''${args[@]}")
                 fi
 
-                exec '${lib.getExe pkgs.system-sendmail}' "''${args[@]}"
+                exec '${lib.getExe pkgs.system-sendmail}' -t -i "''${args[@]}"
               '';
             };
           in lib.getExe sendmailWrapper;
