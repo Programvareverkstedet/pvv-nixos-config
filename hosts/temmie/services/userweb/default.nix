@@ -176,17 +176,21 @@ in
     extraModules = [
       "systemd"
       "userdir"
-      # TODO: I think the compilation steps of pkgs.apacheHttpdPackages.mod_perl might have some
-      #       incorrect or restrictive assumptions upstream, either nixpkgs or source
-      # {
-      #   name = "perl";
-      #   path = let
-      #     mod_perl = pkgs.apacheHttpdPackages.mod_perl.override {
-      #       apacheHttpd = cfg.package.out;
-      #       perl = perlEnv;
-      #     };
-      #   in "${mod_perl}/modules/mod_perl.so";
-      # }
+      {
+        name = "perl";
+        path = let
+          mod_perl = pkgs.symlinkJoin {
+            name = "userweb_modperl_with_custom_perl_env";
+            ignoreCollisions = true;
+            paths = [
+              (pkgs.apacheHttpdPackages.mod_perl.override {
+                apacheHttpd = cfg.package.out;
+              })
+              perlEnv
+            ];
+          };
+        in "${mod_perl}/modules/mod_perl.so";
+      }
     ];
 
     extraConfig = ''
