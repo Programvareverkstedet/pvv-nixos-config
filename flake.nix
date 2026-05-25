@@ -85,6 +85,7 @@
           [
             "nvidia-x11"
             "nvidia-settings"
+            "nvidia-kernel-modules"
           ];
       });
 
@@ -105,6 +106,7 @@
               [
                 "nvidia-x11"
                 "nvidia-settings"
+                "nvidia-kernel-modules"
               ];
             overlays =
               (lib.optionals enableDefaults [
