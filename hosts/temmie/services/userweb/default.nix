@@ -67,21 +67,6 @@ let
     ignoreCollisions = true;
   };
 
-  sendmailWrapper = pkgs.writeShellApplication {
-    name = "sendmail";
-    runtimeInputs = [ ];
-    text = ''
-      args=("$@")
-
-      if [[ -z "$USERDIR_USER" ]] && [[ "$USERDIR_USER" != "pvv" ]]; then
-          # Prepend -fusername to the argument list, so bounces go to the user
-          args=("-f$USERDIR_USER" "''${args[@]}")
-      fi
-
-      exec '${lib.getExe pkgs.system-sendmail}' "''${args[@]}"
-    '';
-  };
-
   # https://nixos.org/manual/nixpkgs/stable/#sec-building-environment
   fhsEnv = pkgs.buildEnv {
     name = "userweb-env";
@@ -89,7 +74,7 @@ let
     paths = with pkgs; [
       bash
 
-      sendmailWrapper
+      config.services.bro.instances.userweb-sendmail.client.package
 
       perlEnv
       pythonEnv

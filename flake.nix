@@ -47,6 +47,9 @@
 
     qotd.url = "git+https://git.pvv.ntnu.no/Projects/qotd.git?ref=main";
     qotd.inputs.nixpkgs.follows = "nixpkgs";
+
+    bro.url = "git+https://git.pvv.ntnu.no/Projects/bro.git?ref=main";
+    bro.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -214,7 +217,14 @@
         };
         shark = stableNixosConfig "shark" {};
         wenche = stableNixosConfig "wenche" {};
-        temmie = stableNixosConfig "temmie" {};
+        temmie = stableNixosConfig "temmie" {
+          overlays = [
+            inputs.bro.overlays.default
+          ];
+          modules = [
+            inputs.bro.nixosModules.default
+          ];
+        };
         gluttony = stableNixosConfig "gluttony" {
           overlays = [
             (final: prev: { bluemap = final.callPackage ./packages/bluemap.nix {}; })

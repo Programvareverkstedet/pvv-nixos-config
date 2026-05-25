@@ -1,5 +1,27 @@
 {
   "nodes": {
+    "bro": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1779629827,
+        "narHash": "sha256-nrlB50/oelB8oFx9DhOoXI5z0VoTZGEA6XxYvkvpqDA=",
+        "ref": "main",
+        "rev": "7d0f35e12e4dec39f981c08fc33515589f41f4a5",
+        "revCount": 3,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/bro.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/bro.git"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1776635034,
@@ -101,7 +123,7 @@
         "nixpkgs": [
           "nixpkgs-unstable"
         ],
-        "rust-overlay": "rust-overlay"
+        "rust-overlay": "rust-overlay_2"
       },
       "locked": {
         "lastModified": 1777019032,
@@ -165,7 +187,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "rust-overlay": "rust-overlay_2"
+        "rust-overlay": "rust-overlay_3"
       },
       "locked": {
         "lastModified": 1767906976,
@@ -352,6 +374,7 @@
     },
     "root": {
       "inputs": {
+        "bro": "bro",
         "dibbler": "dibbler",
         "disko": "disko",
         "gergle": "gergle",
@@ -377,7 +400,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "rust-overlay": "rust-overlay_3"
+        "rust-overlay": "rust-overlay_4"
       },
       "locked": {
         "lastModified": 1778600367,
@@ -398,6 +421,27 @@
     "rust-overlay": {
       "inputs": {
         "nixpkgs": [
+          "bro",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1779419951,
+        "narHash": "sha256-dMX0PUslUHPajP6o8FEoRdFv9afq/dec4POR0vVfjK4=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "5b5c521d6cae9ef4aa32f888eb2c0ce595c9be52",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_2": {
+      "inputs": {
+        "nixpkgs": [
           "greg-ng",
           "nixpkgs"
         ]
@@ -416,7 +460,7 @@
         "type": "github"
       }
     },
-    "rust-overlay_2": {
+    "rust-overlay_3": {
       "inputs": {
         "nixpkgs": [
           "minecraft-heatmap",
@@ -437,7 +481,7 @@
         "type": "github"
       }
     },
-    "rust-overlay_3": {
+    "rust-overlay_4": {
       "inputs": {
         "nixpkgs": [
           "roowho2",
