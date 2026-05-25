@@ -14,6 +14,8 @@ let
     upload_max_filesize = "40M";
   });
 
+  apache-log-processor = pkgs.callPackage ./apache-log-processor { };
+
   # https://nixos.org/manual/nixpkgs/stable/#ssec-php-user-guide-installing-with-extensions
   phpEnv = pkgs.php.buildEnv {
     extensions = { all, ... }: with all; [
@@ -205,10 +207,11 @@ in
       }
     ];
 
+    logPerVirtualHost = false;
+
     extraConfig = ''
       TraceEnable on
       LogLevel warn rewrite:trace3
-      ScriptLog ${cfg.logDir}/cgi.log
     '';
 
     virtualHosts."temmie.pvv.ntnu.no" = {
@@ -220,6 +223,11 @@ in
       ];
 
       extraConfig = ''
+        CustomLog "${cfg.logDir}/access.log" combined
+        CustomLog "|${lib.getExe apache-log-processor} access" combined
+        ErrorLog "|${lib.getExe apache-log-processor} error"
+        ScriptLog "${cfg.logDir}/cgi.log"
+
         UserDir ${lib.concatMapStringsSep " " (l: "/home/pvv/${l}/*/web-docs") homeLetters}
         UserDir disabled root
         AddHandler cgi-script .cgi
@@ -344,8 +352,8 @@ in
       LogsDirectory = [ "httpd" ];
       LogsDirectoryMode = "0700";
 
-      AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ] ++ lib.optionals debug [ "CAP_SYS_PTRACE" ];
-      CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ] ++ lib.optionals debug [ "CAP_SYS_PTRACE" ];
+      AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" "CAP_SETUID" "CAP_SETGID" ] ++ lib.optionals debug [ "CAP_SYS_PTRACE" ];
+      CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" "CAP_SETUID" "CAP_SETGID" ] ++ lib.optionals debug [ "CAP_SYS_PTRACE" ];
       LockPersonality = !debug;
       PrivateDevices = true;
       PrivateTmp = true;
@@ -375,6 +383,7 @@ in
       SystemCallArchitectures = "native";
       SystemCallFilter = lib.mkIf (!debug) [
          "@system-service"
+         "@setuid"
       ];
       UMask = "0077";
 

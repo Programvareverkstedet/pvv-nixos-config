@@ -1,0 +1,19 @@
+[package]
+name = "apache-log-processor"
+version = "0.1.0"
+edition = "2024"
+autobins = false
+license = "MIT"
+authors = [
+  "projects@pvv.ntnu.no",
+]
+
+[dependencies]
+nix = { version = "0.31.3", features = ["event", "fs", "user"] }
+time = { version = "0.3.47", features = ["formatting", "local-offset"] }
+
+
+[[bin]]
+name = "apache-log-processor"
+bench = false
+path = "src/main.rs"
