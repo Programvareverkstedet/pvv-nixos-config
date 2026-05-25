@@ -20,6 +20,7 @@ keys:
   - &host_lupine-4 age1ml48zztcmnrdrhrdsjrlyxf09jtmjgz46u8td4zm59wn3fm4g57qs4wg0l
   - &host_lupine-5 age12gws5nws69vxryd3kt7q0ayngch90efmhqcrfhnnsmj00lkgxd4qsdkvqn
   - &host_skrot age1hzkvnktkr8t5gvtq0ccw69e44z5z6wf00n3xhk3hj24emf07je5s6q2evr
+  - &host_gluttony age12czfkvuw9pjk5qny5c6m2hjhd634cj9r4dsa3ss5zkux5h4vvc7s7k4urq
 
 creation_rules:
   # Global secrets
@@ -111,6 +112,19 @@ creation_rules:
     key_groups:
     - age:
       - *host_skrot
+      - *user_danio
+      - *user_felixalb
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
+      - *user_vegardbm
+      pgp:
+      - *user_oysteikt
+
+  - path_regex: secrets/gluttony/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *host_gluttony
       - *user_danio
       - *user_felixalb
       - *user_pederbs_sopp

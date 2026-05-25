@@ -7,6 +7,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./services/bluemap.nix
     (fp /base)
   ];
 

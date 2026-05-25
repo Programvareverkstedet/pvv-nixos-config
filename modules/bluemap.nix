@@ -376,7 +376,7 @@ in {
       serviceConfig = {
         Type = "oneshot";
         CPUSchedulingPolicy = "batch";
-        Group = "nginx";
+        Group = lib.mkIf cfg.enableNginx "nginx";
         UMask = "026";
         ExecStart = [
           # If web folder doesnt exist generate it
