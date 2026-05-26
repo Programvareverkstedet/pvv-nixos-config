@@ -171,6 +171,9 @@ in
         requires = [ "matrix-ooye-pre-start.service" ];
         wantedBy = [ "multi-user.target" ];
 
+        startLimitIntervalSec = 5;
+        startLimitBurst = 5;
+
         serviceConfig = {
           ExecStart = lib.getExe config.services.matrix-ooye.package;
           WorkingDirectory = "/var/lib/matrix-ooye";
@@ -182,8 +185,6 @@ in
           #PrivateDevices = true;
           Restart = "on-failure";
           RestartSec = "5s";
-          StartLimitIntervalSec = "5s";
-          StartLimitBurst = "5";
           DynamicUser = true;
         };
       };
