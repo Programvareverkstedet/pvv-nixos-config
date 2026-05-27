@@ -11,9 +11,9 @@ in
 
   systemd.services.gitea-import-users = lib.mkIf cfg.enable {
     enable = true;
-    preStart=''${pkgs.rsync}/bin/rsync -e "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=$CREDENTIALS_DIRECTORY/ssh-known-hosts -i $CREDENTIALS_DIRECTORY/sshkey" -a pvv@smtp.pvv.ntnu.no:/etc/passwd /run/gitea-import-users/passwd'';
     environment.PASSWD_FILE_PATH = "/run/gitea-import-users/passwd";
     serviceConfig = {
+      ExecStartPre = ''${pkgs.rsync}/bin/rsync -e "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=$CREDENTIALS_DIRECTORY/ssh-known-hosts -i $CREDENTIALS_DIRECTORY/sshkey" -a pvv@smtp.pvv.ntnu.no:/etc/passwd /run/gitea-import-users/passwd'';
       ExecStart = pkgs.writers.writePython3 "gitea-import-users" {
         flakeIgnore = [
           "E501" # Line over 80 chars lol
