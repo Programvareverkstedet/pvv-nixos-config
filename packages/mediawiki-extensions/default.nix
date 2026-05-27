@@ -38,18 +38,23 @@ lib.mergeAttrsList [
   })
   (mw-ext {
     name = "CodeMirror";
-    commit = "f06dfd40a08562a841ddf11b4ae3444ef06c98c7";
-    hash = "sha256-5zXkBjOwFdoQezkPRJ2AcBZLZEEpGG6FawO2K3KzllI=";
+    commit = "7ab826eff8c4097589a3199c40c507717af23234";
+    hash = "sha256-kMIyGW9J4OSGSetByel7hEGgxPRJmQ53it6ndpYA/Hs=";
   })
   (mw-ext {
     name = "DeleteBatch";
-    commit = "9bc75a753efefedfc88c598fb01f18a7e4b61f00";
-    hash = "sha256-1xA758fsvoioN9xuq0hRqZKtPXMQViVLtuRINDtowdk=";
+    commit = "b5920283cfe78b86a63a1037a81651c58ce764da";
+    hash = "sha256-LwuVX2s5Q4uc6o7hlTjFzRTwvSCwTk74gBpX0HoLDMA=";
+  })
+  (mw-ext {
+    name = "PdfHandler";
+    commit = "dc1a3ca04ac6ec7d7de7ce5355803510508a2575";
+    hash = "sha256-ltAQZtfTMMLRPATA7rclSNW8Yz4ctGc30CxlL3SRBWU=";
   })
   (mw-ext {
     name = "PluggableAuth";
-    commit = "64133683b73d8eeea8069fe7ed9cb7237fd5c212";
-    hash = "sha256-wqpfgVLenZp6XC510nrsrbvK1IMEPcWVYq5YuAOt5+c=";
+    commit = "4b57a23e32d72bd3f74184ff2734aa483a5b0c63";
+    hash = "sha256-ZGw0Wgz0Sg04YDcOzkOGywmfQ6s6Ex17QbjmUDO1D8c=";
   })
   (mw-ext {
     name = "Popups";
@@ -58,38 +63,38 @@ lib.mergeAttrsList [
   })
   (mw-ext {
     name = "Scribunto";
-    commit = "cbab0c740e03c8e6184fd647d95e24e0826d20cb";
-    hash = "sha256-vXS3+wrUBVtPsETa19pMvud9sALGt4Ao9mM5rQRbBQc=";
+    commit = "35c85c96167922adc98e62dd6573789d906dd7d7";
+    hash = "sha256-FEWADJW53cDOlLseM62VL66PENv/jNnwuCMo2Pb02ek=";
   })
   (mw-ext {
     name = "SimpleSAMLphp";
     kebab-name = "simple-saml-php";
-    commit = "fc5ad4501434fe85198f0b1f0087d798efa91f9f";
-    hash = "sha256-se0krTglo1fShJXj38bPLhw65tZC5P54Ywt7oeZrLes=";
+    commit = "70778bb02f972abbb51e6ba3e0f6545b00dcab00";
+    hash = "sha256-wfmFJKy+ih84qFM9DVcCQFAZBx45s7Hl0lRnseMPhGY=";
   })
   (mw-ext {
     name = "TemplateData";
-    commit = "d37b02f6ed194138ac7193a0782bbf6efb9164f8";
-    hash = "sha256-NpzVBzX7qfXkIE+jh33ndooS9GE8ZF3/Jynm22in7IQ=";
+    commit = "cca3b3430067f2161bf65de822f70dd38fe07bba";
+    hash = "sha256-OxLwiF8FlWizkpDF9GXYfjehKtrltX8ihiCE+fNJpgw=";
   })
   (mw-ext {
     name = "TemplateStyles";
-    commit = "f85614c26a0057a9f418342f89214a04c9de9988";
-    hash = "sha256-XZOtM3iadjE5vavsjkx7kfJNhLZlnnFt1CN+mv6XVHQ=";
+    commit = "101a159dd0190759a16551a86800144c18b6ff5c";
+    hash = "sha256-IGQQVAx8/76ivHq9b97ec1AlFoqbRl7uhXhwoFimsG4=";
   })
   (mw-ext {
     name = "UserMerge";
-    commit = "2f2432c909a36691ca0002daf6fb304d6c182beb";
-    hash = "sha256-ZP8Tp6u+uJxx3I39YGMmkP0sTnjAQUSaxImAJaRv+Ek=";
+    commit = "6c0d105e07538c34bfde989bd26fa1945f8d1b79";
+    hash = "sha256-w058Ihk0I98hIG1tkVJGy1bzbv7XXyUksGexXgCN540=";
   })
   (mw-ext {
     name = "VisualEditor";
-    commit = "1508d49d0dd71fdc1d18badd23671441b3bc327b";
-    hash = "sha256-VNiCVNrCAImAr1tS9T28KPPzzNsKPz5ELFRIBtng+So=";
+    commit = "8d8c6d7f179a5f799e1fa8cba207d81f58f722d2";
+    hash = "sha256-wbYHXi2vD521EMzUl7ttinG4YdLv/DwYvVUew7dka0g=";
   })
   (mw-ext {
     name = "WikiEditor";
-    commit = "aba5e7c6701877a6b43583709751658fec606d47";
-    hash = "sha256-XmbQy0NXuY3oVGkkgC233kkzfBfx32HDylloGYXU/Nc=";
+    commit = "f53000f0499858fe74e4f5008b2f5e467d9d9382";
+    hash = "sha256-+HTXZEVCwMD8z6c1kCZA3k686HzNd30pJljzRvf+gMg=";
   })
 ]
