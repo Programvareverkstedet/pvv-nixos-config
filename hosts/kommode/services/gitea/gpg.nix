@@ -38,11 +38,11 @@ in
       Type = "oneshot";
       User = cfg.user;
       PrivateNetwork = true;
+      ExecStart = [
+        "${lib.getExe pkgs.gnupg} --import '${config.sops.secrets."gitea/gpg-signing-key-public".path}'"
+        "${lib.getExe pkgs.gnupg} --import '${config.sops.secrets."gitea/gpg-signing-key-private".path}'"
+      ];
     };
-    script = ''
-      ${lib.getExe pkgs.gnupg} --import ${config.sops.secrets."gitea/gpg-signing-key-public".path}
-      ${lib.getExe pkgs.gnupg} --import ${config.sops.secrets."gitea/gpg-signing-key-private".path}
-    '';
   };
 
   services.gitea.settings."repository.signing" = {
