@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  inputs,
   fp,
   ...
 }:
@@ -42,6 +43,8 @@
     ./services/userborn.nix
     ./services/userdbd.nix
   ];
+
+  system.nixos.tags = lib.optionals (inputs.self.sourceInfo ? dirtyRev) [ "dirty" ];
 
   boot.tmp.cleanOnBoot = lib.mkDefault true;
   boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
