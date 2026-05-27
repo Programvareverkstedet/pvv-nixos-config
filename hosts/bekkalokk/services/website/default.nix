@@ -119,6 +119,7 @@ in {
   services.nginx.virtualHosts."pvv.ntnu.no" = {
     globalRedirect = cfg.domainName;
     redirectCode = 307;
+    kTLS = true;
     forceSSL = true;
     useACMEHost = "www.pvv.ntnu.no";
   };
@@ -126,6 +127,7 @@ in {
   services.nginx.virtualHosts."www.pvv.org" = {
     globalRedirect = cfg.domainName;
     redirectCode = 307;
+    kTLS = true;
     forceSSL = true;
     useACMEHost = "www.pvv.ntnu.no";
   };
@@ -133,11 +135,13 @@ in {
   services.nginx.virtualHosts."pvv.org" = {
     globalRedirect = cfg.domainName;
     redirectCode = 307;
+    kTLS = true;
     forceSSL = true;
     useACMEHost = "www.pvv.ntnu.no";
   };
 
   services.nginx.virtualHosts.${cfg.domainName} = {
+    kTLS = true;
     locations = {
       # Proxy home directories
       "^~ /~" = {

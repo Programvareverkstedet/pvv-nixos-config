@@ -80,6 +80,7 @@ in
   };
 
   services.nginx.virtualHosts."ooye.pvv.ntnu.no" = {
+    kTLS = true;
     forceSSL = true;
     enableACME = true;
     locations."/".proxyPass = "http://localhost:${cfg.socket}";

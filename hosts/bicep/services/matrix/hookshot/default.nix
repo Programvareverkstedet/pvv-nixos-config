@@ -146,6 +146,7 @@ in
   };
 
   services.nginx.virtualHosts."hookshot.pvv.ntnu.no" = {
+    kTLS = true;
     enableACME = true;
     addSSL = true;
     locations."/" = {
