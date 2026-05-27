@@ -181,12 +181,17 @@ in {
       ];
 
       # Misc program paths
-      $wgFFmpegLocation = '${pkgs.ffmpeg}/bin/ffmpeg';
-      $wgExiftool = '${pkgs.exiftool}/bin/exiftool';
-      $wgExiv2Command = '${pkgs.exiv2}/bin/exiv2';
+      $wgFFmpegLocation = '${lib.getExe pkgs.ffmpeg}';
+      $wgExiftool = '${lib.getExe pkgs.exiftool}';
+      $wgExiv2Command = '${lib.getExe pkgs.exiv2}';
       # See https://gist.github.com/sergejmueller/088dce028b6dd120a16e
-      $wgJpegTran = '${pkgs.mozjpeg}/bin/jpegtran';
-      $wgGitBin = '${pkgs.git}/bin/git';
+      $wgJpegTran = '${lib.getExe' pkgs.mozjpeg "jpegtran"}';
+      $wgGitBin = '${lib.getExe pkgs.git}';
+      $wgDiff3 = '${lib.getExe' pkgs.diffutils "diff3"}';
+      $wgDiff = '${lib.getExe' pkgs.diffutils "diff"}';
+
+      $wgUseImageMagick = true;
+      $wgImageMagickConvertCommand = '${lib.getExe pkgs.imagemagick}';
 
       # Debugging
       $wgShowExceptionDetails = false;
