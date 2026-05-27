@@ -72,6 +72,7 @@ in
       Type = "oneshot";
       User = cfg.user;
       Group = cfg.group;
+      PrivateNetwork = true;
 
       ExecStart = let
         logo-svg = fp /assets/logo_blue_regular.svg;
