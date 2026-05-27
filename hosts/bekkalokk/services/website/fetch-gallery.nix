@@ -37,46 +37,55 @@ in {
   };
 
   systemd.services.pvv-nettsiden-gallery-update = {
-    path = with pkgs; [ imagemagick gnutar gzip ];
-
-    script = ''
-      tar ${lib.cli.toCommandLineShellGNU { } {
-        extract = true;
-        file = "${transferDir}/gallery.tar.gz";
-        directory = ".";
-      }}
-
-      # Delete files and directories that exists in the gallery that don't exist in the tarball
-      filesToRemove=$(uniq -u <(sort <(find . -not -path './.thumbnails*') <(tar -tf '${transferDir}/gallery.tar.gz' | sed 's|/$||')))
-      while IFS= read -r fname; do
-        rm -f "$fname" ||:
-        rm -f ".thumbnails/$fname.png" ||:
-      done <<< "$filesToRemove"
-
-      find . -type d -empty -delete
-
-      mkdir -p .thumbnails
-      images=$(find . -type f -not -path './.thumbnails*')
-
-      while IFS= read -r fname; do
-        # Skip this file if an up-to-date thumbnail already exists
-        if [ -f ".thumbnails/$fname.png" ] && \
-          [ "$(date -R -r "$fname")" == "$(date -R -r ".thumbnails/$fname.png")" ]
-        then
-          continue
-        fi
-
-        echo "Creating thumbnail for $fname"
-        mkdir -p "$(dirname ".thumbnails/$fname")"
-        magick -define jpeg:size=200x200 "$fname" -thumbnail 300 -auto-orient ".thumbnails/$fname.png" ||:
-        touch -m -d "$(date -R -r "$fname")" ".thumbnails/$fname.png"
-      done <<< "$images"
-    '';
-
     serviceConfig = {
       WorkingDirectory = galleryDir;
       User = config.services.pvv-nettsiden.user;
       Group = config.services.pvv-nettsiden.group;
+
+      ExecStart = lib.getExe (pkgs.writeShellApplication {
+        name = "pvv-nettsiden-gallery-update-exec-start.sh";
+        runtimeInputs = with pkgs; [
+          coreutils
+          findutils
+          gnused
+          gnutar
+          gzip
+          imagemagick
+        ];
+        text = ''
+          tar ${lib.cli.toCommandLineShellGNU { } {
+            extract = true;
+            file = "${transferDir}/gallery.tar.gz";
+            directory = ".";
+          }}
+
+          # Delete files and directories that exists in the gallery that don't exist in the tarball
+          filesToRemove="$(uniq -u <(sort <(find . -not -path './.thumbnails*') <(tar -tf '${transferDir}/gallery.tar.gz' | sed 's|/$||')))"
+          while IFS= read -r fname; do
+            rm -f "$fname" ||:
+            rm -f ".thumbnails/$fname.png" ||:
+          done <<< "$filesToRemove"
+
+          find . -type d -empty -delete
+
+          mkdir -p .thumbnails
+          images="$(find . -type f -not -path './.thumbnails*')"
+
+          while IFS= read -r fname; do
+            # Skip this file if an up-to-date thumbnail already exists
+            if [ -f ".thumbnails/$fname.png" ] && \
+              [ "$(date -R -r "$fname")" == "$(date -R -r ".thumbnails/$fname.png")" ]
+            then
+              continue
+            fi
+
+            echo "Creating thumbnail for $fname"
+            mkdir -p "$(dirname ".thumbnails/$fname")"
+            magick -define jpeg:size=200x200 "$fname" -thumbnail 300 -auto-orient ".thumbnails/$fname.png" ||:
+            touch -m -d "$(date -R -r "$fname")" ".thumbnails/$fname.png"
+          done <<< "$images"
+        '';
+      });
 
       AmbientCapabilities = [ "" ];
       CapabilityBoundingSet = [ "" ];
