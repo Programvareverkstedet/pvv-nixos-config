@@ -35,6 +35,7 @@
     ./services/prometheus-node-exporter.nix
     ./services/prometheus-systemd-exporter.nix
     ./services/roowho2.nix
+    ./services/scrutiny-collector.nix
     ./services/smartd.nix
     ./services/thermald.nix
     ./services/uptimed.nix
