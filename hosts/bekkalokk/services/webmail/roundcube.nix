@@ -56,10 +56,10 @@ in
     locations."/roundcube" = {
       tryFiles = "$uri $uri/ =404";
       index = "index.php";
-      root = pkgs.runCommandLocal "roundcube-dir" { } ''
-        mkdir -p $out
-        ln -s ${cfg.package} $out/roundcube
-      '';
+      root = pkgs.linkFarm "roundcube-dir" {
+        roundcube = "${cfg.package}";
+      };
+
       extraConfig = ''
         location ~ ^/roundcube/(${builtins.concatStringsSep "|" [
         # https://wiki.archlinux.org/title/Roundcube
