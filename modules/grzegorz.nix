@@ -16,7 +16,7 @@ in {
   };
 
   systemd.user.services.restart-greg-ng = {
-    script = "systemctl --user restart greg-ng.service";
+    serviceConfig.ExecStart = "${lib.getExe' pkgs.systemd "systemctl"} --user restart greg-ng.service";
     startAt = "*-*-* 06:30:00";
   };
 
