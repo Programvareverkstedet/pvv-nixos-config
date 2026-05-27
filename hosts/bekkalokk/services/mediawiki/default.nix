@@ -107,6 +107,7 @@ in {
         CodeEditor
         CodeMirror
         DeleteBatch
+        PdfHandler
         PluggableAuth
         Popups
         Scribunto
@@ -216,6 +217,13 @@ in {
       # EXT:WikiEditor
       $wgWikiEditorRealtimePreview = true;
 
+      # EXT:PdfHandler
+      $wgPdfProcessor = '${lib.getExe pkgs.ghostscript_headless}';
+      $wgPdfPostProcessor = $wgImageMagickConvertCommand;
+      $wgPdfInfo = '${lib.getExe' pkgs.poppler-utils "pdfinfo"}';
+      $wgPdftoText = '${lib.getExe' pkgs.poppler-utils "pdftotext"}';
+
+      # Override key from hardcoded config in nixpkgs
       $wgSecretKey = file_get_contents("${config.sops.secrets."mediawiki/secret-key".path}");
     '';
   };
