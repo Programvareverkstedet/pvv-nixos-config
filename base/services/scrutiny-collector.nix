@@ -1,7 +1,7 @@
 { config, ... }:
 {
   services.scrutiny.collector = {
-    enable = !config.virtualisation.isVmVariant;
+    enable = !config.services.qemuGuest.enable;
     settings = {
       version = 1;
       host.id = config.networking.hostName;
