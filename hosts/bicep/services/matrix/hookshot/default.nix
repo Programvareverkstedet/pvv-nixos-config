@@ -22,6 +22,7 @@ in
   sops.templates."hookshot-registration.yaml" = {
     owner = config.users.users.matrix-synapse.name;
     group = config.users.groups.keys-matrix-registrations.name;
+    mode = "0440";
     restartUnits = [ "matrix-hookshot.service" ];
     content = ''
       id: matrix-hookshot
@@ -49,12 +50,59 @@ in
 
   systemd.services.matrix-hookshot = {
     serviceConfig = {
+      DynamicUser = true;
       SupplementaryGroups = [
         config.users.groups.keys-matrix-registrations.name
       ];
       LoadCredential = [
         "passkey.pem:${config.sops.secrets."matrix/hookshot/passkey".path}"
       ];
+
+      RuntimeDirectory = [ "matrix-hookshot/root-mnt" ];
+      RootDirectory = "/run/matrix-hookshot/root-mnt";
+      BindReadOnlyPaths = [
+        config.sops.templates."hookshot-registration.yaml".path
+        builtins.storeDir
+        "/etc"
+        "/run/nscd"
+        "/var/run/nscd"
+      ];
+
+      AmbientCapabilities = "";
+      CapabilityBoundingSet = "";
+      LockPersonality = true;
+      MemoryDenyWriteExecute = false; # node needs this
+      NoNewPrivileges = true;
+      PrivateDevices = true;
+      PrivateMounts = true;
+      PrivateTmp = true;
+      PrivateUsers = true;
+      ProcSubset = "pid";
+      ProtectClock = true;
+      ProtectControlGroups = true;
+      ProtectHome = true;
+      ProtectHostname = true;
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
+      ProtectProc = "invisible";
+      ProtectSystem = "strict";
+      RemoveIPC = true;
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_INET6"
+        "AF_UNIX"
+      ];
+      RestrictNamespaces = true;
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
+      SystemCallArchitectures = "native";
+      SystemCallFilter = [
+        "@system-service"
+        "~@privileged"
+        "~@resources"
+      ];
+      UMask = "0077";
     };
   };
 
