@@ -56,6 +56,55 @@ in
     enableSynapseIntegration = false;
   };
 
+  systemd.services."matrix-ooye" = {
+    serviceConfig = {
+      RuntimeDirectory = [ "matrix-ooye/root-mnt" ];
+      RootDirectory = "/run/matrix-ooye/root-mnt";
+      BindReadOnlyPaths = [
+        builtins.storeDir
+        "/etc"
+        "/run/nscd"
+        "/var/run/nscd"
+      ];
+
+      AmbientCapabilities = "";
+      CapabilityBoundingSet = "";
+      LockPersonality = true;
+      MemoryDenyWriteExecute = false; # node needs this
+      NoNewPrivileges = true;
+      PrivateDevices = true;
+      PrivateMounts = true;
+      PrivateTmp = true;
+      PrivateUsers = true;
+      ProcSubset = "pid";
+      ProtectClock = true;
+      ProtectControlGroups = true;
+      ProtectHome = true;
+      ProtectHostname = true;
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
+      ProtectProc = "invisible";
+      ProtectSystem = "strict";
+      RemoveIPC = true;
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_INET6"
+        "AF_UNIX"
+      ];
+      RestrictNamespaces = true;
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
+      SystemCallArchitectures = "native";
+      SystemCallFilter = [
+        "@system-service"
+        "~@privileged"
+        "~@resources"
+      ];
+      UMask = "0077";
+    };
+  };
+
   systemd.services."matrix-synapse" = {
     after = [
       "matrix-ooye-pre-start.service"
