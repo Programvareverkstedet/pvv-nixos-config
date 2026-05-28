@@ -54,4 +54,53 @@
     # TODO: Fix upstream module in nixpkgs
     pantalaimon.username = "bot_admin";
   };
+
+  systemd.services.mjolnir.serviceConfig = {
+    DynamicUser = true;
+    RuntimeDirectory = [ "mjolnir/root-mnt" ];
+    RootDirectory = "/run/mjolnir/root-mnt";
+    BindReadOnlyPaths = [
+      config.sops.secrets."matrix/mjolnir/access_token".path
+      builtins.storeDir
+      "/etc"
+      "/run/nscd"
+      "/var/run/nscd"
+    ];
+
+    AmbientCapabilities = "";
+    CapabilityBoundingSet = "";
+    LockPersonality = true;
+    MemoryDenyWriteExecute = false; # node needs this
+    NoNewPrivileges = true;
+    PrivateDevices = true;
+    PrivateMounts = true;
+    PrivateTmp = true;
+    PrivateUsers = true;
+    ProcSubset = "pid";
+    ProtectClock = true;
+    ProtectControlGroups = true;
+    ProtectHome = true;
+    ProtectHostname = true;
+    ProtectKernelLogs = true;
+    ProtectKernelModules = true;
+    ProtectKernelTunables = true;
+    ProtectProc = "invisible";
+    ProtectSystem = "strict";
+    RemoveIPC = true;
+    RestrictAddressFamilies = [
+      "AF_INET"
+      "AF_INET6"
+      "AF_UNIX"
+    ];
+    RestrictNamespaces = true;
+    RestrictRealtime = true;
+    RestrictSUIDSGID = true;
+    SystemCallArchitectures = "native";
+    SystemCallFilter = [
+      "@system-service"
+      "~@privileged"
+      "~@resources"
+    ];
+    UMask = "0077";
+  };
 }
