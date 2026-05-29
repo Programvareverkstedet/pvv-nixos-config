@@ -139,6 +139,9 @@ in {
         AVATAR_MAX_ORIGIN_SIZE = 1024 * 1024 * 2;
       };
       actions.ENABLED = true;
+      webhook.ALLOWED_HOST_LIST = lib.concatStringsSep "," [
+        "external"
+      ];
     };
 
     dump = {
