@@ -53,6 +53,8 @@
 
     bro.url = "git+https://git.pvv.ntnu.no/Projects/bro.git?ref=main";
     bro.inputs.nixpkgs.follows = "nixpkgs";
+    passwd2systemd-users.url = "git+https://git.pvv.ntnu.no/Projects/passwd2systemd-users.git?ref=main";
+    passwd2systemd-users.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -245,6 +247,7 @@
         temmie = stableNixosConfig "temmie" {
           overlays = [
             inputs.bro.overlays.default
+            inputs.passwd2systemd-users.overlays.default
           ];
           modules = [
             inputs.bro.nixosModules.default

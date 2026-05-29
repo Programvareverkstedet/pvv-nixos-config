@@ -2,6 +2,9 @@
 let
   cfg = config.services.httpd;
 
+  # NOTE Enable this if you want to strace stuff in the sandbox...
+  debug = false;
+
   homeLetters = [ "a" "b" "c" "d" "h" "i" "j" "k" "l" "m" "z" ];
 
   phpOptions = lib.concatStringsSep "\n" (lib.mapAttrsToList (k: v: "${k} = ${v}"){
@@ -141,6 +144,10 @@ let
       wget
       which
       xdg-utils
+    ] ++ lib.optionals debug [
+      glibc.getent
+      strace
+      systemd
     ];
 
     extraOutputsToInstall = [
@@ -153,6 +160,11 @@ in
   imports = [
     ./mail.nix
   ];
+
+  sops.secrets = {
+    "httpd/passwd-ssh-key" = { };
+    "httpd/ssh-known-hosts" = { };
+  };
 
   services.httpd = {
     enable = true;
@@ -276,17 +288,65 @@ in
     serviceConfig = {
       Type = lib.mkForce "notify";
 
+      ExecStartPre = let
+        rsyncCommand = ''${lib.getExe pkgs.rsync} -e "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=%d/ssh-known-hosts -i %d/sshkey" -avz'';
+      in lib.mkForce [
+        "${lib.getExe (pkgs.writeShellApplication {
+          name = "http-exec-start-pre-remove-old-semaphores";
+          text = ''
+            # Get rid of old semaphores.  These tend to accumulate across
+            # server restarts, eventually preventing it from restarting
+            # successfully.
+            for i in $(${pkgs.util-linux}/bin/ipcs -s | grep ' ${cfg.user} ' | cut -f2 -d ' '); do
+                ${pkgs.util-linux}/bin/ipcrm -s "$i"
+            done
+          '';
+        })}"
+
+        "${rsyncCommand} pvv@smtp.pvv.ntnu.no:/etc/passwd /run/httpd/pamunix-in/"
+        "${rsyncCommand} pvv@smtp.pvv.ntnu.no:/etc/group /run/httpd/pamunix-in/"
+
+        (let
+          args = lib.cli.toCommandLineShellGNU { } {
+            passwd-file = "/run/httpd/pamunix-in/passwd";
+            group-file = "/run/httpd/pamunix-in/group";
+            output-dir = "/run/httpd/pamunix-out";
+            shadow-file = pkgs.emptyFile;
+
+            output-passwd = true;
+
+            ignore-user-file = toString ./ignore_user_file.txt;
+            ignore-group-file = toString ./ignore_group_file.txt;
+          };
+        in ''${lib.getExe pkgs.passwd2systemd-users} ${args}'')
+        "${lib.getExe' pkgs.coreutils "shred"} -u /run/httpd/pamunix-in/passwd /run/httpd/pamunix-in/group"
+        ":${lib.getExe pkgs.gnused} -i '$ a\\\\root:x:0:0:System administrator:/root:/run/current-system/sw/bin/bash' /run/httpd/pamunix-out/passwd"
+        ":${lib.getExe pkgs.gnused} -i '$ a\\\\wwwrun:x:54:54:Apache httpd user:/var/empty:/run/current-system/sw/bin/bash' /run/httpd/pamunix-out/passwd"
+        ":${lib.getExe pkgs.gnused} -i '$ a\\\\root:x:0:' /run/httpd/pamunix-out/group"
+        ":${lib.getExe pkgs.gnused} -i '$ a\\\\wwwrun:x:54:' /run/httpd/pamunix-out/group"
+        "${lib.getExe' pkgs.coreutils "cat"} /run/httpd/pamunix-out/passwd"
+        "+${lib.getExe' pkgs.coreutils "chown"} root:root /run/httpd/pamunix-out/passwd /run/httpd/pamunix-out/group"
+        "+${lib.getExe' pkgs.coreutils "chmod"} 0644 /run/httpd/pamunix-out/passwd /run/httpd/pamunix-out/group"
+        "+${lib.getExe pkgs.mount} --bind /run/httpd/pamunix-out/passwd /etc/passwd"
+        "+${lib.getExe pkgs.mount} --bind /run/httpd/pamunix-out/group  /etc/group"
+      ];
       ExecStart = lib.mkForce "${cfg.package}/bin/httpd -D FOREGROUND -f /etc/httpd/httpd.conf -k start";
       ExecReload = lib.mkForce "${cfg.package}/bin/httpd -f /etc/httpd/httpd.conf -k graceful";
       ExecStop = lib.mkForce "";
       KillMode = "mixed";
 
+      LoadCredential=[
+        "sshkey:${config.sops.secrets."httpd/passwd-ssh-key".path}"
+        "ssh-known-hosts:${config.sops.secrets."httpd/ssh-known-hosts".path}"
+      ];
+
       ConfigurationDirectory = [ "httpd" ];
       LogsDirectory = [ "httpd" ];
       LogsDirectoryMode = "0700";
 
-      CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
-      LockPersonality = true;
+      AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ] ++ lib.optionals debug [ "CAP_SYS_PTRACE" ];
+      CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ] ++ lib.optionals debug [ "CAP_SYS_PTRACE" ];
+      LockPersonality = !debug;
       PrivateDevices = true;
       PrivateTmp = true;
       # NOTE: this removes CAP_NET_BIND_SERVICE...
@@ -313,20 +373,46 @@ in
         "tcp:443"
       ];
       SystemCallArchitectures = "native";
-      SystemCallFilter = [
+      SystemCallFilter = lib.mkIf (!debug) [
          "@system-service"
       ];
       UMask = "0077";
 
-      RuntimeDirectory = [ "httpd/root-mnt" ];
+      RuntimeDirectoryMode = "0750";
+      RuntimeDirectory = [
+        "httpd/root-mnt"
+        "httpd/pamunix-in"
+        "httpd/pamunix-out"
+      ];
       RootDirectory = "/run/httpd/root-mnt";
       MountAPIVFS = true;
       BindReadOnlyPaths = [
         builtins.storeDir
         "/etc"
-        # NCSD socket
-        "/var/run"
+        "/dev/null"
+        "/etc/resolv.conf"
         "/var/lib/acme"
+
+        "-/run/httpd/pamunix-out/passwd:/etc/passwd"
+        "-/run/httpd/pamunix-out/group:/etc/group"
+
+        "${pkgs.writeText "userweb-fake-nsswitch.conf" ''
+          passwd:    files
+          group:     files
+          shadow:    files
+          sudoers:   files
+
+          hosts:     mymachines resolve [!UNAVAIL=return] files myhostname dns
+          networks:  files
+
+          ethers:    files
+          services:  files
+          protocols: files
+          rpc:       files
+
+          subuid:    files
+          subgid:    files
+        ''}:/etc/nsswitch.conf"
 
         "${fhsEnv}/bin:/bin"
         "${fhsEnv}/sbin:/sbin"
@@ -341,6 +427,7 @@ in
           "/store/gnu"
           "/usr"
           "/usr/local"
+          "/run/current-system/sw"
         ];
         child = [
           "/bin"

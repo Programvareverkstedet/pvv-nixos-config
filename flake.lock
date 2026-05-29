@@ -330,6 +330,27 @@
         "url": "https://nixos.org/channels/nixos-unstable-small/nixexprs.tar.xz"
       }
     },
+    "passwd2systemd-users": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780764154,
+        "narHash": "sha256-Xvf9aBNLYDnbDKdtFjp5GEA/rZwVczHZWbJ0hac8Vv4=",
+        "ref": "main",
+        "rev": "8b4541be73ee3bd6c60525b2f42605efe89398c9",
+        "revCount": 14,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/passwd2systemd-users.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/passwd2systemd-users.git"
+      }
+    },
     "pvv-calendar-bot": {
       "inputs": {
         "nixpkgs": [
@@ -408,6 +429,7 @@
         "nix-topology": "nix-topology",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "passwd2systemd-users": "passwd2systemd-users",
         "pvv-calendar-bot": "pvv-calendar-bot",
         "pvv-nettsiden": "pvv-nettsiden",
         "qotd": "qotd",
