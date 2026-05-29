@@ -55,11 +55,11 @@ in rec {
     };
     brzeczyszczykiewicz = {
       ipv4 = pvv-ipv4 205;
-      ipv6 = pvv-ipv6 "1:50"; # Wtf peder why
+      ipv6 = pvv-ipv6 205;
     };
     georg = {
       ipv4 = pvv-ipv4 204;
-      ipv6 = pvv-ipv6 "1:4f"; # Wtf øystein og daniel why
+      ipv6 = pvv-ipv6 204;
     };
     kommode = {
       ipv4 = pvv-ipv4 223;
