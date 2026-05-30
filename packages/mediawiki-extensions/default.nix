@@ -15,12 +15,13 @@ let
   , tracking-branch ? "REL1_45"
   , kebab-name ? kebab-case-name name
   , fetchgit ? pkgs.fetchgit
+  , url ? "https://gerrit.wikimedia.org/r/mediawiki/extensions/${name}"
   }:
   {
     ${name} = (fetchgit {
       name = "mediawiki-${kebab-name}-source";
-      url = "https://gerrit.wikimedia.org/r/mediawiki/extensions/${name}";
       rev = commit;
+      inherit url;
       inherit hash;
     }).overrideAttrs (_: {
       passthru = { inherit name kebab-name tracking-branch; };
@@ -96,5 +97,13 @@ lib.mergeAttrsList [
     name = "WikiEditor";
     commit = "f53000f0499858fe74e4f5008b2f5e467d9d9382";
     hash = "sha256-+HTXZEVCwMD8z6c1kCZA3k686HzNd30pJljzRvf+gMg=";
+  })
+
+  (mw-ext {
+    name = "MediawikiMatrixNotifs";
+    commit = "52d2a46c03f51af7c16ed4d7b3b07b0cbbffb4df";
+    hash = "sha256-AADWunm2Rn2cfxeu9xyYBw5txnaIbJNdR3jxLqgzAy8=";
+    url = "https://git.pvv.ntnu.no/oysteikt/mediawiki-matrix-notifs.git";
+    tracking-branch = "master";
   })
 ]
