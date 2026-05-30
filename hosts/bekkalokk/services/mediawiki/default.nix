@@ -107,6 +107,7 @@ in {
         CodeEditor
         CodeMirror
         DeleteBatch
+        MediawikiMatrixNotifs
         PdfHandler
         PluggableAuth
         Popups
