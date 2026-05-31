@@ -13,6 +13,7 @@ in
 
       "--refresh"
       "--no-write-lock-file"
+      "--specialisation auto-upgrade"
       # --update-input is deprecated since nix 2.22, and removed in lix 2.90
       # as such we instead use --override-input combined with --refresh
       # https://git.lix.systems/lix-project/lix/issues/400

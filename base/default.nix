@@ -46,6 +46,10 @@
 
   system.nixos.tags = lib.optionals (inputs.self.sourceInfo ? dirtyRev) [ "dirty" ];
 
+  specialisation."auto-upgrade".configuration = {
+    system.nixos.tags = [ "auto" ];
+  };
+
   boot.tmp.cleanOnBoot = lib.mkDefault true;
   boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
