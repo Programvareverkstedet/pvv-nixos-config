@@ -9,6 +9,12 @@
 
   sops.defaultSopsFile = fp /secrets/lupine/lupine.yaml;
 
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+    "armv7l-linux"
+    "i686-linux"
+  ];
+
   systemd.network.networks."30-enp0s31f6" = values.defaultNetworkConfig // {
     matchConfig.Name = "enp0s31f6";
     address = with values.hosts.${lupineName}; [ (ipv4 + "/25") (ipv6 + "/64") ];
