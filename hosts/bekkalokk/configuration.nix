@@ -7,6 +7,7 @@
 
     ./services/alps.nix
     ./services/bluemap.nix
+    ./services/radicale.nix
     ./services/idp-simplesamlphp
     ./services/kerberos.nix
     ./services/mediawiki
