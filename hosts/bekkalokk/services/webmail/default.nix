@@ -10,8 +10,9 @@
     enableACME = true;
     kTLS = true;
     locations = {
-      "= /".return = "302 https://webmail.pvv.ntnu.no/roundcube";
+      # "= /".return = "302 https://webmail.pvv.ntnu.no/roundcube";
 
+      "/roundcube".return = "302 https://webmail.pvv.ntnu.no/";
       "/afterlogic_lite".return = "302 https://webmail.pvv.ntnu.no/roundcube";
       "/squirrelmail".return = "302 https://webmail.pvv.ntnu.no/roundcube";
       "/rainloop".return = "302 https://snappymail.pvv.ntnu.no/";
