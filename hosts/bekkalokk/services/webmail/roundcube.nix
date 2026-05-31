@@ -29,7 +29,7 @@ in
 
     dicts = with pkgs.aspellDicts; [ en en-computers nb nn fr de it ];
     maxAttachmentSize = 20;
-    hostName = "roundcubeplaceholder.example.com";
+    hostName = domain;
 
     database = {
       host = "postgres.pvv.ntnu.no";
@@ -49,44 +49,9 @@ in
     '';
   };
 
-  services.nginx.virtualHosts."roundcubeplaceholder.example.com" = lib.mkForce { };
+  # TODO: move this back to `webmail.pvv.ntnu.no/roundcube` subpath
 
   services.nginx.virtualHosts.${domain} = {
     kTLS = true;
-    locations."/roundcube" = {
-      tryFiles = "$uri $uri/ =404";
-      index = "index.php";
-      root = pkgs.linkFarm "roundcube-dir" {
-        roundcube = "${cfg.package}";
-      };
-
-      extraConfig = ''
-        location ~ ^/roundcube/(${builtins.concatStringsSep "|" [
-        # https://wiki.archlinux.org/title/Roundcube
-        "README"
-        "INSTALL"
-        "LICENSE"
-        "CHANGELOG"
-        "UPGRADING"
-        "bin"
-        "SQL"
-        ".+\\.md"
-        "\\."
-        "config"
-        "temp"
-        "logs"
-        ]})/? {
-          deny all;
-        }
-
-        location ~ ^/roundcube/(.+\.php)(/?.*)$ {
-          fastcgi_split_path_info ^/roundcube(/.+\.php)(/.+)$;
-          include ${config.services.nginx.package}/conf/fastcgi_params;
-          include ${config.services.nginx.package}/conf/fastcgi.conf;
-          fastcgi_index index.php;
-          fastcgi_pass unix:${config.services.phpfpm.pools.roundcube.socket};
-        }
-      '';
-    };
   };
 }
