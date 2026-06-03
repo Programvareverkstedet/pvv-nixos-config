@@ -71,4 +71,16 @@ in
       ];
     };
   };
+
+  services.logrotate = lib.mkIf (cfg.settings.mysqld.slow-query-log == 1) {
+    enable = true;
+    settings.mysql-slowlog = {
+      files = [ cfg.settings.mysqld.slow-query-log-file ];
+      frequency = "weekly";
+      rotate = 12;
+      create = "0660 mysql mysql";
+      minsize = "1M";
+      compress = true;
+    };
+  };
 }
