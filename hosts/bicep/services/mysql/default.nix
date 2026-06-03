@@ -23,6 +23,9 @@ in
         bind-address = values.services.mysql.ipv4;
         skip-networking = 0;
 
+        # Useful for the mysqld prometheus exporter
+        userstat = 1;
+
         # This was needed in order to be able to use all of the old users
         # during migration from knakelibrak to bicep in Sep. 2023
         secure_auth = 0;
