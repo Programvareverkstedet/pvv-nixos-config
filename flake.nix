@@ -95,6 +95,18 @@
           ];
       });
 
+    apps = forAllSystems (system: let
+      pkgs = nixpkgs.legacyPackages.${system};
+    in {
+      gitea-workflows = {
+        type = "app";
+        meta.description = "Run all gitea workflows locally";
+        program = toString (pkgs.writeShellScript "pvv-nixos-config-run-gitea-worflows" ''
+          ${lib.getExe pkgs.gitea-actions-runner} exec -i node:current-trixie
+        '');
+      };
+    });
+
     nixosConfigurations = let
       nixosConfig = nixpkgs: name: configurationPath: extraArgs @ {
         localSystem ? "x86_64-linux", # buildPlatform
