@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   inputs,
@@ -55,6 +56,8 @@
 
   boot.loader.systemd-boot.enable = lib.mkDefault true;
   boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
+
+  services.btrfs.autoScrub.enable = lib.mkDefault (lib.any ({ fsType, ... }: fsType == "btrfs") (lib.attrValues config.fileSystems));
 
   time.timeZone = "Europe/Oslo";
 

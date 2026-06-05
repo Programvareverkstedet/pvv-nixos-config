@@ -15,8 +15,6 @@
     address = with values.hosts.kommode; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
-  services.btrfs.autoScrub.enable = true;
-
   services.qemuGuest.enable = true;
 
   # Don't change (even during upgrades) unless you know what you are doing.

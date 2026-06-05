@@ -25,8 +25,6 @@
     address = with values.hosts.bekkalokk; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
-  services.btrfs.autoScrub.enable = true;
-
   # Don't change (even during upgrades) unless you know what you are doing.
   # See https://search.nixos.org/options?show=system.stateVersion
   system.stateVersion = "25.11";
