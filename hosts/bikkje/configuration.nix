@@ -29,7 +29,29 @@
         firewall = {
           enable = true;
           # Allow SSH and HTTP and ports for email and irc
-          allowedTCPPorts = [ 80 22 194 994 6665 6666 6667 6668 6669 6697 995 993 25 465 587 110 143 993 995 ];
+          allowedTCPPorts = [
+            22 # SSH
+            80 # HTTP
+
+            # IRC
+            194 # IRC
+            994 # IRC (TLS)
+            6697 # IRC (SSL)
+            6665
+            6666
+            6667
+            6668
+            6669
+
+            # EMAIL
+            25  # STMP
+            465 # STMP (SSL)
+            587 # STMP (TLS/STARTTLS)
+            110 # POP3
+            995 # POP3 (SSL/TLS)
+            143 # IMAP
+            993 # IMAP (SSL/TLS)
+          ];
           allowedUDPPorts = [ 80 22 194 994 6665 6666 6667 6668 6669 6697 995 993 25 465 587 110 143 993 995 ];
         };
         # Use systemd-resolved inside the container
