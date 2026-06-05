@@ -157,7 +157,7 @@ in
                   config = "/etc/dibbler/dibbler.toml";
                 };
               in lib.optionals cfg.dibbler.enable [
-                "screen -t worblehat ${lib.getExe cfg.dibbler.package} ${dibblerArgs} loop"
+                "screen -t dibbler ${lib.getExe cfg.dibbler.package} ${dibblerArgs} loop"
 
               ])
 
