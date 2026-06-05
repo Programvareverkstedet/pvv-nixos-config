@@ -202,6 +202,12 @@
             (final: prev: {
               inherit (self.packages.${prev.stdenv.hostPlatform.system}) out-of-your-element;
             })
+            (final: prev: {
+              # See https://git.pvv.ntnu.no/Drift/issues/issues/369
+              mjolnir = prev.mjolnir.override {
+                nodejs = prev.nodejs_22;
+              };
+            })
           ];
         };
         bekkalokk = stableNixosConfig "bekkalokk" {
