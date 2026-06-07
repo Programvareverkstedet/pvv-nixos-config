@@ -8,6 +8,7 @@ in {
     ./matrix-synapse.nix
     ./mysqld.nix
     ./postgres.nix
+    ./dibbler.nix
   ];
 
   services.prometheus = {
