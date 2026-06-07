@@ -40,6 +40,7 @@
     ./services/scrutiny-collector.nix
     ./services/smartd.nix
     ./services/thermald.nix
+    ./services/timesyncd.nix
     ./services/uptimed.nix
     ./services/userborn.nix
     ./services/userdbd.nix
