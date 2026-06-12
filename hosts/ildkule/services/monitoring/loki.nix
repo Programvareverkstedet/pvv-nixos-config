@@ -3,7 +3,6 @@
 let
   cfg = config.services.loki;
   stateDir = "/data/monitoring/loki";
-  # internalPort = 83100;
 in {
   services.loki = {
     enable = true;
@@ -82,21 +81,16 @@ in {
     };
   };
 
-  services.nginx.virtualHosts."loki-internal" = {
-    listen = [{
-      addr = "0.0.0.0";
-      port = 3100;
-      ssl = false;
-    }];
+  services.nginx.virtualHosts."loki.pvv.ntnu.no" = {
+    forceSSL = true;
+    enableACME = true;
+    kTLS = true;
+
     locations = {
+      "/".return = "403";
       "/loki/api/v1/push" = {
-        proxyPass = "http://${cfg.configuration.server.http_listen_address}:${toString cfg.configuration.server.http_listen_port}";
-      };
-      "/" = {
-        return = "403";
+        proxyPass = "http://${cfg.configuration.server.http_listen_address}:${toString cfg.configuration.server.http_listen_port}/loki/api/v1/push";
       };
     };
   };
-
-  networking.firewall.allowedTCPPorts = [ 3100 ];
 }

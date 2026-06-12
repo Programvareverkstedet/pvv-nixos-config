@@ -62,8 +62,10 @@ in
           name = "loki";
           match = "*";
 
-          host = "ildkule.pvv.ntnu.no";
-          port = 3100;
+          host = "loki.pvv.ntnu.no";
+          port = 443;
+          tls = "on";
+          "tls.verify" = "on";
           uri = "/loki/api/v1/push";
           compress = "gzip";
 
