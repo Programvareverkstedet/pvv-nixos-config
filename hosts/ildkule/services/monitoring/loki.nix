@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, values, ... }:
 
 let
   cfg = config.services.loki;
@@ -90,6 +90,15 @@ in {
       "/".return = "403";
       "/loki/api/v1/push" = {
         proxyPass = "http://${cfg.configuration.server.http_listen_address}:${toString cfg.configuration.server.http_listen_port}/loki/api/v1/push";
+        extraConfig = ''
+          allow 127.0.0.1;
+          allow ::1;
+          allow ${values.ipv4-space};
+          allow ${values.ipv6-space};
+          allow ${values.ntnu.ipv4-space};
+          allow ${values.ntnu.ipv6-space};
+          deny all;
+        '';
       };
     };
   };
