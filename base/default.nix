@@ -95,6 +95,10 @@
     AllowHibernation = lib.mkDefault false;
   };
 
+  systemd.slices."system-monitoring" = {
+    description = "Monitoring related services";
+  };
+
   # users.mutableUsers = lib.mkDefault false;
 
   users.groups."drift".name = "drift";

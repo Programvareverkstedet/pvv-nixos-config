@@ -14,6 +14,7 @@ in
   };
 
   systemd.services."systemd-journal-upload".serviceConfig = lib.mkIf cfg.enable {
+    Slice = "system-monitoring.slice";
     IPAddressDeny = "any";
     IPAddressAllow = [
       values.hosts.ildkule.ipv4

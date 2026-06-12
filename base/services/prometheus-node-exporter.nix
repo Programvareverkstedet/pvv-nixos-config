@@ -10,7 +10,7 @@ in
     enabledCollectors = [ "systemd" ];
   };
 
-  services.nginx = {
+  services.nginx = lib.mkIf cfg.enable {
     enable = lib.mkDefault true;
 
     virtualHosts.${config.networking.fqdn} = lib.mkIf config.services.nginx.enable {
@@ -30,5 +30,9 @@ in
         '';
       };
     };
+  };
+
+  systemd.services = lib.mkIf cfg.enable {
+    "prometheus-node-exporter".serviceConfig.Slice = "system-monitoring.slice";
   };
 }

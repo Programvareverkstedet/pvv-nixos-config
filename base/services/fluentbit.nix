@@ -88,6 +88,7 @@ in
 
   systemd.services.fluent-bit = lib.mkIf cfg.enable {
     serviceConfig = {
+      Slice = "system-monitoring.slice";
       StateDirectory = "fluent-bit";
 
       # NOTE: This hardening might be way too strong for general purpose use, don't upstream this.

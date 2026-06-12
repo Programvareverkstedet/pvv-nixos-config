@@ -23,7 +23,7 @@ in
       };
     };
 
-    systemd.services.uptimed = lib.mkIf (cfg.enable) {
+    systemd.services.uptimed = lib.mkIf cfg.enable {
       serviceConfig = let
         uptimed = pkgs.uptimed.overrideAttrs (prev: {
           postPatch = ''
@@ -35,6 +35,8 @@ in
         });
 
       in {
+        Slice = "system-monitoring.slice";
+
         Type = "notify";
 
         ExecStart = lib.mkForce "${uptimed}/sbin/uptimed -f";
