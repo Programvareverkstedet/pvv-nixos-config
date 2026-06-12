@@ -6,32 +6,63 @@
     targets = map (port: "${name}.pvv.ntnu.no:${toString port}") ports;
   };
 
+  nixosMachines = [
+    "ildkule"
+    "bekkalokk"
+    "bicep"
+    "brzeczyszczykiewicz"
+    "georg"
+    "gluttony"
+    "kommode"
+    "lupine-1"
+    "lupine-2"
+    "lupine-3"
+    "lupine-4"
+    "lupine-5"
+    # TODO: export prometheus stats via apache on temmie
+    # "temmie"
+    "wenche"
+  ];
+
   defaultNodeExporterPort = 9100;
-  defaultSystemdExporterPort = 9101;
-  defaultNixosExporterPort = 9102;
 in {
-  services.prometheus.scrapeConfigs = [{
-    job_name = "base_info";
-    static_configs = [
-      (mkHostScrapeConfig "ildkule" [ cfg.exporters.node.port cfg.exporters.systemd.port defaultNixosExporterPort ])
-
-      (mkHostScrapeConfig "bekkalokk" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "bicep" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "brzeczyszczykiewicz" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "georg" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "gluttony" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "kommode" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "lupine-1" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "lupine-2" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "lupine-3" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "lupine-4" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "lupine-5" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "temmie" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-      (mkHostScrapeConfig "wenche" [ defaultNodeExporterPort defaultSystemdExporterPort defaultNixosExporterPort ])
-
-      (mkHostScrapeConfig "hildring" [ defaultNodeExporterPort ])
-      (mkHostScrapeConfig "isvegg" [ defaultNodeExporterPort ])
-      (mkHostScrapeConfig "microbel" [ defaultNodeExporterPort ])
-    ];
-  }];
+  services.prometheus.scrapeConfigs = [
+    {
+      job_name = "nixos-node";
+      scheme = "https";
+      metrics_path = "/prometheus-node-exporter/metrics";
+      static_configs = map (name: {
+        labels.hostname = name;
+        targets = [ "${name}.pvv.ntnu.no:443" ];
+      }) nixosMachines;
+    }
+    {
+      job_name = "nixos-systemd";
+      scheme = "https";
+      metrics_path = "/prometheus-systemd-exporter/metrics";
+      static_configs = map (name: {
+        labels.hostname = name;
+        targets = [ "${name}.pvv.ntnu.no:443" ];
+      }) nixosMachines;
+    }
+    {
+      job_name = "nixos-flake-input";
+      scheme = "https";
+      metrics_path = "/prometheus-nixos-flake-input-exporter/metrics";
+      static_configs = map (name: {
+        labels.hostname = name;
+        targets = [ "${name}.pvv.ntnu.no:443" ];
+      }) nixosMachines;
+    }
+    {
+      job_name = "non-nixos-node";
+      scheme = "http";
+      metrics_path = "/metrics";
+      static_configs = [
+        (mkHostScrapeConfig "hildring" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "isvegg" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "microbel" [ defaultNodeExporterPort ])
+      ];
+    }
+  ];
 }

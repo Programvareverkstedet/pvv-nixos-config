@@ -5,6 +5,7 @@ in
 {
   services.prometheus.exporters.systemd = {
     enable = lib.mkDefault true;
+    listenAddress = "127.0.0.1";
     port = 9101;
     extraFlags = [
       "--systemd.collector.enable-restart-count"
@@ -12,15 +13,25 @@ in
     ];
   };
 
-  systemd.services.prometheus-systemd-exporter.serviceConfig = {
-    IPAddressDeny = "any";
-    IPAddressAllow = [
-      "127.0.0.1"
-      "::1"
-      values.hosts.ildkule.ipv4
-      values.hosts.ildkule.ipv6
-    ];
-  };
+  services.nginx = {
+    enable = lib.mkDefault true;
 
-  networking.firewall.allowedTCPPorts = lib.mkIf cfg.enable [ cfg.port ];
+    virtualHosts.${config.networking.fqdn} = lib.mkIf config.services.nginx.enable {
+      forceSSL = true;
+      enableACME = true;
+      kTLS = true;
+
+      locations."/prometheus-systemd-exporter/metrics" = {
+        proxyPass = "http://localhost:${toString cfg.port}/metrics";
+
+        extraConfig = ''
+          allow 127.0.0.1;
+          allow ::1;
+          allow ${values.hosts.ildkule.ipv4};
+          allow ${values.hosts.ildkule.ipv6};
+          deny all;
+        '';
+      };
+    };
+  };
 }

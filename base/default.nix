@@ -14,7 +14,6 @@
 
     ./mitigations.nix
 
-    ./flake-input-exporter.nix
     ./hardening.nix
     ./networking.nix
     ./nix.nix
@@ -34,6 +33,7 @@
     ./services/openssh.nix
     ./services/polkit.nix
     ./services/postfix.nix
+    ./services/prometheus-flake-input-exporter.nix
     ./services/prometheus-node-exporter.nix
     ./services/prometheus-systemd-exporter.nix
     ./services/roowho2.nix

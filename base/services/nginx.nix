@@ -1,18 +1,5 @@
 { config, lib, ... }:
 {
-  # nginx return 444 for all nonexistent virtualhosts
-
-  systemd.services.nginx.after = [ "generate-snakeoil-certs.service" ];
-
-  environment.snakeoil-certs = lib.mkIf config.services.nginx.enable {
-    "/etc/certs/nginx" = {
-      owner = "nginx";
-      group = "nginx";
-    };
-  };
-
-  networking.firewall.allowedTCPPorts = lib.mkIf config.services.nginx.enable [ 80 443 ];
-
   services.nginx = {
     recommendedTlsSettings = true;
     recommendedProxySettings = true;
@@ -60,17 +47,8 @@
           ];
         }
       ];
-      sslCertificate = "/etc/certs/nginx.crt";
-      sslCertificateKey = "/etc/certs/nginx.key";
-      addSSL = true;
-      extraConfig = "return 444;";
-    };
-
-    ${config.networking.fqdn} = {
-      sslCertificate = lib.mkDefault "/etc/certs/nginx.crt";
-      sslCertificateKey = lib.mkDefault "/etc/certs/nginx.key";
-      addSSL = lib.mkDefault true;
-      extraConfig = lib.mkDefault "return 444;";
     };
   };
+
+  networking.firewall.allowedTCPPorts = lib.mkIf config.services.nginx.enable [ 80 443 ];
 }
