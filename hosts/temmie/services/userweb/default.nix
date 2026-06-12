@@ -345,7 +345,6 @@ in
         ":${lib.getExe pkgs.gnused} -i '$ a\\\\wwwrun:x:54:54:Apache httpd user:/var/empty:/run/current-system/sw/bin/bash' /run/httpd/pamunix-out/passwd"
         ":${lib.getExe pkgs.gnused} -i '$ a\\\\root:x:0:' /run/httpd/pamunix-out/group"
         ":${lib.getExe pkgs.gnused} -i '$ a\\\\wwwrun:x:54:' /run/httpd/pamunix-out/group"
-        "${lib.getExe' pkgs.coreutils "cat"} /run/httpd/pamunix-out/passwd"
         "+${lib.getExe' pkgs.coreutils "chown"} root:root /run/httpd/pamunix-out/passwd /run/httpd/pamunix-out/group"
         "+${lib.getExe' pkgs.coreutils "chmod"} 0644 /run/httpd/pamunix-out/passwd /run/httpd/pamunix-out/group"
         "+${lib.getExe pkgs.mount} --bind /run/httpd/pamunix-out/passwd /etc/passwd"
