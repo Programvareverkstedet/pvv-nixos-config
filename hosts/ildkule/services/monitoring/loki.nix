@@ -3,14 +3,15 @@
 let
   cfg = config.services.loki;
   stateDir = "/data/monitoring/loki";
+  # internalPort = 83100;
 in {
   services.loki = {
     enable = true;
     configuration = {
       auth_enabled = false;
       server = {
-        http_listen_port = 3100;
-        http_listen_address = "0.0.0.0";
+        http_listen_port = 31832;
+        http_listen_address = "127.0.0.1";
         grpc_listen_port = 9096;
       };
 
@@ -81,5 +82,21 @@ in {
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ cfg.configuration.server.http_listen_port ];
+  services.nginx.virtualHosts."loki-internal" = {
+    listen = [{
+      addr = "0.0.0.0";
+      port = 3100;
+      ssl = false;
+    }];
+    locations = {
+      "/loki/api/v1/push" = {
+        proxyPass = "http://${cfg.configuration.server.http_listen_address}:${toString cfg.configuration.server.http_listen_port}";
+      };
+      "/" = {
+        return = "403";
+      };
+    };
+  };
+
+  networking.firewall.allowedTCPPorts = [ 3100 ];
 }
