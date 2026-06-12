@@ -460,7 +460,13 @@ in
           "/share"
         ];
       });
-      BindPaths = map (l: "/run/pvv-home-mounts/${l}:/home/pvv/${l}") homeLetters;
+      BindPaths = lib.mapCartesianProduct ({ directoryFn, letter }: "/run/pvv-home-mounts/${letter}:${directoryFn letter}${letter}") {
+        directoryFn = [
+          (_: "/home/pvv/")
+          (l: "/amd/homepvv${l}/")
+        ];
+        letter = homeLetters;
+      };
     };
   };
 
