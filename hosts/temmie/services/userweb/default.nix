@@ -14,8 +14,6 @@ let
     upload_max_filesize = "40M";
   });
 
-  apache-log-processor = pkgs.callPackage ./apache-log-processor { };
-
   # https://nixos.org/manual/nixpkgs/stable/#ssec-php-user-guide-installing-with-extensions
   phpEnv = pkgs.php.buildEnv {
     extensions = { all, ... }: with all; [
@@ -161,12 +159,8 @@ in
 {
   imports = [
     ./mail.nix
+    ./log-processor.nix
   ];
-
-  sops.secrets = {
-    "httpd/passwd-ssh-key" = { };
-    "httpd/ssh-known-hosts" = { };
-  };
 
   services.httpd = {
     enable = true;
@@ -237,8 +231,8 @@ in
 
       extraConfig = ''
         CustomLog "${cfg.logDir}/access.log" combined
-        CustomLog "|${lib.getExe apache-log-processor} access" combined
-        ErrorLog "|${lib.getExe apache-log-processor} error"
+        CustomLog "/run/httpd-log-processor-access.fifo" combined
+        ErrorLog "/run/httpd-log-processor-error.fifo"
         ScriptLog "${cfg.logDir}/cgi.log"
 
         UserDir ${lib.concatMapStringsSep " " (l: "/home/pvv/${l}/*/web-docs") homeLetters}
@@ -298,9 +292,26 @@ in
   users.users."wwwrun".uid = lib.mkForce 33;
   users.groups."wwwrun".gid = lib.mkForce 33;
 
+  systemd.targets.userweb = {
+    description = "PVV HTTPD UserWeb";
+  };
+
+  systemd.slices.system-userweb = {
+    description = "PVV HTTPD UserWeb";
+  };
+
   systemd.services.httpd = {
-    after = [ "pvv-homedirs.target" ];
-    requires = [ "pvv-homedirs.target" ];
+    after = [
+      "pvv-homedirs.target"
+      "httpd-log-processor@access.socket"
+      "httpd-log-processor@error.socket"
+    ];
+    requires = [
+      "pvv-homedirs.target"
+      "httpd-log-processor@access.socket"
+      "httpd-log-processor@error.socket"
+    ];
+    requiredBy = [ "userweb.target" ];
 
     environment = {
       PATH = lib.mkForce "/usr/bin";
@@ -308,64 +319,18 @@ in
 
     serviceConfig = {
       Type = lib.mkForce "notify";
-
-      ExecStartPre = let
-        rsyncCommand = ''${lib.getExe pkgs.rsync} -e "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=%d/ssh-known-hosts -i %d/sshkey" -avz'';
-      in lib.mkForce [
-        "${lib.getExe (pkgs.writeShellApplication {
-          name = "http-exec-start-pre-remove-old-semaphores";
-          text = ''
-            # Get rid of old semaphores.  These tend to accumulate across
-            # server restarts, eventually preventing it from restarting
-            # successfully.
-            for i in $(${pkgs.util-linux}/bin/ipcs -s | grep ' ${cfg.user} ' | cut -f2 -d ' '); do
-                ${pkgs.util-linux}/bin/ipcrm -s "$i"
-            done
-          '';
-        })}"
-
-        "${rsyncCommand} pvv@smtp.pvv.ntnu.no:/etc/passwd /run/httpd/pamunix-in/"
-        "${rsyncCommand} pvv@smtp.pvv.ntnu.no:/etc/group /run/httpd/pamunix-in/"
-
-        (let
-          args = lib.cli.toCommandLineShellGNU { } {
-            passwd-file = "/run/httpd/pamunix-in/passwd";
-            group-file = "/run/httpd/pamunix-in/group";
-            output-dir = "/run/httpd/pamunix-out";
-            shadow-file = pkgs.emptyFile;
-
-            output-passwd = true;
-
-            ignore-user-file = toString ./ignore_user_file.txt;
-            ignore-group-file = toString ./ignore_group_file.txt;
-          };
-        in ''${lib.getExe pkgs.passwd2systemd-users} ${args}'')
-        "${lib.getExe' pkgs.coreutils "shred"} -u /run/httpd/pamunix-in/passwd /run/httpd/pamunix-in/group"
-        ":${lib.getExe pkgs.gnused} -i '$ a\\\\root:x:0:0:System administrator:/root:/run/current-system/sw/bin/bash' /run/httpd/pamunix-out/passwd"
-        ":${lib.getExe pkgs.gnused} -i '$ a\\\\wwwrun:x:54:54:Apache httpd user:/var/empty:/run/current-system/sw/bin/bash' /run/httpd/pamunix-out/passwd"
-        ":${lib.getExe pkgs.gnused} -i '$ a\\\\root:x:0:' /run/httpd/pamunix-out/group"
-        ":${lib.getExe pkgs.gnused} -i '$ a\\\\wwwrun:x:54:' /run/httpd/pamunix-out/group"
-        "+${lib.getExe' pkgs.coreutils "chown"} root:root /run/httpd/pamunix-out/passwd /run/httpd/pamunix-out/group"
-        "+${lib.getExe' pkgs.coreutils "chmod"} 0644 /run/httpd/pamunix-out/passwd /run/httpd/pamunix-out/group"
-        "+${lib.getExe pkgs.mount} --bind /run/httpd/pamunix-out/passwd /etc/passwd"
-        "+${lib.getExe pkgs.mount} --bind /run/httpd/pamunix-out/group  /etc/group"
-      ];
       ExecStart = lib.mkForce "${cfg.package}/bin/httpd -D FOREGROUND -f /etc/httpd/httpd.conf -k start";
       ExecReload = lib.mkForce "${cfg.package}/bin/httpd -f /etc/httpd/httpd.conf -k graceful";
       ExecStop = lib.mkForce "";
       KillMode = "mixed";
-
-      LoadCredential=[
-        "sshkey:${config.sops.secrets."httpd/passwd-ssh-key".path}"
-        "ssh-known-hosts:${config.sops.secrets."httpd/ssh-known-hosts".path}"
-      ];
+      Slice = "system-userweb.slice";
 
       ConfigurationDirectory = [ "httpd" ];
       LogsDirectory = [ "httpd" ];
       LogsDirectoryMode = "0700";
 
-      AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" "CAP_SETUID" "CAP_SETGID" ] ++ lib.optionals debug [ "CAP_SYS_PTRACE" ];
-      CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" "CAP_SETUID" "CAP_SETGID" ] ++ lib.optionals debug [ "CAP_SYS_PTRACE" ];
+      AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ] ++ lib.optionals debug [ "CAP_SYS_PTRACE" ];
+      CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ] ++ lib.optionals debug [ "CAP_SYS_PTRACE" ];
       LockPersonality = !debug;
       PrivateDevices = true;
       PrivateTmp = true;
@@ -393,48 +358,19 @@ in
         "tcp:443"
       ];
       SystemCallArchitectures = "native";
-      SystemCallFilter = lib.mkIf (!debug) [
-         "@system-service"
-         "@setuid"
-      ];
+      SystemCallFilter = lib.mkIf (!debug) [ "@system-service" ];
       UMask = "0077";
 
       RuntimeDirectoryMode = "0750";
-      RuntimeDirectory = [
-        "httpd/root-mnt"
-        "httpd/pamunix-in"
-        "httpd/pamunix-out"
-      ];
+      RuntimeDirectory = [ "httpd/root-mnt" ];
       RootDirectory = "/run/httpd/root-mnt";
       MountAPIVFS = true;
       BindReadOnlyPaths = [
         builtins.storeDir
         "/etc"
         "/dev/null"
-        "/etc/resolv.conf"
         "/var/lib/acme"
-
-        "-/run/httpd/pamunix-out/passwd:/etc/passwd"
-        "-/run/httpd/pamunix-out/group:/etc/group"
-
-        "${pkgs.writeText "userweb-fake-nsswitch.conf" ''
-          passwd:    files
-          group:     files
-          shadow:    files
-          sudoers:   files
-
-          hosts:     mymachines resolve [!UNAVAIL=return] files myhostname dns
-          networks:  files
-
-          ethers:    files
-          services:  files
-          protocols: files
-          rpc:       files
-
-          subuid:    files
-          subgid:    files
-        ''}:/etc/nsswitch.conf"
-
+        "/var/run/nscd"
         "${fhsEnv}/bin:/bin"
         "${fhsEnv}/sbin:/sbin"
         "${fhsEnv}/lib:/lib"
@@ -459,13 +395,16 @@ in
           "/share"
         ];
       });
-      BindPaths = lib.mapCartesianProduct ({ directoryFn, letter }: "/run/pvv-home-mounts/${letter}:${directoryFn letter}${letter}") {
+      BindPaths = (lib.mapCartesianProduct ({ directoryFn, letter }: "/run/pvv-home-mounts/${letter}:${directoryFn letter}${letter}") {
         directoryFn = [
           (_: "/home/pvv/")
           (l: "/amd/homepvv${l}/")
         ];
         letter = homeLetters;
-      };
+      }) ++ [
+        "/run/httpd-log-processor-access.fifo"
+        "/run/httpd-log-processor-error.fifo"
+      ];
     };
   };
 
