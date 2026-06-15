@@ -70,6 +70,7 @@
     serviceConfig = {
       User = "nullmailer-user";
       Group = "nullmailer-user";
+      Slice = "system-userweb.slice";
 
       ReadWritePaths = [
         "/var/spool/nullmailer"
