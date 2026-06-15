@@ -1,8 +1,6 @@
 { config, lib, pkgs, values, ... }:
 let
-  homeLetters = [ "a" "b" "c" "d" "h" "i" "j" "k" "l" "m" "z" ];
-
-  apache-log-processor = pkgs.callPackage ./apache-log-processor { };
+  mcfg = config.services.pvv-userweb;
 in
 {
   sops.secrets = {
@@ -80,7 +78,7 @@ in
         "+${lib.getExe pkgs.mount} --bind ${outputDir}/group  /etc/group"
       ];
 
-      ExecStart = "${lib.getExe apache-log-processor} %i";
+      ExecStart = "${lib.getExe mcfg.apacheLogProcessorPackage} %i";
 
       AmbientCapabilities = [ "CAP_SETUID" "CAP_SETGID" ];
       CapabilityBoundingSet = [ "CAP_SETUID" "CAP_SETGID" ];
@@ -158,8 +156,10 @@ in
           subuid:    files
           subgid:    files
         ''}:/etc/nsswitch.conf"
+      ] ++ lib.optionals mcfg.debugMode [
+        "/bin"
       ];
-      BindPaths = map (l: "/run/pvv-home-mounts/${l}:/home/pvv/${l}") homeLetters ++ [
+      BindPaths = map (l: "/run/pvv-home-mounts/${l}:/home/pvv/${l}") mcfg.homeLetters ++ [
         "/var/log/httpd"
       ];
     };
