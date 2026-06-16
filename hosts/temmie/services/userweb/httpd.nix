@@ -49,22 +49,9 @@ in
 
     logPerVirtualHost = false;
 
-    extraConfig = ''
+    extraConfig = lib.mkIf mcfg.debugMode ''
       TraceEnable on
       LogLevel warn rewrite:trace3
-
-      <FilesMatch ".+\.ph(p[3457]?|t|tml)$">
-          SetHandler application/x-httpd-php
-      </FilesMatch>
-      <FilesMatch ".+\.phps$">
-          SetHandler application/x-httpd-php-source
-          Require all denied
-      </FilesMatch>
-      <FilesMatch "\.pl$">
-          SetHandler modperl
-          PerlResponseHandler ModPerl::Registry
-          Options +ExecCGI
-      </FilesMatch>
     '';
 
     virtualHosts."temmie.pvv.ntnu.no" = {
@@ -148,6 +135,19 @@ in
             AllowOverride All
             Require all denied
         </DirectoryMatch>
+
+        <FilesMatch ".+\.ph(p[3457]?|t|tml)$">
+            SetHandler application/x-httpd-php
+        </FilesMatch>
+        <FilesMatch ".+\.phps$">
+            SetHandler application/x-httpd-php-source
+            Require all denied
+        </FilesMatch>
+        <FilesMatch "\.pl$">
+            SetHandler modperl
+            PerlResponseHandler ModPerl::Registry
+            Options +ExecCGI
+        </FilesMatch>
       '';
     };
   };
