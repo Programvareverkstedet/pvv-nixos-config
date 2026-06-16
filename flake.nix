@@ -369,7 +369,12 @@
         //
         # Machines
         lib.genAttrs allMachines
-        (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel)
+        (machine: self.nixosConfigurations.${machine}.config.system.build.toplevel.overrideAttrs (prev: {
+          passthru =
+            (prev.passthru or { })
+            // self.nixosConfigurations.${machine}.config.system.build
+            // { inherit (self.nixosConfigurations.${machine}) pkgs config; };
+        }))
         //
         # Nix-topology
         (let
