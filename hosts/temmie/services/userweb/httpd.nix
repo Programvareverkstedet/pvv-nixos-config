@@ -86,6 +86,9 @@ in
           "index.php"
           "index.php3"
           "index.php4"
+          "index.php5"
+          "index.php7"
+          "index.php8"
           "index.pht"
           "index.phtml"
 
@@ -151,7 +154,7 @@ in
           "LCK..*"
         ]}
 
-        <FilesMatch ".+\.ph(p[3457]?|t|tml)$">
+        <FilesMatch ".+\.ph(p[34578]?|t|tml)$">
             SetHandler application/x-httpd-php
         </FilesMatch>
         <FilesMatch ".+\.phps$">
