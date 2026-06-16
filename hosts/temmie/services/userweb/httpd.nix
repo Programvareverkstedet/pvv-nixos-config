@@ -78,10 +78,32 @@ in
         ScriptLog "${cfg.logDir}/cgi.log"
 
         UserDir ${lib.concatMapStringsSep " " (l: "/home/pvv/${l}/*/web-docs") mcfg.homeLetters}
+
         UserDir disabled root
         UserDir disabled pvv
+
         AddHandler cgi-script .cgi
-        DirectoryIndex index.html index.html.var index.php index.php3 index.cgi index.phtml index.shtml meg.html
+
+        DirectoryIndex ${lib.concatStringsSep " " [
+          "index.htm"
+          "index.html"
+          "index.html.var"
+
+          "index.shtml"
+          "index.xhtml"
+
+          "index.php"
+          "index.php3"
+          "index.php4"
+          "index.pht"
+          "index.phtml"
+
+          "index.cgi"
+          "index.txt"
+
+          "meg.html"
+        ]}
+
         SetEnvIf Request_URI "^/~([^/]+)" USERDIR_USER=$1
 
         <Directory "/home/pvv/?/*/web-docs">
