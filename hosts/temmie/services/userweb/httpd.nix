@@ -103,38 +103,53 @@ in
           Require all granted
         </Directory>
 
-        <DirectoryMatch "^/home/pvv/.*/web-docs/(${lib.concatStringsSep "|" [
-          "\\.git"
-          "\\.hg"
-          "\\.svn"
-          "\\.ssh"
-          "\\.env"
-          "\\.env\\..*"
-          "\\.envs"
-          "\\.envs\\..*"
-          "\\.envrc"
-          "\\.bzr"
-          "\\.venv"
+        ${lib.concatMapStringsSep "\n" (d: ''
+          <Directory "${d}">
+            Require all denied
+          </Directory>
+        '') [
+          ".git"
+          ".hg"
+          ".svn"
+          ".ssh"
+          ".bzr"
+          ".venv"
           "CVS"
           "RCS"
 
-          ".*\\.swp"
-          ".*~"
+          "*.bak"
+          "*.bak*"
+          "*.bkp"
+          "*.bkp*"
+          "*.backup"
+          "*.backup*"
+        ]}
 
-          ".*\\.bak"
-          ".*\\.bak.*"
-          ".*\\.bkp"
-          ".*\\.bkp.*"
-          ".*\\.backup"
-          ".*\\.backup.*"
-
-          ".*\\.lck"
-          ".*\\.lock"
-          "LCK\\.\\..*"
-        ]})(/|$)">
-            AllowOverride All
+        ${lib.concatMapStringsSep "\n" (d: ''
+          <Files "${d}">
             Require all denied
-        </DirectoryMatch>
+          </Files>
+        '') [
+          ".env"
+          ".env.*"
+          ".envs"
+          ".envs.*"
+          ".envrc"
+
+          "*.swp"
+          "*~"
+
+          "*.bak"
+          "*.bak*"
+          "*.bkp"
+          "*.bkp*"
+          "*.backup"
+          "*.backup*"
+
+          "*.lck"
+          "*.lock"
+          "LCK..*"
+        ]}
 
         <FilesMatch ".+\.ph(p[3457]?|t|tml)$">
             SetHandler application/x-httpd-php
