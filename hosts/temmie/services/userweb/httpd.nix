@@ -107,25 +107,25 @@ in
         </Directory>
 
         ${lib.concatMapStringsSep "\n" (d: ''
-          <Directory "${d}">
+          <DirectoryMatch "/${d}(/|$)">
             Require all denied
-          </Directory>
+          </DirectoryMatch>
         '') [
-          ".git"
-          ".hg"
-          ".svn"
-          ".ssh"
-          ".bzr"
-          ".venv"
+          "\\.git"
+          "\\.hg"
+          "\\.svn"
+          "\\.ssh"
+          "\\.bzr"
+          "\\.venv"
           "CVS"
           "RCS"
 
-          "*.bak"
-          "*.bak*"
-          "*.bkp"
-          "*.bkp*"
-          "*.backup"
-          "*.backup*"
+          ".*\\.bak"
+          ".*\\.bak.*"
+          ".*\\.bkp"
+          ".*\\.bkp.*"
+          ".*\\.backup"
+          ".*\\.backup.*"
         ]}
 
         ${lib.concatMapStringsSep "\n" (d: ''
