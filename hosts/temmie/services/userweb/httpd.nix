@@ -118,14 +118,28 @@ in
           "\\.svn"
           "\\.ssh"
           "\\.env"
+          "\\.env\\..*"
+          "\\.envs"
+          "\\.envs\\..*"
           "\\.envrc"
           "\\.bzr"
           "\\.venv"
           "CVS"
           "RCS"
+
           ".*\\.swp"
-          ".*\\.bak"
           ".*~"
+
+          ".*\\.bak"
+          ".*\\.bak.*"
+          ".*\\.bkp"
+          ".*\\.bkp.*"
+          ".*\\.backup"
+          ".*\\.backup.*"
+
+          ".*\\.lck"
+          ".*\\.lock"
+          "LCK\\.\\..*"
         ]})(/|$)">
             AllowOverride All
             Require all denied
