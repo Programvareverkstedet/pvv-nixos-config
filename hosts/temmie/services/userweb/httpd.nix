@@ -63,6 +63,10 @@ in
       ];
 
       extraConfig = ''
+        <Directory "${pkgs.emptyDirectory}">
+          Require all denied
+        </Directory>
+
         CustomLog "${cfg.logDir}/access.log" combined
         CustomLog "/run/httpd-log-processor-access.fifo" combined
         ErrorLog "/run/httpd-log-processor-error.fifo"
