@@ -79,6 +79,7 @@ in
 
         UserDir ${lib.concatMapStringsSep " " (l: "/home/pvv/${l}/*/web-docs") mcfg.homeLetters}
         UserDir disabled root
+        UserDir disabled pvv
         AddHandler cgi-script .cgi
         DirectoryIndex index.html index.html.var index.php index.php3 index.cgi index.phtml index.shtml meg.html
         SetEnvIf Request_URI "^/~([^/]+)" USERDIR_USER=$1
