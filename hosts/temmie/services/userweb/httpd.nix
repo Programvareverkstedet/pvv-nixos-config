@@ -65,6 +65,7 @@ in
       extraConfig = ''
         <Directory "${pkgs.emptyDirectory}">
           Require all denied
+          LogLevel authz_core:crit
         </Directory>
 
         CustomLog "${cfg.logDir}/access.log" combined
