@@ -20,7 +20,11 @@ in
     phpPackage = mcfg.php.env;
     phpOptions = mcfg.php.options;
 
-    enablePerl = true;
+    # NOTE: we include our own `mod_perl` in `extraModules` instead.
+    enablePerl = false;
+
+    # NOTE: we include `mod_userdir` in `extraModules` and configure this in `extraConfig` ourselves.
+    # enableUserDir = false;
 
     # TODO: mod_log_journald in v2.5
     extraModules = [
