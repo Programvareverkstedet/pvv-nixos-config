@@ -43,11 +43,12 @@ in
       IPAddressDeny = "any";
       LockPersonality = true;
       MemoryDenyWriteExecute = true;
+      NoNewPrivileges = true;
       PrivateDevices = true;
-      PrivateNetwork = true;
       PrivateIPC = true;
+      PrivateNetwork = true;
       PrivateTmp = true;
-      # PrivateUsers = true;
+      PrivateUsers = false;
       ProcSubset = "pid";
       ProtectClock = true;
       ProtectControlGroups = true;
@@ -55,11 +56,11 @@ in
       ProtectHostname = true;
       ProtectKernelLogs = true;
       ProtectKernelModules = true;
+      ProtectKernelTunables = true;
       ProtectProc = "invisible";
       ProtectSystem = "strict";
-      ProtectKernelTunables = true;
       RemoveIPC = true;
-      RestrictAddressFamilies = [ "" ];
+      RestrictAddressFamilies = [ "none" ];
       RestrictNamespaces = true;
       RestrictRealtime = true;
       RestrictSUIDSGID = true;
@@ -68,6 +69,7 @@ in
       SystemCallFilter = [
          "@system-service"
          "@setuid"
+         "~@resources"
       ];
       UMask = "0077";
 
