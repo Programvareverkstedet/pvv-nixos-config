@@ -105,7 +105,7 @@ in
       ] ++ lib.optionals mcfg.debugMode [
         "/bin"
       ];
-      BindPaths = map (l: "/run/pvv-home-mounts/${l}:/home/pvv/${l}") mcfg.homeLetters ++ [
+      BindPaths = map (l: "/run/pvvhome/${l}:/home/pvv/${l}") mcfg.homeLetters ++ [
         "/var/log/httpd"
       ];
     };
