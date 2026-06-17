@@ -3,11 +3,6 @@ let
   mcfg = config.services.pvv-userweb;
 in
 {
-  sops.secrets = {
-    "httpd/passwd-ssh-key" = { };
-    "httpd/ssh-known-hosts" = { };
-  };
-
   systemd.targets.sockets.wants = [
     "httpd-log-processor@access.socket"
     "httpd-log-processor@error.socket"
@@ -27,6 +22,9 @@ in
 
   systemd.services."httpd-log-processor@" = lib.mkIf config.services.httpd.enable {
     requiredBy = [ "userweb.target" ];
+    after = [ "httpd-passwd-sync.service" ];
+    requires = [ "httpd-passwd-sync.service" ];
+
     serviceConfig = {
       User = "wwwrun";
       Group = "wwwrun";
@@ -37,55 +35,16 @@ in
       StandardOutput = "journal";
       StandardError = "journal";
 
-      LoadCredential = [
-        "sshkey:${config.sops.secrets."httpd/passwd-ssh-key".path}"
-        "ssh-known-hosts:${config.sops.secrets."httpd/ssh-known-hosts".path}"
-      ];
-      ExecStartPre = let
-        rsyncArgs = lib.cli.toCommandLineShellGNU { } {
-          archive = true;
-          verbose = true;
-          compress = true;
-          rsh = "${lib.getExe' pkgs.openssh "ssh"} -o BatchMode=yes -o UserKnownHostsFile=%d/ssh-known-hosts -i %d/sshkey";
-        };
-        inputDir = "/run/httpd-log-processor-%i/pamunix-in";
-        outputDir = "/run/httpd-log-processor-%i/pamunix-out";
-      in lib.mkForce [
-        "${lib.getExe pkgs.rsync} ${rsyncArgs} pvv@smtp.pvv.ntnu.no:/etc/passwd ${inputDir}/"
-        "${lib.getExe pkgs.rsync} ${rsyncArgs} pvv@smtp.pvv.ntnu.no:/etc/group ${inputDir}/"
-
-        (let
-          args = lib.cli.toCommandLineShellGNU { } {
-            passwd-file = "${inputDir}/passwd";
-            group-file = "${inputDir}/group";
-            output-dir = outputDir;
-            shadow-file = pkgs.emptyFile;
-
-            output-passwd = true;
-
-            ignore-user-file = toString ./ignore_user_file.txt;
-            ignore-group-file = toString ./ignore_group_file.txt;
-          };
-        in ''${lib.getExe pkgs.passwd2systemd-users} ${args}'')
-        "${lib.getExe' pkgs.coreutils "shred"} -u ${inputDir}/passwd ${inputDir}/group"
-        ":${lib.getExe pkgs.gnused} -i '$ a\\\\root:x:0:0:System administrator:/root:/run/current-system/sw/bin/bash' ${outputDir}/passwd"
-        ":${lib.getExe pkgs.gnused} -i '$ a\\\\wwwrun:x:54:54:Apache httpd user:/var/empty:/run/current-system/sw/bin/bash' ${outputDir}/passwd"
-        ":${lib.getExe pkgs.gnused} -i '$ a\\\\root:x:0:' ${outputDir}/group"
-        ":${lib.getExe pkgs.gnused} -i '$ a\\\\wwwrun:x:54:' ${outputDir}/group"
-        "+${lib.getExe' pkgs.coreutils "chown"} root:root ${outputDir}/passwd ${outputDir}/group"
-        "+${lib.getExe' pkgs.coreutils "chmod"} 0644 ${outputDir}/passwd ${outputDir}/group"
-        "+${lib.getExe pkgs.mount} --bind ${outputDir}/passwd /etc/passwd"
-        "+${lib.getExe pkgs.mount} --bind ${outputDir}/group  /etc/group"
-      ];
-
       ExecStart = "${lib.getExe mcfg.apacheLogProcessorPackage} %i";
 
       AmbientCapabilities = [ "CAP_SETUID" "CAP_SETGID" ];
       CapabilityBoundingSet = [ "CAP_SETUID" "CAP_SETGID" ];
       DeviceAllow = [ "" ];
+      IPAddressDeny = "any";
       LockPersonality = true;
       MemoryDenyWriteExecute = true;
       PrivateDevices = true;
+      PrivateNetwork = true;
       PrivateIPC = true;
       PrivateTmp = true;
       # PrivateUsers = true;
@@ -100,10 +59,7 @@ in
       ProtectSystem = "strict";
       ProtectKernelTunables = true;
       RemoveIPC = true;
-      RestrictAddressFamilies = [
-        "AF_INET"
-        "AF_INET6"
-      ];
+      RestrictAddressFamilies = [ "" ];
       RestrictNamespaces = true;
       RestrictRealtime = true;
       RestrictSUIDSGID = true;
@@ -115,29 +71,17 @@ in
       ];
       UMask = "0077";
 
-      IPAddressAllow = [
-        "127.0.0.53" # systemd-resolved
-        values.hosts.microbel.ipv4
-        values.hosts.microbel.ipv6
-      ];
-      IPAddressDeny = "any";
-
       RootDirectory = "/run/httpd-log-processor-%i/root-mnt";
       MountAPIVFS = true;
 
       RuntimeDirectoryMode = "0750";
-      RuntimeDirectory = [
-        "httpd-log-processor-%i/root-mnt"
-        "httpd-log-processor-%i/pamunix-in"
-        "httpd-log-processor-%i/pamunix-out"
-      ];
+      RuntimeDirectory = [ "httpd-log-processor-%i/root-mnt" ];
       BindReadOnlyPaths = [
         builtins.storeDir
         "/etc"
-        "/etc/resolv.conf"
 
-        "-/run/httpd-log-processor-%i/pamunix-out/passwd:/etc/passwd"
-        "-/run/httpd-log-processor-%i/pamunix-out/group:/etc/group"
+        "/var/lib/httpd-passwd-sync/passwd:/etc/passwd"
+        "/var/lib/httpd-passwd-sync/group:/etc/group"
 
         "${pkgs.writeText "userweb-fake-nsswitch.conf" ''
           passwd:    files

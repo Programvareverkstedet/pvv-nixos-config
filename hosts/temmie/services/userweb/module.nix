@@ -4,7 +4,9 @@ let
 in
 {
   options.services.pvv-userweb = {
-    enable = lib.mkEnableOption "";
+    enable = lib.mkEnableOption "" // {
+      default = true;
+    };
 
     debugMode = lib.mkEnableOption "";
 

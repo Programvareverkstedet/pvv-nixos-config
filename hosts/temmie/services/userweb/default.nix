@@ -5,5 +5,6 @@
     ./mail.nix
     ./module.nix
     ./packages.nix
+    ./passwd-sync.nix
   ];
 }
