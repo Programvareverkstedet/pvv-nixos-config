@@ -88,8 +88,9 @@ in
           [[ -d "$dir" ]] || continue
 
           uid="$(stat -c '%u' "$dir")"
+          username="$(basename "$dir")"
 
-          mountpoint="/run/pvvhome/by-uid/$uid"
+          mountpoint="/run/pvvhome/by-uid/$uid/$1/$username"
           mkdir -p "$mountpoint"
 
           unit_name=$(systemd-escape --path --suffix=mount "$mountpoint")

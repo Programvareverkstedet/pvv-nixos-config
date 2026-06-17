@@ -277,30 +277,7 @@ in
         "/dev/null"
         "/var/lib/acme"
         "/var/run/nscd"
-        "${mcfg.fhsEnv}/bin:/bin"
-        "${mcfg.fhsEnv}/sbin:/sbin"
-        "${mcfg.fhsEnv}/lib:/lib"
-        "${mcfg.fhsEnv}/share:/share"
-      ] ++ (lib.mapCartesianProduct ({ parent, child }: "${mcfg.fhsEnv}${child}:${parent}${child}") {
-        parent = [
-          "/local"
-          "/opt"
-          "/opt/local"
-          "/store"
-          "/store/gnu"
-          "/usr"
-          "/usr/local"
-          "/run/current-system/sw"
-        ];
-        child = [
-          "/bin"
-          "/sbin"
-          "/lib"
-          "/libexec"
-          "/include"
-          "/share"
-        ];
-      });
+      ] ++ mcfg.fhsBindPaths;
       BindPaths = (lib.mapCartesianProduct ({ directoryFn, letter }: "/run/pvvhome/${letter}:${directoryFn letter}${letter}") {
         directoryFn = [
           (_: "/home/pvv/")

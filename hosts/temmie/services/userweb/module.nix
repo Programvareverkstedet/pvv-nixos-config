@@ -106,6 +106,36 @@ in
         ];
       };
     };
+
+    fhsBindPaths = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      readOnly = true;
+      default = [
+        "${cfg.fhsEnv}/bin:/bin"
+        "${cfg.fhsEnv}/sbin:/sbin"
+        "${cfg.fhsEnv}/lib:/lib"
+        "${cfg.fhsEnv}/share:/share"
+      ] ++ (lib.mapCartesianProduct ({ parent, child }: "${cfg.fhsEnv}${child}:${parent}${child}") {
+        parent = [
+          "/local"
+          "/opt"
+          "/opt/local"
+          "/store"
+          "/store/gnu"
+          "/usr"
+          "/usr/local"
+          "/run/current-system/sw"
+        ];
+        child = [
+          "/bin"
+          "/sbin"
+          "/lib"
+          "/libexec"
+          "/include"
+          "/share"
+        ];
+      });
+    };
   };
 
   config = lib.mkIf cfg.enable {
