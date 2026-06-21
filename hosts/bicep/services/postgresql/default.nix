@@ -127,4 +127,27 @@ in
 
   networking.firewall.allowedTCPPorts = lib.mkIf cfg.enable [ 5432 ];
   networking.firewall.allowedUDPPorts = lib.mkIf cfg.enable [ 5432 ];
+
+  environment.systemPackages = [
+    (pkgs.writeShellApplication {
+      name = "postgres-update-collations.sh";
+      runtimeInputs = [
+        config.systemd.package
+        cfg.package
+      ];
+      text = ''
+        run0 --user=postgres psql <${pkgs.writeText "postgres-update-collations.sql" ''
+          CREATE FUNCTION exec(text) returns text language plpgsql volatile
+            AS $f$
+              BEGIN
+                EXECUTE $1;
+                RETURN $1;
+              END;
+          $f$;
+
+          SELECT exec('ALTER DATABASE "' || datname || '" REFRESH COLLATION VERSION') FROM pg_database WHERE datistemplate = false;
+        ''}
+      '';
+    })
+  ];
 }
