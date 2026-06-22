@@ -16,6 +16,7 @@
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/4e8667f8-55de-4103-8369-b94665f42204";
       fsType = "ext4";
+      options = [ "relatime" ];
     };
 
   fileSystems."/boot" =

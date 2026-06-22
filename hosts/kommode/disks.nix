@@ -48,6 +48,7 @@
 
                 # swap.swapfile.size = "4G";
                 mountpoint = "/";
+                mountOptions = [ "relatime" ];
               };
             };
 

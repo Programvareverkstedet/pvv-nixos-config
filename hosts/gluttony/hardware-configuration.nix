@@ -28,6 +28,7 @@
   fileSystems."/" = {
     device = "/dev/mapper/pool-root";
     fsType = "ext4";
+    options = [ "relatime" ];
   };
 
   fileSystems."/boot" = {

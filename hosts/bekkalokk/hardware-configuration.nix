@@ -16,6 +16,7 @@
   fileSystems."/" =
     { device = "/dev/sda1";
       fsType = "btrfs";
+      options = [ "relatime" ];
     };
 
   fileSystems."/boot" =

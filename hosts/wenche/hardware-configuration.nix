@@ -13,6 +13,7 @@
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/4e8ecdd2-d453-4fff-b952-f06da00f3b85";
       fsType = "ext4";
+      options = [ "relatime" ];
     };
 
   swapDevices = [ {
