@@ -74,7 +74,7 @@ in {
         name = "psycopg2";
         args = {
           host = "/var/run/postgresql";
-          dbname = "synapse";
+          database = "synapse";
           user = "matrix-synapse";
           cp_min = 1;
           cp_max = 5;
