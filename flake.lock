@@ -189,16 +189,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1764844095,
-        "narHash": "sha256-Drf1orxsmFDzO+UbPo85gHjXW7QzAM+6oTPvI7vOSik=",
+        "lastModified": 1782122067,
+        "narHash": "sha256-95q3DiYOTHjQGbqR0I1w4ETrH+smtddqW0bBxaB/Egg=",
         "owner": "dali99",
         "repo": "nixos-matrix-modules",
-        "rev": "25b9f31ef1dbc3987b4c716de716239f2b283701",
+        "rev": "0e0fd9f6a407b08dd5e180a2ff6c3808461e2c47",
         "type": "github"
       },
       "original": {
         "owner": "dali99",
-        "ref": "v0.8.0",
+        "ref": "master",
         "repo": "nixos-matrix-modules",
         "type": "github"
       }

@@ -26,7 +26,7 @@
     worblehat.url = "git+https://git.pvv.ntnu.no/Projects/worblehat.git?ref=main";
     worblehat.inputs.nixpkgs.follows = "nixpkgs";
 
-    matrix-next.url = "github:dali99/nixos-matrix-modules/v0.8.0";
+    matrix-next.url = "github:dali99/nixos-matrix-modules/master";
     matrix-next.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-gitea-themes.url = "git+https://git.pvv.ntnu.no/Drift/nix-gitea-themes.git?ref=main";
