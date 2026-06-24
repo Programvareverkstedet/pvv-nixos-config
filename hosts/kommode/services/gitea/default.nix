@@ -136,7 +136,7 @@ in {
       picture = {
         AVATAR_MAX_FILE_SIZE = 1024 * 1024 * 5;
         # NOTE: go any bigger than this, and gitea will freeze your gif >:(
-        AVATAR_MAX_ORIGIN_SIZE = 1024 * 1024 * 2;
+        AVATAR_MAX_ORIGIN_SIZE = 1024 * 1024 * 4;
       };
       actions.ENABLED = true;
       webhook.ALLOWED_HOST_LIST = lib.concatStringsSep "," [
