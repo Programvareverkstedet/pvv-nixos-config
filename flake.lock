@@ -447,17 +447,17 @@
         "rust-overlay": "rust-overlay_4"
       },
       "locked": {
-        "lastModified": 1778600367,
-        "narHash": "sha256-YB0b2xUf4D8792D5Ay//7C3AjHyv+9yoy8K1mTe+wvE=",
+        "lastModified": 1782275838,
+        "narHash": "sha256-CW84hEFcypvEegQp+4zZZ4lCnPT7Qn27OpKiQBxiWS8=",
         "ref": "main",
-        "rev": "8e5f2849ff7c9616100fe928261512a7ad647939",
-        "revCount": 91,
+        "rev": "71d2b72c34352a79dbee8ebf23ce64f39aead692",
+        "revCount": 102,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/roowho2.git"
       },
       "original": {
         "ref": "main",
-        "rev": "8e5f2849ff7c9616100fe928261512a7ad647939",
+        "rev": "71d2b72c34352a79dbee8ebf23ce64f39aead692",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/roowho2.git"
       }
