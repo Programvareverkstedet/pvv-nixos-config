@@ -93,7 +93,7 @@ in {
           no-group = true;
           rsh = "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=%d/ssh-known-hosts -i %d/sshkey";
         };
-      in "${lib.getExe pkgs.rsync} ${rsyncArgs} root@innovation.pvv.ntnu.no:/ ${vanillaSurvival}";
+      in "${lib.getExe pkgs.rsync} ${rsyncArgs} root@innovation.pvv.ntnu.no:. ${vanillaSurvival}";
       ExecStartPost = let
         rsyncArgs = lib.cli.toCommandLineShellGNU { } {
           archive = true;
@@ -103,7 +103,7 @@ in {
           no-group = true;
           rsh = "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=%d/ssh-known-hosts -i %d/sshkey";
         };
-      in "${lib.getExe pkgs.rsync} ${rsyncArgs} --groupmap=root:nginx ${config.services.bluemap.webRoot}/ root@bekkalokk.pvv.ntnu.no:/";
+      in "${lib.getExe pkgs.rsync} ${rsyncArgs} --groupmap=root:nginx ${config.services.bluemap.webRoot}/ root@bekkalokk.pvv.ntnu.no:.";
       LoadCredential = [
         "sshkey:${config.sops.secrets."bluemap/ssh-key".path}"
         "ssh-known-hosts:${config.sops.secrets."bluemap/ssh-known-hosts".path}"

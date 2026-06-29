@@ -43,7 +43,7 @@ in
         sshCommand = ''${pkgs.openssh}/bin/ssh -o UserKnownHostsFile='${knownHostsFile}' -i \"$CREDENTIALS_DIRECTORY\"/sshkey'';
       in [
         "${lib.getExe' pkgs.coreutils "mkdir"} -p '${cfg.minecraftLogsDir}'"
-        "${lib.getExe pkgs.rsync} ${rsyncArgs} --rsh=\"${sshCommand}\" root@innovation.pvv.ntnu.no:/ '${cfg.minecraftLogsDir}'/"
+        "${lib.getExe pkgs.rsync} ${rsyncArgs} --rsh=\"${sshCommand}\" root@innovation.pvv.ntnu.no:. '${cfg.minecraftLogsDir}'/"
       ];
     };
   };
