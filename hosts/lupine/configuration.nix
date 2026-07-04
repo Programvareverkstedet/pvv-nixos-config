@@ -5,6 +5,8 @@
 
     (fp /base)
     ./services/gitea-runner.nix
+  ] ++ lib.optionals (lupineName == "lupine-5") [
+    ./services/openvpn.nix
   ];
 
   sops.defaultSopsFile = fp /secrets/lupine/lupine.yaml;

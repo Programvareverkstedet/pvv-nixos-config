@@ -26,6 +26,10 @@ in rec {
       ipv4 = pvv-ipv4 213;
       ipv6 = pvv-ipv6 213;
     };
+
+    knutsen-vpn = pvv-ipv4 191;
+    knutsen-tap = pvv-ipv4 253;
+    ludvigsen-tap = pvv-ipv4 254;
   };
 
   hosts = {
