@@ -48,7 +48,11 @@
       networks."20-br0" = {
         matchConfig.Name = "br0";
 
-        address = with values.hosts.${lupineName}; [ (ipv4 + "/25") (ipv6 + "/64") ];
+        address = with values.hosts.${lupineName}; [
+          (ipv4 + "/25")
+          (ipv6 + "/64")
+          values.services.knutsen-vpn
+        ];
         networkConfig.LLDP = false;
 
         dns = ["129.241.0.200" "129.241.0.201" "2001:700:300:1900::200" "2001:700:300:1900::201"];
