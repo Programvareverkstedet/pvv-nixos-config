@@ -1,4 +1,4 @@
-{ pkgs, lib, values, ... }:
+{ config, pkgs, lib, values, ... }:
 let
   renderConfig = attrs: lib.pipe attrs [
     (lib.filterAttrs (_: value: !(builtins.isNull value || value == false)))
@@ -20,6 +20,12 @@ let
   ];
 in
 {
+  sops.secrets = {
+    "openvpn/ca/crt" = { };
+    "openvpn/server/crt" = { };
+    "openvpn/server/key" = { };
+  };
+
   services.openvpn.servers."ov-tunnel" = {
     config = renderConfig {
       # TODO: use aliases
@@ -32,11 +38,10 @@ in
 
       script-security = 0;
 
-      # TODO: set up
-      # ca = "";
-      # cert = "";
-      # key = "";
-      # dh = "";
+      ca = config.sops.secrets."openvpn/ca/crt".path;
+      cert = config.sops.secrets."openvpn/server/crt".path;
+      key = config.sops.secrets."openvpn/server/key".path;
+      dh = "none";
 
       # Maintain a record of client <-> virtual IP address
       # associations in this file.  If OpenVPN goes down or
@@ -67,7 +72,7 @@ in
 
       client-config-dir = pkgs.writeTextDir "ludvigsen" ''
         # Sett IP-adr. for tap0 til ludvigsens PVV-addresse.
-        ifconfig-push ${values.services.ludvigsen-vpn} 255.255.255.128
+        ifconfig-push ${values.services.ludvigsen-tap} 255.255.255.128
 
         # Hvordan skal man faa dette til aa funke, tro?
         # ifconfig-ipv6-push 2001:700:300:1900::xxx/64
