@@ -28,8 +28,10 @@ in
 
   services.openvpn.servers."ov-tunnel" = {
     config = renderConfig {
+      mode = "server";
+
       # TODO: use aliases
-      local = values.services.knutsen-vpn;
+      local = "0.0.0.0";
       port = 1194;
       proto = "udp";
 
@@ -63,7 +65,6 @@ in
       ];
 
       keepalive = "10 120";
-      data-ciphers = "none";
 
       user = "nobody";
       group = "nobody";
@@ -84,9 +85,17 @@ in
       persist-key = true;
       persist-tun = true;
 
+      tls-version-min = "1.2";
+      tls-version-max = "1.2";
+
       verb = 5;
 
       explicit-exit-notify = 1;
     };
+  };
+
+  networking.firewall = {
+    allowedTCPPorts = [ 1194 ];
+    allowedUDPPorts = [ 1194 ];
   };
 }
