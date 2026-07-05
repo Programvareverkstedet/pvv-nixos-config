@@ -6,6 +6,5 @@
     ./loki.nix
     ./prometheus
     ./scrutiny.nix
-    ./uptime-kuma.nix
   ];
 }
