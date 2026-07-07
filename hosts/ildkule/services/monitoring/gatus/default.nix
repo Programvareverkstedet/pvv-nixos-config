@@ -3,6 +3,10 @@ let
   cfg = config.services.gatus;
 in
 {
+  imports = [
+    ./minecraft-checker.nix
+  ];
+
   services.gatus = {
     enable = true;
 
@@ -123,6 +127,12 @@ in
 
         (mkService "Gitea SSH" "ssh://git.pvv.ntnu.no:2222")
         (mkService "QoTD" "tcp://bekkalokk.pvv.ntnu.no:17")
+        (mkService "Minecraft" "http://localhost:1337" // {
+          conditions = [
+            "[STATUS] == 200"
+            "[BODY].ok == true"
+          ];
+        })
         (mkService "Email (SMTP)" "starttls://mail.pvv.ntnu.no:587")
         (mkService "Email (POP3)" "tls://mail.pvv.ntnu.no:995")
         (mkService "Email (IMAP)" "tls://mail.pvv.ntnu.no:993")
