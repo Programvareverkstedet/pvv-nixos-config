@@ -173,6 +173,7 @@
                 sops-nix.nixosModules.sops
                 inputs.roowho2.nixosModules.default
                 self.nixosModules.rsync-pull-targets
+                self.nixosModules.python-http-handlers
               ])
               ++ modules;
           }
@@ -306,13 +307,14 @@
 
     nixosModules = {
       bluemap = ./modules/bluemap.nix;
+      drumknotty = ./modules/drumknotty;
       gickup = ./modules/gickup;
       matrix-ooye = ./modules/matrix-ooye.nix;
+      python-http-handlers = ./modules/python-http-handlers.nix;
       robots-txt = ./modules/robots-txt.nix;
       rsync-pull-targets = ./modules/rsync-pull-targets.nix;
       snakeoil-certs = ./modules/snakeoil-certs.nix;
       snappymail = ./modules/snappymail.nix;
-      drumknotty = ./modules/drumknotty;
     };
 
     devShells = forAllSystems (system: {
