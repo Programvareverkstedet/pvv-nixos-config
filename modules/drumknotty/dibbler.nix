@@ -109,5 +109,10 @@ in
         Group = "drumknotty";
       };
     };
+
+    systemd.services."drumknotty-screen-session".serviceConfig.StateDirectory = [
+      "dibbler"
+      "dibbler/crashdumps"
+    ];
   };
 }

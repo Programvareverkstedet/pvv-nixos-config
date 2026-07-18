@@ -117,6 +117,10 @@ in
           ];
         };
       };
+
+      systemd.services."drumknotty-screen-session".serviceConfig.StateDirectory = [
+        "worblehat"
+      ];
     }
 
     (lib.mkIf ((mainCfg.enable && cfg.enable) || cfg.deadline-daemon.enable) {
