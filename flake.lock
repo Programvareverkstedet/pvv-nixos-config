@@ -24,11 +24,11 @@
     },
     "crane": {
       "locked": {
-        "lastModified": 1776635034,
-        "narHash": "sha256-OEOJrT3ZfwbChzODfIH4GzlNTtOFuZFWPtW7jIeR8xU=",
+        "lastModified": 1784407669,
+        "narHash": "sha256-gcFMcRjw0ZSn380Rx2QLlU1goUQeSrKX/DF12omI6+o=",
         "owner": "ipetkov",
         "repo": "crane",
-        "rev": "dc7496d8ea6e526b1254b55d09b966e94673750f",
+        "rev": "1316b7d278ad77a16aec024b71d971366e123bec",
         "type": "github"
       },
       "original": {
@@ -447,17 +447,17 @@
         "rust-overlay": "rust-overlay_4"
       },
       "locked": {
-        "lastModified": 1782275838,
-        "narHash": "sha256-CW84hEFcypvEegQp+4zZZ4lCnPT7Qn27OpKiQBxiWS8=",
+        "lastModified": 1784550731,
+        "narHash": "sha256-KDrBGT98fQWlnEBmTvIijPq4n4sVLcETBu8EuL486SM=",
         "ref": "main",
-        "rev": "71d2b72c34352a79dbee8ebf23ce64f39aead692",
-        "revCount": 102,
+        "rev": "c0c0e47c8a45673c62462cadf38a489b72fd39ec",
+        "revCount": 112,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/roowho2.git"
       },
       "original": {
         "ref": "main",
-        "rev": "71d2b72c34352a79dbee8ebf23ce64f39aead692",
+        "rev": "c0c0e47c8a45673c62462cadf38a489b72fd39ec",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/roowho2.git"
       }
@@ -533,11 +533,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1776914043,
-        "narHash": "sha256-qug5r56yW1qOsjSI99l3Jm15JNT9CvS2otkXNRNtrPI=",
+        "lastModified": 1784438913,
+        "narHash": "sha256-NYF7ZM5ip0u+w1pBFDpIGEbrbgN/wpnLFAmBkWkYMXw=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "2d35c4358d7de3a0e606a6e8b27925d981c01cc3",
+        "rev": "afacd6819d3765a05814ee8e3de74c77d42ac799",
         "type": "github"
       },
       "original": {
