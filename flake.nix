@@ -404,7 +404,6 @@
                       inputs.nix-topology.nixosModules.default
                       ./topology/service-extractors/greg-ng.nix
                       ./topology/service-extractors/postgresql.nix
-                      ./topology/service-extractors/mysql.nix
                       ./topology/service-extractors/gitea-runners.nix
                     ];
                   })
