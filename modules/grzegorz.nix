@@ -123,5 +123,7 @@ in {
       };
     };
   };
+
+  services.roowho2.settings.rwhod.ignoreUsers = [ "greg" ];
 }
 

@@ -52,4 +52,6 @@
       };
     };
   };
+
+  services.roowho2.settings.rwhod.ignoreUsers = [ "drumknotty" ];
 }
