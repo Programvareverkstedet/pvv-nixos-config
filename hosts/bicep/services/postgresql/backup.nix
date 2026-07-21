@@ -41,25 +41,42 @@ in
 
     path = with pkgs; [
       coreutils
+      diffutils
       zstd
       cfg.package
     ];
 
-    script = let
-      rotations = 2;
-    in ''
+    script = ''
       set -euo pipefail
 
-      OUT_FILE="$STATE_DIRECTORY/postgresql-dump-$(date --iso-8601).sql.zst"
+      dump() {
+        local name="$1" out tmp
+        out="$STATE_DIRECTORY/$name.sql.zst"
+        tmp="$out.tmp"
+        shift
+        "$@" | zstd -9 --rsyncable -f -o "$tmp"
+        if cmp -s "$tmp" "$out" 2>/dev/null; then
+          rm -f "$tmp"
+        else
+          mv -f "$tmp" "$out"
+        fi
+      }
 
-      pg_dumpall -U postgres | zstd --compress -9 --rsyncable -o "$OUT_FILE"
+      declare -A keep
+      dump globals pg_dumpall -U postgres --globals-only --restrict-key=backup
+      keep[globals.sql.zst]=1
 
-      # NOTE: this needs to be a hardlink for rrsync to allow sending it
-      rm "$STATE_DIRECTORY/postgresql-dump-latest.sql.zst" ||:
-      ln -T "$OUT_FILE" "$STATE_DIRECTORY/postgresql-dump-latest.sql.zst"
+      while IFS= read -r db; do
+        [ -n "$db" ] || continue
+        dump "$db" pg_dump -U postgres -C -d "$db" --restrict-key=backup
+        keep["$db.sql.zst"]=1
+      done < <(psql -U postgres -tAc "SELECT datname FROM pg_database WHERE datallowconn ORDER BY datname")
 
-      while [ "$(find "$STATE_DIRECTORY" -type f -printf '.' | wc -c)" -gt '${toString (rotations + 1)}' ]; do
-        rm "$(find "$STATE_DIRECTORY" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)"
+      # drop dumps of databases that no longer exist
+      for f in "$STATE_DIRECTORY"/*.sql.zst; do
+        [ -e "$f" ] || continue
+        base="$(basename "$f")"
+        [ -n "''${keep[$base]:-}" ] || rm -f "$f"
       done
     '';
 
