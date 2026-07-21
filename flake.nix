@@ -197,6 +197,7 @@
             inputs.pvv-calendar-bot.nixosModules.default
             inputs.minecraft-heatmap.nixosModules.default
             self.nixosModules.gickup
+            self.nixosModules.hugepages
             self.nixosModules.matrix-ooye
           ];
           overlays = [

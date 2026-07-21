@@ -1,6 +1,8 @@
 { config, lib, pkgs, values, ... }:
 let
   cfg = config.services.postgresql;
+
+  sharedBuffersMB = 8192;
 in
 {
   imports = [
@@ -29,7 +31,7 @@ in
       superuser_reserved_connections = 3;
 
       # Memory Settings
-      shared_buffers = "8192 MB";
+      shared_buffers = "${toString sharedBuffersMB} MB";
       work_mem = "32 MB";
       maintenance_work_mem = "420 MB";
       effective_cache_size = "22 GB";
@@ -92,6 +94,10 @@ in
       ssl_key_file = "/run/credentials/postgresql.service/key";
     };
   };
+
+  boot.kernel.hugepages.reservations.postgresql = lib.mkIf cfg.enable (
+    builtins.ceil (sharedBuffersMB / config.boot.kernel.hugepages.size)
+  );
 
   systemd.tmpfiles.settings."10-postgresql"."/data/postgresql".d = lib.mkIf cfg.enable {
     user = config.systemd.services.postgresql.serviceConfig.User;
