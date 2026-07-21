@@ -4,7 +4,10 @@ let
   dataDir = "/data/mysql";
 in
 {
-  imports = [ ./backup.nix ];
+  imports = [
+    ./backup.nix
+    ./timed-jobs.nix
+  ];
 
   sops.secrets."mysql/password" = {
     owner = "mysql";
