@@ -1,14 +1,13 @@
 { config, lib, pkgs, ... }:
 {
-  services.postfix.enable = lib.mkForce false;
+  assertions = [{
+    assertion = config.services.nullmailer.enable;
+    message = ''
+      Expected nullmailer to be enabled for temmie userweb.
 
-  services.nullmailer = {
-    enable = true;
-    config = {
-      me = config.networking.fqdn;
-      remotes = "mail.pvv.ntnu.no smtp --port=25";
-    };
-  };
+      If you change the default sendmail implementation, please make sure that temmie userweb works correctly!
+    '';
+  }];
 
   services.bro = {
     enable = true;
