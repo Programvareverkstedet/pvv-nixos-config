@@ -14,6 +14,7 @@ in
     extensions = ps: with ps; [ pg_repack ];
     enableTCPIP = true;
 
+    # NOTE: md5 accepts both md5 and scram-sha-256
     authentication = ''
       host all all ${values.ipv4-space} md5
       host all all ${values.ipv6-space} md5
@@ -75,6 +76,9 @@ in
       track_wal_io_timing = true;
       maintenance_io_concurrency = 100;
       wal_recycle = true;
+
+      # Authentication
+      password_encryption = "scram-sha-256";
 
       # SSL
       ssl = true;
