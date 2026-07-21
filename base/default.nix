@@ -22,6 +22,7 @@
     ./vm.nix
 
     ./services/acme.nix
+    ./services/auditd.nix
     ./services/auto-upgrade.nix
     ./services/dbus.nix
     ./services/fluentbit.nix
