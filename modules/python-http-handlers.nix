@@ -36,6 +36,9 @@ in
           description = ''
             For each item in this list, a `ListenStream`
             option in the `[Socket]` section will be created.
+
+            Only a single `ListenStream` is currently supported by the handler script; if
+            you need more than one, you'll have to adjust {option}`handler` accordingly.
           '';
         };
 
@@ -98,8 +101,10 @@ in
             "E303" # too many blank lines
             "E305" # expected 2 blank lines after end of function or class
             "E306" # expected 1 blank line before a nested definition
+            "E402" # module level import not at top of file
             "E501" # max line length
             "E704" # multiple statements on one line (def)
+            "F811" # redefined while unused
           ];
           description = ''
             A list of flake8 rules to ignore while linting the python code.
@@ -122,6 +127,11 @@ in
                     self.send_header("Content-Length", str(len(data)))
                     self.end_headers()
                     self.wfile.write(data)
+
+            def on_reload():
+                # This function is called when the service receives SIGHUP (e.g. via `systemctl reload`).
+                # You can use it to clear caches or re-read state. Completely optional
+                pass
           '';
           description = ''
             Python code including the HTTP handler for the server.
@@ -145,6 +155,7 @@ in
           inherit (v) listenStreams;
           socketConfig = {
             Accept = false;
+            FileDescriptorName = v.name;
           } // v.socketConfig;
         };
       }))
@@ -157,30 +168,126 @@ in
         inherit (v) name;
         value = {
           serviceConfig = {
-            Type = "simple";
+            Type = "notify-reload";
+            NotifyAccess = "main";
             DynamicUser = true;
+            TimeoutStopSec = "35s";
 
             ExecStart = let
               package = pkgs.writers.writePython3Bin "${v.name}-bin" {
                 inherit (v) libraries flakeIgnore;
               } ''
+                import os
+                import signal
                 import socket
+                import socketserver
+                import threading
+                import time
                 from http.server import HTTPServer, BaseHTTPRequestHandler
 
-                ${v.handler}
+                SOCKET_NAME = "${v.name}"
+                SHUTDOWN_TIMEOUT = 30
 
-                class NoBindHTTPServer(HTTPServer):
+                def sd_notify(message: str):
+                    addr = os.environ.get("NOTIFY_SOCKET")
+                    if not addr:
+                        return
+                    if addr[0] == "@":
+                        addr = "\0" + addr[1:]
+                    with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM | socket.SOCK_CLOEXEC) as sock:
+                        sock.connect(addr)
+                        sock.sendall(message.encode())
+
+                def sd_listen_fd(name: str) -> int:
+                    if os.environ.get("LISTEN_PID") != str(os.getpid()):
+                        raise RuntimeError("No sockets were passed to this service by systemd")
+
+                    try:
+                        count = int(os.environ.get("LISTEN_FDS", "0"))
+                    except ValueError:
+                        count = 0
+
+                    raw_names = os.environ.get("LISTEN_FDNAMES")
+                    names = raw_names.split(":") if raw_names else []
+
+                    for i in range(count):
+                        if i < len(names) and names[i] == name:
+                            return 3 + i
+
+                    raise RuntimeError(
+                        "No systemd socket named %r was passed to this service; check the "
+                        "FileDescriptorName= of the corresponding .socket unit" % name
+                    )
+
+                class Server(socketserver.ThreadingMixIn, HTTPServer):
+                    daemon_threads = True
+
                     def server_bind(): pass
                     def server_activate(): pass
 
+                    def __init__(self, *args, **kwargs):
+                        super().__init__(*args, **kwargs)
+                        self._request_threads = []
+                        self._request_threads_lock = threading.Lock()
+
+                    def process_request(self, request, client_address):
+                        thread = threading.Thread(
+                            target=self.process_request_thread,
+                            args=(request, client_address),
+                        )
+                        thread.daemon = self.daemon_threads
+                        with self._request_threads_lock:
+                            self._request_threads.append(thread)
+                        thread.start()
+
+                    def join_request_threads(self, timeout):
+                        deadline = time.monotonic() + timeout
+                        with self._request_threads_lock:
+                            threads = list(self._request_threads)
+                        for thread in threads:
+                            thread.join(max(deadline - time.monotonic(), 0))
+
+                def handle_reload(signum, frame):
+                    monotonic_usec = time.clock_gettime_ns(time.CLOCK_MONOTONIC) // 1000
+                    sd_notify("RELOADING=1\nMONOTONIC_USEC=%d" % monotonic_usec)
+
+                    on_reload = globals().get("on_reload")
+                    if callable(on_reload):
+                        on_reload()
+
+                    sd_notify("READY=1")
+
+                shutdown_requested = threading.Event()
+
+                def handle_sigterm(signum, frame):
+                    sd_notify("STOPPING=1")
+                    shutdown_requested.set()
+
+                ${v.handler}
+
+                assert "Handler" in globals(), "You must define a class Handler(BaseHTTPRequestHandler) in the handler code"
+
                 def main():
-                    httpd = NoBindHTTPServer(
-                        ("", 0),
-                        Handler,
-                        bind_and_activate=False,
-                    )
-                    httpd.socket = socket.fromfd(3, socket.AF_INET, socket.SOCK_STREAM)
-                    httpd.serve_forever()
+                    signal.signal(signal.SIGHUP, handle_reload)
+                    signal.signal(signal.SIGTERM, handle_sigterm)
+
+                    fd = sd_listen_fd(SOCKET_NAME)
+
+                    httpd = Server(("", 0), Handler, bind_and_activate=False)
+                    httpd.socket = socket.socket(fileno=fd)
+
+                    server_thread = threading.Thread(target=httpd.serve_forever, name="http-server", daemon=True)
+                    server_thread.start()
+
+                    sd_notify("READY=1")
+                    shutdown_requested.wait()
+
+                    deadline = time.monotonic() + SHUTDOWN_TIMEOUT
+
+                    httpd.shutdown()
+                    server_thread.join(max(deadline - time.monotonic(), 0))
+                    httpd.join_request_threads(max(deadline - time.monotonic(), 0))
+                    httpd.server_close()
 
                 if __name__ == '__main__':
                     main()
