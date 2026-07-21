@@ -99,6 +99,18 @@ in
     mode = "0700";
   };
 
+  fileSystems."/data/postgresql" = lib.mkIf cfg.enable {
+    device = "/data/postgresql";
+    fsType = "none";
+    options = [
+      "bind"
+      "noatime"
+      "noauto"
+      "x-systemd.requires=systemd-tmpfiles-setup.service"
+      "x-systemd.requires=systemd-tmpfiles-resetup.service"
+    ];
+  };
+
   systemd.services.postgresql-setup = lib.mkIf cfg.enable {
     after = [
       "systemd-tmpfiles-setup.service"
@@ -110,6 +122,7 @@ in
         "key:/etc/certs/postgres.key"
       ];
 
+      RequiresMountsFor = [ "/data/postgresql" ];
       BindPaths = [ "/data/postgresql:/var/lib/postgresql" ];
     };
   };
@@ -125,6 +138,7 @@ in
         "key:/etc/certs/postgres.key"
       ];
 
+      RequiresMountsFor = [ "/data/postgresql" ];
       BindPaths = [ "/data/postgresql:/var/lib/postgresql" ];
     };
   };

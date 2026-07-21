@@ -54,6 +54,18 @@ in
     mode = "0700";
   };
 
+  fileSystems.${dataDir} = lib.mkIf cfg.enable {
+    device = dataDir;
+    fsType = "none";
+    options = [
+      "bind"
+      "noatime"
+      "noauto"
+      "x-systemd.requires=systemd-tmpfiles-setup.service"
+      "x-systemd.requires=systemd-tmpfiles-resetup.service"
+    ];
+  };
+
   systemd.services.mysql = lib.mkIf cfg.enable {
     after = [
       "systemd-tmpfiles-setup.service"
@@ -61,6 +73,7 @@ in
     ];
 
     serviceConfig = {
+      RequiresMountsFor = [ dataDir ];
       BindPaths = [ "${dataDir}:${cfg.dataDir}" ];
 
       LogsDirectory = "mysql";
