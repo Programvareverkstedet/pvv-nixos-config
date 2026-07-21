@@ -77,8 +77,14 @@ in
       maintenance_io_concurrency = 100;
       wal_recycle = true;
 
+      # -------------------------------- #
+
       # Authentication
       password_encryption = "scram-sha-256";
+
+      # Logging
+      log_connections = "authorization";
+      log_disconnections = true;
 
       # SSL
       ssl = true;
