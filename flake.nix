@@ -309,6 +309,7 @@
       bluemap = ./modules/bluemap.nix;
       drumknotty = ./modules/drumknotty;
       gickup = ./modules/gickup;
+      hugepages = ./modules/hugepages.nix;
       matrix-ooye = ./modules/matrix-ooye.nix;
       python-http-handlers = ./modules/python-http-handlers.nix;
       robots-txt = ./modules/robots-txt.nix;
