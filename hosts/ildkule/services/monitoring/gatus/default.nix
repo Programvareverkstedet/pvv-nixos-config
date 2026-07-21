@@ -6,6 +6,7 @@ in
   imports = [
     ./minecraft-checker.nix
     ./postgres-checker.nix
+    ./mariadb-checker.nix
   ];
 
   services.gatus = {
@@ -135,6 +136,12 @@ in
           ];
         })
         (mkService "PostgreSQL" "http://localhost:1338" // {
+          conditions = [
+            "[STATUS] == 200"
+            "[BODY].ok == true"
+          ];
+        })
+        (mkService "MariaDB" "http://localhost:1339" // {
           conditions = [
             "[STATUS] == 200"
             "[BODY].ok == true"
