@@ -2,6 +2,8 @@
 let
   cfg = config.services.mysql;
   dataDir = "/data/mysql";
+
+  innodbBufferPoolMB = 128;
 in
 {
   imports = [ ./backup.nix ];
@@ -26,6 +28,10 @@ in
         # Useful for the mysqld prometheus exporter
         userstat = 1;
 
+        # Memory settings
+        innodb_buffer_pool_size = "${toString innodbBufferPoolMB}M";
+        "large-pages" = 1;
+
         # This was needed in order to be able to use all of the old users
         # during migration from knakelibrak to bicep in Sep. 2023
         secure_auth = 0;
@@ -46,6 +52,10 @@ in
       };
     }];
   };
+
+  boot.kernel.hugepages.reservations.mysql = lib.mkIf cfg.enable (
+    builtins.ceil (innodbBufferPoolMB / config.boot.kernel.hugepages.size)
+  );
 
   networking.firewall.allowedTCPPorts = lib.mkIf cfg.enable [ 3306 ];
 
