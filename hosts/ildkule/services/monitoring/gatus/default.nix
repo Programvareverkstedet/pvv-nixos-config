@@ -5,6 +5,7 @@ in
 {
   imports = [
     ./minecraft-checker.nix
+    ./postgres-checker.nix
   ];
 
   services.gatus = {
@@ -128,6 +129,12 @@ in
         (mkService "Gitea SSH" "ssh://git.pvv.ntnu.no:2222")
         (mkService "QoTD" "tcp://bekkalokk.pvv.ntnu.no:17")
         (mkService "Minecraft" "http://localhost:1337" // {
+          conditions = [
+            "[STATUS] == 200"
+            "[BODY].ok == true"
+          ];
+        })
+        (mkService "PostgreSQL" "http://localhost:1338" // {
           conditions = [
             "[STATUS] == 200"
             "[BODY].ok == true"
