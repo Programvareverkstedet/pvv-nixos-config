@@ -41,24 +41,38 @@ in
     path = with pkgs; [
       cfg.package
       coreutils
+      diffutils
       zstd
     ];
 
-    script = let
-      rotations = 2;
-    in ''
+    script = ''
       set -euo pipefail
 
-      OUT_FILE="$STATE_DIRECTORY/mysql-dump-$(date --iso-8601).sql.zst"
+      dump() {
+        local name="$1" out tmp
+        out="$STATE_DIRECTORY/$name.sql.zst"
+        tmp="$out.tmp"
+        shift
+        "$@" | zstd -9 --rsyncable -f -o "$tmp"
+        if cmp -s "$tmp" "$out" 2>/dev/null; then
+          rm -f "$tmp"
+        else
+          mv -f "$tmp" "$out"
+        fi
+      }
 
-      mysqldump --all-databases | zstd --compress -9 --rsyncable -o "$OUT_FILE"
+      declare -A keep
+      while IFS= read -r db; do
+        [ -n "$db" ] || continue
+        dump "$db" mysqldump --skip-dump-date --databases "$db"
+        keep["$db.sql.zst"]=1
+      done < <(mysql -N -e 'SHOW DATABASES' | grep -vE '^(information_schema|performance_schema)$')
 
-      # NOTE: this needs to be a hardlink for rrsync to allow sending it
-      rm "$STATE_DIRECTORY/mysql-dump-latest.sql.zst" ||:
-      ln -T "$OUT_FILE" "$STATE_DIRECTORY/mysql-dump-latest.sql.zst"
-
-      while [ "$(find "$STATE_DIRECTORY" -type f -printf '.' | wc -c)" -gt '${toString (rotations + 1)}' ]; do
-        rm "$(find "$STATE_DIRECTORY" -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d' ' -f2)"
+      # drop dumps of databases that no longer exist
+      for f in "$STATE_DIRECTORY"/*.sql.zst; do
+        [ -e "$f" ] || continue
+        base="$(basename "$f")"
+        [ -n "''${keep[$base]:-}" ] || rm -f "$f"
       done
     '';
 
