@@ -138,6 +138,15 @@ in
 
         ExecStart =
           let
+            mkRespawningCommand = name: command: pkgs.writeShellScript "drumknotty-${name}-watchdog" ''
+              while true; do
+                ${command}
+                echo
+                echo "${name} exited, restarting in 3s..." >&2
+                sleep 3
+              done
+            '';
+
             screenrc = let
               convertToFile = lines: lib.pipe lines [
                 lib.concatLists
@@ -157,8 +166,7 @@ in
                   config = "/etc/dibbler/dibbler.toml";
                 };
               in lib.optionals cfg.dibbler.enable [
-                "screen -t dibbler ${lib.getExe cfg.dibbler.package} ${dibblerArgs} loop"
-
+                "screen -t dibbler ${mkRespawningCommand "dibbler" "${lib.getExe cfg.dibbler.package} ${dibblerArgs} loop"}"
               ])
 
               (let
@@ -166,7 +174,7 @@ in
                   config = "/etc/worblehat/config.toml";
                 };
               in lib.optionals cfg.worblehat.enable [
-                "screen -t worblehat ${lib.getExe cfg.worblehat.package} ${worblehatArgs} cli"
+                "screen -t worblehat ${mkRespawningCommand "worblehat" "${lib.getExe cfg.worblehat.package} ${worblehatArgs} cli"}"
               ])
 
               [ "select 0" ]
