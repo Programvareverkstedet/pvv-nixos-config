@@ -61,6 +61,11 @@ in {
     };
   };
 
+  systemd.services.vaultwarden = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+  };
+
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
     enableACME = true;

@@ -56,8 +56,12 @@ in
 
   systemd.services.mysql = lib.mkIf cfg.enable {
     after = [
+      "sops-install-secrets.service"
       "systemd-tmpfiles-setup.service"
       "systemd-tmpfiles-resetup.service"
+    ];
+    requires = [
+      "sops-install-secrets.service"
     ];
 
     serviceConfig = {

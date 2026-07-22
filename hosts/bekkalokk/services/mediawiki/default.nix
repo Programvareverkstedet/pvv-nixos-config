@@ -287,6 +287,7 @@ in {
 
   systemd.services.mediawiki-init = lib.mkIf cfg.enable {
     after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
     serviceConfig = {
       UMask = lib.mkForce "0007";
     };
@@ -294,6 +295,7 @@ in {
 
   systemd.services.phpfpm-mediawiki = lib.mkIf cfg.enable {
     after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
     serviceConfig = {
       UMask = lib.mkForce "0007";
     };

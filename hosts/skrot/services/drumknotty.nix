@@ -53,5 +53,10 @@
     };
   };
 
+  systemd.services.drumknotty-screen-session = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+  };
+
   services.roowho2.settings.rwhod.ignoreUsers = [ "drumknotty" ];
 }

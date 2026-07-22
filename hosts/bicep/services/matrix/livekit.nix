@@ -43,7 +43,12 @@ in
     keyFile = config.sops.templates."matrix-livekit-keyfile".path;
   };
 
-  systemd.services.lk-jwt-service.environment.LIVEKIT_FULL_ACCESS_HOMESERVERS = lib.mkIf cfg.enable (builtins.concatStringsSep "," [ "pvv.ntnu.no" "dodsorf.as" ]);
+  systemd.services.lk-jwt-service = lib.mkIf cfg.enable {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+
+    environment.LIVEKIT_FULL_ACCESS_HOMESERVERS = builtins.concatStringsSep "," [ "pvv.ntnu.no" "dodsorf.as" ];
+  };
 
   services.nginx.virtualHosts.${matrixDomain} = lib.mkIf cfg.enable {
     locations."^~ /livekit/jwt/" = {

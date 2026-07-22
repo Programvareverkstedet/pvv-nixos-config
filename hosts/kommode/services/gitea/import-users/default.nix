@@ -12,6 +12,16 @@ in
   systemd.services.gitea-import-users = lib.mkIf cfg.enable {
     enable = true;
     environment.PASSWD_FILE_PATH = "/run/gitea-import-users/passwd";
+    after = [
+      "sops-install-secrets.service"
+      "gitea.service"
+      "network-online.target"
+    ];
+    requires = [
+      "sops-install-secrets.service"
+      "gitea.service"
+      "network-online.target"
+    ];
     serviceConfig = {
       ExecStartPre = ''${pkgs.rsync}/bin/rsync -e "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=$CREDENTIALS_DIRECTORY/ssh-known-hosts -i $CREDENTIALS_DIRECTORY/sshkey" -a pvv@smtp.pvv.ntnu.no:/etc/passwd /run/gitea-import-users/passwd'';
       ExecStart = pkgs.writers.writePython3 "gitea-import-users" {

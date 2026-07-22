@@ -82,6 +82,15 @@ in {
   };
 
   systemd.services."render-bluemap-maps" = {
+    after = [
+      "sops-install-secrets.service"
+      "network-online.target"
+    ];
+    requires = [
+      "sops-install-secrets.service"
+      "network-online.target"
+    ];
+
     serviceConfig = {
       StateDirectory = [ "bluemap/world" ];
       ExecStartPre = let

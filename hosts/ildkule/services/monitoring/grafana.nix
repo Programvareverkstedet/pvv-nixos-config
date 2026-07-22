@@ -79,6 +79,11 @@ in {
     };
   };
 
+  systemd.services.grafana = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+  };
+
   services.nginx.virtualHosts.${cfg.settings.server.domain} = {
     enableACME = true;
     forceSSL = true;

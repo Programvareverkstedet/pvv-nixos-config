@@ -154,8 +154,14 @@ in {
   environment.systemPackages = [ cfg.package ];
 
   systemd.services.gitea = lib.mkIf cfg.enable {
-    wants = [ "redis-gitea.service" ];
-    after = [ "redis-gitea.service" ];
+    after = [
+      "sops-install-secrets.service"
+      "redis-gitea.service"
+    ];
+    requires = [
+      "sops-install-secrets.service"
+      "redis-gitea.service"
+    ];
 
     serviceConfig = {
       CPUSchedulingPolicy = "batch";
@@ -216,6 +222,9 @@ in {
   };
 
   systemd.services.gitea-dump = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+
     serviceConfig.ExecStart = let
       args = lib.cli.toCommandLineShellGNU { } {
         type = cfg.dump.type;

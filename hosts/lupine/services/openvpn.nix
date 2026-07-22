@@ -94,6 +94,11 @@ in
     };
   };
 
+  systemd.services."openvpn-ov-firewall" = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+  };
+
   networking.firewall = {
     allowedTCPPorts = [ 1194 ];
     allowedUDPPorts = [ 1194 ];
