@@ -44,6 +44,11 @@ in {
     };
   };
 
+  systemd.targets."matrix-synapse" = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+  };
+
   services.matrix-synapse-next = {
     enable = true;
 
@@ -74,7 +79,7 @@ in {
         name = "psycopg2";
         args = {
           host = "/var/run/postgresql";
-          database = "synapse";
+          dbname = "synapse";
           user = "matrix-synapse";
           cp_min = 1;
           cp_max = 5;

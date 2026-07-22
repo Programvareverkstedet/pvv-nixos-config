@@ -37,9 +37,15 @@ in {
     };
   };
 
-  systemd.services.prometheus-postgres-exporter-knakelibrak.serviceConfig = let
-    localCfg = config.services.prometheus.exporters.postgres;
-  in lib.recursiveUpdate config.systemd.services.prometheus-postgres-exporter.serviceConfig {
+  systemd.services.prometheus-postgres-exporter-knakelibrak = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+
+    # TODO: is it really necessary to use recursiveUpdate on the entire attrset here?
+    #       Why don't we just update the relevant attrs directly?
+    serviceConfig = let
+      localCfg = config.services.prometheus.exporters.postgres;
+    in lib.recursiveUpdate config.systemd.services.prometheus-postgres-exporter.serviceConfig {
       EnvironmentFile = config.sops.secrets."keys/postgres/postgres_exporter_knakelibrak_env".path;
       ExecStart = ''
         ${pkgs.prometheus-postgres-exporter}/bin/postgres_exporter \
@@ -48,4 +54,5 @@ in {
           ${lib.concatStringsSep " \\\n  " localCfg.extraFlags}
       '';
     };
+  };
 }

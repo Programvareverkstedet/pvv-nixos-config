@@ -32,7 +32,11 @@ in
 
   systemd.services.gitea-ensure-gnupg-homedir = {
     description = "Import gpg key for gitea";
+
     before = [ "gitea.service" ];
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+
     environment = { inherit GNUPGHOME; };
     serviceConfig = {
       Type = "oneshot";

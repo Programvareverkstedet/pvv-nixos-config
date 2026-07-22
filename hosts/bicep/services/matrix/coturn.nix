@@ -55,6 +55,11 @@
   # It needs this to be allowed to access the files with the acme group
   systemd.services.coturn.serviceConfig.PrivateUsers = lib.mkForce false;
 
+  systemd.services.coturn = {
+    requires = [ "sops-install-secrets.service" ];
+    after = [ "sops-install-secrets.service" ];
+  };
+
   systemd.services."acme-${config.services.coturn.realm}".serviceConfig = {
     AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
   };

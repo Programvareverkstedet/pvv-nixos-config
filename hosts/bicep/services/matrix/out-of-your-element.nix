@@ -56,7 +56,15 @@ in
     enableSynapseIntegration = false;
   };
 
+  systemd.services."matrix-ooye-pre-start" = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+  };
+
   systemd.services."matrix-ooye" = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+
     serviceConfig = {
       RuntimeDirectory = [ "matrix-ooye/root-mnt" ];
       RootDirectory = "/run/matrix-ooye/root-mnt";

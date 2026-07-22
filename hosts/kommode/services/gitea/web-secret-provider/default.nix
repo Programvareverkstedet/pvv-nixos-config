@@ -48,7 +48,16 @@ in
   # %d - secrets directory
   systemd.services."gitea-web-secret-provider@" = {
     description = "Ensure all repos in %i has an SSH key to push web content";
-    requires = [ "gitea.service" "network.target" ];
+    after = [
+      "sops-install-secrets.service"
+      "gitea.service"
+      "network-online.target"
+    ];
+    requires = [
+      "sops-install-secrets.service"
+      "gitea.service"
+      "network-online.target"
+    ];
     serviceConfig = {
       Slice = "system-giteaweb.slice";
       Type = "oneshot";

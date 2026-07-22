@@ -29,8 +29,14 @@ in
     systemd.services."httpd-passwd-sync" = {
       requiredBy = [ "userweb.target" ];
       after = [
+        "network-online.target"
+        "sops-install-secrets.service"
         "systemd-tmpfiles-setup.service"
         "systemd-tmpfiles-resetup.service"
+      ];
+      requires = [
+        "network-online.target"
+        "sops-install-secrets.service"
       ];
       serviceConfig = {
         Type = "oneshot";

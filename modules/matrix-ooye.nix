@@ -159,7 +159,6 @@ in
         description = "Out of Your Element - a Discord bridge for Matrix.";
 
         wants = [
-          "network-online.target"
           "matrix-synapse.service"
           "conduit.service"
           "dendrite.service"
@@ -168,7 +167,10 @@ in
           "matrix-ooye-pre-start.service"
           "network-online.target"
         ];
-        requires = [ "matrix-ooye-pre-start.service" ];
+        requires = [
+          "network-online.target"
+          "matrix-ooye-pre-start.service"
+        ];
         wantedBy = [ "multi-user.target" ];
 
         startLimitIntervalSec = 5;

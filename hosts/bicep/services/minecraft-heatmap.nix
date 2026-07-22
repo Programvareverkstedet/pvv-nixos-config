@@ -23,6 +23,15 @@ in
   };
 
   systemd.services.minecraft-heatmap-ingest-logs = lib.mkIf cfg.enable {
+    after = [
+      "sops-install-secrets.service"
+      "network-online.target"
+    ];
+    requires = [
+      "sops-install-secrets.service"
+      "network-online.target"
+    ];
+
     serviceConfig = {
       LoadCredential = [
         "sshkey:${config.sops.secrets."minecraft-heatmap/ssh-key/private".path}"

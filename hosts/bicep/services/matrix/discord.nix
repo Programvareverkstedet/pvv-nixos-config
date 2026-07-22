@@ -39,6 +39,8 @@ in
   };
 
   systemd.services.mx-puppet-discord = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
     serviceConfig.SupplementaryGroups = [
       config.users.groups.keys-matrix-registrations.name
     ];

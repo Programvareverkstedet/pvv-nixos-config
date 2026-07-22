@@ -177,6 +177,11 @@ in
       };
     };
 
+    systemd.services."phpfpm-idp" = {
+      after = [ "sops-install-secrets.service" ];
+      requires = [ "sops-install-secrets.service" ];
+    };
+
     services.nginx.virtualHosts."idp.pvv.ntnu.no" = {
       forceSSL = true;
       enableACME = true;

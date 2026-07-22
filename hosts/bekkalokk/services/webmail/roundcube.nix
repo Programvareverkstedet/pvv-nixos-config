@@ -49,6 +49,11 @@ in
     '';
   };
 
+  systemd.services."phpfpm-roundcube" = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+  };
+
   # TODO: move this back to `webmail.pvv.ntnu.no/roundcube` subpath
 
   services.nginx.virtualHosts.${domain} = {

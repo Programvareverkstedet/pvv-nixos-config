@@ -116,6 +116,11 @@ in {
     ];
   };
 
+  systemd.services."phpfpm-pvv-nettsiden" = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+  };
+
   services.nginx.virtualHosts."pvv.ntnu.no" = {
     globalRedirect = cfg.domainName;
     redirectCode = 307;

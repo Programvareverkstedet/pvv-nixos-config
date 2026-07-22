@@ -35,4 +35,9 @@ in {
       onCalendar = "*-*-* 09:00:00";
     };
   };
+
+  systemd.services.pvv-calendar-bot = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+  };
 }

@@ -183,6 +183,7 @@ in
   };
 
   services.matrix-hookshot.serviceDependencies = [
+    "sops-install-secrets.service"
     "matrix-synapse.target"
     "nginx.service"
   ];

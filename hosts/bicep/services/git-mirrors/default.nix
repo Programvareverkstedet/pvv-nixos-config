@@ -20,6 +20,8 @@ in
       lfs = false;
     };
 
+    # TODO: add a module setting to specify additional systemd dependencies
+    #       and then mark "sops-install-secrets.service" as a dependency here
     instances = let
       defaultGithubConfig = {
         settings.token_file = config.sops.secrets."gickup/github-token".path;
