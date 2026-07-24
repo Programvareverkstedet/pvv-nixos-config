@@ -150,7 +150,6 @@ in
   };
 
   networking.firewall.allowedTCPPorts = lib.mkIf cfg.enable [ 5432 ];
-  networking.firewall.allowedUDPPorts = lib.mkIf cfg.enable [ 5432 ];
 
   environment.systemPackages = [
     (pkgs.writeShellApplication {
