@@ -7,6 +7,7 @@ in {
     ./machines.nix
     ./matrix-synapse.nix
     ./mysqld.nix
+    ./phpfpm.nix
     ./postgres.nix
   ];
 
