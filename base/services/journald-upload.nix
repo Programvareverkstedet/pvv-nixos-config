@@ -9,7 +9,7 @@ in
       URL = "https://journald.pvv.ntnu.no:${toString config.services.journald.remote.port}";
       ServerKeyFile = "-";
       ServerCertificateFile = "-";
-      TrustedCertificateFile = "-";
+      TrustedCertificateFile = config.security.pki.caBundle;
     };
   };
 
