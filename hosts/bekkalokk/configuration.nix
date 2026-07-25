@@ -13,6 +13,7 @@
     ./services/mediawiki
     ./services/nginx.nix
     ./services/phpfpm.nix
+    ./services/prometheus-phpfpm-exporter.nix
     ./services/vaultwarden.nix
     ./services/webmail
     ./services/website
