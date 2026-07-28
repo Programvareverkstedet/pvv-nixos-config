@@ -126,11 +126,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1784553736,
-        "narHash": "sha256-W1pPlTHmp+EvONwf8Qa5NvCiuyV4LC/yNDdc27RSpuA=",
+        "lastModified": 1784709844,
+        "narHash": "sha256-5PW5+UEFFjsru5FiDg9ZRUjQyo7AVyc+nesQlBSqM6c=",
         "ref": "main",
-        "rev": "e06daaef1f48160254c202c59b060ac6f1da9f38",
-        "revCount": 62,
+        "rev": "a8fb5df19d1cdcc3ac29cdb8ad192c1d578761f0",
+        "revCount": 63,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       },
@@ -291,11 +291,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1784526640,
-        "narHash": "sha256-UDnuu3uM64qjfVvsGSislJgP1j15FiFiDiKOjbGTv9Q=",
-        "rev": "036c2421db75172aeef4bb83921988891d4773c9",
+        "lastModified": 1785211367,
+        "narHash": "sha256-LCMjGYtOaXMLCj5aRf/YHGPF32t5MhOqfwEuLbDo1sc=",
+        "rev": "3770c18e5fe45a754c62d4d5081126195d9ab2ee",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/26.05-small/nixos-26.05.5692.036c2421db75/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/26.05-small/nixos-26.05.6345.3770c18e5fe4/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -319,11 +319,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1784536202,
-        "narHash": "sha256-7CmHmK10lEXBgymS0DeYj4/4STLpzRWCc/5BfoIxHQo=",
-        "rev": "94f12be79cb7f961726a0157b4168bc722befeac",
+        "lastModified": 1785210918,
+        "narHash": "sha256-gnVHwvnrk8Rh/44ryN50iuqoNzLqpNvSw9ZSNC9C4XM=",
+        "rev": "29a3e341634615ff16f700e9a1fdbc9c42f0198c",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.11pre1037880.94f12be79cb7/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable-small/nixos-26.11pre1042951.29a3e3416346/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -575,11 +575,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780762731,
-        "narHash": "sha256-EuDaLnasWN0mpi995n+fAQQfPGBhqNW4fNjlQRpHt58=",
+        "lastModified": 1785100355,
+        "narHash": "sha256-wBGnYrF7Kfs4vk3djspT3RdQqsYiqm60fKn7/J3vH4I=",
         "ref": "main",
-        "rev": "931bd2d63e285e767c8c81c103dda3c0a63f2965",
-        "revCount": 108,
+        "rev": "611f6ac1a304cc319fc85876d3f0301f49ce458e",
+        "revCount": 120,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/worblehat.git"
       },
