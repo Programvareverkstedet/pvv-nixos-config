@@ -82,7 +82,6 @@ in
         (mkMachine "buskerud")
         (mkMachine "buttercup")
         (mkMachine "demiurgen")
-        (mkMachine "drolsum")
         (mkMachine "hildring")
         (mkMachine "innovation")
         (mkMachine "isvegg")

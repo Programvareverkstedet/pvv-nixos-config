@@ -80,29 +80,6 @@ in {
     };
   };
 
-  nodes.drolsum = mkDevice "drolsum" {
-    guestType = "proxmox";
-    parent = config.nodes.powerpuff-cluster.id;
-    deviceType = "loginbox";
-    deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/debian.svg";
-
-    # TODO: the interface name is likely wrong
-    interfaceGroups = [ [ "eth0" ] ];
-    interfaces.eth0 = {
-      network = "pvv";
-      # mac = "";
-      addresses = [
-        "129.241.210.217"
-        "2001:700:300:1900::217"
-        "2001:700:300:1900::1:217"
-      ];
-      gateways = [
-        values.hosts.gateway
-        values.hosts.gateway6
-      ];
-    };
-  };
-
   nodes.microbel = mkDevice "microbel" {
     deviceIcon = "${pkgs.super-tiny-icons}/share/icons/SuperTinyIcons/svg/debian.svg";
 
