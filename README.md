@@ -34,12 +34,12 @@ revert the changes on the next nightly rebuild (tends to happen when everybody i
 
 | Name                       | Type     | Description                                               |
 |----------------------------|----------|-----------------------------------------------------------|
-| [bekkalokk][bek]           | Physical | Our main web host, webmail, wiki, idp, minecraft map, ... |
+| [bekkalokk][bek]           | Physical | Our main web host, webmail, wiki, idp, ...                |
 | [bicep][bic]               | Virtual  | Database host, matrix, git mirrors, ...                   |
 |  bikkje                    | Virtual  | Experimental login box                                    |
 | [brzeczyszczykiewicz][brz] | Physical | Shared music player                                       |
 | [georg][geo]               | Physical | Shared music player                                       |
-| [gluttony][glu]            | Virtual  | General purpose compute                                   |
+| [gluttony][glu]            | Virtual  | General purpose compute, minecraft map                    |
 | [ildkule][ild]             | Virtual  | Logging and monitoring host, prometheus, grafana, ...     |
 | [kommode][kom]             | Virtual  | Gitea + Gitea pages                                       |
 | [lupine][lup]              | Physical | Gitea CI/CD runners                                       |
