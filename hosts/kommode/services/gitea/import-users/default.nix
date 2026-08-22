@@ -23,7 +23,7 @@ in
       "network-online.target"
     ];
     serviceConfig = {
-      ExecStartPre = ''${pkgs.rsync}/bin/rsync -e "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=$CREDENTIALS_DIRECTORY/ssh-known-hosts -i $CREDENTIALS_DIRECTORY/sshkey" -a pvv@smtp.pvv.ntnu.no:/etc/passwd /run/gitea-import-users/passwd'';
+      ExecStartPre = ''${pkgs.rsync}/bin/rsync -e "${pkgs.openssh}/bin/ssh -o UserKnownHostsFile=%d/ssh-known-hosts -i %d/sshkey" -a pvv@smtp.pvv.ntnu.no:/etc/passwd /run/gitea-import-users/passwd'';
       ExecStart = pkgs.writers.writePython3 "gitea-import-users" {
         flakeIgnore = [
           "E501" # Line over 80 chars lol
