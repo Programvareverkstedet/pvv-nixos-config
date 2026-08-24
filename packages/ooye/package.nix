@@ -15,13 +15,13 @@ buildNpmPackage {
     domain = "git.pvv.ntnu.no";
     owner = "Drift";
     repo = "delete-your-element";
-    rev = "44fb6a02d3139e8ab10e9660ad931e5e70d1205f";
-    hash = "sha256-wDQhPbxwdkAm0kPhaDNjbk8rVFxnGinffVdASdFrYnU=";
+    rev = "899e9160db01613fe89bfe25640e6218c38bbd87";
+    hash = "sha256-A1en1X724AGe22bYfSEIdPCXp0INNJWZksAQRwwdDkc=";
   };
 
   inherit nodejs;
 
-  npmDepsHash = "sha256-h1mmE0/+Y7SBwnI0vaYvV+KqRDJGzwJvDUOkigzHcOY=";
+  npmDepsHash = "sha256-qEnL3Id08XhFfuBmcUGu7p0hBcBRwowxfxLqB81cJwM=";
   dontNpmBuild = true;
 
   nativeBuildInputs = [ makeWrapper ];
