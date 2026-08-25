@@ -126,11 +126,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1787560492,
-        "narHash": "sha256-LhJIe0K2RsMKkgm2vVN7p+UnKLeOD1d4/V8lT8AD9Vw=",
+        "lastModified": 1787647215,
+        "narHash": "sha256-Cv2HduZkSEBIySduPFBNsnkHarsXYmgRikL3FtqnC+g=",
         "ref": "main",
-        "rev": "3ef18a5c67e924b9801f20755866fc74074a5f50",
-        "revCount": 71,
+        "rev": "ec1348f9786f792944fa0a97ecd7f3cfdd4d0623",
+        "revCount": 81,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       },

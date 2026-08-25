@@ -7,8 +7,10 @@ let
 in {
   services.greg-ng = {
     enable = true;
-    settings.host = "localhost";
-    settings.port = 31337;
+    settings.server = {
+      host = "localhost";
+      port = 31337;
+    };
     enableSway = true;
     enablePipewire = true;
 
@@ -58,11 +60,11 @@ in {
       '';
 
       locations."/docs" = {
-        proxyPass = "http://${grg.settings.host}:${toString grg.settings.port}";
+        proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
       };
 
       locations."/api" = {
-        proxyPass = "http://${grg.settings.host}:${toString grg.settings.port}";
+        proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
         proxyWebsockets = true;
       };
     };
@@ -85,7 +87,7 @@ in {
       '';
 
       locations."/" = {
-        proxyPass = "http://${grg.settings.host}:${toString grg.settings.port}";
+        proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
         proxyWebsockets = true;
       };
     };
@@ -116,10 +118,10 @@ in {
         proxyWebsockets = true;
       };
       locations."/api" = {
-        proxyPass = "http://${grg.settings.host}:${toString grg.settings.port}";
+        proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
       };
       locations."/docs" = {
-        proxyPass = "http://${grg.settings.host}:${toString grg.settings.port}";
+        proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
       };
     };
   };
