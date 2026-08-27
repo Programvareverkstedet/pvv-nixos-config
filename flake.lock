@@ -104,11 +104,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784553797,
-        "narHash": "sha256-buGdmnsKNRDUNsb+aXGeUc/UjGGsMbH1KWy3xnheInA=",
+        "lastModified": 1787805502,
+        "narHash": "sha256-G5vLRXp/fJV69+h5acDb380rzxjcIeyuL+xf37Nl2Ls=",
         "ref": "main",
-        "rev": "c3101eb7424d4b15665bd00624220ec411187797",
-        "revCount": 36,
+        "rev": "47a625ce6cfb119e0ee9d7516b0ec17631efca56",
+        "revCount": 38,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
       },
@@ -126,11 +126,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1787647215,
-        "narHash": "sha256-Cv2HduZkSEBIySduPFBNsnkHarsXYmgRikL3FtqnC+g=",
+        "lastModified": 1787897662,
+        "narHash": "sha256-Gez9iuyUIta7x2IdNmJYDCQ4HRLnATloculwhhsW6fg=",
         "ref": "main",
-        "rev": "ec1348f9786f792944fa0a97ecd7f3cfdd4d0623",
-        "revCount": 81,
+        "rev": "7d7f309934a65f9225cd934f51017e0d0e0b350c",
+        "revCount": 98,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/greg-ng.git"
       },
