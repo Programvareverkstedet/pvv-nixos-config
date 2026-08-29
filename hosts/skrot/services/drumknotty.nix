@@ -37,7 +37,7 @@
     };
 
     worblehat = {
-      enable = true;
+      enable = false;
       settings = {
         general.quit_allowed = false;
         database = {
