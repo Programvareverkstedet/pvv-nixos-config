@@ -35,7 +35,9 @@ in
     };
   };
 
-  config = lib.mkIf (mainCfg.enable && cfg.enable) {
+  config = let
+    settingsFile = format.generate "dibbler.toml" cfg.settings;
+  in lib.mkIf (mainCfg.enable && cfg.enable) {
     assertions = [
       {
         assertion = cfg.createLocalDatabase -> config.services.postgresql.enable;
@@ -44,7 +46,14 @@ in
     ];
 
     environment.systemPackages = [ cfg.package ];
-    environment.etc."dibbler/dibbler.toml".source = format.generate "dibbler.toml" cfg.settings;
+    environment.etc."dibbler/dibbler.toml".source = settingsFile;
+
+    system.checks = [(
+      pkgs.runCommand "dibbler-config-check" { } ''
+          ${lib.getExe cfg.package} --config ${settingsFile} verify-config
+          touch $out
+        ''
+    )];
 
     services.drumknotty.dibbler.settings = {
       limits = {
