@@ -5,15 +5,15 @@
     ./disks.nix
 
     (fp /base)
-    ./services/nginx
+    # ./services/nginx
 
-    ./services/calendar-bot.nix
+    # ./services/calendar-bot.nix
     #./services/git-mirrors
-    ./services/minecraft-heatmap.nix
-    ./services/mysql
-    ./services/postgresql
+    # ./services/minecraft-heatmap.nix
+    # ./services/mysql
+    # ./services/postgresql
 
-    ./services/matrix
+    # ./services/matrix
   ];
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
@@ -22,18 +22,14 @@
     efiSupport = false;
   };
 
-  #systemd.network.networks."30-enp6s0f0" = values.defaultNetworkConfig // {
-  systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
-    #matchConfig.Name = "enp6s0f0";
-    matchConfig.Name = "ens18";
+  systemd.network.networks."30-enp6s0f3" = values.defaultNetworkConfig // {
+    matchConfig.Name = "enp6s0f3";
     address = with values.hosts.bicep; [ (ipv4 + "/25") (ipv6 + "/64") ]
       ++ (with values.services.turn; [ (ipv4 + "/25") (ipv6 + "/64") ]);
   };
   systemd.network.wait-online = {
     anyInterface = true;
   };
-
-  services.qemuGuest.enable = true;
 
   # Don't change (even during upgrades) unless you know what you are doing.
   # See https://search.nixos.org/options?show=system.stateVersion
