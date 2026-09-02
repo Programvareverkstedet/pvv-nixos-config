@@ -47,8 +47,9 @@ in rec {
       ipv6 = "2001:700:305:8a0f:f816:3eff:fef5:e400";
     };
     bicep = {
-      ipv4 = pvv-ipv4 209;
-      ipv6 = pvv-ipv6 209;
+      # guest1.pvv.ntnu.no
+      ipv4 = pvv-ipv4 248;
+      ipv6 = pvv-ipv6 248;
     };
     knutsen = {
       ipv4 = pvv-ipv4 191;
