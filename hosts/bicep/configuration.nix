@@ -1,7 +1,8 @@
-{ fp, pkgs, values, ... }:
+{ fp, lib, values, ... }:
 {
   imports = [
     ./hardware-configuration.nix
+    ./disks.nix
 
     (fp /base)
     ./services/nginx
@@ -14,6 +15,12 @@
 
     ./services/matrix
   ];
+
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = false;
+  };
 
   #systemd.network.networks."30-enp6s0f0" = values.defaultNetworkConfig // {
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
@@ -30,5 +37,5 @@
 
   # Don't change (even during upgrades) unless you know what you are doing.
   # See https://search.nixos.org/options?show=system.stateVersion
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }

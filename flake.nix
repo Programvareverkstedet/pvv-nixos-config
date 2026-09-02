@@ -193,6 +193,7 @@
       {
         bicep = stableNixosConfig "bicep" {
           modules = [
+            inputs.disko.nixosModules.disko
             inputs.matrix-next.nixosModules.default
             inputs.pvv-calendar-bot.nixosModules.default
             inputs.minecraft-heatmap.nixosModules.default
