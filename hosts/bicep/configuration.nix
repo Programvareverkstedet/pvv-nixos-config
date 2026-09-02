@@ -22,8 +22,8 @@
     efiSupport = false;
   };
 
-  systemd.network.networks."30-enp6s0f3" = values.defaultNetworkConfig // {
-    matchConfig.Name = "enp6s0f3";
+  systemd.network.networks."30-ens10f3" = values.defaultNetworkConfig // {
+    matchConfig.Name = "ens10f3";
     address = with values.hosts.bicep; [ (ipv4 + "/25") (ipv6 + "/64") ]
       ++ (with values.services.turn; [ (ipv4 + "/25") (ipv6 + "/64") ]);
   };
