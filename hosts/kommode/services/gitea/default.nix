@@ -180,6 +180,10 @@ in {
     port = 5698;
   };
 
+  services.nginx.appendHttpConfig = ''
+    limit_req_zone $binary_remote_addr zone=gitea_commit_permalink:64m rate=1r/s;
+  '';
+
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
     enableACME = true;
@@ -189,6 +193,15 @@ in {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
         extraConfig = ''
           client_max_body_size 512M;
+        '';
+      };
+      # Throttle per-IP access to commits, raws, blames, etc. to 1 per second
+      # This should help mitigate bot abuse to some extent.
+      "~ ^/[^/]+/[^/]+/(src|raw|commits|blame)/commit/" = {
+        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        extraConfig = ''
+          limit_req zone=gitea_commit_permalink burst=5 nodelay;
+          limit_req_status 429;
         '';
       };
       "/metrics" = {
