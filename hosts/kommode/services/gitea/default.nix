@@ -87,6 +87,7 @@ in {
         ITEM_TTL = "72h";
         COMMITS_COUNT = 100;
       };
+      queue.MAX_WORKERS = 4;
       security = {
         SECRET_KEY = lib.mkForce "";
         SECRET_KEY_URI = "file:${config.sops.secrets."gitea/secret-key".path}";
