@@ -32,8 +32,9 @@
 
   systemd.network.networks."30-ens10f3" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens10f3";
-    address = with values.hosts.bicep; [ (ipv4 + "/25") (ipv6 + "/64") ]
-      ++ (with values.services.turn; [ (ipv4 + "/25") (ipv6 + "/64") ]);
+    # IPs belong to guest1.pvv.ntnu.no
+    address = [ "129.241.210.248/25" "2001:700:300:1900::248/63" ];
+
   };
   systemd.network.wait-online = {
     anyInterface = true;
