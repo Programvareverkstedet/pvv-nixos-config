@@ -64,11 +64,6 @@ in
                 in lib.foldl (x: y: x // y) { } [
                   {
                     "@" = { };
-                    "@swap" = {
-                      mountpoint = "/.swapvol";
-                      mountOptions = commonMountOptions ++ [ "compress=zstd" "noatime" ];
-                      swap."swapfile".size = "8G";
-                    };
                     "@rootfs/active" = {
                       mountpoint = "/";
                       mountOptions = commonMountOptions ++ [ "compress=zstd" "noatime" ];
