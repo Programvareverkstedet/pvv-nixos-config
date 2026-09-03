@@ -1,4 +1,4 @@
-{ fp, lib, values, ... }:
+{ fp, lib, config, values, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -20,6 +20,14 @@
   boot.loader.grub = {
     enable = true;
     efiSupport = false;
+  };
+
+  services.smartd = {
+    autodetect = false;
+    devices = [
+      { device = config.disko.devices.disk.disk1.device; options = "-d cciss,0"; }
+      { device = config.disko.devices.disk.disk2.device; options = "-d cciss,1"; }
+    ];
   };
 
   systemd.network.networks."30-ens10f3" = values.defaultNetworkConfig // {
