@@ -83,10 +83,29 @@ in {
         AUTO_WATCH_NEW_REPOS = false;
       };
       admin.DEFAULT_EMAIL_NOTIFICATIONS = "onmention";
+
+      # NOTE: some of these already default to the value they are set to,
+      #       but we set them explicitly for documentation and clarity.
+      "git.config" = {
+        # Let path+-limited `git log -- <path>` skip commits that didn't touch the path,
+        # insted of opening every tree.
+        "core.commitGraph" = true;
+        "gc.writeCommitGraph" = true;
+        "fetch.writeCommitGraph" = true;
+        "commitGraph.changedPathsVersion" = 2;
+
+        # Enable reachability bitmaps for all pack/repack operations, which allows
+        # `git-upload-pack` (clone/fetch) to answer with O(1) instead of walking history.
+        # https://git-scm.com/docs/git-config#Documentation/git-config.txt-repackwriteBitmaps
+        "pack.writeBitmaps" = true;
+        "repack.writeBitmaps" = true;
+      };
+
       "cache.last_commit" = {
         ITEM_TTL = "72h";
         COMMITS_COUNT = 100;
       };
+
       queue.MAX_WORKERS = 4;
       security = {
         SECRET_KEY = lib.mkForce "";
@@ -167,23 +186,6 @@ in {
       "sops-install-secrets.service"
       "redis-gitea.service"
     ];
-
-    # NOTE: some of these already default to the value they are set to,
-    #       but we set them explicitly for documentation and clarity.
-    environment.GIT_CONFIG_GLOBAL = (pkgs.formats.gitIni { }).generate "gitea-git-global-config" {
-      # Let path+-limited `git log -- <path>` skip commits that didn't touch the path,
-      # insted of opening every tree.
-      core.commitGraph = true;
-      gc.writeCommitGraph = true;
-      fetch.writeCommitGraph = true;
-      commitGraph.changedPathsVersion = 2;
-
-      # Enable reachability bitmaps for all pack/repack operations, which allows
-      # `git-upload-pack` (clone/fetch) to answer with O(1) instead of walking history.
-      # https://git-scm.com/docs/git-config#Documentation/git-config.txt-repackwriteBitmaps
-      pack.writeBitmaps = true;
-      repack.writeBitmaps = true;
-    };
 
     serviceConfig = {
       CPUSchedulingPolicy = "batch";
