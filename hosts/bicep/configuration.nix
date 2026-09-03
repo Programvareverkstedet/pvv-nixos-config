@@ -9,7 +9,7 @@
 
     # ./services/calendar-bot.nix
     #./services/git-mirrors
-    # ./services/minecraft-heatmap.nix
+    ./services/minecraft-heatmap.nix
     # ./services/mysql
     # ./services/postgresql
 
