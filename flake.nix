@@ -177,7 +177,7 @@
               ])
               ++ modules;
           }
-          (builtins.removeAttrs extraArgs [
+          (removeAttrs extraArgs [
             "localSystem"
             "crossSystem"
             "modules"
@@ -368,7 +368,7 @@
         # Mediawiki extensions
         (lib.pipe null [
           (_: pkgs.callPackage ./packages/mediawiki-extensions {})
-          (lib.flip builtins.removeAttrs ["override" "overrideDerivation"])
+          (lib.flip removeAttrs ["override" "overrideDerivation"])
           (lib.mapAttrs' (name: lib.nameValuePair "mediawiki-${name}"))
         ])
         //

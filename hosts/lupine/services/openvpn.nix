@@ -1,7 +1,7 @@
 { config, pkgs, lib, values, ... }:
 let
   renderConfig = attrs: lib.pipe attrs [
-    (lib.filterAttrs (_: value: !(builtins.isNull value || value == false)))
+    (lib.filterAttrs (_: value: !(isNull value || value == false)))
     (builtins.mapAttrs (_: value:
       if builtins.isList value then builtins.concatStringsSep " " (map toString value)
       else if value == true then value

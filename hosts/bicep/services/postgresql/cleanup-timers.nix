@@ -29,7 +29,7 @@ in
           User = "postgres";
           Group = "postgres";
 
-          ExecStart = "${lib.getExe' cfg.package "psql"} --port=${builtins.toString cfg.settings.port} -tAc 'VACUUM ANALYZE'";
+          ExecStart = "${lib.getExe' cfg.package "psql"} --port=${toString cfg.settings.port} -tAc 'VACUUM ANALYZE'";
         };
       };
     };
