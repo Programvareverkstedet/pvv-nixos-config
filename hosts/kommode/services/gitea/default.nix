@@ -83,6 +83,10 @@ in {
         AUTO_WATCH_NEW_REPOS = false;
       };
       admin.DEFAULT_EMAIL_NOTIFICATIONS = "onmention";
+      "cache.last_commit" = {
+        ITEM_TTL = "72h";
+        COMMITS_COUNT = 100;
+      };
       security = {
         SECRET_KEY = lib.mkForce "";
         SECRET_KEY_URI = "file:${config.sops.secrets."gitea/secret-key".path}";
