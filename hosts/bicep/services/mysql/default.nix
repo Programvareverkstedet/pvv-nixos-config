@@ -1,8 +1,6 @@
 { config, pkgs, lib, values, ... }:
 let
   cfg = config.services.mysql;
-  # dataDir = "/var/lib/mysql";
-
   innodbBufferPoolMB = 128;
 in
 {
@@ -62,37 +60,13 @@ in
 
   networking.firewall.allowedTCPPorts = lib.mkIf cfg.enable [ 3306 ];
 
-  # systemd.tmpfiles.settings."10-mysql".${dataDir}.d = lib.mkIf cfg.enable {
-  #   inherit (cfg) user group;
-  #   mode = "0700";
-  # };
-
-  # fileSystems.${dataDir} = lib.mkIf cfg.enable {
-  #   device = dataDir;
-  #   fsType = "none";
-  #   options = [
-  #     "bind"
-  #     "noatime"
-  #     "noauto"
-  #     "x-systemd.requires=systemd-tmpfiles-setup.service"
-  #     "x-systemd.requires=systemd-tmpfiles-resetup.service"
-  #   ];
-  # };
-
   systemd.services.mysql = lib.mkIf cfg.enable {
-    after = [
-      "sops-install-secrets.service"
-      "systemd-tmpfiles-setup.service"
-      "systemd-tmpfiles-resetup.service"
-    ];
+    after = [ "sops-install-secrets.service" ];
     requires = [
       "sops-install-secrets.service"
     ];
 
     serviceConfig = {
-      # RequiresMountsFor = [ dataDir ];
-      # BindPaths = [ "${dataDir}:${cfg.dataDir}" ];
-
       LogsDirectory = "mysql";
 
       IPAddressDeny = "any";
