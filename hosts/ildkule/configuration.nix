@@ -12,7 +12,7 @@
     (fp /base)
 
     ./services/gatus
-    ./services/grafana.nix
+    ./services/grafana
     ./services/journald-remote.nix
     ./services/loki.nix
     ./services/nginx
