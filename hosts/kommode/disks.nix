@@ -16,35 +16,22 @@
               content = {
                 type = "btrfs";
                 extraArgs = [ "-f" ]; # Override existing partition
-                # subvolumes = let
-                #   makeSnapshottable = subvolPath: mountOptions: let
-                #     name = lib.replaceString "/" "-" subvolPath;
-                #   in {
-                #     "@${name}/active" = {
-                #       mountpoint = subvolPath;
-                #       inherit mountOptions;
-                #     };
-                #     "@${name}/snapshots" = {
-                #       mountpoint = "${subvolPath}/.snapshots";
-                #       inherit mountOptions;
-                #     };
-                #   };
-                # in {
-                #   "@" = { };
-                #   "@/swap" = {
-                #     mountpoint = "/.swapvol";
-                #     swap.swapfile.size = "4G";
-                #   };
-                #   "@/root" = {
-                #     mountpoint = "/";
-                #     mountOptions = [ "compress=zstd" "noatime" ];
-                #   };
-                # }
-                # // (makeSnapshottable "/home" [ "compress=zstd" "noatime" ])
-                # // (makeSnapshottable "/nix" [ "compress=zstd" "noatime" ])
-                # // (makeSnapshottable "/var/lib" [ "compress=zstd" "noatime" ])
-                # // (makeSnapshottable "/var/log" [ "compress=zstd" "noatime" ])
-                # // (makeSnapshottable "/var/cache" [ "compress=zstd" "noatime" ]);
+                subvolumes = let
+                  makeSnapshottable = subvolPath: mountOptions: let
+                    name = lib.replaceString "/" "_" subvolPath;
+                  in {
+                    "@rootfs_${name}/active" = {
+                      mountpoint = subvolPath;
+                      inherit mountOptions;
+                    };
+                    "@rootfs_${name}/snapshots" = {
+                      mountpoint = "${subvolPath}/.snapshots";
+                      inherit mountOptions;
+                    };
+                  };
+                in { }
+                // (makeSnapshottable "/var/lib/gitea" [ "compress=zstd" "noatime" ])
+                // (makeSnapshottable "/var/lib/gitea-web" [ "compress=zstd" "noatime" ]);
 
                 # swap.swapfile.size = "4G";
                 mountpoint = "/";
