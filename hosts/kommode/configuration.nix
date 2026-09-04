@@ -6,6 +6,7 @@
     (fp /base)
     ./disks.nix
 
+    ./services/duperemove.nix
     ./services/gitea
     ./services/nginx.nix
   ];
