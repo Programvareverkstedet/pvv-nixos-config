@@ -5,15 +5,15 @@
     ./disks.nix
 
     (fp /base)
-    # ./services/nginx
+    ./services/nginx
 
-    # ./services/calendar-bot.nix
+    ./services/calendar-bot.nix
     #./services/git-mirrors
     ./services/minecraft-heatmap.nix
-    # ./services/mysql
-    # ./services/postgresql
+    ./services/mysql
+    ./services/postgresql
 
-    # ./services/matrix
+    ./services/matrix
   ];
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
