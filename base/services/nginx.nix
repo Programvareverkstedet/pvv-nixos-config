@@ -53,4 +53,49 @@
   networking.firewall.allowedTCPPorts = lib.mkIf config.services.nginx.enable [ 80 443 ];
 
   services.logrotate.settings.nginx.rotate = lib.mkIf config.services.nginx.enable 5;
+
+  services.fluent-bit.settings.pipeline = lib.mkIf (config.services.nginx.enable && config.services.fluent-bit.enable) {
+    inputs = [
+      {
+        name = "tail";
+        tag = "nginx.access";
+        path = "/var/log/nginx/access.log";
+        db = "/var/lib/fluent-bit/nginx-access.db";
+        "storage.type" = "filesystem";
+      }
+      {
+        name = "tail";
+        tag = "nginx.error";
+        path = "/var/log/nginx/error.log";
+        db = "/var/lib/fluent-bit/nginx-error.db";
+        "storage.type" = "filesystem";
+      }
+    ];
+
+    outputs = [{
+      name = "loki";
+      match = "nginx.*";
+
+      host = "loki.pvv.ntnu.no";
+      port = 443;
+      tls = "on";
+      "tls.verify" = "on";
+      uri = "/loki/api/v1/push";
+      compress = "gzip";
+
+      labels = lib.concatStringsSep ", " [
+        "job=nginx"
+        "host=${config.networking.hostName}"
+      ];
+
+      "storage.total_limit_size" = "256M";
+    }];
+  };
+
+  systemd.services.fluent-bit.serviceConfig =
+    lib.mkIf (config.services.nginx.enable && config.services.fluent-bit.enable)
+      {
+        SupplementaryGroups = [ "nginx" ];
+        BindReadOnlyPaths = [ "/var/log/nginx" ];
+      };
 }

@@ -60,7 +60,7 @@ in
 
         outputs = [{
           name = "loki";
-          match = "*";
+          match = "journal.*";
 
           host = "loki.pvv.ntnu.no";
           port = 443;
