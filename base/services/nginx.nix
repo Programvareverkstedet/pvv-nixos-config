@@ -51,4 +51,6 @@
   };
 
   networking.firewall.allowedTCPPorts = lib.mkIf config.services.nginx.enable [ 80 443 ];
+
+  services.logrotate.settings.nginx.rotate = lib.mkIf config.services.nginx.enable 5;
 }
