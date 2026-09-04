@@ -20,11 +20,11 @@
                   makeSnapshottable = subvolPath: mountOptions: let
                     name = lib.replaceString "/" "_" subvolPath;
                   in {
-                    "@rootfs_${name}/active" = {
+                    "@rootfs${name}/active" = {
                       mountpoint = subvolPath;
                       inherit mountOptions;
                     };
-                    "@rootfs_${name}/snapshots" = {
+                    "@rootfs${name}/snapshots" = {
                       mountpoint = "${subvolPath}/.snapshots";
                       inherit mountOptions;
                     };
