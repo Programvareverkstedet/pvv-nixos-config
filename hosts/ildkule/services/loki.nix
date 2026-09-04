@@ -62,6 +62,11 @@ in {
         allow_structured_metadata = false;
         reject_old_samples = true;
         reject_old_samples_max_age = "72h";
+
+        ingestion_rate_mb = 32;
+        ingestion_burst_size_mb = 64;
+        per_stream_rate_limit = "32MB";
+        per_stream_rate_limit_burst = "64MB";
       };
 
       compactor = {
