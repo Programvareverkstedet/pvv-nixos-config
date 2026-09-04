@@ -11,9 +11,13 @@
     ./disks.nix
     (fp /base)
 
-    ./services/monitoring
-    ./services/nginx
+    ./services/gatus
+    ./services/grafana.nix
     ./services/journald-remote.nix
+    ./services/loki.nix
+    ./services/nginx
+    ./services/prometheus
+    ./services/scrutiny.nix
   ];
 
   boot.loader.grub.enable = true;
