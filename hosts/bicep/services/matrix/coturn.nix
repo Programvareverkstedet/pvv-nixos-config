@@ -46,11 +46,23 @@
 
   security.acme.certs.${config.services.coturn.realm} = {
     email = "drift@pvv.ntnu.no";
-    listenHTTP = "${values.services.turn.ipv4}:80";
+    webroot = "/var/lib/acme/acme-challenge/";
+    group = config.services.nginx.group;
     reloadServices = [ "coturn.service" ];
   };
 
-  users.users.turnserver.extraGroups = [ "acme" ];
+
+  services.nginx = {
+    enable = true;
+    virtualHosts.${config.services.coturn.realm} = {
+      forceSSL = true;
+      kTLS = true;
+      useACMEHost = "${config.services.coturn.realm}";
+      locations."/.well-known/".root = "/var/lib/acme/acme-challenge/";
+    };
+  };
+
+  users.users.turnserver.extraGroups = [ config.services.nginx.group ];
 
   # It needs this to be allowed to access the files with the acme group
   systemd.services.coturn.serviceConfig.PrivateUsers = lib.mkForce false;
@@ -58,10 +70,6 @@
   systemd.services.coturn = {
     requires = [ "sops-install-secrets.service" ];
     after = [ "sops-install-secrets.service" ];
-  };
-
-  systemd.services."acme-${config.services.coturn.realm}".serviceConfig = {
-    AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
   };
 
   services.coturn = rec {
