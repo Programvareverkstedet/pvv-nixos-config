@@ -32,28 +32,6 @@ in
 
     # NOTE: needed for ingress/egress workers
     # redis.createLocally = true;
-
-    settings = {
-      # Without this, LiveKit auto-creates rooms for any JWT holder,
-      # bypassing the full-access-homeserver restriction that
-      # lk-jwt-service is supposed to enforce.
-      room.auto_create = false;
-
-      # bicep's interface address is already a publicly routable PVV/NTNU
-      # IP, but STUN-based discovery is cheap and avoids advertising a
-      # wrong ICE candidate if that ever changes (e.g. hypervisor NAT).
-      rtc.use_external_ip = true;
-
-      # NOTE: delegated-leave (MSC4140) webhook support only landed in
-      # lk-jwt-service v0.6.0; the currently packaged version (0.4.4) has
-      # no /sfu_webhook route, so this would be a no-op. Uncomment once
-      # the package is bumped to >=0.6.0 (api_key must match the
-      # lk-jwt-service key in the shared keyfile).
-      # webhook = {
-      #   api_key = "lk-jwt-service";
-      #   urls = [ "https://${matrixDomain}/livekit/jwt/sfu_webhook" ];
-      # };
-    };
   };
 
   services.lk-jwt-service = lib.mkIf cfg.enable {
