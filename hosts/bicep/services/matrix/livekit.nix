@@ -32,6 +32,17 @@ in
 
     # NOTE: needed for ingress/egress workers
     # redis.createLocally = true;
+
+    settings = {
+      # room.auto_create = false;
+      rtc.use_external_ip = true;
+
+      # NOTE: will land in 26.11
+      # webhook = {
+      #   api_key = "lk-jwt-service";
+      #   urls = [ "https://${matrixDomain}/livekit/jwt/sfu_webhook" ];
+      # };
+    };
   };
 
   services.lk-jwt-service = lib.mkIf cfg.enable {
