@@ -99,23 +99,23 @@ in
     builtins.ceil (sharedBuffersMB / config.boot.kernel.hugepages.size)
   );
 
-  systemd.tmpfiles.settings."10-postgresql"."/data/postgresql".d = lib.mkIf cfg.enable {
-    user = config.systemd.services.postgresql.serviceConfig.User;
-    group = config.systemd.services.postgresql.serviceConfig.Group;
-    mode = "0700";
-  };
+  # systemd.tmpfiles.settings."10-postgresql"."/data/postgresql".d = lib.mkIf cfg.enable {
+  #   user = config.systemd.services.postgresql.serviceConfig.User;
+  #   group = config.systemd.services.postgresql.serviceConfig.Group;
+  #   mode = "0700";
+  # };
 
-  fileSystems."/data/postgresql" = lib.mkIf cfg.enable {
-    device = "/data/postgresql";
-    fsType = "none";
-    options = [
-      "bind"
-      "noatime"
-      "noauto"
-      "x-systemd.requires=systemd-tmpfiles-setup.service"
-      "x-systemd.requires=systemd-tmpfiles-resetup.service"
-    ];
-  };
+  # fileSystems."/data/postgresql" = lib.mkIf cfg.enable {
+  #   device = "/data/postgresql";
+  #   fsType = "none";
+  #   options = [
+  #     "bind"
+  #     "noatime"
+  #     "noauto"
+  #     "x-systemd.requires=systemd-tmpfiles-setup.service"
+  #     "x-systemd.requires=systemd-tmpfiles-resetup.service"
+  #   ];
+  # };
 
   systemd.services.postgresql-setup = lib.mkIf cfg.enable {
     after = [
@@ -128,8 +128,8 @@ in
         "key:/etc/certs/postgres.key"
       ];
 
-      RequiresMountsFor = [ "/data/postgresql" ];
-      BindPaths = [ "/data/postgresql:/var/lib/postgresql" ];
+      # RequiresMountsFor = [ "/data/postgresql" ];
+      # BindPaths = [ "/data/postgresql:/var/lib/postgresql" ];
     };
   };
 
@@ -144,8 +144,8 @@ in
         "key:/etc/certs/postgres.key"
       ];
 
-      RequiresMountsFor = [ "/data/postgresql" ];
-      BindPaths = [ "/data/postgresql:/var/lib/postgresql" ];
+      # RequiresMountsFor = [ "/data/postgresql" ];
+      # BindPaths = [ "/data/postgresql:/var/lib/postgresql" ];
     };
   };
 

@@ -56,7 +56,7 @@ in {
       (pkgs.python3Packages.callPackage ./smtp-authenticator { })
     ];
 
-    dataDir = "/data/synapse";
+    # dataDir = "/data/synapse";
 
     workers.federationSenders = 2;
     workers.federationReceivers = 2;

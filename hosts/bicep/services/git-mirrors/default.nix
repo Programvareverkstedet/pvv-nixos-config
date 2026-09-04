@@ -10,7 +10,7 @@ in
   services.gickup = {
     enable = true;
 
-    dataDir = "/data/gickup";
+    dataDir = "/var/lib/gickup";
 
     destinationSettings = {
       structured = true;

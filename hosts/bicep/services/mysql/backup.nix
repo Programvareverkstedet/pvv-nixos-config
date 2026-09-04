@@ -1,7 +1,7 @@
 { config, lib, pkgs, values, ... }:
 let
   cfg = config.services.mysql;
-  backupDir = "/data/mysql-backups";
+  backupDir = "/var/cache/mysql-backups";
 in
 {
   # services.mysqlBackup = lib.mkIf cfg.enable {

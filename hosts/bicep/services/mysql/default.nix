@@ -1,7 +1,7 @@
 { config, pkgs, lib, values, ... }:
 let
   cfg = config.services.mysql;
-  dataDir = "/data/mysql";
+  # dataDir = "/var/lib/mysql";
 
   innodbBufferPoolMB = 128;
 in
@@ -62,22 +62,22 @@ in
 
   networking.firewall.allowedTCPPorts = lib.mkIf cfg.enable [ 3306 ];
 
-  systemd.tmpfiles.settings."10-mysql".${dataDir}.d = lib.mkIf cfg.enable {
-    inherit (cfg) user group;
-    mode = "0700";
-  };
+  # systemd.tmpfiles.settings."10-mysql".${dataDir}.d = lib.mkIf cfg.enable {
+  #   inherit (cfg) user group;
+  #   mode = "0700";
+  # };
 
-  fileSystems.${dataDir} = lib.mkIf cfg.enable {
-    device = dataDir;
-    fsType = "none";
-    options = [
-      "bind"
-      "noatime"
-      "noauto"
-      "x-systemd.requires=systemd-tmpfiles-setup.service"
-      "x-systemd.requires=systemd-tmpfiles-resetup.service"
-    ];
-  };
+  # fileSystems.${dataDir} = lib.mkIf cfg.enable {
+  #   device = dataDir;
+  #   fsType = "none";
+  #   options = [
+  #     "bind"
+  #     "noatime"
+  #     "noauto"
+  #     "x-systemd.requires=systemd-tmpfiles-setup.service"
+  #     "x-systemd.requires=systemd-tmpfiles-resetup.service"
+  #   ];
+  # };
 
   systemd.services.mysql = lib.mkIf cfg.enable {
     after = [
@@ -90,8 +90,8 @@ in
     ];
 
     serviceConfig = {
-      RequiresMountsFor = [ dataDir ];
-      BindPaths = [ "${dataDir}:${cfg.dataDir}" ];
+      # RequiresMountsFor = [ dataDir ];
+      # BindPaths = [ "${dataDir}:${cfg.dataDir}" ];
 
       LogsDirectory = "mysql";
 

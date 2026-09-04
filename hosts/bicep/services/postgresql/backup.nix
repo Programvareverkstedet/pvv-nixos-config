@@ -1,7 +1,7 @@
 { config, lib, pkgs, values, ... }:
 let
   cfg = config.services.postgresql;
-  backupDir = "/data/postgresql-backups";
+  backupDir = "/var/cache/postgresql-backups";
 in
 {
   # services.postgresqlBackup = lib.mkIf cfg.enable {
