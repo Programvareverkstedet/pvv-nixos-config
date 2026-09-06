@@ -5,7 +5,6 @@
     ./synapse-auto-compressor.nix
     ./synapse.nix
     ./element.nix
-    ./coturn.nix
     ./livekit.nix
     ./mjolnir.nix
     ./well-known.nix
