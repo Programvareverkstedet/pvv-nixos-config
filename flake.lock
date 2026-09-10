@@ -189,16 +189,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1782122067,
-        "narHash": "sha256-95q3DiYOTHjQGbqR0I1w4ETrH+smtddqW0bBxaB/Egg=",
-        "owner": "dali99",
+        "lastModified": 1789061132,
+        "narHash": "sha256-gXhoXbWUYpfqD0c48thWvbQziKfxmhaYDHuGCXOg6IU=",
+        "owner": "D4ndellion",
         "repo": "nixos-matrix-modules",
-        "rev": "0e0fd9f6a407b08dd5e180a2ff6c3808461e2c47",
+        "rev": "34eb527d0b1f8ea010904f7e2e920a4a795c65f2",
         "type": "github"
       },
       "original": {
-        "owner": "dali99",
-        "ref": "master",
+        "owner": "D4ndellion",
+        "ref": "socket-activation-poc",
         "repo": "nixos-matrix-modules",
         "type": "github"
       }
