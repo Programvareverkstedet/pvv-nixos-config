@@ -1,27 +1,36 @@
 { config, lib, pkgs, ... }:
+let
+  systemdExe = "${config.systemd.package}/lib/systemd/systemd";
+in
 {
   security.audit = {
     enable = lib.mkDefault true;
 
     # NOTE: see auditctl(8) for the meaning of the different rule flags.
     rules = [
+      # Systemd uses a lot of eBPF programs for sandboxing and whatnot,
+      # and logging this comes enabled by default. Let's not.
+      "-a exclude,always -F msgtype=BPF"
+
       # Kernel module loading/unloading
       "-a always,exit -F arch=b64 -S init_module,finit_module,delete_module -k kernel-modules"
 
-      # Mount/unmount by real (non-service) users
-      "-a always,exit -F arch=b64 -S mount,umount2 -F auid>=1000 -F auid!=-1 -k mounts"
+      # Mount/unmount by real (non-service) users. Excludes the mounting
+      # done by systemd --user instances.
+      "-a always,exit -F arch=b64 -S mount,umount2 -F auid>=1000 -F auid!=-1 -F exe!=${systemdExe} -k mounts"
 
-      # DAC permission/ownership changes by real users
-      "-a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=-1 -k perm-mod"
-      "-a always,exit -F arch=b64 -S chown,fchown,fchownat,lchown -F auid>=1000 -F auid!=-1 -k perm-mod"
-      "-a always,exit -F arch=b64 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>=1000 -F auid!=-1 -k perm-mod"
+      # DAC permission/ownership changes by real users. Same systemd caveat
+      # as above.
+      "-a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=-1 -F exe!=${systemdExe} -k perm-mod"
+      "-a always,exit -F arch=b64 -S chown,fchown,fchownat,lchown -F auid>=1000 -F auid!=-1 -F exe!=${systemdExe} -k perm-mod"
+      "-a always,exit -F arch=b64 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>=1000 -F auid!=-1 -F exe!=${systemdExe} -k perm-mod"
 
       # Failed access attempts (permission denied) by real users
-      "-a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=-1 -k access"
-      "-a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=-1 -k access"
+      "-a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=-1 -F exe!=${systemdExe} -k access"
+      "-a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=-1 -F exe!=${systemdExe} -k access"
 
-      # File deletion/rename by real users
-      "-a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F auid>=1000 -F auid!=-1 -k delete"
+      # File deletion/rename by real users.
+      "-a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F auid>=1000 -F auid!=-1 -F exe!=${systemdExe} -k delete"
 
       # Execution of privileged commands
       "-w ${config.security.wrapperDir}/sudo -p x -k privileged-sudo"
