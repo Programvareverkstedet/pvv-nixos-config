@@ -1,4 +1,4 @@
-{ config, values, ... }:
+{ config, values, pkgs, ... }:
 {
   services.nginx = {
     enable = true;
@@ -11,5 +11,8 @@
       "127.0.0.2"
       "[::1]"
     ];
+    virtualHosts."matrix.pvv.ntnu.no" = {
+      root = pkgs.writeTextDir "index.html" (builtins.readFile ./index.html);
+    };
   };
 }
