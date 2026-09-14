@@ -138,6 +138,7 @@ in
 
         ExecStart =
           let
+            encodingConversion = "${lib.getExe (import ./utf-8-to-latin-1.nix { inherit pkgs; })}";
             screenrc = let
               convertToFile = lines: lib.pipe lines [
                 lib.concatLists
@@ -157,7 +158,7 @@ in
                   config = "/etc/dibbler/dibbler.toml";
                 };
               in lib.optionals cfg.dibbler.enable [
-                "screen -t dibbler ${lib.getExe cfg.dibbler.package} ${dibblerArgs} loop"
+                "screen -t dibbler ${encodingConversion} ${lib.getExe cfg.dibbler.package} ${dibblerArgs} loop"
 
               ])
 
@@ -166,7 +167,7 @@ in
                   config = "/etc/worblehat/config.toml";
                 };
               in lib.optionals cfg.worblehat.enable [
-                "screen -t worblehat ${lib.getExe cfg.worblehat.package} ${worblehatArgs} cli"
+                "screen -t worblehat ${encodingConversion} ${lib.getExe cfg.worblehat.package} ${worblehatArgs} cli"
               ])
 
               [ "select 0" ]

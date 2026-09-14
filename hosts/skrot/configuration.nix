@@ -28,6 +28,19 @@
     ];
   };
 
+  console = {
+    keyMap = "no";
+    font = lib.mkForce "lat1-16";
+    earlySetup = true;
+  };
+
+  i18n.defaultCharset = lib.mkForce "ISO-8859-1";
+  i18n.defaultLocale = lib.mkForce "en_US";
+  i18n.extraLocales = [
+    "en_US/ISO-8859-1"
+    "nb_NO/ISO-8859-1"
+  ];
+
   systemd.services."serial-getty@ttyUSB0" = lib.mkIf (!config.virtualisation.isVmVariant) {
     enable = true;
     wantedBy = [ "getty.target" ]; # to start at boot
