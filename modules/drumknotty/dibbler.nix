@@ -100,8 +100,8 @@ in
     systemd.services.dibbler-setup-database = lib.mkIf cfg.createLocalDatabase {
       description = "Dibbler database setup";
 
-      wantedBy = [ "default.target" ];
-      requiredBy = [ "drumknotty-screen-session.service" ];
+      wantedBy = [ "drumknotty.target" ];
+      requiredBy = [ "drumknotty.target" ];
       before = [ "drumknotty-screen-session.service" ];
       after = [ "postgresql.service" ];
 
