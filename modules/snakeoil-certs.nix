@@ -47,10 +47,16 @@ in
   config = {
     systemd.services."generate-snakeoil-certs" = {
       enable = true;
+
+      unitConfig.DefaultDependencies = false;
+      after = [ "local-fs.target" ];
+      wantedBy = [ "sysinit.target" ];
+      before = [ "sysinit.target" ];
+
       serviceConfig.Type = "oneshot";
       script = let
         openssl = lib.getExe pkgs.openssl;
-      in lib.concatMapStringsSep "\n" ({ name, value }: ''
+      in lib.concatMapStringsSep "\n" ({ value, ... }: ''
         mkdir -p "$(dirname '${value.certificate}')" "$(dirname '${value.certificateKey}')"
         if ! ${openssl} x509 -checkend 86400 -noout -in '${value.certificate}'
         then
