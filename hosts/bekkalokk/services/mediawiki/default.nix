@@ -247,6 +247,31 @@ in {
         return = "301 /wiki/Programvareverkstedet";
       };
 
+      # NOTE: ensure this pattern matches the upstream NixOS mediawiki module letter for letter
+      # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/web-apps/mediawiki.nix#L720
+      #
+      # TODO: rate limit more URLs: https://github.com/NixOS/infra/blob/3c20fcebc683c7515e8bde58256b609960047cad/terraform/wiki.tf
+      "~ ^/w/(index|load|api|thumb|opensearch_desc|rest|img_auth)\\.php$" = lib.mkForce {
+        extraConfig = ''
+          rewrite ^/w/(.*) /$1 break;
+          include ${pkgs.nginx}/conf/fastcgi.conf;
+          fastcgi_index index.php;
+          fastcgi_pass unix:${config.services.phpfpm.pools.mediawiki.socket};
+
+          limit_req zone=mediawiki_scrapers burst=30 nodelay;
+
+          fastcgi_cache mediawiki;
+          fastcgi_cache_key "$scheme$request_method$host$request_uri";
+          fastcgi_cache_methods GET HEAD;
+          fastcgi_cache_bypass $mediawiki_cache_bypass;
+          fastcgi_no_cache $mediawiki_cache_bypass;
+          fastcgi_cache_use_stale error timeout updating http_500 http_503;
+          fastcgi_cache_background_update on;
+          fastcgi_cache_lock on;
+          add_header X-Cache-Status $upstream_cache_status;
+        '';
+      };
+
       # based on https://simplesamlphp.org/docs/stable/simplesamlphp-install.html#configuring-nginx
       "^~ /simplesaml/" = {
         alias = "${simplesamlphp}/share/php/simplesamlphp/public/";
@@ -282,8 +307,33 @@ in {
           $out
       '';
     };
-
   };
+
+
+  services.nginx.commonHttpConfig = lib.mkIf cfg.enable ''
+    # mediawiki_authenticated is true if we are logged in.
+    map $http_cookie $mediawiki_authenticated {
+      default 0;
+      "~*(?i)(session|token|userid|username)=" 1;
+    }
+
+    # mediawiki_scraper_key is empty if we are logged in.
+    map $mediawiki_authenticated $mediawiki_scraper_key {
+      0 $binary_remote_addr;
+      1 "";
+    }
+
+    # mediawiki_cache_bypass is true we are authenticated.
+    map $mediawiki_authenticated $mediawiki_cache_bypass {
+      0 0;
+      1 1;
+    }
+
+    limit_req_zone $mediawiki_scraper_key zone=mediawiki_scrapers:10m rate=60r/m;
+    limit_req_status 429;
+
+    fastcgi_cache_path /var/cache/nginx/mediawiki levels=1:2 keys_zone=mediawiki:20m max_size=1g inactive=1d use_temp_path=off;
+  '';
 
   systemd.services.mediawiki-init = lib.mkIf cfg.enable {
     after = [ "sops-install-secrets.service" ];
