@@ -57,6 +57,8 @@ in
 
     systemd.services.drumknotty-scanner-bridge = {
       description = "DrumknoTTY barcode scanner bridge";
+      after = [ "drumknotty-screen-session.service" ];
+      wantedBy = [ "drumknotty.target" ];
 
       unitConfig.AssertPathExists = cfg.device;
       serviceConfig = {

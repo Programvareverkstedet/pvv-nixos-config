@@ -157,8 +157,8 @@ in
       systemd.services.worblehat-setup-database = lib.mkIf cfg.createLocalDatabase {
         description = "Worblehat database setup";
 
-        wantedBy = [ "default.target" ];
-        requiredBy = [ "drumknotty-screen-session.service" ];
+        wantedBy = [ "drumknotty.target" ];
+        requiredBy = [ "drumknotty.target" ];
         before = [ "drumknotty-screen-session.service" ];
         after = [ "postgresql.service" ];
 
@@ -180,7 +180,10 @@ in
     (lib.mkIf cfg.deadline-daemon.enable {
       systemd.timers.worblehat-deadline-daemon = lib.mkIf cfg.deadline-daemon.enable {
         description = "Worblehat Deadline Daemon";
-        wantedBy = [ "timers.target" ];
+        wantedBy = [
+          "timers.target"
+          "drumknotty.target"
+        ];
         timerConfig = {
           OnCalendar = cfg.deadline-daemon.onCalendar;
           Persistent = true;
@@ -189,7 +192,6 @@ in
 
       systemd.services.worblehat-deadline-daemon = lib.mkIf cfg.deadline-daemon.enable {
         description = "Worblehat Deadline Daemon";
-        wantedBy = [ "multi-user.target" ];
         after = [ "network.target" ];
         serviceConfig = {
           Type = "oneshot";
