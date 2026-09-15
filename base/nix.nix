@@ -14,6 +14,15 @@
       experimental-features = [ "nix-command" "flakes" "auto-allocate-uids" ];
       log-lines = 50;
       use-xdg-base-directories = true;
+
+      extra-substituters = lib.optionals (!lib.elem config.networking.hostName [ "gluttony" "wenche" ]) [
+        "https://gluttony.pvv.ntnu.no"
+        "https://wenche.pvv.ntnu.no"
+      ];
+      extra-trusted-public-keys = [
+        "gluttony.pvv.ntnu.no-1:tUEtZj/8j9fmfeM7fsbg9ri9WMKoHIwExfl+q/RzfF0="
+        "wenche.pvv.ntnu.no-1:7LGUoO+5UkfngJqZgc+bcPuKLtJX2+kXu3JiU3ePaZ4="
+      ];
     };
 
     /* This makes commandline tools like

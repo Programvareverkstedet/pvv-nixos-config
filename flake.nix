@@ -247,7 +247,9 @@
           ];
         };
         shark = stableNixosConfig "shark" {};
-        wenche = stableNixosConfig "wenche" {};
+        wenche = stableNixosConfig "wenche" {
+          modules = [ self.nixosModules.harmonia ];
+        };
         temmie = stableNixosConfig "temmie" {
           overlays = [
             inputs.bro.overlays.default
@@ -261,7 +263,10 @@
           overlays = [
             (final: prev: { bluemap = final.callPackage ./packages/bluemap.nix {}; })
           ];
-          modules = [ self.nixosModules.bluemap ];
+          modules = [
+            self.nixosModules.bluemap
+            self.nixosModules.harmonia
+          ];
         };
 
         kommode = stableNixosConfig "kommode" {
@@ -313,6 +318,7 @@
       bluemap = ./modules/bluemap.nix;
       drumknotty = ./modules/drumknotty;
       gickup = ./modules/gickup;
+      harmonia = ./modules/harmonia.nix;
       hugepages = ./modules/hugepages.nix;
       matrix-ooye = ./modules/matrix-ooye.nix;
       python-http-handlers = ./modules/python-http-handlers.nix;
