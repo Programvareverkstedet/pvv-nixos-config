@@ -10,18 +10,18 @@ let
 in
 buildNpmPackage {
   pname = "delete-your-element";
-  version = "3.6.0";
+  version = "3.7.0";
   src = fetchFromGitea {
     domain = "git.pvv.ntnu.no";
     owner = "Drift";
     repo = "delete-your-element";
-    rev = "899e9160db01613fe89bfe25640e6218c38bbd87";
-    hash = "sha256-A1en1X724AGe22bYfSEIdPCXp0INNJWZksAQRwwdDkc=";
+    rev = "dd803378e66eec6e6984dd8d8f9a305ee6c41c21";
+    hash = "sha256-GubaUgu1sOCn/7JncMgkLJv/RC1rEWmUQS5JR6DDo+Q=";
   };
 
   inherit nodejs;
 
-  npmDepsHash = "sha256-qEnL3Id08XhFfuBmcUGu7p0hBcBRwowxfxLqB81cJwM=";
+  npmDepsHash = "sha256-2qjSF2m5cmKMS8z09bRFraj1mUowaHrEHjy/RgFYDlA=";
   dontNpmBuild = true;
 
   nativeBuildInputs = [ makeWrapper ];
