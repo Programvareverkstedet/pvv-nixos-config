@@ -80,6 +80,9 @@ in {
   };
 
   services.phpfpm.pools."pvv-nettsiden".settings = {
+    "pm.max_children" = 4;
+    "pm.max_spare_servers" = 4;
+
     "php_admin_value[error_log]" = "syslog";
     "php_admin_flag[log_errors]" = true;
     "catch_workers_output" = true;

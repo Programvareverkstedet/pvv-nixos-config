@@ -49,6 +49,11 @@ in
     '';
   };
 
+  services.phpfpm.pools.roundcube.settings = {
+    "pm.max_children" = 4;
+    "pm.max_spare_servers" = 4;
+  };
+
   systemd.services."phpfpm-roundcube" = {
     after = [ "sops-install-secrets.service" ];
     requires = [ "sops-install-secrets.service" ];

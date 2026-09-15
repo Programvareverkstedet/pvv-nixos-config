@@ -88,7 +88,7 @@ in {
     poolConfig = {
       inherit user group;
       "pm" = "dynamic";
-      "pm.max_children" = 32;
+      "pm.max_children" = 4;
       "pm.max_requests" = 500;
       "pm.start_servers" = 2;
       "pm.min_spare_servers" = 2;

@@ -64,7 +64,7 @@ in {
         "listen.owner" = config.services.nginx.user;
         "listen.group" = config.services.nginx.group;
         "pm" = "ondemand";
-        "pm.max_children" = 32;
+        "pm.max_children" = 4;
         "pm.process_idle_timeout" = "10s";
         "pm.max_requests" = 500;
       };
