@@ -93,6 +93,7 @@ in
 
     services.getty.autologinUser = lib.mkIf cfg.kioskMode "drumknotty";
 
+    # https://linux.die.net/man/1/screen
     environment.etc."drumknotty/screenrc".source = let
       convertToFile = lines: lib.pipe lines [
         lib.concatLists
@@ -100,6 +101,10 @@ in
         (pkgs.writeText "drumknotty-screenrc")
       ];
     in convertToFile [
+      [
+        "startup_message off"
+      ]
+
       (lib.optionals (cfg.screen.limitWidth != null) [
         "screen width ${toString cfg.screen.limitWidth}"
       ])
