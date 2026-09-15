@@ -93,6 +93,40 @@ in
 
     services.getty.autologinUser = lib.mkIf cfg.kioskMode "drumknotty";
 
+    environment.etc."drumknotty/screenrc".source = let
+      convertToFile = lines: lib.pipe lines [
+        lib.concatLists
+        (lib.concatStringsSep "\n")
+        (pkgs.writeText "drumknotty-screenrc")
+      ];
+    in convertToFile [
+      (lib.optionals (cfg.screen.limitWidth != null) [
+        "screen width ${toString cfg.screen.limitWidth}"
+      ])
+      (lib.optionals (cfg.screen.limitHeight != null) [
+        "screen height ${toString cfg.screen.limitHeight}"
+      ])
+
+      (let
+        dibblerArgs = lib.cli.toCommandLineShellGNU { } {
+          config = "/etc/dibbler/dibbler.toml";
+        };
+      in lib.optionals cfg.dibbler.enable [
+        "screen -t dibbler ${lib.getExe cfg.dibbler.package} ${dibblerArgs} loop"
+
+      ])
+
+      (let
+        worblehatArgs = lib.cli.toCommandLineShellGNU { } {
+          config = "/etc/worblehat/config.toml";
+        };
+      in lib.optionals cfg.worblehat.enable [
+        "screen -t worblehat ${lib.getExe cfg.worblehat.package} ${worblehatArgs} cli"
+      ])
+
+      [ "select 0" ]
+    ];
+
     systemd.services.drumknotty-screen-session = lib.mkIf cfg.kioskMode {
       description = "Drumknotty Screen Session";
       wantedBy = [
@@ -111,6 +145,8 @@ in
             "network.target"
           ];
 
+      restartTriggers = [ config.environment.etc."drumknotty/screenrc".source ];
+
       serviceConfig = {
         Type = "forking";
         RemainAfterExit = false;
@@ -120,6 +156,8 @@ in
 
         User = "drumknotty";
         Group = "drumknotty";
+
+        ConfigurationDirectory = "drumknotty";
 
         ExecStartPre =
           let
@@ -138,40 +176,6 @@ in
 
         ExecStart =
           let
-            screenrc = let
-              convertToFile = lines: lib.pipe lines [
-                lib.concatLists
-                (lib.concatStringsSep "\n")
-                (pkgs.writeText "drumknotty-screenrc")
-              ];
-            in convertToFile [
-              (lib.optionals (cfg.screen.limitWidth != null) [
-                "screen width ${toString cfg.screen.limitWidth}"
-              ])
-              (lib.optionals (cfg.screen.limitHeight != null) [
-                "screen height ${toString cfg.screen.limitHeight}"
-              ])
-
-              (let
-                dibblerArgs = lib.cli.toCommandLineShellGNU { } {
-                  config = "/etc/dibbler/dibbler.toml";
-                };
-              in lib.optionals cfg.dibbler.enable [
-                "screen -t dibbler ${lib.getExe cfg.dibbler.package} ${dibblerArgs} loop"
-
-              ])
-
-              (let
-                worblehatArgs = lib.cli.toCommandLineShellGNU { } {
-                  config = "/etc/worblehat/config.toml";
-                };
-              in lib.optionals cfg.worblehat.enable [
-                "screen -t worblehat ${lib.getExe cfg.worblehat.package} ${worblehatArgs} cli"
-              ])
-
-              [ "select 0" ]
-            ];
-
             screenArgs = lib.escapeShellArgs [
               # -dm creates the screen in detached mode without accessing it
               "-dm"
@@ -188,7 +192,7 @@ in
 
               # Config file path
               "-c"
-              "${screenrc}"
+              "/etc/drumknotty/screenrc"
             ];
           in
             "${lib.getExe' cfg.screen.package "screen"} ${screenArgs}";
