@@ -54,6 +54,15 @@ in
           If set, limits the width of the screen dibbler uses to the given number of columns.
         '';
       };
+
+      extraConfig = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        example = [ "msgwait 0" ];
+        description = ''
+          Extra lines to add to the screenrc file.
+        '';
+      };
     };
   };
 
@@ -111,6 +120,8 @@ in
       (lib.optionals (cfg.screen.limitHeight != null) [
         "screen height ${toString cfg.screen.limitHeight}"
       ])
+
+      cfg.screen.extraConfig
 
       (let
         dibblerArgs = lib.cli.toCommandLineShellGNU { } {
