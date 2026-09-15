@@ -1,4 +1,8 @@
+# Nix
 result*
 /configuration.nix
 /.direnv/
 *.qcow2
+
+# Python
+___pycache__/

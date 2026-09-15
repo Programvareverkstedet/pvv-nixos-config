@@ -11,6 +11,7 @@ in
   imports = [
     ./dibbler.nix
     ./worblehat.nix
+    ./scanner-bridge.nix
   ];
 
   options.services.drumknotty = {
