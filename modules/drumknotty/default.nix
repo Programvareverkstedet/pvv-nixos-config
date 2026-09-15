@@ -101,6 +101,11 @@ in
       "console=tty1"
     ];
 
+    systemd.targets.drumknotty = lib.mkIf cfg.kioskMode {
+      description = "Drumknotty Screen Session";
+      wantedBy = [ "default.target" ];
+    };
+
     services.getty.autologinUser = lib.mkIf cfg.kioskMode "drumknotty";
 
     # https://linux.die.net/man/1/screen
@@ -146,9 +151,7 @@ in
 
     systemd.services.drumknotty-screen-session = lib.mkIf cfg.kioskMode {
       description = "Drumknotty Screen Session";
-      wantedBy = [
-        "default.target"
-      ];
+      wantedBy = [ "drumknotty.target" ];
       after =
         # TODO: this could be refined
         if (cfg.dibbler.createLocalDatabase || cfg.worblehat.createLocalDatabase) then
