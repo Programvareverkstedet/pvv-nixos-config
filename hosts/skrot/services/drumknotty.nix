@@ -20,6 +20,14 @@
       limitHeight = 42;
     };
 
+    scannerBridge = {
+      enable = true;
+      device = "/dev/input/by-id/usb-Sycreader_RFID_Technology_Co.__Ltd_SYC_ID_IC_USB_Reader_08FF20140315-event-kbd";
+      idVendor = "ffff";
+      idProduct = "0035";
+      targetDisplay = "ttyUSB0";
+    };
+
     dibbler = {
       enable = true;
       settings = {
