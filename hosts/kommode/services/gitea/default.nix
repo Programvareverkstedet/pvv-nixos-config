@@ -205,9 +205,10 @@ in {
   };
 
   services.nginx.appendHttpConfig = ''
-    limit_req_zone $binary_remote_addr zone=gitea_commit_permalink:64m rate=1r/s;
+    limit_req_zone $binary_remote_addr zone=gitea_scrapers:64m rate=1r/s;
 
     proxy_cache_path /var/cache/nginx/gitea-assets levels=1:2 keys_zone=gitea_assets:10m max_size=1g inactive=7d use_temp_path=off;
+    proxy_cache_path /var/cache/nginx/gitea-authcheck levels=1:2 keys_zone=gitea_authcheck:10m max_size=64m inactive=10m use_temp_path=off;
   '';
 
   services.nginx.virtualHosts."${domain}" = {
@@ -232,13 +233,36 @@ in {
         '';
       };
 
-      # Throttle per-IP access to commits, raws, blames, etc. to 1 per second
+      # Throttle per-IP access to commits, raws, blames, etc.
       # This should help mitigate bot abuse to some extent.
-      "~ ^/[^/]+/[^/]+/(src|raw|commits|blame)/commit/" = {
+      "~ ^/[^/]+/[^/]+/(src|raw|commits|commit|blame|archive)/" = {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
         extraConfig = ''
-          limit_req zone=gitea_commit_permalink burst=5 nodelay;
+          auth_request /_gitea_is_authenticated;
+          error_page 401 = @gitea_scrape_limited;
+        '';
+      };
+
+      "@gitea_scrape_limited" = {
+        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        extraConfig = ''
+          limit_req zone=gitea_scrapers burst=5 nodelay;
           limit_req_status 429;
+        '';
+      };
+
+      # This is only used for rate limiting, so we ignore the Cache-Control header,
+      # and cache the response for 30 seconds nonetheless.
+      "= /_gitea_is_authenticated" = {
+        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}:/api/v1/user";
+        extraConfig = ''
+          internal;
+          proxy_pass_request_body off;
+          proxy_set_header Content-Length "";
+          proxy_ignore_headers Cache-Control;
+          proxy_cache gitea_authcheck;
+          proxy_cache_key $http_cookie;
+          proxy_cache_valid 200 401 30s;
         '';
       };
 
