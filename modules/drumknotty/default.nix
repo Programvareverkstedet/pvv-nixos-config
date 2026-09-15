@@ -28,6 +28,15 @@ in
     screen = {
       package = lib.mkPackageOption pkgs "screen" { };
 
+      enableSerialConsole = lib.mkEnableOption "" // {
+        default = !config.virtualisation.isVmVariant;
+        defaultText = ''!config.virtualisation.isVmVariant'';
+        description = ''
+          Whether to enable various configuration optimized for running
+          the screen session against a real serial console.
+        '';
+      };
+
       sessionName = lib.mkOption {
         type = lib.types.str;
         default = "drumknotty";
@@ -104,6 +113,11 @@ in
       [
         "startup_message off"
       ]
+
+      (lib.optionals cfg.screen.enableSerialConsole [
+        "defencoding utf8"
+        "encoding utf8 C"
+      ])
 
       (lib.optionals (cfg.screen.limitWidth != null) [
         "screen width ${toString cfg.screen.limitWidth}"
