@@ -89,6 +89,9 @@ in
   };
 
   systemd.services.fluent-bit = lib.mkIf cfg.enable {
+    after = lib.mkForce [ "network-online.target" ];
+    requires = lib.mkForce [ "network-online.target" ];
+
     serviceConfig = {
       Slice = "system-monitoring.slice";
       StateDirectory = "fluent-bit";
