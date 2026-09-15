@@ -22,6 +22,7 @@ keys:
   - &host_skrot age1hzkvnktkr8t5gvtq0ccw69e44z5z6wf00n3xhk3hj24emf07je5s6q2evr
   - &host_temmie age10avsdvqger25z0lyzlq8v7xfzcmypkmjsswswaxwqnpnl6x9wcjq0uv2n7
   - &host_gluttony age12czfkvuw9pjk5qny5c6m2hjhd634cj9r4dsa3ss5zkux5h4vvc7s7k4urq
+  - &host_wenche age1mf5aclqcg8s37frn4u7j0r4wswny6wqkk3ycq6m2zk8wep5u8crqwwsl4t
 
 creation_rules:
   # Global secrets
@@ -139,6 +140,19 @@ creation_rules:
     key_groups:
     - age:
       - *host_gluttony
+      - *user_danio
+      - *user_felixalb
+      - *user_pederbs_sopp
+      - *user_pederbs_nord
+      - *user_pederbs_bjarte
+      - *user_vegardbm
+      pgp:
+      - *user_oysteikt
+
+  - path_regex: secrets/wenche/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *host_wenche
       - *user_danio
       - *user_felixalb
       - *user_pederbs_sopp
