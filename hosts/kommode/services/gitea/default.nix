@@ -206,6 +206,8 @@ in {
 
   services.nginx.appendHttpConfig = ''
     limit_req_zone $binary_remote_addr zone=gitea_commit_permalink:64m rate=1r/s;
+
+    proxy_cache_path /var/cache/nginx/gitea-assets levels=1:2 keys_zone=gitea_assets:10m max_size=1g inactive=7d use_temp_path=off;
   '';
 
   services.nginx.virtualHosts."${domain}" = {
@@ -219,6 +221,17 @@ in {
           client_max_body_size 512M;
         '';
       };
+
+      "/assets/" = {
+        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        extraConfig = ''
+          proxy_cache gitea_assets;
+          proxy_cache_valid 200 302 6h;
+          proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
+          add_header X-Cache-Status $upstream_cache_status;
+        '';
+      };
+
       # Throttle per-IP access to commits, raws, blames, etc. to 1 per second
       # This should help mitigate bot abuse to some extent.
       "~ ^/[^/]+/[^/]+/(src|raw|commits|blame)/commit/" = {
@@ -228,6 +241,7 @@ in {
           limit_req_status 429;
         '';
       };
+
       "/metrics" = {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
         extraConfig = ''
