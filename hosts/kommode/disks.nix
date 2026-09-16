@@ -30,12 +30,12 @@
                     };
                   };
                 in { }
-                // (makeSnapshottable "/var/lib/gitea" [ "compress=zstd" "noatime" ])
-                // (makeSnapshottable "/var/lib/gitea-web" [ "compress=zstd" "noatime" ]);
+                // (makeSnapshottable "/var/lib/gitea" [ "compress=zstd:15" "space_cache=v2" "noatime" ])
+                // (makeSnapshottable "/var/lib/gitea-web" [ "compress=zstd:15" "space_cache=v2" "noatime" ]);
 
                 # swap.swapfile.size = "4G";
                 mountpoint = "/";
-                mountOptions = [ "relatime" ];
+                mountOptions = [ "relatime" "space_cache=v2" ];
               };
             };
 
