@@ -198,6 +198,9 @@ in {
       $wgShowExceptionDetails = false;
       $wgShowIPinHeader = false;
 
+      # Offload background jobs to the external job runner service
+      $wgJobRunRate = 0;
+
       # EXT:{SimpleSAML,PluggableAuth}
       $wgSimpleSAMLphp_InstallDir = "${simplesamlphp}/share/php/simplesamlphp/";
       $wgPluggableAuth_Config['Log in using SAML'] = [
@@ -348,6 +351,24 @@ in {
     requires = [ "sops-install-secrets.service" ];
     serviceConfig = {
       UMask = lib.mkForce "0007";
+    };
+  };
+
+  # https://www.mediawiki.org/wiki/Manual:Job_queue
+  systemd.services.mediawiki-jobrunner = lib.mkIf cfg.enable {
+    description = "MediaWiki background job runner";
+    after = [ "sops-install-secrets.service" "mediawiki-init.service" ];
+    requires = [ "sops-install-secrets.service" "mediawiki-init.service" ];
+    wantedBy = [ "multi-user.target" ];
+    environment.MEDIAWIKI_CONFIG = config.services.phpfpm.pools.mediawiki.phpEnv.MEDIAWIKI_CONFIG;
+    unitConfig.JoinsNamespaceOf = [ "phpfpm-mediawiki.service" ];
+    serviceConfig = {
+      ExecStart = "${lib.getExe cfg.phpPackage} ${cfg.finalPackage}/share/mediawiki/maintenance/run.php runJobs.php --wait --maxjobs=20";
+      User = user;
+      Group = group;
+      UMask = "0007";
+      Restart = "always";
+      RestartSec = "10s";
     };
   };
 }
