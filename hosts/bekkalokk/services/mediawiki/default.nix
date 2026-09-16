@@ -118,6 +118,10 @@ in {
         VisualEditor
         WikiEditor
         ;
+
+      # Bundled with the mediawiki source code.
+      Cite = null;
+      SyntaxHighlight_GeSHi = null;
     };
 
     extraConfig = ''
@@ -229,6 +233,12 @@ in {
       $wgPdfPostProcessor = $wgImageMagickConvertCommand;
       $wgPdfInfo = '${lib.getExe' pkgs.poppler-utils "pdfinfo"}';
       $wgPdftoText = '${lib.getExe' pkgs.poppler-utils "pdftotext"}';
+
+      # EXT:SyntaxHighlight_GeSHi
+      $wgPygmentizePath = '${lib.getExe pkgs.python3Packages.pygments}';
+
+      # EXT:Cite
+      $wgCiteResponsiveReferences = true;
 
       # Override key from hardcoded config in nixpkgs
       $wgSecretKey = file_get_contents("${config.sops.secrets."mediawiki/secret-key".path}");
