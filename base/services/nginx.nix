@@ -54,6 +54,25 @@
 
   services.logrotate.settings.nginx.rotate = lib.mkIf config.services.nginx.enable 5;
 
+  services.fluent-bit.settings.parsers = lib.mkIf (config.services.nginx.enable && config.services.fluent-bit.enable) [
+    {
+      name = "nginx_access";
+      format = "regex";
+      regex = ''^(?<remote>[^ ]*) - (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?) +\S*)?" (?<status>[^ ]*) (?<bytes>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$'';
+      time_key = "time";
+      time_format = "%d/%b/%Y:%H:%M:%S %z";
+      time_keep = false;
+    }
+    {
+      name = "nginx_error";
+      format = "regex";
+      regex = ''^(?<time>\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}) \[(?<level>\w+)\] (?<pid>\d+)#(?<tid>\d+): \*(?<cid>\d+)? (?<message>.*)$'';
+      time_key = "time";
+      time_format = "%Y/%m/%d %H:%M:%S";
+      time_keep = false;
+    }
+  ];
+
   services.fluent-bit.settings.pipeline = lib.mkIf (config.services.nginx.enable && config.services.fluent-bit.enable) {
     inputs = [
       {
@@ -69,6 +88,25 @@
         path = "/var/log/nginx/error.log";
         db = "/var/lib/fluent-bit/nginx-error.db";
         "storage.type" = "filesystem";
+      }
+    ];
+
+    filters = [
+      {
+        name = "parser";
+        match = "nginx.access";
+        key_name = "log";
+        parser = "nginx_access";
+        reserve_data = true;
+        preserve_key = false;
+      }
+      {
+        name = "parser";
+        match = "nginx.error";
+        key_name = "log";
+        parser = "nginx_error";
+        reserve_data = true;
+        preserve_key = false;
       }
     ];
 
