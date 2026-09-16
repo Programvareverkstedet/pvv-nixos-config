@@ -59,7 +59,28 @@ in
 
   security.auditd = {
     enable = lib.mkDefault true;
-    plugins.syslog.active = true;
     plugins.af_unix.active = true;
+    plugins.laurel = {
+      active = true;
+      format = "string";
+      path = lib.getExe' pkgs.laurel "laurel";
+      args = let
+        laurelConfig = (pkgs.formats.toml { }).generate "laurel-config.toml" {
+          directory = "/var/log/laurel";
+          user = "laurel";
+          auditlog.file = "| ${pkgs.writeShellScript "laurel-to-syslog" ''
+            exec ${lib.getExe' pkgs.util-linux "logger"} --tag laurel --priority daemon.info --size ${toString (1024 * 256)}
+          ''}";
+        };
+      in [ "--config" "${laurelConfig}" ];
+    };
   };
+
+  systemd.services.auditd.serviceConfig.LogsDirectory = [ "laurel" ];
+
+  users.users.laurel = {
+    isSystemUser = true;
+    group = "laurel";
+  };
+  users.groups.laurel = { };
 }
