@@ -108,6 +108,16 @@
         reserve_data = true;
         preserve_key = false;
       }
+      {
+        name = "modify";
+        match = "nginx.access";
+        set = "level info";
+      }
+      {
+        name = "modify";
+        match = "nginx.error";
+        set = "level error";
+      }
     ];
 
     outputs = [{
@@ -125,6 +135,7 @@
         "job=nginx"
         "host=${config.networking.hostName}"
       ];
+      label_keys = "$level";
 
       "storage.total_limit_size" = "256M";
     }];
