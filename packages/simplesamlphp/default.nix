@@ -89,6 +89,8 @@ php.buildComposerProject ({
   '' + moduleSymlinks;
 
   passthru = {
+    inherit php;
+
     updateScript = writeShellApplication {
       name = "update-${pname}-composer-lock";
       runtimeInputs = [

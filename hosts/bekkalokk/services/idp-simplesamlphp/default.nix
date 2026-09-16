@@ -17,7 +17,17 @@ let
   };
 
   package = pkgs.simplesamlphp.override {
+    enableOidc = true;
+
     extra_files = {
+      "config/module_oidc.php" = pkgs.runCommandLocal "idp-module-oidc.php" { } ''
+        cp ${./module_oidc.php} "$out"
+
+        substituteInPlace "$out" \
+          --replace-fail '$OIDC_PRIVATE_KEY_PATH' '"${config.sops.secrets."idp/oidc/privatekey".path}"' \
+          --replace-fail '$OIDC_CERTIFICATE_PATH' '"${config.sops.secrets."idp/oidc/publickey".path}"' \
+      '';
+
       # NOTE: Using self signed certificate created 30. march 2024, with command:
       # openssl req -newkey rsa:4096 -new -x509 -days 365 -nodes -out idp.crt -keyout idp.pem
       "metadata/saml20-idp-hosted.php" = pkgs.writeText "saml20-idp-remote.php" ''
@@ -132,6 +142,14 @@ in
         owner = "idp";
         group = "idp";
       };
+      "idp/oidc/privatekey" = {
+        owner = "idp";
+        group = "idp";
+      };
+      "idp/oidc/publickey" = {
+        owner = "idp";
+        group = "idp";
+      };
     };
 
     users.groups."idp" = { };
@@ -180,6 +198,10 @@ in
     systemd.services."phpfpm-idp" = {
       after = [ "sops-install-secrets.service" ];
       requires = [ "sops-install-secrets.service" ];
+
+      serviceConfig = {
+        ExecStartPost = "${package.php}/bin/php ${package}/share/php/simplesamlphp/vendor/simplesamlphp/simplesamlphp-module-oidc/bin/install.php";
+      };
     };
 
     services.nginx.virtualHosts."idp.pvv.ntnu.no" = {

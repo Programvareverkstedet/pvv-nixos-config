@@ -555,7 +555,8 @@ $config = [
 
     'module.enable' => [
         'admin' => true,
-	'authpwauth' => true,
+        'authpwauth' => true,
+        'oidc' => true,
     ],
 
 
