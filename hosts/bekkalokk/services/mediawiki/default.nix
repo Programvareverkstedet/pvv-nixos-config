@@ -201,6 +201,10 @@ in {
       # Offload background jobs to the external job runner service
       $wgJobRunRate = 0;
 
+      # Enable caching for nginx
+      $wgUseCdn = true;
+      $wgCdnMaxAge = 3600;
+
       # EXT:{SimpleSAML,PluggableAuth}
       $wgSimpleSAMLphp_InstallDir = "${simplesamlphp}/share/php/simplesamlphp/";
       $wgPluggableAuth_Config['Log in using SAML'] = [
@@ -268,6 +272,7 @@ in {
           fastcgi_cache_methods GET HEAD;
           fastcgi_cache_bypass $mediawiki_cache_bypass;
           fastcgi_no_cache $mediawiki_cache_bypass;
+          fastcgi_cache_valid 200 1h;
           fastcgi_cache_use_stale error timeout updating http_500 http_503;
           fastcgi_cache_background_update on;
           fastcgi_cache_lock on;
