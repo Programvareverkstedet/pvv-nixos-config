@@ -16,6 +16,13 @@
       use epoll;
       # multi_accept on;
     '';
+
+    appendHttpConfig = ''
+      log_format vhost_combined '$host $remote_addr - $remote_user [$time_local] '
+                                 '"$request" $status $body_bytes_sent '
+                                 '"$http_referer" "$http_user_agent"';
+      access_log /var/log/nginx/access.log vhost_combined;
+    '';
   };
 
   systemd.services.nginx.serviceConfig = lib.mkIf config.services.nginx.enable {
@@ -58,7 +65,7 @@
     {
       name = "nginx_access";
       format = "regex";
-      regex = ''^(?<remote>[^ ]*) - (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?) +\S*)?" (?<status>[^ ]*) (?<bytes>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$'';
+      regex = ''^(?<vhost>[^ ]*) (?<remote>[^ ]*) - (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?) +\S*)?" (?<status>[^ ]*) (?<bytes>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$'';
       time_key = "time";
       time_format = "%d/%b/%Y:%H:%M:%S %z";
       time_keep = false;
