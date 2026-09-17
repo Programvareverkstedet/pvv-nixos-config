@@ -1,4 +1,4 @@
-{ config, pkgs, values, ... }:
+{ config, lib, pkgs, values, ... }:
 
 let
   cfg = config.services.loki;
@@ -12,6 +12,7 @@ in {
         http_listen_port = 31832;
         http_listen_address = "127.0.0.1";
         grpc_listen_port = 9096;
+        log_format = "json";
       };
 
       ingester = {
@@ -109,6 +110,26 @@ in {
       #   alertmanager_url = "http://localhost:9093";
       # };
     };
+  };
+
+  services.fluent-bit.settings = {
+    parsers = [
+      {
+        name = "loki_json";
+        format = "json";
+      }
+    ];
+
+    pipeline.filters = lib.mkAfter [
+      {
+        name = "parser";
+        match = "journal.*";
+        condition = "Key_value_equals unit loki.service";
+        key_name = "message";
+        parser = "loki_json";
+        reserve_data = true;
+      }
+    ];
   };
 
   services.nginx.virtualHosts."loki.pvv.ntnu.no" = {
