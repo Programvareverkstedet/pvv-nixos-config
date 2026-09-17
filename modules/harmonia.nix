@@ -32,6 +32,8 @@
           allow ${values.ipv6-space};
           allow ${values.ntnu.ipv4-space};
           allow ${values.ntnu.ipv6-space};
+          allow ${values.hosts.ildkule.ipv4}/32;
+          allow ${values.hosts.ildkule.ipv6}/128;
           deny all;
         '';
       };
