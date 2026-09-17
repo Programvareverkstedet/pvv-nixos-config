@@ -10,7 +10,6 @@ in {
     scrapeConfigs = [
       {
         job_name = "postgres";
-        scrape_interval = "15s";
         static_configs = [{
           targets = [ "localhost:${toString cfg.exporters.postgres.port}" ];
           labels = {
@@ -20,7 +19,6 @@ in {
       }
       {
         job_name = "postgres-knakelibrak";
-        scrape_interval = "15s";
         static_configs = [{
           targets = [ "localhost:${toString (cfg.exporters.postgres.port + 1)}" ];
           labels = {

@@ -18,6 +18,11 @@ in {
     port = 9001;
     retentionTime = "90d";
 
+    globalConfig = {
+      scrape_interval = "10s";
+      evaluation_interval = "10s";
+    };
+
     ruleFiles = [ rules/synapse-v2.rules ];
   };
 

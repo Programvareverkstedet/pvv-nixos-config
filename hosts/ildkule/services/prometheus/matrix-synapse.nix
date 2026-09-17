@@ -2,7 +2,6 @@
 {
   services.prometheus.scrapeConfigs = [{
     job_name = "synapse";
-    scrape_interval = "15s";
     scheme = "https";
 
     http_sd_configs = [{

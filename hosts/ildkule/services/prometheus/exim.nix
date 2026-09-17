@@ -2,7 +2,6 @@
 {
   services.prometheus.scrapeConfigs = [{
     job_name = "exim";
-    scrape_interval = "15s";
     scheme = "http";
 
     static_configs = [{
