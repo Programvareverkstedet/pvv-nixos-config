@@ -34,6 +34,9 @@ in {
 
       schema_config = {
         configs = [
+          # TODO: drop after start of november 2026,
+          #       roughly when the last boltdb data will
+          #       have been deleted by retention date.
           {
             from = "2022-12-01";
             store = "boltdb-shipper";
@@ -44,13 +47,31 @@ in {
               period = "24h";
             };
           }
+          {
+            from = "2026-09-19";
+            store = "tsdb";
+            object_store = "filesystem";
+            schema = "v13";
+            index = {
+              prefix = "tsdb_index_";
+              period = "24h";
+            };
+          }
         ];
       };
 
       storage_config = {
+        # TODO: drop after start of november 2026,
+        #       roughly when the last boltdb data will
+        #       have been deleted by retention date.
         boltdb_shipper = {
           active_index_directory = "${stateDir}/boltdb-shipper-index";
           cache_location = "${stateDir}/boltdb-shipper-cache";
+          cache_ttl = "24h";
+        };
+        tsdb_shipper = {
+          active_index_directory = "${stateDir}/tsdb-index";
+          cache_location = "${stateDir}/tsdb-cache";
           cache_ttl = "24h";
         };
         filesystem = {
