@@ -16,6 +16,7 @@ in {
 
     listenAddress = "127.0.0.1";
     port = 9001;
+    retentionTime = "90d";
 
     ruleFiles = [ rules/synapse-v2.rules ];
   };

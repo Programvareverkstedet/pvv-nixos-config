@@ -67,10 +67,14 @@ in {
         ingestion_burst_size_mb = 64;
         per_stream_rate_limit = "32MB";
         per_stream_rate_limit_burst = "64MB";
+
+        retention_period = "${toString (40 * 24)}h";
       };
 
       compactor = {
         working_directory = "${stateDir}/compactor";
+        retention_enabled = true;
+        delete_request_store = "filesystem";
       };
 
       # ruler = {
