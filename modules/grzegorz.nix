@@ -67,6 +67,10 @@ in {
         proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
         proxyWebsockets = true;
       };
+
+      locations."/health" = {
+        proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
+      };
     };
 
     "${machine}-backend.pvv.ntnu.no" = {
