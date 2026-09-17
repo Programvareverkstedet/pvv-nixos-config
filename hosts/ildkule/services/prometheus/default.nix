@@ -17,6 +17,7 @@ in {
     listenAddress = "127.0.0.1";
     port = 9001;
     retentionTime = "90d";
+    extraFlags = [ "--storage.tsdb.retention.size=100GB" ];
 
     globalConfig = {
       scrape_interval = "10s";
