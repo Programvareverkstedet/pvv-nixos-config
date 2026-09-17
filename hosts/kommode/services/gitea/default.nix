@@ -72,7 +72,8 @@ in {
         SUBJECT_PREFIX = "[pvv-git]";
       };
       log = {
-        "logger.router.LEVEL" = "Warn";
+        # Disable the router logs, nginx takes care of that
+        "logger.router.MODE" = "";
       };
       metrics = {
         ENABLED = true;
