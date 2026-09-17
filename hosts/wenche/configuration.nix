@@ -17,6 +17,8 @@
   boot.loader.systemd-boot.enable = false;
   boot.loader.grub.device = "/dev/sda";
 
+  boot.kernelPackages = pkgs.linuxPackages;
+
   systemd.network.networks."30-ens18" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens18";
     address = with values.hosts.wenche; [ (ipv4 + "/25") (ipv6 + "/64") ];
@@ -27,7 +29,7 @@
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
-    package = config.boot.kernelPackages.nvidiaPackages.production;
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
   };
 
   services.qemuGuest.enable = true;
