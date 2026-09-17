@@ -61,15 +61,18 @@ in {
 
       locations."/docs" = {
         proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
+        recommendedProxySettings = true;
       };
 
       locations."/api" = {
         proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
         proxyWebsockets = true;
+        recommendedProxySettings = true;
       };
 
       locations."/health" = {
         proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
+        recommendedProxySettings = true;
       };
     };
 
@@ -93,6 +96,7 @@ in {
       locations."/" = {
         proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
         proxyWebsockets = true;
+        recommendedProxySettings = true;
       };
     };
 
@@ -115,17 +119,21 @@ in {
 
       locations."/" = {
         proxyPass = "http://${grgw.listenAddr}:${toString grgw.listenPort}";
+        recommendedProxySettings = true;
       };
       # https://github.com/rawpython/remi/issues/216
       locations."/websocket" = {
         proxyPass = "http://${grgw.listenAddr}:${toString grgw.listenWebsocketPort}";
         proxyWebsockets = true;
+        recommendedProxySettings = true;
       };
       locations."/api" = {
         proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
+        recommendedProxySettings = true;
       };
       locations."/docs" = {
         proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
+        recommendedProxySettings = true;
       };
     };
   };
