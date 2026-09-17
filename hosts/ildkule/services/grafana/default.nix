@@ -1,4 +1,4 @@
-{ config, pkgs, values, ... }: let
+{ config, lib, pkgs, values, ... }: let
   cfg = config.services.grafana;
 in {
   sops.secrets = let
@@ -20,6 +20,14 @@ in {
         domain = "grafana.pvv.ntnu.no";
         http_port = 2342;
         http_addr = "127.0.0.1";
+      };
+
+      log = {
+        filters = "bleve-backend:warn";
+      };
+
+      "log.console" = {
+        format = "json";
       };
 
       security = {
@@ -82,6 +90,26 @@ in {
   systemd.services.grafana = {
     after = [ "sops-install-secrets.service" ];
     requires = [ "sops-install-secrets.service" ];
+  };
+
+  services.fluent-bit.settings = {
+    parsers = [
+      {
+        name = "grafana_json";
+        format = "json";
+      }
+    ];
+
+    pipeline.filters = lib.mkAfter [
+      {
+        name = "parser";
+        match = "journal.*";
+        condition = "Key_value_equals unit grafana.service";
+        key_name = "message";
+        parser = "grafana_json";
+        reserve_data = true;
+      }
+    ];
   };
 
   services.nginx.virtualHosts.${cfg.settings.server.domain} = {
