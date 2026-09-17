@@ -71,6 +71,9 @@ in {
         USER = "gitea@pvv.ntnu.no";
         SUBJECT_PREFIX = "[pvv-git]";
       };
+      log = {
+        "logger.router.LEVEL" = "Warn";
+      };
       metrics = {
         ENABLED = true;
         ENABLED_ISSUE_BY_LABEL = true;
