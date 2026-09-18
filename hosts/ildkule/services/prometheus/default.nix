@@ -5,6 +5,7 @@ in {
     ./exim.nix
     ./gitea.nix
     ./machines.nix
+    ./matrix-ooye.nix
     ./matrix-synapse.nix
     ./mysqld.nix
     ./phpfpm.nix
