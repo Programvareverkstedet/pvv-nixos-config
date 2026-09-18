@@ -125,7 +125,12 @@ in
         })
         (mkWebsite "PVV-Nettsiden" "https://www.pvv.ntnu.no")
         (mkWebsite "Roundcube" "https://webmail.pvv.ntnu.no/roundcube")
-        (mkWebsite "Scrutiny" "https://scrutiny.pvv.ntnu.no")
+        (mkWebsite "Scrutiny" "https://scrutiny.pvv.ntnu.no/api/health" // {
+          conditions = [
+            "[STATUS] == 200"
+            "[BODY].success == true"
+          ];
+        })
         (mkWebsite "Snappymail" "http://snappymail.pvv.ntnu.no")
         (mkWebsite "Userweb - Temmie" "https://temmie.pvv.ntnu.no/~oysteikt")
         (mkWebsite "Userweb - Tom" "https://www.pvv.ntnu.no/~oysteikt")
