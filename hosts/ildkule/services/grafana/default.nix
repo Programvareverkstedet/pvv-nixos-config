@@ -82,6 +82,11 @@ in {
           url = "https://grafana.com/api/dashboards/17802/revisions/3/download";
           options.path = dashboards/gitea-dashboard.json;
         }
+        {
+          name = "Matrix OOYE";
+          type = "file";
+          options.path = dashboards/matrix-ooye.json;
+        }
       ];
 
     };
