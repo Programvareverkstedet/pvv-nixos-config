@@ -98,6 +98,7 @@ in
         (mkMachine "tom")
         (mkMachine "wegonke")
       ]) ++ [
+        (mkWebsite "Alps" "https://alps.pvv.ntnu.no")
         (mkWebsite "Bluemap" "https://minecraft.pvv.ntnu.no")
         (mkWebsite "Element Web" "https://chat.pvv.ntnu.no")
         (mkWebsite "Gitea" "https://git.pvv.ntnu.no/api/healthz" // {
