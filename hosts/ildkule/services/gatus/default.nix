@@ -118,11 +118,6 @@ in
         (mkWebsite "IDP" "https://idp.pvv.ntnu.no")
         (mkWebsite "Mailing Lists" "http://list.pvv.ntnu.no")
         (mkWebsite "Mapcrafter" "http://isvegg.pvv.ntnu.no/kart")
-        (mkService "Loki" "https://loki.pvv.ntnu.no/ready" // {
-          conditions = [
-            "[STATUS] == 200"
-          ];
-        })
         (mkWebsite "PVV-Nettsiden" "https://www.pvv.ntnu.no")
         (mkWebsite "Roundcube" "https://webmail.pvv.ntnu.no/roundcube")
         (mkWebsite "Scrutiny" "https://scrutiny.pvv.ntnu.no/api/health" // {
@@ -136,6 +131,8 @@ in
         (mkWebsite "Userweb - Tom" "https://www.pvv.ntnu.no/~oysteikt")
         (mkWebsite "Vaultwarden" "https://pw.pvv.ntnu.no/alive")
         (mkWebsite "Wiki" "https://wiki.pvv.ntnu.no/w/api.php?action=query&format=json")
+
+        # ----------------------------------------------------------------------------- #
 
         (mkService "Gitea SSH" "ssh://git.pvv.ntnu.no:2222")
         (mkService "QoTD" "tcp://bekkalokk.pvv.ntnu.no:17")
@@ -160,6 +157,11 @@ in
         (mkService "Email (SMTP)" "starttls://mail.pvv.ntnu.no:587")
         (mkService "Email (POP3)" "tls://mail.pvv.ntnu.no:995")
         (mkService "Email (IMAP)" "tls://mail.pvv.ntnu.no:993")
+        (mkService "Loki" "https://loki.pvv.ntnu.no/ready" // {
+          conditions = [
+            "[STATUS] == 200"
+          ];
+        })
         (mkService "Matrix OOYE" "https://ooye.pvv.ntnu.no/api/stats" // {
           conditions = [
             "[STATUS] == 200"
