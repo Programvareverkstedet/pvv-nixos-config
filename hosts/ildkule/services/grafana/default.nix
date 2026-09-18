@@ -87,8 +87,12 @@ in {
           type = "file";
           options.path = dashboards/matrix-ooye.json;
         }
+        {
+          name = "Dibbler";
+          type = "file";
+          options.path = dashboards/dibbler.json;
+        }
       ];
-
     };
   };
 
