@@ -89,10 +89,9 @@ in
       log_disconnections = true;
 
       # SSL
-      # FIXME: not sure what's wrong here
-      # ssl = true;
-      # ssl_cert_file = "/run/credentials/postgresql.service/cert";
-      # ssl_key_file = "/run/credentials/postgresql.service/key";
+      ssl = true;
+      ssl_cert_file = "/run/credentials/postgresql.service/cert";
+      ssl_key_file = "/run/credentials/postgresql.service/key";
     };
   };
 
