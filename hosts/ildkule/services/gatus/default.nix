@@ -160,6 +160,12 @@ in
         (mkService "Email (SMTP)" "starttls://mail.pvv.ntnu.no:587")
         (mkService "Email (POP3)" "tls://mail.pvv.ntnu.no:995")
         (mkService "Email (IMAP)" "tls://mail.pvv.ntnu.no:993")
+        (mkService "Matrix OOYE" "https://ooye.pvv.ntnu.no/api/stats" // {
+          conditions = [
+            "[STATUS] == 200"
+            "[BODY].guilds > 0"
+          ];
+        })
         (mkService "Matrix Synapse" "https://matrix.pvv.ntnu.no/_matrix/client/versions" // {
           method = "GET";
           conditions = [
