@@ -117,6 +117,11 @@ in
         (mkWebsite "IDP" "https://idp.pvv.ntnu.no")
         (mkWebsite "Mailing Lists" "http://list.pvv.ntnu.no")
         (mkWebsite "Mapcrafter" "http://isvegg.pvv.ntnu.no/kart")
+        (mkService "Loki" "https://loki.pvv.ntnu.no/ready" // {
+          conditions = [
+            "[STATUS] == 200"
+          ];
+        })
         (mkWebsite "PVV-Nettsiden" "https://www.pvv.ntnu.no")
         (mkWebsite "Roundcube" "https://webmail.pvv.ntnu.no/roundcube")
         (mkWebsite "Scrutiny" "https://scrutiny.pvv.ntnu.no")

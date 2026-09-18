@@ -151,6 +151,20 @@ in {
           deny all;
         '';
       };
+      "/ready" = {
+        proxyPass = "http://${cfg.configuration.server.http_listen_address}:${toString cfg.configuration.server.http_listen_port}/ready";
+        extraConfig = ''
+          allow 127.0.0.1;
+          allow ::1;
+          allow ${values.ipv4-space};
+          allow ${values.ipv6-space};
+          allow ${values.ntnu.ipv4-space};
+          allow ${values.ntnu.ipv6-space};
+          allow ${values.hosts.ildkule.ipv4};
+          allow ${values.hosts.ildkule.ipv6};
+          deny all;
+        '';
+      };
     };
   };
 }
