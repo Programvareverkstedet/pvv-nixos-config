@@ -124,6 +124,15 @@ in
         mv "''${REGISTRATION_FILE}.tmp" "''${REGISTRATION_FILE}"
       '';
 
+      # NOTE: these are used to speed up fetching of `/api/stats`
+      addIndicesSql = pkgs.writeText "matrix-ooye-add-indices.sql" ''
+        BEGIN TRANSACTION;
+
+        CREATE INDEX IF NOT EXISTS idx_reaction_message_emoji ON reaction(message_id, encoded_emoji);
+        CREATE INDEX IF NOT EXISTS idx_event_message_part_source ON event_message(part, source);
+
+        COMMIT;
+      '';
     in
     {
       warnings =
@@ -178,6 +187,7 @@ in
 
         serviceConfig = {
           ExecStart = lib.getExe config.services.matrix-ooye.package;
+          ExecStartPost = "${lib.getExe' pkgs.sqlite "sqlite3"} ooye.db \".read ${addIndicesSql}\"";
           WorkingDirectory = "/var/lib/matrix-ooye";
           StateDirectory = "matrix-ooye";
           #ProtectSystem = "strict";
