@@ -575,11 +575,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785100355,
-        "narHash": "sha256-wBGnYrF7Kfs4vk3djspT3RdQqsYiqm60fKn7/J3vH4I=",
+        "lastModified": 1789802425,
+        "narHash": "sha256-lcvxSUUnvkoqbl8DZyNr9mU/l0YYm7liI5OY7+J2uSU=",
         "ref": "main",
-        "rev": "611f6ac1a304cc319fc85876d3f0301f49ce458e",
-        "revCount": 120,
+        "rev": "0d2790417d73db530f66df05f725c1a4789bf33b",
+        "revCount": 148,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/worblehat.git"
       },

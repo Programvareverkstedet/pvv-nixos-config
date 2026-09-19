@@ -69,6 +69,11 @@ in
 
       # TODO: Retrieve defaults from the example config file in the project code.
       services.drumknotty.worblehat.settings = {
+        general = {
+          quit_allowed = lib.mkDefault true;
+          crashdump_dir = lib.mkDefault "/var/lib/worblehat/crashdumps";
+        };
+
         logging = {
           debug = lib.mkDefault true;
           debug_sql = lib.mkDefault false;
@@ -126,6 +131,13 @@ in
     (lib.mkIf ((mainCfg.enable && cfg.enable) || cfg.deadline-daemon.enable) {
       environment.systemPackages = [ cfg.package ];
       environment.etc."worblehat/config.toml".source = format.generate "worblehat-config.toml" cfg.settings;
+
+      system.checks = [(
+        pkgs.runCommand "worblehat-config-check" { } ''
+            ${lib.getExe cfg.package} --config ${config.environment.etc."worblehat/config.toml".source} validate-config
+            touch $out
+          ''
+      )];
     })
 
     (lib.mkIf (mainCfg.enable && cfg.enable) {
@@ -133,6 +145,11 @@ in
         quit_allowed = false;
         stop_allowed = false;
       };
+
+      systemd.services."drumknotty-screen-session".serviceConfig.StateDirectory = [
+        "worblehat"
+        "worblehat/crashdumps"
+      ];
 
       services.drumknotty.worblehat.settings.database = lib.mkIf cfg.createLocalDatabase {
         type = "postgresql";
@@ -154,6 +171,7 @@ in
         }];
       };
 
+      # TODO: set up automigration via `worblehat migrate`
       systemd.services.worblehat-setup-database = lib.mkIf cfg.createLocalDatabase {
         description = "Worblehat database setup";
 
@@ -167,9 +185,13 @@ in
         };
         serviceConfig = {
           Type = "oneshot";
+          NotifyAccess = "main";
           ExecStart = "${lib.getExe cfg.package} --config /etc/worblehat/config.toml create-db";
           ExecStartPost = "${lib.getExe' pkgs.coreutils "touch"} /var/lib/worblehat/.db-setup-done";
-          StateDirectory = "worblehat";
+          StateDirectory = [
+	          "worblehat"
+	          "worblehat/crashdumps"
+	        ];
 
           User = "drumknotty";
           Group = "drumknotty";
@@ -195,6 +217,10 @@ in
           Type = "oneshot";
           CPUSchedulingPolicy = "idle";
           IOSchedulingClass = "idle";
+          StateDirectory = [
+	          "worblehat"
+	          "worblehat/crashdumps"
+	        ];
 
           ExecStart =
             let
