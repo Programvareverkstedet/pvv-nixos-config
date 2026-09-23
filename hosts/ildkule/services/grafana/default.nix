@@ -23,6 +23,8 @@ in {
         protocol = "socket";
         socket = "/run/grafana/grafana.sock";
         socket_mode = "0660";
+
+        enable_gzip = false;
       };
 
       log = {
