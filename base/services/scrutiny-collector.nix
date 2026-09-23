@@ -8,4 +8,6 @@
       api.endpoint = "https://scrutiny.pvv.ntnu.no/";
     };
   };
+
+  systemd.services.scrutiny-collector.serviceConfig.Slice = "system-monitoring.slice";
 }
