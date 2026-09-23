@@ -74,7 +74,10 @@ in
     };
   };
 
-  systemd.services.auditd.serviceConfig.LogsDirectory = [ "laurel" ];
+  systemd.services.auditd.serviceConfig = {
+    LogsDirectory = [ "laurel" ];
+    Slice = "system-monitoring.slice";
+  };
 
   users.users.laurel = {
     isSystemUser = true;
