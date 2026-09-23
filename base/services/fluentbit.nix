@@ -10,9 +10,9 @@ in
         flush = 1;
         log_level = "warn";
 
-        http_server = "on";
-        http_listen = "127.0.0.1";
-        http_port = 28183;
+        http_server = "off";
+        # http_listen = "127.0.0.1";
+        # http_port = 28183;
 
         # filesystem-backed buffering so logs survives potential outages.
         "storage.path" = "/var/lib/fluent-bit/storage";
