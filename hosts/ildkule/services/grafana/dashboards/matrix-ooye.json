@@ -367,6 +367,41 @@
           "refId": "A"
         }
       ]
+    },
+    {
+      "id": 10,
+      "type": "logs",
+      "title": "Logs",
+      "datasource": {
+        "type": "loki",
+        "uid": "ildkule-loki"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 28,
+        "w": 24,
+        "h": 10
+      },
+      "options": {
+        "showTime": true,
+        "showLabels": false,
+        "showCommonLabels": false,
+        "wrapLogMessage": true,
+        "prettifyLogMessage": false,
+        "enableLogDetails": true,
+        "dedupStrategy": "none",
+        "sortOrder": "Ascending"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "ildkule-loki"
+          },
+          "expr": "{job=\"systemd-journal\", host=\"bicep\", unit=\"matrix-ooye.service\"} | json | line_format `{{.level}} {{.message}}`",
+          "refId": "A"
+        }
+      ]
     }
   ]
 }
