@@ -37,8 +37,6 @@ in
       "-w ${config.security.wrapperDir}/su -p x -k privileged-su"
 
       # Read of files containing secrets.
-      "-w /var/lib/sops-nix/key.txt -p r -k secrets"
-      "-w /run/secrets -p r -k secrets"
       "-w /etc/ssh/ssh_host_ed25519_key -p r -k secrets"
       "-w /etc/ssh/ssh_host_rsa_key -p r -k secrets"
 
