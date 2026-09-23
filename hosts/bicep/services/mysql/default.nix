@@ -39,6 +39,10 @@ in
 
         slow-query-log = 1;
         slow-query-log-file = "/var/log/mysql/mysql-slow.log";
+
+        # /var/lib/mysql/.snapshots is btrfs snapshot automount
+        # (see hosts/bicep/disks.nix)
+        ignore_db_dirs = ".snapshots";
       };
     };
 
