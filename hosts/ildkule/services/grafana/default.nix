@@ -38,6 +38,7 @@ in {
       };
 
       security = {
+        disable_gravatar = true;
         secret_key = secretFile config.sops.secrets."keys/grafana/secret_key".path;
         admin_password = secretFile config.sops.secrets."keys/grafana/admin_password".path;
       };
