@@ -50,12 +50,14 @@ in {
       datasources.settings.datasources = [
         {
           name = "Ildkule Prometheus";
+          uid = "ildkule-prometheus";
           type = "prometheus";
           url = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
           isDefault = true;
         }
         {
           name = "Ildkule loki";
+          uid = "ildkule-loki";
           type = "loki";
           url = "http://${config.services.loki.configuration.server.http_listen_address}:${toString config.services.loki.configuration.server.http_listen_port}";
         }
