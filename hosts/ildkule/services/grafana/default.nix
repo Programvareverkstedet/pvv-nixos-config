@@ -18,6 +18,8 @@ in {
     in {
       server = {
         domain = "grafana.pvv.ntnu.no";
+        root_url = "https://grafana.pvv.ntnu.no/";
+
         protocol = "socket";
         socket = "/run/grafana/grafana.sock";
         socket_mode = "0660";
