@@ -80,13 +80,13 @@ in
                   (subvolume "/root" [ "compress=zstd" "noatime" "nodev" ])
 
                   (subvolume "/var" [ "compress=zstd" "noatime" ])
-                  (subvolume "/var/cache" [ "compress=zstd" "noatime" ])
+                  (subvolume "/var/cache" [ "compress=zstd" "noatime" "noexec" "nosuid" "nodev" ])
                   (subvolume "/var/log" [ "compress=zstd" "noatime" "noexec" "nosuid" "nodev" ])
 
                   (subvolume "/var/lib" [ "compress=zstd" "noatime" "nosuid" "nodev" ])
-                  (subvolume "/var/lib/postgresql" [ "nodatacow" "noatime" ])
-                  (subvolume "/var/lib/mysql" [ "nodatacow" "noatime" ])
-                  (subvolume "/var/lib/matrix-synapse" [ "compress=zstd" "noatime" ])
+                  (subvolume "/var/lib/postgresql" [ "nodatacow" "noatime" "noexec" "nosuid" "nodev" ])
+                  (subvolume "/var/lib/mysql" [ "nodatacow" "noatime" "noexec" "nosuid" "nodev"  ])
+                  (subvolume "/var/lib/matrix-synapse" [ "compress=zstd" "noatime" "noexec" "nosuid" "nodev" ])
                   (subvolume "/var/lib/redis" [ "compress=zstd" "noatime" "noexec" "nosuid" "nodev" ])
 
                   (subvolume "/var/lib/containers/storage" [ "compress=zstd" "noatime" ])
