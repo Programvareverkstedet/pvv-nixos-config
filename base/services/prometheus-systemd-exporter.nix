@@ -1,6 +1,7 @@
-{ config, lib, values, ... }:
+{ config, lib, pkgs, values, ... }:
 let
   cfg = config.services.prometheus.exporters.systemd;
+  socketPath = "/run/prometheus-systemd-exporter.sock";
 in
 {
   services.prometheus.exporters.systemd = {
@@ -13,6 +14,24 @@ in
     ];
   };
 
+  systemd.sockets.prometheus-systemd-exporter = lib.mkIf cfg.enable {
+    wantedBy = [ "sockets.target" ];
+    socketConfig = {
+      ListenStream = socketPath;
+      SocketGroup = config.services.nginx.group;
+      SocketMode = "0660";
+    };
+  };
+
+  systemd.services = lib.mkIf cfg.enable {
+    "prometheus-systemd-exporter" = {
+      serviceConfig = {
+        Slice = "system-monitoring.slice";
+        ExecStart = lib.mkForce "${pkgs.prometheus-systemd-exporter}/bin/systemd_exporter --web.systemd-socket ${lib.escapeShellArgs cfg.extraFlags}";
+      };
+    };
+  };
+
   services.nginx = lib.mkIf cfg.enable {
     enable = lib.mkDefault true;
 
@@ -22,7 +41,7 @@ in
       kTLS = true;
 
       locations."/prometheus-systemd-exporter/metrics" = {
-        proxyPass = "http://localhost:${toString cfg.port}/metrics";
+        proxyPass = "http://unix:${socketPath}:/metrics";
 
         extraConfig = ''
           allow 127.0.0.1;
@@ -33,9 +52,5 @@ in
         '';
       };
     };
-  };
-
-  systemd.services = lib.mkIf cfg.enable {
-    "prometheus-systemd-exporter".serviceConfig.Slice = "system-monitoring.slice";
   };
 }
