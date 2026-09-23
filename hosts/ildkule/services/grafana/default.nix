@@ -28,11 +28,13 @@ in {
       };
 
       log = {
+        mode = "syslog";
         filters = "bleve-backend:warn";
       };
 
-      "log.console" = {
+      "log.syslog" = {
         format = "json";
+        tag = "grafana";
       };
 
       security = {
