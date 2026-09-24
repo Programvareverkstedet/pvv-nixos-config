@@ -127,7 +127,7 @@ in
               "level"
             ];
 
-            structured_metadata_map_keys = lib.concatMapStringsSep "," (k: "$" + k) ([
+            structured_metadata = lib.concatMapStringsSep "," (k: k + "=$" + k) ([
               "audit_loginuid"
               "audit_session"
               "boot_id"
