@@ -44,6 +44,7 @@
     ./services/thermald.nix
     ./services/timesyncd.nix
     ./services/uptimed.nix
+    ./services/usbguard.nix
     ./services/userborn.nix
     ./services/userdbd.nix
   ];
