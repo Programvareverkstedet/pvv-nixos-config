@@ -22,6 +22,7 @@
                                  '"$request" $status $body_bytes_sent '
                                  '"$http_referer" "$http_user_agent"';
       access_log /var/log/nginx/access.log vhost_combined;
+      error_log /var/log/nginx/error.log;
     '';
   };
 
