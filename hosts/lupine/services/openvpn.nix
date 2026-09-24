@@ -66,6 +66,11 @@ in
 
       keepalive = "10 120";
 
+      cipher = "AES-256-GCM";
+      data-ciphers = "AES-256-GCM";
+
+      fast-io = true;
+
       user = "nobody";
       group = "nobody";
 
@@ -88,7 +93,7 @@ in
       tls-version-min = "1.2";
       tls-version-max = "1.2";
 
-      verb = 5;
+      verb = 3;
 
       explicit-exit-notify = 1;
     };
