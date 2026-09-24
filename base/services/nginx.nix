@@ -139,6 +139,10 @@
       name = "loki";
       match = "nginx.*";
 
+      # Drop when v5.1.2 comes out
+      # https://github.com/fluent/fluent-bit/pull/12351
+      workers = 1;
+
       host = "loki.pvv.ntnu.no";
       port = 443;
       tls = "on";
