@@ -56,7 +56,43 @@ in
           "2" = "crit";
           "1" = "alert";
           "0" = "emergency";
-        });
+        }) ++ [
+          # Drop the unit type suffix, e.g. `sshd.service` -> `sshd`
+          {
+            name = "lua";
+            match = "journal.*";
+            call = "strip_unit_suffix";
+            code = ''
+              function strip_unit_suffix(tag, timestamp, record)
+                  if record["unit"] ~= nil then
+                      record["unit"] = string.gsub(record["unit"], "%.%a+$", "")
+                  end
+                  return 1, timestamp, record
+              end
+            '';
+          }
+
+          # Remove noise
+          {
+            name = "modify";
+            match = "journal.*";
+            remove = [
+              "runtime_scope"
+              "source_boottime_timestamp"
+              "source_monotonic_timestamp"
+              "source_realtime_timestamp"
+              "stream_id"
+              "syslog_facility"
+              "syslog_pid"
+              "syslog_raw"
+              "syslog_timestamp"
+              "systemd_cgroup"
+              "systemd_owner_uid"
+              "systemd_slice"
+              "transport"
+            ];
+          }
+        ];
 
         outputs = [{
           name = "loki";
@@ -76,6 +112,22 @@ in
             "host"
             "unit"
             "level"
+          ];
+
+          structured_metadata_map_keys = lib.concatMapStringsSep "," (k: "$" + k) [
+            "pid"
+            "systemd_invocation_id"
+            "uid"
+            "gid"
+            "comm"
+            "exe"
+            "cmdline"
+            "cap_effective"
+            "boot_id"
+            "machine_id"
+            "audit_loginuid"
+            "audit_session"
+            "selinux_context"
           ];
 
           # JSON is probably fine for now, then we just extract the keys we want with the grafana web ui

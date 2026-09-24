@@ -126,7 +126,7 @@ in {
       {
         name = "parser";
         match = "journal.*";
-        condition = "Key_value_equals unit grafana.service";
+        condition = "Key_value_equals unit grafana";
         key_name = "message";
         parser = "grafana_json";
         reserve_data = true;

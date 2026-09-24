@@ -124,7 +124,7 @@ in {
       {
         name = "parser";
         match = "journal.*";
-        condition = "Key_value_equals unit loki.service";
+        condition = "Key_value_equals unit loki";
         key_name = "message";
         parser = "loki_json";
         reserve_data = true;
