@@ -80,6 +80,14 @@ in {
         };
       };
 
+      query_range = {
+        cache_results = true;
+        results_cache.cache.embedded_cache = {
+          enabled = true;
+          max_size_mb = 1024;
+        };
+      };
+
       limits_config = {
         allow_structured_metadata = true;
 
