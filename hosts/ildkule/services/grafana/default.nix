@@ -4,13 +4,15 @@ in {
   sops.secrets = let
     owner = "grafana";
     group = "grafana";
+    restartUnits = [ "grafana.service" ];
   in {
-    "keys/grafana/secret_key" = { inherit owner group; };
-    "keys/grafana/admin_password" = { inherit owner group; };
-    "keys/grafana/renderer_token" = { inherit owner group; };
+    "keys/grafana/secret_key" = { inherit owner group restartUnits; };
+    "keys/grafana/admin_password" = { inherit owner group restartUnits; };
+    "keys/grafana/renderer_token" = { inherit owner group restartUnits; };
   };
 
   sops.templates."grafana-image-renderer/environment" = {
+    restartUnits = [ "grafana-image-renderer.service" ];
     content = ''
       AUTH_TOKEN=${config.sops.placeholder."keys/grafana/renderer_token"}
     '';
