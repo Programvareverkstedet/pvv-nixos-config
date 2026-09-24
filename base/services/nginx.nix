@@ -119,12 +119,18 @@
       {
         name = "modify";
         match = "nginx.access";
-        set = "level info";
+        set = [
+          "level info"
+          "job nginx-access"
+        ];
       }
       {
         name = "modify";
         match = "nginx.error";
-        set = "level error";
+        set = [
+          "level error"
+          "job nginx-error"
+        ];
       }
     ];
 
@@ -140,10 +146,12 @@
       compress = "gzip";
 
       labels = lib.concatStringsSep ", " [
-        "job=nginx"
         "host=${config.networking.hostName}"
       ];
-      label_keys = "$level";
+      label_keys = lib.concatMapStringsSep "," (k: "$" + k) [
+        "level"
+        "job"
+      ];
 
       "storage.total_limit_size" = "256M";
     }];
