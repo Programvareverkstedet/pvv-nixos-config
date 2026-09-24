@@ -5,6 +5,7 @@ in {
     ./dibbler.nix
     ./exim.nix
     ./gitea.nix
+    ./gitea-runner.nix
     ./machines.nix
     ./matrix-ooye.nix
     ./matrix-synapse.nix

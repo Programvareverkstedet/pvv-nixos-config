@@ -1,4 +1,7 @@
-{ config, lupineName, ... }:
+{ config, lib, values, lupineName, ... }:
+let
+  cfg = config.services.gitea-actions-runner.instances.${lupineName};
+in
 {
   # This is unfortunately state, and has to be generated one at a time :(
   # To do that, comment out all except one of the runners, fill in its token
@@ -61,6 +64,32 @@
         "ubuntu-jammy-slim:docker://docker.gitea.com/runner-images:ubuntu-22.04-slim"
       ];
       tokenFile = config.sops.templates."gitea-runner-envfile".path;
+      settings.metrics = {
+        enabled = true;
+        addr = "127.0.0.1:9101";
+      };
+    };
+  };
+
+  services.nginx = {
+    enable = lib.mkDefault true;
+
+    virtualHosts.${config.networking.fqdn} = lib.mkIf config.services.nginx.enable {
+      forceSSL = true;
+      enableACME = true;
+      kTLS = true;
+
+      locations."/gitea-runner/metrics" = {
+        proxyPass = "http://${cfg.settings.metrics.addr}/metrics";
+
+        extraConfig = ''
+          allow 127.0.0.1;
+          allow ::1;
+          allow ${values.hosts.ildkule.ipv4};
+          allow ${values.hosts.ildkule.ipv6};
+          deny all;
+        '';
+      };
     };
   };
 
