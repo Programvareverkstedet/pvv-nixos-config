@@ -184,4 +184,25 @@ in
     kTLS = true;
     locations."/".proxyPass = "http://localhost:${toString cfg.settings.web.port}";
   };
+
+  services.fluent-bit.settings = {
+    parsers = [
+      {
+        name = "gatus_watchdog";
+        format = "regex";
+        regex = ''^\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2} \[watchdog\.executeEndpoint\] Monitored group=(?<group>[^;]*); endpoint=(?<endpoint>[^;]*); key=(?<key>[^;]*); success=(?<success>true|false); errors=(?<errors>\d+); duration=(?<duration>\S+)$'';
+      }
+    ];
+
+    pipeline.filters = lib.mkAfter [
+      {
+        name = "parser";
+        match = "journal.*";
+        condition = "Key_value_equals unit gatus";
+        key_name = "message";
+        parser = "gatus_watchdog";
+        reserve_data = true;
+      }
+    ];
+  };
 }
