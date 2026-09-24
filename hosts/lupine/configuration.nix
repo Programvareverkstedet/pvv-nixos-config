@@ -68,6 +68,11 @@
         bridge = [ "br0" ];
       };
 
+      links."30-tap0" = {
+        matchConfig.OriginalName = "tap0";
+        linkConfig.TransmitQueueLength = 1000;
+      };
+
       wait-online = {
         anyInterface = true;
       };
