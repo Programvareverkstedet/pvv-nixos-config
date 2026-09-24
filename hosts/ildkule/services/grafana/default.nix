@@ -7,6 +7,13 @@ in {
   in {
     "keys/grafana/secret_key" = { inherit owner group; };
     "keys/grafana/admin_password" = { inherit owner group; };
+    "keys/grafana/renderer_token" = { inherit owner group; };
+  };
+
+  sops.templates."grafana-image-renderer/environment" = {
+    content = ''
+      AUTH_TOKEN=${config.sops.placeholder."keys/grafana/renderer_token"}
+    '';
   };
 
   services.grafana = {
@@ -42,6 +49,12 @@ in {
         cookie_secure = true;
         secret_key = secretFile config.sops.secrets."keys/grafana/secret_key".path;
         admin_password = secretFile config.sops.secrets."keys/grafana/admin_password".path;
+      };
+
+      rendering = {
+        server_url = "http://${config.services.grafana-image-renderer.settings.server.addr}/render";
+        callback_url = "https://grafana.pvv.ntnu.no/";
+        renderer_token = secretFile config.sops.secrets."keys/grafana/renderer_token".path;
       };
     };
 
@@ -110,6 +123,16 @@ in {
   systemd.services.grafana = {
     after = [ "sops-install-secrets.service" ];
     requires = [ "sops-install-secrets.service" ];
+  };
+
+  services.grafana-image-renderer = {
+    enable = true;
+  };
+
+  systemd.services.grafana-image-renderer = {
+    after = [ "sops-install-secrets.service" ];
+    requires = [ "sops-install-secrets.service" ];
+    serviceConfig.EnvironmentFile = config.sops.templates."grafana-image-renderer/environment".path;
   };
 
   systemd.services.nginx.serviceConfig.SupplementaryGroups = [ "grafana" ];
