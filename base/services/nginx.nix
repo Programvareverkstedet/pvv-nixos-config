@@ -74,10 +74,11 @@
     {
       name = "nginx_error";
       format = "regex";
-      regex = ''^(?<time>\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}) \[(?<level>\w+)\] (?<pid>\d+)#(?<tid>\d+): \*(?<cid>\d+)? (?<message>.*)$'';
+      regex = ''^(?<time>\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}) \[(?<level>\w+)\] (?<pid>\d+)#(?<tid>\d+): \*(?<cid>\d+)? (?<message>.*?)(?:, client: [^,]+)?(?:, server: (?<vhost>[^,]+))?(?:,.*)?$'';
       time_key = "time";
       time_format = "%Y/%m/%d %H:%M:%S";
       time_keep = false;
+      time_system_timezone = true;
     }
   ];
 
