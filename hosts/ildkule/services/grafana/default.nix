@@ -114,26 +114,6 @@ in {
 
   systemd.services.nginx.serviceConfig.SupplementaryGroups = [ "grafana" ];
 
-  services.fluent-bit.settings = {
-    parsers = [
-      {
-        name = "grafana_json";
-        format = "json";
-      }
-    ];
-
-    pipeline.filters = lib.mkAfter [
-      {
-        name = "parser";
-        match = "journal.*";
-        condition = "Key_value_equals unit grafana";
-        key_name = "message";
-        parser = "grafana_json";
-        reserve_data = true;
-      }
-    ];
-  };
-
   services.nginx.virtualHosts.${cfg.settings.server.domain} = {
     enableACME = true;
     forceSSL = true;
