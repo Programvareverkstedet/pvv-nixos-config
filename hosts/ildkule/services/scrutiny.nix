@@ -1,4 +1,4 @@
-{ config, values, ... }:
+{ config, lib, values, ... }:
 let
   cfg = config.services.scrutiny;
 in
@@ -36,5 +36,25 @@ in
       allow ${values.ipv6-space};
       deny all;
     '';
+  };
+
+  services.fluent-bit.settings = lib.mkIf config.services.influxdb2.enable {
+    parsers = [
+      {
+        name = "influxd_logfmt";
+        format = "logfmt";
+      }
+    ];
+
+    pipeline.filters = lib.mkAfter [
+      {
+        name = "parser";
+        match = "journal.*";
+        condition = "Key_value_equals unit influxdb2";
+        key_name = "message";
+        parser = "influxd_logfmt";
+        reserve_data = true;
+      }
+    ];
   };
 }
