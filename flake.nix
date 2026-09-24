@@ -386,7 +386,10 @@
           passthru =
             (prev.passthru or { })
             // self.nixosConfigurations.${machine}.config.system.build
-            // { inherit (self.nixosConfigurations.${machine}) pkgs config; };
+            // {
+              inherit (self.nixosConfigurations.${machine}) pkgs config;
+              inherit (self.nixosConfigurations.${machine}.config.system.build) etc units vm;
+            };
         }))
         //
         # Nix-topology
