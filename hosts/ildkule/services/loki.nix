@@ -81,7 +81,23 @@ in {
       };
 
       limits_config = {
-        allow_structured_metadata = false;
+        allow_structured_metadata = true;
+
+        discover_service_name = [
+          "unit"
+          "service_name"
+          "service"
+          "app"
+          "application"
+          "name"
+          "app_kubernetes_io_name"
+          "container"
+          "container_name"
+          "component"
+          "workload"
+          "job"
+        ];
+
         reject_old_samples = true;
         reject_old_samples_max_age = "72h";
 
