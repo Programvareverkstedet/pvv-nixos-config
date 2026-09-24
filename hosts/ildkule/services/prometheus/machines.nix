@@ -55,6 +55,15 @@ in {
       }) nixosMachines;
     }
     {
+      job_name = "nixos-fluent-bit";
+      scheme = "https";
+      metrics_path = "/prometheus-fluent-bit-exporter/metrics";
+      static_configs = map (name: {
+        labels.hostname = name;
+        targets = [ "${name}.pvv.ntnu.no:443" ];
+      }) nixosMachines;
+    }
+    {
       job_name = "non-nixos-node";
       scheme = "http";
       metrics_path = "/metrics";

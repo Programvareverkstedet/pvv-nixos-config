@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, values, ... }:
 let
   cfg = config.services.fluent-bit;
 in
@@ -10,9 +10,9 @@ in
         flush = 1;
         log_level = "warn";
 
-        http_server = "off";
-        # http_listen = "127.0.0.1";
-        # http_port = 28183;
+        http_server = "on";
+        http_listen = "127.0.0.1";
+        http_port = 28183;
 
         # filesystem-backed buffering so logs survives potential outages.
         "storage.path" = "/var/lib/fluent-bit/storage";
@@ -136,6 +136,29 @@ in
 
           "storage.total_limit_size" = "256M";
         }];
+      };
+    };
+  };
+
+  services.nginx = lib.mkIf cfg.enable {
+    enable = lib.mkDefault true;
+
+    virtualHosts.${config.networking.fqdn} = lib.mkIf config.services.nginx.enable {
+      forceSSL = true;
+      enableACME = true;
+      kTLS = true;
+
+      locations."/prometheus-fluent-bit-exporter/metrics" = {
+        proxyPass = "http://127.0.0.1:${toString cfg.settings.service.http_port}/api/v2/metrics/prometheus";
+        recommendedProxySettings = true;
+
+        extraConfig = ''
+          allow 127.0.0.1;
+          allow ::1;
+          allow ${values.hosts.ildkule.ipv4};
+          allow ${values.hosts.ildkule.ipv6};
+          deny all;
+        '';
       };
     };
   };
