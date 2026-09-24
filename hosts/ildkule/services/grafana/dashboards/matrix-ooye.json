@@ -255,7 +255,7 @@
       },
       "targets": [
         {
-          "expr": "rate(ooye_messages_total[1h]) * 3600",
+          "expr": "deriv(ooye_messages_total[1h]) * 3600",
           "legendFormat": "{{type}}",
           "refId": "A"
         }
