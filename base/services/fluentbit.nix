@@ -110,24 +110,25 @@ in
           ];
           label_keys = lib.concatMapStringsSep "," (k: "$" + k) [
             "host"
-            "unit"
+            "syslog_identifier"
             "level"
           ];
 
           structured_metadata_map_keys = lib.concatMapStringsSep "," (k: "$" + k) [
-            "pid"
-            "systemd_invocation_id"
-            "uid"
-            "gid"
-            "comm"
-            "exe"
-            "cmdline"
-            "cap_effective"
-            "boot_id"
-            "machine_id"
             "audit_loginuid"
             "audit_session"
+            "boot_id"
+            "cap_effective"
+            "cmdline"
+            "comm"
+            "exe"
+            "gid"
+            "machine_id"
+            "pid"
             "selinux_context"
+            "systemd_invocation_id"
+            "uid"
+            "unit"
           ];
 
           # JSON is probably fine for now, then we just extract the keys we want with the grafana web ui

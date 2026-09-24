@@ -84,7 +84,7 @@ in {
         allow_structured_metadata = true;
 
         discover_service_name = [
-          "unit"
+          "syslog_identifier"
           "service_name"
           "service"
           "app"
