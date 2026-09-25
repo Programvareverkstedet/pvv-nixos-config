@@ -118,6 +118,18 @@
         preserve_key = false;
       }
       {
+        # Drop SSL_read errors caused by clients sending garbage at the HTTPS port.
+        name = "grep";
+        match = "nginx.error";
+        exclude = ''message ^SSL_read\(\) failed \(SSL: error:0A0000C6:SSL routines::packet length too long error:0A000139:SSL routines::record layer failure\) while (processing HTTP/2 connection|keepalive)$'';
+      }
+      {
+        # Drop SSL_write errors caused by clients closing the connection mid-write.
+        name = "grep";
+        match = "nginx.error";
+        exclude = ''message ^SSL_write\(\) failed while processing HTTP/2 connection$'';
+      }
+      {
         name = "modify";
         match = "nginx.access";
         set = [
