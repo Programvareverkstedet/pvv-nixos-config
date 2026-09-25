@@ -152,6 +152,10 @@ in {
           allow ${values.ipv6-space};
           allow ${values.ntnu.ipv4-space};
           allow ${values.ntnu.ipv6-space};
+          allow ${values.hosts.ildkule.ipv4};
+          allow ${values.hosts.ildkule.ipv6};
+          allow ${values.hosts.gluttony.ipv4};
+          allow ${values.hosts.gluttony.ipv6};
           deny all;
         '';
       };
