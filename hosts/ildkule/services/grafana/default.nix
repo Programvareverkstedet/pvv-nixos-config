@@ -160,6 +160,7 @@ in {
 
       "/rss-proxy/ntnu-it-status" = {
         proxyPass = "https://status.it.ntnu.no/history.rss";
+        recommendedProxySettings = false;
         extraConfig = ''
           proxy_ssl_server_name on;
           proxy_set_header Host status.it.ntnu.no;
