@@ -21,7 +21,7 @@ in
       enable = lib.mkEnableOption "Enable OOYE service";
       package = lib.mkOption {
         type = lib.types.package;
-        default = pkgs.out-of-your-element;
+        default = pkgs.delete-your-element;
       };
       appserviceId = mkStringOption "The ID of the appservice." "ooye";
       homeserver = mkStringOption "The homeserver to connect to." "http://localhost:8006";

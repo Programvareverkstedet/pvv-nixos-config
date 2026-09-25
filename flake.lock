@@ -37,6 +37,27 @@
         "type": "github"
       }
     },
+    "delete-your-element": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790371574,
+        "narHash": "sha256-MEiT/h090vmaQIAT0LCDNlT+KxAOFykDLXRk95bYSuk=",
+        "ref": "main",
+        "rev": "11ba00b44ec600b7f4e8579065922bb2968b86db",
+        "revCount": 1028,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Drift/delete-your-element.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Drift/delete-your-element.git"
+      }
+    },
     "dibbler": {
       "inputs": {
         "nixpkgs": [
@@ -417,6 +438,7 @@
     "root": {
       "inputs": {
         "bro": "bro",
+        "delete-your-element": "delete-your-element",
         "dibbler": "dibbler",
         "disko": "disko",
         "gergle": "gergle",

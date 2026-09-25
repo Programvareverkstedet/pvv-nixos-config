@@ -56,6 +56,9 @@
     bro.inputs.nixpkgs.follows = "nixpkgs";
     passwd2systemd-users.url = "git+https://git.pvv.ntnu.no/Projects/passwd2systemd-users.git?ref=main";
     passwd2systemd-users.inputs.nixpkgs.follows = "nixpkgs";
+
+    delete-your-element.url = "git+https://git.pvv.ntnu.no/Drift/delete-your-element.git?ref=main";
+    delete-your-element.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -205,9 +208,7 @@
           overlays = [
             inputs.pvv-calendar-bot.overlays.default
             inputs.minecraft-heatmap.overlays.default
-            (final: prev: {
-              inherit (self.packages.${prev.stdenv.hostPlatform.system}) out-of-your-element;
-            })
+            inputs.delete-your-element.overlays.default
             (final: prev: {
               # See https://git.pvv.ntnu.no/Drift/issues/issues/369
               mjolnir = prev.mjolnir.override {
@@ -369,8 +370,6 @@
           simplesamlphp = pkgs.callPackage ./packages/simplesamlphp {};
 
           bluemap = pkgs.callPackage ./packages/bluemap.nix {};
-
-          out-of-your-element = pkgs.callPackage ./packages/ooye/package.nix {};
         }
         //
         # Mediawiki extensions
