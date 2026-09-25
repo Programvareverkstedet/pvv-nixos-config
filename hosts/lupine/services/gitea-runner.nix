@@ -28,40 +28,40 @@ in
       enable = true;
       name = "git-runner-${lupineName}";
       url = "https://git.pvv.ntnu.no";
-      # NOTE: gitea actions runners need node inside their docker images,
-      #       so we are a bit limited here.
+
+      # https://git.pvv.ntnu.no/Drift/gitea-joggers
       labels = [
-        "debian-latest:docker://node:current-trixie"
-        "debian-trixie:docker://node:current-trixie"
-        "debian-bookworm:docker://node:current-bookworm"
-        "debian-bullseye:docker://node:current-bullseye"
+        "debian-latest:docker://git.pvv.ntnu.no/drift/gitea-joggers:debian-current-trixie"
+        "debian-trixie:docker://git.pvv.ntnu.no/drift/gitea-joggers:debian-current-trixie"
+        "debian-bookworm:docker://git.pvv.ntnu.no/drift/gitea-joggers:debian-current-bookworm"
+        "debian-bullseye:docker://git.pvv.ntnu.no/drift/gitea-joggers:debian-current-bullseye"
 
-        "debian-latest-slim:docker://node:current-trixie-slim"
-        "debian-trixie-slim:docker://node:current-trixie-slim"
-        "debian-bookworm-slim:docker://node:current-bookworm-slim"
-        "debian-bullseye-slim:docker://node:current-bullseye-slim"
+        "debian-latest-slim:docker://git.pvv.ntnu.no/drift/gitea-joggers:debian-current-trixie-slim"
+        "debian-trixie-slim:docker://git.pvv.ntnu.no/drift/gitea-joggers:debian-current-trixie-slim"
+        "debian-bookworm-slim:docker://git.pvv.ntnu.no/drift/gitea-joggers:debian-current-bookworm-slim"
+        "debian-bullseye-slim:docker://git.pvv.ntnu.no/drift/gitea-joggers:debian-current-bullseye-slim"
 
-        "alpine-latest:docker://node:current-alpine"
-        "alpine-3.23:docker://node:current-alpine3.23"
-        "alpine-3.22:docker://node:current-alpine3.22"
-        "alpine-3.21:docker://node:current-alpine3.21"
+        "alpine-latest:docker://git.pvv.ntnu.no/drift/gitea-joggers:alpine-current-alpine"
+        "alpine-3.23:docker://git.pvv.ntnu.no/drift/gitea-joggers:alpine-current-alpine3.23"
+        "alpine-3.22:docker://git.pvv.ntnu.no/drift/gitea-joggers:alpine-current-alpine3.22"
+        "alpine-3.21:docker://git.pvv.ntnu.no/drift/gitea-joggers:alpine-current-alpine3.21"
 
-        # See https://gitea.com/gitea/runner-images
-        "ubuntu-latest:docker://docker.gitea.com/runner-images:ubuntu-latest"
-        "ubuntu-26.04:docker://docker.gitea.com/runner-images:ubuntu-26.04"
-        "ubuntu-resolute:docker://docker.gitea.com/runner-images:ubuntu-26.04"
-        "ubuntu-24.04:docker://docker.gitea.com/runner-images:ubuntu-24.04"
-        "ubuntu-noble:docker://docker.gitea.com/runner-images:ubuntu-24.04"
-        "ubuntu-22.04:docker://docker.gitea.com/runner-images:ubuntu-22.04"
-        "ubuntu-jammy:docker://docker.gitea.com/runner-images:ubuntu-22.04"
+        "ubuntu-latest:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-26.04"
+        "ubuntu-26.04:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-26.04"
+        "ubuntu-resolute:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-26.04"
+        "ubuntu-24.04:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-24.04"
+        "ubuntu-noble:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-24.04"
+        "ubuntu-22.04:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-22.04"
+        "ubuntu-jammy:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-22.04"
 
-        "ubuntu-latest-slim:docker://docker.gitea.com/runner-images:ubuntu-latest-slim"
-        "ubuntu-26.04-slim:docker://docker.gitea.com/runner-images:ubuntu-26.04-slim"
-        "ubuntu-resolute-slim:docker://docker.gitea.com/runner-images:ubuntu-26.04-slim"
-        "ubuntu-24.04-slim:docker://docker.gitea.com/runner-images:ubuntu-24.04-slim"
-        "ubuntu-noble-slim:docker://docker.gitea.com/runner-images:ubuntu-24.04-slim"
-        "ubuntu-22.04-slim:docker://docker.gitea.com/runner-images:ubuntu-22.04-slim"
-        "ubuntu-jammy-slim:docker://docker.gitea.com/runner-images:ubuntu-22.04-slim"
+        # No slim images for ubuntu, just cheat for now
+        "ubuntu-latest-slim:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-26.04"
+        "ubuntu-26.04-slim:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-26.04"
+        "ubuntu-resolute-slim:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-26.04"
+        "ubuntu-24.04-slim:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-24.04"
+        "ubuntu-noble-slim:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-24.04"
+        "ubuntu-22.04-slim:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-22.04"
+        "ubuntu-jammy-slim:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-22.04"
       ];
       tokenFile = config.sops.templates."gitea-runner-envfile".path;
       settings.metrics = {
