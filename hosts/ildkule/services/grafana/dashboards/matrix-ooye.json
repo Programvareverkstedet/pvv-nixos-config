@@ -398,7 +398,7 @@
             "type": "loki",
             "uid": "ildkule-loki"
           },
-          "expr": "{job=\"systemd-journal\", host=\"bicep\", unit=\"matrix-ooye.service\"} | json | line_format `{{.level}} {{.message}}`",
+          "expr": "{job=\"systemd-journal\", host=\"bicep\", syslog_identifier=\"out-of-your-element\"} | json | line_format `{{.level}} {{.message}}`",
           "refId": "A"
         }
       ]
