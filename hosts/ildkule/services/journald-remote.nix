@@ -39,6 +39,8 @@ in
         "::1"
         values.ipv4-space
         values.ipv6-space
+        values.hosts.gluttony.ipv4
+        values.hosts.gluttony.ipv6
       ];
     };
   };
