@@ -152,6 +152,14 @@ in {
           proxy_buffer_size 1024k;
         '';
       };
+
+      "/rss-proxy/ntnu-it-status" = {
+        proxyPass = "https://status.it.ntnu.no/history.rss";
+        extraConfig = ''
+          proxy_ssl_server_name on;
+          proxy_set_header Host status.it.ntnu.no;
+        '';
+      };
     };
   };
 }
