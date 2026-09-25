@@ -79,6 +79,11 @@ in {
       ];
       dashboards.settings.providers = [
         {
+          name = "Authentication";
+          type = "file";
+          options.path = dashboards/auth.json;
+        }
+        {
           name = "Node Exporter Full";
           type = "file";
           url = "https://grafana.com/api/dashboards/1860/revisions/42/download";
