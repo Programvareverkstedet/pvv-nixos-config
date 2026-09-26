@@ -1,4 +1,4 @@
-{ config, values, ... }:
+{ config, values, inputs, lib, ... }:
 {
   services.harmonia.cache = {
     enable = true;
@@ -37,6 +37,41 @@
           deny all;
         '';
       };
+    };
+  };
+
+  systemd.services.nixos-nightly-build-all = {
+    description = "Pre-build all NixOS configurations";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+
+    startAt = "00:40";
+
+    serviceConfig = {
+      Type = "oneshot";
+      Restart = "on-failure";
+      RestartSec = "1min";
+      ExecStart =
+        let
+          inputUrls = lib.mapAttrs (input: value: value.url) (import "${inputs.self}/flake.nix").inputs;
+
+          buildAllFlags = [
+            "--no-link"
+            "-L"
+            "--keep-going"
+            "--refresh"
+            "--no-write-lock-file"
+            "--print-out-paths"
+          ] ++ (lib.pipe inputUrls [
+            (lib.intersectAttrs {
+              nixpkgs = { };
+              nixpkgs-unstable = { };
+            })
+            (lib.mapAttrsToList (input: url: [ "--override-input" input url ]))
+            lib.concatLists
+          ]);
+        in
+        "${lib.getExe config.nix.package} build git+https://git.pvv.ntnu.no/Drift/pvv-nixos-config.git?ref=main#all-machines ${lib.escapeShellArgs buildAllFlags}";
     };
   };
 }
