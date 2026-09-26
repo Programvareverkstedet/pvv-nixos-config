@@ -58,6 +58,10 @@ in {
         callback_url = "https://grafana.pvv.ntnu.no/";
         renderer_token = secretFile config.sops.secrets."keys/grafana/renderer_token".path;
       };
+
+      dashboards = {
+        default_home_dashboard_path = toString dashboards/home.json;
+      };
     };
 
     provision = {
