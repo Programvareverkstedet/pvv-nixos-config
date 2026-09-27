@@ -7,6 +7,8 @@ let
     "Kurs"
   ];
 
+  domain = "pages.pvv.ntnu.no";
+
   giteaCfg = config.services.gitea;
 
   giteaWebSecretProviderScript = pkgs.writers.writePython3 "gitea-web-secret-provider" {
@@ -117,10 +119,15 @@ in
   services.openssh.authorizedKeysFiles = map (org: "/var/lib/gitea-web/authorized_keys.d/${org}") organizations;
 
   users.users.nginx.extraGroups = [ "gitea-web" ];
-  services.nginx.virtualHosts."pages.pvv.ntnu.no" = {
+  services.nginx.virtualHosts.${domain} = {
     kTLS = true;
     forceSSL = true;
     enableACME = true;
     root = "/var/lib/gitea-web/web";
+  };
+
+  environment.robots-txt."gitea-web" = {
+    virtualHosts.${domain} = true;
+    enableAntiScrapingRules = true;
   };
 }
