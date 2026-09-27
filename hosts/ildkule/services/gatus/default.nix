@@ -197,8 +197,7 @@ in
     pipeline.filters = lib.mkAfter [
       {
         name = "parser";
-        match = "journal.*";
-        condition = "Key_value_equals unit gatus";
+        match = "journal.gatus.service";
         key_name = "message";
         parser = "gatus_watchdog";
         reserve_data = true;
