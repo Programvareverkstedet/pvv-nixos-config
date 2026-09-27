@@ -121,11 +121,11 @@ in
           labels = [ "product" "product_id" ];
           values = [ "sum" ];
           query = ''
-            SELECT p.name AS product, p.product_id::text AS product_id, SUM(pe.amount) AS sum
+            SELECT p.name AS product, p.id::text AS product_id, SUM(pe.amount) AS sum
             FROM purchase_entries pe
-            JOIN products p ON pe.product_id = p.product_id
+            JOIN products p ON pe.product_id = p.id
             WHERE pe.amount > 0
-            GROUP BY p.product_id, p.name
+            GROUP BY p.id, p.name
             ORDER BY sum DESC
             LIMIT 20
           '';
@@ -136,7 +136,7 @@ in
           labels = [ "product" "product_id" ];
           values = [ "stock" ];
           query = ''
-            SELECT name AS product, product_id::text AS product_id, stock
+            SELECT name AS product, id::text AS product_id, stock
             FROM products
             WHERE NOT hidden AND stock != 0
           '';
