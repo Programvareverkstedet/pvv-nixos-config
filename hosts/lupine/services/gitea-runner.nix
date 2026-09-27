@@ -64,9 +64,13 @@ in
         "ubuntu-jammy-slim:docker://git.pvv.ntnu.no/drift/gitea-joggers:ubuntu-22.04"
       ];
       tokenFile = config.sops.templates."gitea-runner-envfile".path;
-      settings.metrics = {
-        enabled = true;
-        addr = "127.0.0.1:9101";
+      settings = {
+        metrics = {
+          enabled = true;
+          addr = "127.0.0.1:9101";
+        };
+
+        container.options = "--log-driver=journald --log-opt tag=gitea-actions-task";
       };
     };
   };
