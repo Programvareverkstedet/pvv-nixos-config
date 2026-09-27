@@ -323,7 +323,7 @@
       hugepages = ./modules/hugepages.nix;
       matrix-ooye = ./modules/matrix-ooye.nix;
       python-http-handlers = ./modules/python-http-handlers.nix;
-      robots-txt = ./modules/robots-txt.nix;
+      robots-txt = ./modules/robots-txt;
       rsync-pull-targets = ./modules/rsync-pull-targets.nix;
       snakeoil-certs = ./modules/snakeoil-certs.nix;
       snappymail = ./modules/snappymail.nix;

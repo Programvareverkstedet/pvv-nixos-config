@@ -81,6 +81,24 @@ in
           type = robots-txt-format.type;
         };
 
+        enableAntiScrapingRules = lib.mkOption {
+          description = "Whether to enable anti-scraping rules for this robots.txt";
+          type = lib.types.bool;
+          default = false;
+          example = true;
+        };
+
+        antiScrapingRulesPaths = lib.mkOption {
+          description = "Paths to disallow for anti-scraping rules";
+          type = lib.types.listOf lib.types.str;
+          default = [ "/" ];
+          example = [
+            "/api"
+            "/api/"
+            "/api/*"
+          ];
+        };
+
         virtualHosts = lib.mkOption {
           description = "nginx virtual hosts to add this robots.txt to";
           type = lib.types.attrsOf lib.types.bool;
@@ -92,9 +110,23 @@ in
   };
 
   config = {
-    environment.etc = lib.mapAttrs' (name: value: {
+    environment.etc = let
+      anti-scraper-rules = import ./anti-scraper-rules.nix;
+
+      coerceRule = rule: lib.mapAttrs (name: value:
+        if builtins.elem name [ "pre_comment" "post_comment" "User-agent" ] || lib.isList value
+        then value
+        else [ value ]
+      ) ({ pre_comment = ""; post_comment = ""; } // rule);
+
+      rulesFor = value: value.rules ++ lib.optional value.enableAntiScrapingRules (
+        coerceRule (anti-scraper-rules (
+          lib.optionalAttrs (value.antiScrapingRulesPaths != [ ]) { paths = value.antiScrapingRulesPaths; }
+        ))
+      );
+    in lib.mapAttrs' (name: value: {
       name = "robots-txt/${name}/robots.txt";
-      value.source = robots-txt-format.generate name value.rules;
+      value.source = robots-txt-format.generate name (rulesFor value);
     }) cfg;
 
     services.nginx.virtualHosts = lib.mkMerge (
