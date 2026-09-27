@@ -87,14 +87,39 @@ in
       }
     ];
 
-    pipeline.filters = lib.mkAfter [
-      {
-        name = "parser";
+    pipeline.filters = lib.mkAfter (
+      [
+        {
+          name = "modify";
+          match = "journal.prometheus-node-exporter.service";
+          remove = [ "level" ];
+        }
+        {
+          name = "parser";
+          match = "journal.prometheus-node-exporter.service";
+          key_name = "message";
+          parser = "node_exporter_logfmt";
+          reserve_data = true;
+        }
+      ]
+      ++ (lib.mapAttrsToList (k: v: {
+        name = "modify";
         match = "journal.prometheus-node-exporter.service";
-        key_name = "message";
-        parser = "node_exporter_logfmt";
-        reserve_data = true;
-      }
-    ];
+        condition = "Key_value_equals level ${k}";
+        set = "level ${v}";
+      }) {
+        ERROR = "error";
+        WARN = "warning";
+        INFO = "info";
+        DEBUG = "debug";
+      })
+      ++ [
+        {
+          name = "modify";
+          match = "journal.prometheus-node-exporter.service";
+          add = [ "level info" ];
+        }
+      ]
+    );
   };
 }
