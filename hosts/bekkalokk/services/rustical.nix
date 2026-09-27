@@ -39,6 +39,7 @@ in {
   systemd.services.rustical = {
     after = [ "sops-install-secrets.service" ];
     requires = [ "sops-install-secrets.service" ];
+    environment.NO_COLOR = "1";
   };
 
   services.nginx.virtualHosts."${domain}" = {
