@@ -123,12 +123,14 @@
       {
         name = "grep";
         match = "nginx.error";
-        exclude = ''message ^SSL_read\(\) failed \(SSL: error:0A0000C6:SSL routines::packet length too long error:0A000139:SSL routines::record layer failure\) while (processing HTTP/2 connection|keepalive|waiting for request)$'';
-      }
-      {
-        name = "grep";
-        match = "nginx.error";
-        exclude = ''message ^SSL_read\(\) failed \(SSL: error:0A00010B:SSL routines::wrong version number error:0A000139:SSL routines::record layer failure\) while waiting for request$'';
+        exclude = let
+          ignoredSslErrorCodes = [
+            "0A0000C6" # SSL routines::packet length too long
+            "0A00010B" # SSL routines::wrong version number
+            "0A000119" # SSL routines::decryption failed or bad record mac
+            "0A000136" # SSL routines::missing psk kex modes extension
+          ];
+        in ''message ^SSL_\w+\(\) failed \(SSL: error:(${lib.concatStringsSep "|" ignoredSslErrorCodes}):'';
       }
       {
         name = "grep";
@@ -138,17 +140,7 @@
       {
         name = "grep";
         match = "nginx.error";
-        exclude = ''message ^recv\(\) failed \(\d+: Input/output error\) while processing HTTP/2 connection$'';
-      }
-      {
-        name = "grep";
-        match = "nginx.error";
-        exclude = ''message ^recv\(\) failed \(\d+: Input/output error\) while sending to client$'';
-      }
-      {
-        name = "grep";
-        match = "nginx.error";
-        exclude = ''message ^SSL_do_handshake\(\) failed \(SSL: error:0A000136:SSL routines::missing psk kex modes extension\) while SSL handshaking$'';
+        exclude = ''message ^recv\(\) failed \(\d+: Input/output error\) while (processing HTTP/2 connection|sending to client)$'';
       }
 
       {
