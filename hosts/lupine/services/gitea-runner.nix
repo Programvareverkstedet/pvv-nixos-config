@@ -75,6 +75,35 @@ in
     };
   };
 
+  services.fluent-bit.settings = {
+    parsers = [
+      {
+        name = "gitea_runner_logfmt";
+        format = "logfmt";
+      }
+    ];
+
+    pipeline.filters = lib.mkAfter [
+      {
+        name = "modify";
+        match = "journal.gitea-runner-*";
+        remove = [ "level" ];
+      }
+      {
+        name = "parser";
+        match = "journal.gitea-runner-*";
+        key_name = "message";
+        parser = "gitea_runner_logfmt";
+        reserve_data = true;
+      }
+      {
+        name = "modify";
+        match = "journal.gitea-runner-*";
+        add = [ "level info" ];
+      }
+    ];
+  };
+
   services.nginx = {
     enable = lib.mkDefault true;
 
