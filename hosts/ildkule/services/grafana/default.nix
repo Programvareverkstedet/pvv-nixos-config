@@ -136,6 +136,25 @@ in {
     requires = [ "sops-install-secrets.service" ];
   };
 
+  services.fluent-bit.settings = {
+    parsers = [
+      {
+        name = "grafana_journal";
+        format = "json";
+      }
+    ];
+
+    pipeline.filters = lib.mkAfter [
+      {
+        name = "parser";
+        match = "journal.grafana.service";
+        key_name = "message";
+        parser = "grafana_journal";
+        reserve_data = true;
+      }
+    ];
+  };
+
   services.grafana-image-renderer = {
     enable = true;
   };
