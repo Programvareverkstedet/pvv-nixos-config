@@ -177,6 +177,19 @@ in
       };
     };
 
+    services.httpd = lib.mkIf (cfg.enable && config.services.httpd.enable) {
+      virtualHosts.${config.networking.fqdn}.locations."/prometheus-fluent-bit-exporter/metrics" = {
+        proxyPass = "http://127.0.0.1:${toString cfg.settings.service.http_port}/api/v2/metrics/prometheus";
+
+        extraConfig = ''
+          Require ip 127.0.0.1
+          Require ip ::1
+          Require ip ${values.hosts.ildkule.ipv4}
+          Require ip ${values.hosts.ildkule.ipv6}
+        '';
+      };
+    };
+
     systemd.services.fluent-bit = lib.mkIf cfg.enable {
       after = lib.mkForce [ "network-online.target" ];
       requires = lib.mkForce [ "network-online.target" ];
