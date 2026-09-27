@@ -142,17 +142,56 @@ in {
         name = "grafana_journal";
         format = "json";
       }
-    ];
-
-    pipeline.filters = lib.mkAfter [
       {
-        name = "parser";
-        match = "journal.grafana.service";
-        key_name = "message";
-        parser = "grafana_journal";
-        reserve_data = true;
+        name = "grafana_image_renderer_logfmt";
+        format = "logfmt";
       }
     ];
+
+    pipeline.filters = lib.mkAfter (
+      [
+        # grafana
+        {
+          name = "parser";
+          match = "journal.grafana.service";
+          key_name = "message";
+          parser = "grafana_journal";
+          reserve_data = true;
+        }
+
+        # grafan-image-renderer
+        {
+          name = "modify";
+          match = "journal.grafana-image-renderer.service";
+          remove = [ "level" ];
+        }
+        {
+          name = "parser";
+          match = "journal.grafana-image-renderer.service";
+          key_name = "message";
+          parser = "grafana_image_renderer_logfmt";
+          reserve_data = true;
+        }
+      ]
+      ++ (lib.mapAttrsToList (k: v: {
+        name = "modify";
+        match = "journal.grafana-image-renderer.service";
+        condition = "Key_value_equals level ${k}";
+        set = "level ${v}";
+      }) {
+        ERROR = "error";
+        WARN = "warning";
+        INFO = "info";
+        DEBUG = "debug";
+      })
+      ++ [
+        {
+          name = "modify";
+          match = "journal.grafana-image-renderer.service";
+          add = [ "level info" ];
+        }
+      ]
+    );
   };
 
   services.grafana-image-renderer = {
