@@ -31,6 +31,7 @@ in {
           final_sleep = "0s";
         };
         chunk_idle_period = "1h";
+        chunk_encoding = "zstd";
       };
 
       schema_config = {
