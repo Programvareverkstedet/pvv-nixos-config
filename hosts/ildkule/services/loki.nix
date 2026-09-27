@@ -136,6 +136,25 @@ in {
     };
   };
 
+  services.fluent-bit.settings = {
+    parsers = [
+      {
+        name = "loki_journal";
+        format = "json";
+      }
+    ];
+
+    pipeline.filters = lib.mkAfter [
+      {
+        name = "parser";
+        match = "journal.loki.service";
+        key_name = "message";
+        parser = "loki_journal";
+        reserve_data = true;
+      }
+    ];
+  };
+
   services.nginx.virtualHosts."loki.pvv.ntnu.no" = {
     forceSSL = true;
     enableACME = true;
