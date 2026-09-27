@@ -19,8 +19,7 @@
     "lupine-3"
     "lupine-4"
     "lupine-5"
-    # TODO: export prometheus stats via apache on temmie
-    # "temmie"
+    "temmie"
     "wenche"
   ];
 
