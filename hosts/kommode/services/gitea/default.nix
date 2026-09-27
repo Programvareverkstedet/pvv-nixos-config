@@ -129,7 +129,11 @@ in {
         TYPE = "redis";
         CONN_STR = "redis+socket://${config.services.redis.servers.gitea.unixSocket}?db=2";
       };
-      database.LOG_SQL = false;
+      database = {
+        LOG_SQL = false;
+        MAX_IDLE_CONNS = 100;
+        MAX_OPEN_CONNS = 100;
+      };
       repository = {
         PREFERRED_LICENSES = lib.concatStringsSep "," [
           "AGPL-3.0-only"
