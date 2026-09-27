@@ -286,7 +286,7 @@ in {
   };
 
   environment.robots-txt."gitea" = {
-    virtualHost = domain;
+    virtualHosts.${domain} = true;
     rules = [
       {
         pre_comment = ''

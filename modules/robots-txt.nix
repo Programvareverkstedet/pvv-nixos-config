@@ -32,7 +32,7 @@ let
         user_agent = rule.User-agent or [];
         pre_comment = rule.pre_comment;
         post_comment = rule.post_comment;
-        rest = builtins.removeAttrs rule [ "User-agent" "pre_comment" "post_comment" ];
+        rest = removeAttrs rule [ "User-agent" "pre_comment" "post_comment" ];
       in lib.concatStringsSep "\n" (lib.filter (x: x != null) [
         (if (pre_comment != "") then makeComment pre_comment else null)
         (let
@@ -81,10 +81,11 @@ in
           type = robots-txt-format.type;
         };
 
-        virtualHost = lib.mkOption {
-          description = "An nginx virtual host to add the robots.txt to";
-          type = lib.types.nullOr lib.types.str;
-          default = null;
+        virtualHosts = lib.mkOption {
+          description = "nginx virtual hosts to add this robots.txt to";
+          type = lib.types.attrsOf lib.types.bool;
+          default = { };
+          example = { "example.com" = true; };
         };
       };
     }));
@@ -96,21 +97,19 @@ in
       value.source = robots-txt-format.generate name value.rules;
     }) cfg;
 
-    services.nginx.virtualHosts = lib.pipe cfg [
-      (lib.filterAttrs (_: value: value.virtualHost != null))
-      (lib.mapAttrs' (name: value: {
-        name = value.virtualHost;
-        value = {
-          locations = {
-            "= /robots.txt" = {
+    services.nginx.virtualHosts = lib.mkMerge (
+      lib.concatLists (
+        lib.mapAttrsToList (_: value:
+          lib.mapAttrsToList (vhost: enabled: lib.optionalAttrs enabled {
+            ${vhost}.locations."= /robots.txt" = {
               extraConfig = ''
                 add_header Content-Type text/plain;
               '';
-              root = cfg.${name}.path;
+              root = value.path;
             };
-          };
-        };
-      }))
-    ];
+          }) value.virtualHosts
+        ) cfg
+      )
+    );
   };
 }
