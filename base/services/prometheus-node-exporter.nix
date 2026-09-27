@@ -16,7 +16,9 @@ in
     wantedBy = [ "sockets.target" ];
     socketConfig = {
       ListenStream = socketPath;
-      SocketGroup = config.services.nginx.group;
+      SocketGroup = if config.services.nginx.enable then config.services.nginx.group else
+                    if config.services.httpd.enable then config.services.httpd.group else
+                    "nobody";
       SocketMode = "0660";
     };
   };
@@ -33,6 +35,12 @@ in
           );
         in lib.mkForce "${pkgs.prometheus-node-exporter}/bin/node_exporter ${args} ${lib.escapeShellArgs cfg.extraFlags}";
       };
+    };
+
+    httpd = lib.mkIf (cfg.enable && config.services.httpd.enable) {
+      after = [ "prometheus-node-exporter.socket" ];
+      wants = [ "prometheus-node-exporter.socket" ];
+      serviceConfig.BindPaths = [ "-${socketPath}" ];
     };
   };
 
@@ -55,6 +63,19 @@ in
           deny all;
         '';
       };
+    };
+  };
+
+  services.httpd = lib.mkIf (cfg.enable && config.services.httpd.enable) {
+    virtualHosts.${config.networking.fqdn}.locations."/prometheus-node-exporter/metrics" = {
+      proxyPass = "unix:${socketPath}|http://localhost/metrics";
+
+      extraConfig = ''
+        Require ip 127.0.0.1
+        Require ip ::1
+        Require ip ${values.hosts.ildkule.ipv4}
+        Require ip ${values.hosts.ildkule.ipv6}
+      '';
     };
   };
 }
