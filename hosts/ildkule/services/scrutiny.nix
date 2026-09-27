@@ -49,8 +49,7 @@ in
     pipeline.filters = lib.mkAfter [
       {
         name = "parser";
-        match = "journal.*";
-        condition = "Key_value_equals unit influxdb2";
+        match = "journal.influxdb2.service";
         key_name = "message";
         parser = "influxd_logfmt";
         reserve_data = true;
