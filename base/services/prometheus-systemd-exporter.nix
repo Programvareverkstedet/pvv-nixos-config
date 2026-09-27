@@ -74,4 +74,23 @@ in
       '';
     };
   };
+
+  services.fluent-bit.settings = lib.mkIf cfg.enable {
+    parsers = [
+      {
+        name = "systemd_exporter_logfmt";
+        format = "logfmt";
+      }
+    ];
+
+    pipeline.filters = lib.mkAfter [
+      {
+        name = "parser";
+        match = "journal.prometheus-systemd-exporter.service";
+        key_name = "message";
+        parser = "systemd_exporter_logfmt";
+        reserve_data = true;
+      }
+    ];
+  };
 }
