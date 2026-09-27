@@ -30,7 +30,7 @@
     pipeline.filters = lib.mkAfter [
       {
         name = "parser";
-        match = "journal.*";
+        match = "journal.sshd@*";
         key_name = "message";
         parser = "sshd_auth";
         reserve_data = true;
