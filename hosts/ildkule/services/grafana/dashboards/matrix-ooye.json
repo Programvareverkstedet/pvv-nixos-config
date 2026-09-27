@@ -207,12 +207,55 @@
       ]
     },
     {
+      "id": 17,
+      "type": "timeseries",
+      "title": "Connectivity",
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "max": 1,
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "stepAfter",
+            "fillOpacity": 10,
+            "spanNulls": true
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "expr": "ooye_discord_connected",
+          "legendFormat": "Discord",
+          "refId": "A"
+        },
+        {
+          "expr": "ooye_homeserver_online",
+          "legendFormat": "Matrix",
+          "refId": "B"
+        }
+      ]
+    },
+    {
       "id": 5,
       "type": "timeseries",
       "title": "Messages Total",
       "gridPos": {
         "x": 0,
-        "y": 8,
+        "y": 16,
         "w": 12,
         "h": 8
       },
@@ -248,7 +291,7 @@
       "description": "Bridged messages",
       "gridPos": {
         "x": 12,
-        "y": 8,
+        "y": 16,
         "w": 12,
         "h": 8
       },
@@ -271,8 +314,146 @@
       },
       "targets": [
         {
-          "expr": "deriv(ooye_messages_total[1h]) * 3600",
+          "expr": "clamp_min(deriv(ooye_messages_total[1h]) * 3600, 0)",
           "legendFormat": "{{type}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "timeseries",
+      "title": "Homeserver Queue Length",
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "spanNulls": true
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "expr": "ooye_homeserver_queue_length",
+          "legendFormat": "Queued events",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "table",
+      "title": "Guilds",
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 24,
+        "h": 16
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "guild_id" },
+            "properties": [{ "id": "custom.width", "value": 200 }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Channels" },
+            "properties": [{ "id": "custom.width", "value": 100 }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Last Active" },
+            "properties": [
+              { "id": "unit", "value": "dateTimeFromNow" },
+              { "id": "custom.width", "value": 200 }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [{ "desc": true, "displayName": "Last Active" }]
+      },
+      "targets": [
+        {
+          "expr": "sum by (guild_id, guild_name) (ooye_bridged_guild_channels)",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        },
+        {
+          "expr": "sum by (guild_id, guild_name) (ooye_bridged_guild_last_active_seconds) * 1000",
+          "format": "table",
+          "instant": true,
+          "refId": "B"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": { "byField": "guild_id", "mode": "outer" }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": { "Time 1": true, "Time 2": true, "guild_name 2": true },
+            "renameByName": {
+              "Value #A": "Channels",
+              "Value #B": "Last Active",
+              "guild_name 1": "guild_name"
+            },
+            "indexByName": { "guild_id": 0, "guild_name 1": 1, "Value #A": 2, "Value #B": 3 }
+          }
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "heatmap",
+      "title": "Guild Message Traffic",
+      "gridPos": {
+        "x": 0,
+        "y": 40,
+        "w": 24,
+        "h": 11
+      },
+      "options": {
+        "calculate": false,
+        "color": {
+          "mode": "scheme",
+          "scheme": "Oranges",
+          "steps": 16
+        },
+        "yAxis": {
+          "axisPlacement": "left"
+        },
+        "cellGap": 1,
+        "tooltip": { "show": true, "yHistogram": false },
+        "legend": { "show": false }
+      },
+      "targets": [
+        {
+          "expr": "sum by (guild_name) (increase(ooye_bridge_messages_total[1h]) * on (guild_id) group_left (guild_name) group by (guild_id, guild_name) (ooye_bridged_guild_channels))",
+          "legendFormat": "{{guild_name}}",
+          "queryType": "range",
+          "interval": "5m",
           "refId": "A"
         }
       ]
@@ -287,7 +468,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 16,
+        "y": 51,
         "w": 24,
         "h": 10
       },
