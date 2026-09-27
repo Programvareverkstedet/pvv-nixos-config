@@ -117,18 +117,40 @@
         reserve_data = true;
         preserve_key = false;
       }
+
+      # Drop a variety of errors we can't turn off in nginx, which mostly originate
+      # from bots and scanner dumping garbage bytes at our doorstep.
       {
-        # Drop SSL_read errors caused by clients sending garbage at the HTTPS port.
         name = "grep";
         match = "nginx.error";
-        exclude = ''message ^SSL_read\(\) failed \(SSL: error:0A0000C6:SSL routines::packet length too long error:0A000139:SSL routines::record layer failure\) while (processing HTTP/2 connection|keepalive)$'';
+        exclude = ''message ^SSL_read\(\) failed \(SSL: error:0A0000C6:SSL routines::packet length too long error:0A000139:SSL routines::record layer failure\) while (processing HTTP/2 connection|keepalive|waiting for request)$'';
       }
       {
-        # Drop SSL_write errors caused by clients closing the connection mid-write.
+        name = "grep";
+        match = "nginx.error";
+        exclude = ''message ^SSL_read\(\) failed \(SSL: error:0A00010B:SSL routines::wrong version number error:0A000139:SSL routines::record layer failure\) while waiting for request$'';
+      }
+      {
         name = "grep";
         match = "nginx.error";
         exclude = ''message ^SSL_write\(\) failed while processing HTTP/2 connection$'';
       }
+      {
+        name = "grep";
+        match = "nginx.error";
+        exclude = ''message ^recv\(\) failed \(\d+: Input/output error\) while processing HTTP/2 connection$'';
+      }
+      {
+        name = "grep";
+        match = "nginx.error";
+        exclude = ''message ^recv\(\) failed \(\d+: Input/output error\) while sending to client$'';
+      }
+      {
+        name = "grep";
+        match = "nginx.error";
+        exclude = ''message ^SSL_do_handshake\(\) failed \(SSL: error:0A000136:SSL routines::missing psk kex modes extension\) while SSL handshaking$'';
+      }
+
       {
         name = "modify";
         match = "nginx.access";
