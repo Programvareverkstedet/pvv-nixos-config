@@ -113,6 +113,30 @@ in {
       }
       {
         name = "modify";
+        match = "httpd.access";
+        condition = "Key_value_matches status ^1";
+        set = "level notice";
+      }
+      {
+        name = "modify";
+        match = "httpd.access";
+        condition = "Key_value_matches status ^3";
+        set = "level notice";
+      }
+      {
+        name = "modify";
+        match = "httpd.access";
+        condition = "Key_value_matches status ^4";
+        set = "level warning";
+      }
+      {
+        name = "modify";
+        match = "httpd.access";
+        condition = "Key_value_matches status ^5";
+        set = "level error";
+      }
+      {
+        name = "modify";
         match = "httpd.error";
         set = [
           "job httpd-error"
