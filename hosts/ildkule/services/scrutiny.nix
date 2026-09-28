@@ -38,22 +38,55 @@ in
     '';
   };
 
-  services.fluent-bit.settings = lib.mkIf config.services.influxdb2.enable {
-    parsers = [
-      {
-        name = "influxd_logfmt";
-        format = "logfmt";
-      }
-    ];
+  services.fluent-bit.settings = lib.mkMerge [
+    # influxdb2
+    (lib.mkIf config.services.influxdb2.enable {
+      parsers = [
+        {
+          name = "influxd_logfmt";
+          format = "logfmt";
+        }
+      ];
 
-    pipeline.filters = lib.mkAfter [
-      {
-        name = "parser";
-        match = "journal.influxdb2.service";
-        key_name = "message";
-        parser = "influxd_logfmt";
-        reserve_data = true;
-      }
-    ];
-  };
+      pipeline.filters = lib.mkAfter [
+        {
+          name = "parser";
+          match = "journal.influxdb2.service";
+          key_name = "message";
+          parser = "influxd_logfmt";
+          reserve_data = true;
+        }
+      ];
+    })
+
+    # scrutiny
+    (lib.mkIf cfg.enable {
+      parsers = [
+        {
+          name = "scrutiny_logfmt";
+          format = "logfmt";
+        }
+      ];
+
+      pipeline.filters = lib.mkAfter [
+        {
+          name = "modify";
+          match = "journal.scrutiny.service";
+          remove = [ "level" ];
+        }
+        {
+          name = "parser";
+          match = "journal.scrutiny.service";
+          key_name = "message";
+          parser = "scrutiny_logfmt";
+          reserve_data = true;
+        }
+        {
+          name = "modify";
+          match = "journal.scrutiny.service";
+          add = [ "level info" ];
+        }
+      ];
+    })
+  ];
 }
