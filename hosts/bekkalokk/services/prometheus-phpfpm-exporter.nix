@@ -32,6 +32,35 @@ in
     ];
   };
 
+  services.fluent-bit.settings = lib.mkIf cfg.enable {
+    parsers = [
+      {
+        name = "phpfpm_exporter_logfmt";
+        format = "logfmt";
+      }
+    ];
+
+    pipeline.filters = lib.mkAfter [
+      {
+        name = "modify";
+        match = "journal.prometheus-php-fpm-exporter.service";
+        remove = [ "level" ];
+      }
+      {
+        name = "parser";
+        match = "journal.prometheus-php-fpm-exporter.service";
+        key_name = "message";
+        parser = "phpfpm_exporter_logfmt";
+        reserve_data = true;
+      }
+      {
+        name = "modify";
+        match = "journal.prometheus-php-fpm-exporter.service";
+        add = [ "level info" ];
+      }
+    ];
+  };
+
   services.nginx = lib.mkIf cfg.enable {
     virtualHosts."www.pvv.ntnu.no" = lib.mkIf config.services.nginx.enable {
       forceSSL = true;
