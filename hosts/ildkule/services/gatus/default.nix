@@ -60,7 +60,8 @@ in
         (mkMachine "ambidextrous")
         (mkMachine "bekkalokk")
         (mkMachine "bicep")
-        (mkMachine "bikkje")
+        # TODO: set up bikkje
+        # (mkMachine "bikkje")
         (mkMachine "brzeczyszczykiewicz")
         (mkMachine "georg")
         (mkMachine "gluttony")
