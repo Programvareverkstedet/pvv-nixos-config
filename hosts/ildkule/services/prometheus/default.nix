@@ -6,6 +6,7 @@ in {
     ./exim.nix
     ./gitea.nix
     ./gitea-runner.nix
+    ./loki.nix
     ./machines.nix
     ./matrix-ooye.nix
     ./matrix-synapse.nix
