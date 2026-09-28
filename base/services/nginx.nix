@@ -178,6 +178,7 @@
 
       labels = lib.concatStringsSep ", " [
         "host=${config.networking.hostName}"
+        "service_name=nginx"
       ];
       label_keys = lib.concatMapStringsSep "," (k: "$" + k) [
         "level"
