@@ -1,5 +1,6 @@
 {
   imports = [
+    ./fluentbit.nix
     ./httpd.nix
     ./log-processor.nix
     ./mail.nix

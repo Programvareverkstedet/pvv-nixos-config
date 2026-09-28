@@ -233,7 +233,7 @@ in
 
       ConfigurationDirectory = [ "httpd" ];
       LogsDirectory = [ "httpd" ];
-      LogsDirectoryMode = "0700";
+      LogsDirectoryMode = "0750";
 
       AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ] ++ lib.optionals mcfg.debugMode [ "CAP_SYS_PTRACE" ];
       CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ] ++ lib.optionals mcfg.debugMode [ "CAP_SYS_PTRACE" ];
@@ -265,7 +265,7 @@ in
       ];
       SystemCallArchitectures = "native";
       SystemCallFilter = lib.mkIf (!mcfg.debugMode) [ "@system-service" ];
-      UMask = "0077";
+      UMask = "0027";
 
       RuntimeDirectoryMode = "0750";
       RuntimeDirectory = [ "httpd/root-mnt" ];
