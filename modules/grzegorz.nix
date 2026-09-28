@@ -73,6 +73,18 @@ in {
       locations."/health" = {
         proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
         recommendedProxySettings = true;
+        extraConfig = ''
+          # pvv
+          allow ${values.ipv4-space};
+          allow ${values.ipv6-space};
+          # ntnu
+          allow ${values.ntnu.ipv4-space};
+          allow ${values.ntnu.ipv6-space};
+          # monitoring
+          allow ${values.hosts.ildkule.ipv4};
+          allow ${values.hosts.ildkule.ipv6};
+          deny all;
+        '';
       };
     };
 
@@ -140,4 +152,3 @@ in {
 
   services.roowho2.settings.rwhod.ignoreUsers = [ "greg" ];
 }
-
