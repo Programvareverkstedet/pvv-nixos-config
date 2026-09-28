@@ -1,4 +1,4 @@
-{ config, lib, values, lupineName, ... }:
+{ config, lib, unstablePkgs, values, lupineName, ... }:
 let
   cfg = config.services.gitea-actions-runner.instances.${lupineName};
 in
@@ -23,8 +23,9 @@ in
     };
   };
 
-  services.gitea-actions-runner.instances = {
-    ${lupineName} = {
+  services.gitea-actions-runner = {
+    package = unstablePkgs.gitea-actions-runner;
+    instances.${lupineName} = {
       enable = true;
       name = "git-runner-${lupineName}";
       url = "https://git.pvv.ntnu.no";
