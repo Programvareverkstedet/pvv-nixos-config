@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, values, ... }:
 let
   cfg = config.services.httpd;
   fbCfg = config.services.fluent-bit;
@@ -74,6 +74,33 @@ in {
         reserve_data = true;
         preserve_key = true;
       }
+
+      # Drop monitoring/scraping noise from the access log.
+      {
+        name = "grep";
+        match = "httpd.access";
+        logical_op = "and";
+        exclude = [
+          ''path ^/loki/api/v1/push''
+          ''agent ^Fluent-Bit''
+        ];
+      }
+      (let
+        ildkuleAddrRegex = "^(${lib.concatMapStringsSep "|" lib.escapeRegex [
+          values.hosts.ildkule.ipv4
+          values.hosts.ildkule.ipv6
+          "127.0.0.1"
+          "::1"
+        ]})$";
+      in {
+        name = "grep";
+        match = "httpd.access";
+        logical_op = "and";
+        exclude = [
+          "remote ${ildkuleAddrRegex}"
+          ''agent ^(Prometheus|Gatus)/''
+        ];
+      })
 
       {
         name = "modify";

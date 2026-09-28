@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, values, ... }:
 {
   services.nginx = {
     recommendedTlsSettings = true;
@@ -141,6 +141,33 @@
         name = "grep";
         match = "nginx.error";
         exclude = ''message ^recv\(\) failed \(\d+: Input/output error\) while (processing HTTP/2 connection|sending to client)$'';
+      }
+
+      # Drop monitoring/scraping noise from the access log.
+      {
+        name = "grep";
+        match = "nginx.access";
+        logical_op = "and";
+        exclude = [
+          ''path ^/loki/api/v1/push''
+          ''agent ^Fluent-Bit''
+        ];
+      }
+      {
+        name = "grep";
+        match = "nginx.access";
+        logical_op = "and";
+        exclude = let
+          ildkuleAddrRegex = "^(${lib.concatMapStringsSep "|" lib.escapeRegex [
+            values.hosts.ildkule.ipv4
+            values.hosts.ildkule.ipv6
+            "127.0.0.1"
+            "::1"
+          ]})$";
+        in [
+          "remote ${ildkuleAddrRegex}"
+          ''agent ^(Prometheus|Gatus)/''
+        ];
       }
 
       {
