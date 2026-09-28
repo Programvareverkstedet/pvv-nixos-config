@@ -47,6 +47,8 @@ fn main() -> Result<(), String> {
         ),
     };
 
+    let dry_run = std::env::var_os("APACHE_LOG_PROCESSOR_DRY_RUN").is_some();
+
     let stdin = std::io::stdin();
 
     fcntl(stdin.as_fd(), FcntlArg::F_GETFL)
@@ -68,7 +70,7 @@ fn main() -> Result<(), String> {
         )
         .map_err(|error| format!("failed to register stdin with epoll: {error}"))?;
 
-    if let Err(error) = event_loop(log_mode, epoll, stdin.as_fd(), tee_file) {
+    if let Err(error) = event_loop(log_mode, epoll, stdin.as_fd(), tee_file, dry_run) {
         eprintln!("Error: {error}");
         exit(1);
     }
@@ -81,6 +83,7 @@ fn event_loop(
     epoll: Epoll,
     stdin_fd: BorrowedFd<'_>,
     mut tee_file: Option<OwnedFd>,
+    dry_run: bool,
 ) -> Result<(), String> {
     let mut events = [EpollEvent::empty(); 1];
     let mut pending = VecDeque::new();
@@ -116,13 +119,13 @@ fn event_loop(
 
         while let Some(newline_index) = pending.iter().position(|byte| *byte == b'\n') {
             let line = pending.make_contiguous();
-            process_line(log_mode, &line[..=newline_index], &mut tee_file)?;
+            process_line(log_mode, &line[..=newline_index], &mut tee_file, dry_run)?;
             pending.drain(..=newline_index);
         }
 
         if eof {
             if !pending.is_empty() {
-                process_line(log_mode, pending.make_contiguous(), &mut tee_file)?;
+                process_line(log_mode, pending.make_contiguous(), &mut tee_file, dry_run)?;
                 pending.clear();
             }
             return Ok(());
@@ -134,6 +137,7 @@ fn process_line(
     log_mode: LogMode,
     line: &[u8],
     tee_file: &mut Option<OwnedFd>,
+    dry_run: bool,
 ) -> Result<(), String> {
     if let Some(tee_file) = tee_file.as_ref() {
         write_all_fd(tee_file, line).map_err(|error| {
@@ -173,6 +177,15 @@ fn process_line(
                 LogMode::Access => format!("access-{now}.log"),
                 LogMode::Error => format!("error-{now}.log"),
             });
+
+            if dry_run {
+                eprintln!(
+                    "Dry run: would have appended to {} for user {}",
+                    logfile.display(),
+                    user.name
+                );
+                return Ok(());
+            }
 
             let fd = open(
                 &logfile,

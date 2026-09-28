@@ -37,6 +37,11 @@ in
 
       ExecStart = "${lib.getExe mcfg.apacheLogProcessorPackage} %i";
 
+      # TODO: remove me before putting into production.
+      #       this just ensurse that we don't get doubled logs in people's
+      #       homedirs while tom is still working.
+      Environment = [ "APACHE_LOG_PROCESSOR_DRY_RUN=1" ];
+
       AmbientCapabilities = [ "CAP_SETUID" "CAP_SETGID" ];
       CapabilityBoundingSet = [ "CAP_SETUID" "CAP_SETGID" ];
       DeviceAllow = [ "" ];
