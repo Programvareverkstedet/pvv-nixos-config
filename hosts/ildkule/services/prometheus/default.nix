@@ -9,6 +9,7 @@ in {
     ./loki.nix
     ./machines.nix
     ./matrix-livekit.nix
+    ./matrix-mjolnir.nix
     ./matrix-ooye.nix
     ./matrix-synapse.nix
     ./mysqld.nix

@@ -1,5 +1,7 @@
-{ config, lib, fp, ... }:
-
+{ config, lib, fp, values, ... }:
+let
+  cfg = config.services.mjolnir;
+in
 {
   sops.secrets."matrix/mjolnir/access_token" = {
     sopsFile = fp /secrets/bicep/matrix.yaml;
@@ -48,11 +50,31 @@
 
     settings = {
       admin.enableMakeRoomAdminCommand = true;
+
+      health.openMetrics = {
+        enabled = true;
+        port = 6791;
+        address = "127.0.0.1";
+        endpoint = "/metrics";
+      };
     };
 
     # Module wants it even when not using pantalaimon
     # TODO: Fix upstream module in nixpkgs
     pantalaimon.username = "bot_admin";
+  };
+
+  services.nginx.virtualHosts."matrix.pvv.ntnu.no" = lib.mkIf config.services.mjolnir.enable {
+    locations."/prometheus-mjolnir/metrics" = {
+      proxyPass = "http://127.0.0.1:${toString cfg.settings.health.openMetrics.port}/metrics";
+      extraConfig = ''
+        allow 127.0.0.1;
+        allow ::1;
+        allow ${values.hosts.ildkule.ipv4};
+        allow ${values.hosts.ildkule.ipv6};
+        deny all;
+      '';
+    };
   };
 
   systemd.services.mjolnir = {
