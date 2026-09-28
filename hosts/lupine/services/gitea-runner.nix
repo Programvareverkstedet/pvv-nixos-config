@@ -83,6 +83,10 @@ in
       ];
       tokenFile = config.sops.templates."gitea-runner-envfile".path;
       settings = {
+        # Workaround for https://gitea.com/gitea/runner/issues/1211,
+        # Remove when https://gitea.com/gitea/runner/pulls/1229 lands
+        cache.v2 = false;
+
         metrics = {
           enabled = true;
           addr = "127.0.0.1:9101";
