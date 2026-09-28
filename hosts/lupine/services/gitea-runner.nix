@@ -24,7 +24,24 @@ in
   };
 
   services.gitea-actions-runner = {
-    package = unstablePkgs.gitea-actions-runner;
+    package = (unstablePkgs.gitea-actions-runner.override {
+      buildGoModule = unstablePkgs.buildGo127Module;
+    }).overrideAttrs {
+      # We are running uber-new version until this thingy releases:
+      # https://gitea.com/gitea/runner/issues/1176
+      version = "3.5.0";
+
+      src = unstablePkgs.fetchFromGitea {
+        domain = "gitea.com";
+        owner = "gitea";
+        repo = "runner";
+        rev = "v3.5.0";
+        hash = "sha256-059CcpfImV+p+2oG1AOJkg+b9sZL0r9vmg3r1VzK5Ak=";
+      };
+
+      vendorHash = "sha256-VTozER+0Mq8bbrDbEsscw9nJoLyHszPIH7A0PT7Q08o=";
+    };
+
     instances.${lupineName} = {
       enable = true;
       name = "git-runner-${lupineName}";
