@@ -189,6 +189,8 @@ in
     };
   };
 
+  systemd.services.gatus.environment.GATUS_LOG_LEVEL = "WARN";
+
   services.nginx.virtualHosts."status.pvv.ntnu.no" = lib.mkIf cfg.enable {
     enableACME = true;
     forceSSL = true;
