@@ -8,6 +8,7 @@ in {
     ./gitea-runner.nix
     ./loki.nix
     ./machines.nix
+    ./matrix-livekit.nix
     ./matrix-ooye.nix
     ./matrix-synapse.nix
     ./mysqld.nix

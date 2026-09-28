@@ -1,4 +1,4 @@
-{ config, lib, fp, ... }:
+{ config, lib, fp, values, ... }:
 let
   matrixDomain = "matrix.pvv.ntnu.no";
   cfg = config.services.livekit;
@@ -36,6 +36,7 @@ in
     settings = {
       # room.auto_create = false;
       rtc.use_external_ip = true;
+      prometheus_port = 6789;
 
       # NOTE: will land in 26.11
       # webhook = {
@@ -74,6 +75,17 @@ in
         proxy_set_header Accept-Encoding gzip;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
+      '';
+    };
+
+    locations."/prometheus-livekit/metrics" = {
+      proxyPass = "http://127.0.0.1:${toString cfg.settings.prometheus_port}/metrics";
+      extraConfig = ''
+        allow 127.0.0.1;
+        allow ::1;
+        allow ${values.hosts.ildkule.ipv4};
+        allow ${values.hosts.ildkule.ipv6};
+        deny all;
       '';
     };
   };
