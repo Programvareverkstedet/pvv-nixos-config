@@ -114,8 +114,18 @@ in
             "[BODY].database == ok"
           ];
         })
-        (mkWebsite "Grzegorz - Brzeczyszczykiewicz" "https://brzeczyszczykiewicz.pvv.ntnu.no")
-        (mkWebsite "Grzegorz - Georg" "https://georg.pvv.ntnu.no")
+        (mkWebsite "Grzegorz - Brzeczyszczykiewicz" "https://brzeczyszczykiewicz.pvv.ntnu.no/health" // {
+          conditions = [
+            "[STATUS] == 200"
+            "[BODY].status == ok"
+          ];
+        })
+        (mkWebsite "Grzegorz - Georg" "https://georg.pvv.ntnu.no/health" // {
+          conditions = [
+            "[STATUS] == 200"
+            "[BODY].status == ok"
+          ];
+        })
         (mkWebsite "IDP" "https://idp.pvv.ntnu.no")
         (mkWebsite "Mailing Lists" "http://list.pvv.ntnu.no")
         (mkWebsite "Mapcrafter" "http://isvegg.pvv.ntnu.no/kart")
