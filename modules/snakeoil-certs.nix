@@ -44,7 +44,7 @@ in
     }));
   };
 
-  config = {
+  config = lib.mkIf (cfg != { }) {
     systemd.services."generate-snakeoil-certs" = {
       enable = true;
 
@@ -79,6 +79,7 @@ in
         echo "\n-----------------\n"
       '') (lib.attrsToList cfg);
     };
+
     systemd.timers."generate-snakeoil-certs" = {
       wantedBy = [ "timers.target" ];
       timerConfig = {
