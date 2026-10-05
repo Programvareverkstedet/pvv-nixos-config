@@ -36,6 +36,7 @@
     ./services/polkit.nix
     ./services/prometheus-flake-input-exporter.nix
     ./services/prometheus-node-exporter.nix
+    ./services/prometheus-smartctl-exporter.nix
     ./services/prometheus-systemd-exporter.nix
     ./services/roowho2.nix
     ./services/rsyslogd.nix

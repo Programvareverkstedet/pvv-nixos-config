@@ -23,6 +23,19 @@
     "wenche"
   ];
 
+  # NOTE: VMs don't run smartctl-exporter
+  smartMachines = [
+    "bekkalokk"
+    "bicep"
+    "brzeczyszczykiewicz"
+    "georg"
+    "lupine-1"
+    "lupine-2"
+    "lupine-3"
+    "lupine-4"
+    "lupine-5"
+  ];
+
   defaultNodeExporterPort = 9100;
 in {
   services.prometheus.scrapeConfigs = [
@@ -43,6 +56,15 @@ in {
         labels.hostname = name;
         targets = [ "${name}.pvv.ntnu.no:443" ];
       }) nixosMachines;
+    }
+    {
+      job_name = "nixos-smartctl";
+      scheme = "https";
+      metrics_path = "/prometheus-smartctl-exporter/metrics";
+      static_configs = map (name: {
+        labels.hostname = name;
+        targets = [ "${name}.pvv.ntnu.no:443" ];
+      }) smartMachines;
     }
     {
       job_name = "nixos-flake-input";
