@@ -6,8 +6,14 @@ in
   security.audit = {
     enable = lib.mkDefault true;
 
+    # Bump from low default of 1024
+    backlogLimit = 8192;
+
     # NOTE: see auditctl(8) for the meaning of the different rule flags.
     rules = [
+      # Drop backlog items quickly if they are not written. Default is 60
+      "--backlog_wait_time 5"
+
       # Systemd uses a lot of eBPF programs for sandboxing and whatnot,
       # and logging this comes enabled by default. Let's not.
       "-a exclude,always -F msgtype=BPF"
@@ -73,6 +79,10 @@ in
       in [ "--config" "${laurelConfig}" ];
     };
   };
+
+  # The rules include watches on /run/wrappers/bin,
+  # which needs to exist by the time we run this
+  systemd.services.audit-rules-nixos.after = [ "suid-sgid-wrappers.service" ];
 
   systemd.services.auditd.serviceConfig = {
     LogsDirectory = [ "laurel" ];
