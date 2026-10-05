@@ -178,8 +178,9 @@
               ++ (lib.optionals enableDefaults [
                 sops-nix.nixosModules.sops
                 inputs.roowho2.nixosModules.default
-                self.nixosModules.rsync-pull-targets
+                self.nixosModules.emergency-access-ramdisk
                 self.nixosModules.python-http-handlers
+                self.nixosModules.rsync-pull-targets
               ])
               ++ modules;
           }
@@ -323,6 +324,7 @@
     nixosModules = {
       bluemap = ./modules/bluemap.nix;
       drumknotty = ./modules/drumknotty;
+      emergency-access-ramdisk = ./modules/emergency-access-ramdisk;
       gickup = ./modules/gickup;
       harmonia = ./modules/harmonia.nix;
       hugepages = ./modules/hugepages.nix;
