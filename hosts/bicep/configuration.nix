@@ -1,4 +1,4 @@
-{ fp, lib, config, values, ... }:
+{ fp, lib, pkgs, config, values, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -21,6 +21,10 @@
     enable = true;
     efiSupport = false;
   };
+
+  environment.systemPackages = with pkgs; [
+    ssacli
+  ];
 
   services.smartd = {
     autodetect = false;
