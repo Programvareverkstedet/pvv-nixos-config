@@ -34,6 +34,7 @@
     ];
   };
 
+  services.emergency-access-ramdisk.enable = true;
 
   # This seemingly causes the raid controller to lock up at the moment.
   services.prometheus.exporters.smartctl.enable = false;
