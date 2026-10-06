@@ -34,6 +34,9 @@
     ];
   };
 
+
+  # This seemingly causes the raid controller to lock up at the moment.
+  services.prometheus.exporters.smartctl.enable = false;
   services.prometheus.exporters.smartctl.devices = [
     "${config.disko.devices.disk.disk1.device};cciss,0"
     "${config.disko.devices.disk.disk2.device};cciss,1"
