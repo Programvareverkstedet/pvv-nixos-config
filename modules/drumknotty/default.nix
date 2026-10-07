@@ -191,6 +191,7 @@ in
         Restart = "always";
         RestartSec = "5s";
         SuccessExitStatus = 1;
+        SyslogIdentifier = "drumknotty-screen";
 
         User = "drumknotty";
         Group = "drumknotty";
