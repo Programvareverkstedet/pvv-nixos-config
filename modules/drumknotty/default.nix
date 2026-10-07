@@ -93,12 +93,16 @@ in
         extraGroups = [ "lp" ];
         isNormalUser = true;
 
-        # TODO: make this display the error log or error message in case that
-        #       the screen session service is bootlooping or otherwise off.
         shell =
           lib.mkIf cfg.kioskMode
-          (pkgs.writeShellScriptBin "login-shell"
-            "${lib.getExe' cfg.screen.package "screen"} -x ${cfg.screen.sessionName} -p dibbler"
+          (pkgs.writeShellScriptBin "login-shell" ''
+            while true; do
+              if ! ${lib.getExe' cfg.screen.package "screen"} -x ${cfg.screen.sessionName} -p dibbler; then
+                echo "Waiting for the ${cfg.screen.sessionName} screen session to start..."
+              fi
+              sleep 2
+            done
+          ''
           // {
             shellPath = "/bin/login-shell";
           });
