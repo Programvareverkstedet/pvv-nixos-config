@@ -210,7 +210,10 @@ in
               "kill"
             ];
           in
-          "-${lib.getExe' cfg.screen.package "screen"} ${screenArgs}";
+          [
+            "-${lib.getExe' cfg.screen.package "screen"} -wipe ${cfg.screen.sessionName}"
+            "-${lib.getExe' cfg.screen.package "screen"} ${screenArgs}"
+          ];
 
         ExecStart =
           let
