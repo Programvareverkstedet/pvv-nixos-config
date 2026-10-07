@@ -29,9 +29,12 @@
   };
 
   systemd.services."serial-getty@ttyUSB0" = lib.mkIf (!config.virtualisation.isVmVariant) {
-    enable = true;
+    # `systemd.services."serial-getty@" is a thing, but not `systemd.services."serial-getty@ttyUSB0"`,
+    # so unless we specifically request an `override.conf`, this would've been its own unit.
+    overrideStrategy = "asDropin";
     wantedBy = [ "getty.target" ]; # to start at boot
-    serviceConfig.Restart = "always"; # restart when session is closed
+
+    serviceConfig.ExecStart = config.systemd.services."serial-getty@".serviceConfig.ExecStart;
   };
 
   system.stateVersion = "25.11"; # Did you read the comment? Nah bro
