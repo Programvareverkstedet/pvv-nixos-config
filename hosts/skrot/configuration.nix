@@ -34,6 +34,7 @@
     overrideStrategy = "asDropin";
     wantedBy = [ "getty.target" ]; # to start at boot
 
+    environment.TERM = "vt320";
     serviceConfig.ExecStart = config.systemd.services."serial-getty@".serviceConfig.ExecStart;
   };
 
