@@ -47,24 +47,6 @@ in
         '';
       };
 
-      limitHeight = lib.mkOption {
-        type = with lib.types; nullOr ints.unsigned;
-        default = null;
-        example = 42;
-        description = ''
-          If set, limits the height of the screen dibbler uses to the given number of lines.
-        '';
-      };
-
-      limitWidth = lib.mkOption {
-        type = with lib.types; nullOr ints.unsigned;
-        default = null;
-        example = 80;
-        description = ''
-          If set, limits the width of the screen dibbler uses to the given number of columns.
-        '';
-      };
-
       extraConfig = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         default = [ ];
@@ -136,13 +118,6 @@ in
       (lib.optionals cfg.screen.enableSerialConsole [
         "defencoding utf8"
         "termcapinfo vt* KJ=iso8859-1"
-      ])
-
-      (lib.optionals (cfg.screen.limitWidth != null) [
-        "screen width ${toString cfg.screen.limitWidth}"
-      ])
-      (lib.optionals (cfg.screen.limitHeight != null) [
-        "screen height ${toString cfg.screen.limitHeight}"
       ])
 
       cfg.screen.extraConfig

@@ -15,11 +15,6 @@
     enable = true;
     kioskMode = true;
 
-    screen = {
-      limitWidth = 80;
-      limitHeight = 42;
-    };
-
     scannerBridge = {
       enable = true;
       device = "/dev/input/by-id/usb-Sycreader_RFID_Technology_Co.__Ltd_SYC_ID_IC_USB_Reader_08FF20140315-event-kbd";
