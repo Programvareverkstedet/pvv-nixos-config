@@ -114,6 +114,7 @@ in {
       security = {
         SECRET_KEY = lib.mkForce "";
         SECRET_KEY_URI = "file:${config.sops.secrets."gitea/secret-key".path}";
+        EGRESS_MODE = "lax";
       };
       cache = {
         ADAPTER = "redis";
@@ -171,9 +172,6 @@ in {
         AVATAR_MAX_ORIGIN_SIZE = 1024 * 1024 * 4;
       };
       actions.ENABLED = true;
-      webhook.ALLOWED_HOST_LIST = lib.concatStringsSep "," [
-        "external"
-      ];
     };
 
     dump = {
