@@ -73,7 +73,7 @@ in
           directory = "/var/log/laurel";
           user = "laurel";
           auditlog.file = "| ${pkgs.writeShellScript "laurel-to-syslog" ''
-            exec ${lib.getExe' pkgs.util-linux "logger"} --tag laurel --priority daemon.info --size ${toString (1024 * 256)}
+            exec ${lib.getExe' pkgs.util-linux "logger"} --tag auditd --priority daemon.info --size ${toString (1024 * 256)}
           ''}";
         };
       in [ "--config" "${laurelConfig}" ];
