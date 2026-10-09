@@ -135,6 +135,7 @@ in {
         CONN_STR = "redis+socket://${config.services.redis.servers.gitea.unixSocket}?db=2";
       };
       database = {
+        SSL_MODE = lib.mkForce "require";
         LOG_SQL = false;
         MAX_IDLE_CONNS = 100;
         MAX_OPEN_CONNS = 100;
