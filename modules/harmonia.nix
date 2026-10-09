@@ -57,12 +57,13 @@
       serviceConfig = {
         Type = "oneshot";
         SyslogIdentifier = "nixos-build-all";
+        CacheDirectory = "nixos-build-all";
         Restart = "on-failure";
         RestartSec = "1min";
         ExecStart =
           let
             buildAllFlags = [
-              "--no-link"
+              "--out-link" "/var/cache/nixos-build-all/all-machines"
               "-L"
               "--keep-going"
               "--refresh"
