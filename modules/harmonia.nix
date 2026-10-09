@@ -54,6 +54,11 @@
 
       startAt = "00:40";
 
+      path = [
+        config.nix.package
+        pkgs.gitMinimal
+      ];
+
       serviceConfig = {
         Type = "oneshot";
         SyslogIdentifier = "nixos-build-all";
