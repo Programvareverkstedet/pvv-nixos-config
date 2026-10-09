@@ -71,6 +71,10 @@ in {
         USER = "gitea@pvv.ntnu.no";
         SUBJECT_PREFIX = "[pvv-git]";
       };
+      audit = {
+        RECORD_OUTPUT = "database";
+        RETENTION_DAYS = 30;
+      };
       log = {
         # Disable the router logs, nginx takes care of that
         "logger.router.MODE" = "";
