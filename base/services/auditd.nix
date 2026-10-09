@@ -88,6 +88,25 @@ in
   # so let's disable the journald logger to avoid duplicates whenever auditd is available.
   systemd.sockets.systemd-journald-audit.enable = !config.security.auditd.enable;
 
+  services.fluent-bit.settings = lib.mkIf config.security.auditd.enable {
+    parsers = [
+      {
+        name = "laurel_journal";
+        format = "json";
+      }
+    ];
+
+    pipeline.filters = lib.mkAfter [
+      {
+        name = "parser";
+        match = "journal.auditd.service";
+        key_name = "message";
+        parser = "laurel_journal";
+        reserve_data = true;
+      }
+    ];
+  };
+
   systemd.services.auditd.serviceConfig = {
     LogsDirectory = [ "laurel" ];
     Slice = "system-monitoring.slice";
