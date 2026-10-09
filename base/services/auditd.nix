@@ -84,6 +84,10 @@ in
   # which needs to exist by the time we run this
   systemd.services.audit-rules-nixos.after = [ "suid-sgid-wrappers.service" ];
 
+  # These are seemingly kinda competing implementations. The laurel plugin gives us much more readable logs,
+  # so let's disable the journald logger to avoid duplicates whenever auditd is available.
+  systemd.sockets.systemd-journald-audit.enable = !config.security.auditd.enable;
+
   systemd.services.auditd.serviceConfig = {
     LogsDirectory = [ "laurel" ];
     Slice = "system-monitoring.slice";
