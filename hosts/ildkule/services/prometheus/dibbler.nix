@@ -105,13 +105,14 @@ in
           values = [ "sold" "added" ];
           query = ''
             SELECT
-              DATE(p.time)::text AS day,
-              COALESCE(-SUM(CASE WHEN pe.amount > 0 THEN pe.amount ELSE 0 END), 0) AS sold,
-              COALESCE(-SUM(CASE WHEN pe.amount < 0 THEN pe.amount ELSE 0 END), 0) AS added
-            FROM purchase_entries pe
-            JOIN purchases p ON pe.purchase_id = p.id
-            WHERE p.time >= CURRENT_DATE - INTERVAL '29 days'
-            GROUP BY DATE(p.time)
+              DATE(t.time)::text AS day,
+              COALESCE(SUM(CASE WHEN t.type = 'buy_product' THEN x.amount ELSE 0 END), 0) AS sold,
+              COALESCE(SUM(CASE WHEN t.type = 'add_product' THEN x.amount ELSE 0 END), 0) AS added
+            FROM xref_transaction_log_product x
+            JOIN transaction_log t ON x.transaction_log_id = t.id
+            WHERE t.time >= CURRENT_DATE - INTERVAL '29 days'
+              AND t.type IN ('buy_product', 'add_product')
+            GROUP BY DATE(t.time)
             ORDER BY day
           '';
         };
@@ -121,10 +122,11 @@ in
           labels = [ "product" "product_id" ];
           values = [ "sum" ];
           query = ''
-            SELECT p.name AS product, p.id::text AS product_id, SUM(pe.amount) AS sum
-            FROM purchase_entries pe
-            JOIN products p ON pe.product_id = p.id
-            WHERE pe.amount > 0
+            SELECT p.name AS product, p.id::text AS product_id, -SUM(x.amount) AS sum
+            FROM xref_transaction_log_product x
+            JOIN transaction_log t ON x.transaction_log_id = t.id
+            JOIN products p ON x.product_id = p.id
+            WHERE t.type = 'buy_product'
             GROUP BY p.id, p.name
             ORDER BY sum DESC
             LIMIT 20
