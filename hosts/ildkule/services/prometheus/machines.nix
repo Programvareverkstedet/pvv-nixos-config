@@ -90,6 +90,7 @@ in {
       metrics_path = "/metrics";
       static_configs = [
         (mkHostScrapeConfig "mirage" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "sunset" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "isvegg" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "microbel" [ defaultNodeExporterPort ])
       ];

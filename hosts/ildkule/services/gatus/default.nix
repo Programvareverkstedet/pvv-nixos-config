@@ -92,6 +92,7 @@ in
         })
         (mkMachine "microbel")
         (mkMachine "mirage")
+        (mkMachine "sunset")
         (mkMachine "orchid")
         (mkMachine "principal")
         (mkMachine "sleipner")
