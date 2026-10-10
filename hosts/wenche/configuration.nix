@@ -34,6 +34,11 @@
 
   services.qemuGuest.enable = true;
 
+  # Wenche does not have enough space do be doing this.
+  # Can still be invoked manually, but will not run on auto
+  systemd.timers.nixos-build-all.enable = false;
+  systemd.timers.nixos-build-all-channel-poll.enable = false;
+
   # Don't change (even during upgrades) unless you know what you are doing.
   # See https://search.nixos.org/options?show=system.stateVersion
   system.stateVersion = "24.11";
