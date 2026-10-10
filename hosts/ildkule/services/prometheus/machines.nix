@@ -89,7 +89,7 @@ in {
       scheme = "http";
       metrics_path = "/metrics";
       static_configs = [
-        (mkHostScrapeConfig "hildring" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "mirage" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "isvegg" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "microbel" [ defaultNodeExporterPort ])
       ];
