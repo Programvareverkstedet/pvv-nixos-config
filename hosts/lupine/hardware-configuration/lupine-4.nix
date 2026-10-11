@@ -2,7 +2,6 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 { config, lib, pkgs, modulesPath, ... }:
-
 {
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
@@ -12,28 +11,6 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/fcd51970-f040-4c45-94cf-2b372d4599a2";
-      fsType = "btrfs";
-      options = [ "subvol=@root" "compress=zstd" ];
-    };
-
-  fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/fcd51970-f040-4c45-94cf-2b372d4599a2";
-      fsType = "btrfs";
-      options = [ "subvol=@nix" "noatime" "compress=zstd" ];
-    };
-
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/A22E-E41A";
-      fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
-    };
-
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/a86ffda8-8ecb-42a1-bf9f-926072e90ca5"; }
-    ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
