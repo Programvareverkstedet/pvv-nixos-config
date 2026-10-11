@@ -317,7 +317,10 @@
       in
         lib.genAttrs machineNames (name:
           stableLupineNixosConfig name {
-            modules = [{networking.hostName = name;}];
+            modules = [
+              {networking.hostName = name;}
+              inputs.disko.nixosModules.disko
+            ];
             specialArgs.lupineName = name;
           }));
 

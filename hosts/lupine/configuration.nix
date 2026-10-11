@@ -7,6 +7,8 @@
     ./services/gitea-runner.nix
   ] ++ lib.optionals (lupineName == "lupine-5") [
     ./services/openvpn.nix
+  ] ++ lib.optionals (lupineName == "lupine-4") [
+    (import ./disks.nix { inherit lib; device = "/dev/disk/by-id/ata-KINGSTON_SA400S37480G_50026B749D1448C1"; })
   ];
 
   sops.defaultSopsFile = fp /secrets/lupine/lupine.yaml;
