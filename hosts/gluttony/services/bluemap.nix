@@ -18,6 +18,9 @@ in {
 
     host = "minecraft.pvv.ntnu.no";
 
+    # Number of cores on gluttony
+    coreSettings.render-thread-count = 24;
+
     maps = let
       inherit (inputs.minecraft-kartverket.packages.${pkgs.stdenv.hostPlatform.system}) bluemap-export;
     in {
