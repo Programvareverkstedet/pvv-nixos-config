@@ -7,7 +7,7 @@ in
     disk = {
       disk1 = {
         type = "disk";
-        device = "/dev/disk/by-id/wwn-0x600508b1001c6048d0ebfc1add4777cc"; # sda
+        device = "/dev/disk/by-id/wwn-0x5002538f42553576"; # sda
         content = {
           type = "gpt";
           partitions = {
@@ -25,7 +25,7 @@ in
 
       disk2 = {
         type = "disk";
-        device = "/dev/disk/by-id/wwn-0x600508b1001ce4431e3cce19f0f6c96c"; # sdb
+        device = "/dev/disk/by-id/wwn-0x5002538f42553cd8"; # sdb
         content = {
           type = "gpt";
           partitions = {
