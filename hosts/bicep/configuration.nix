@@ -28,13 +28,6 @@
 
   services.emergency-access-ramdisk.enable = true;
 
-  # This seemingly causes the raid controller to lock up at the moment.
-  services.prometheus.exporters.smartctl.enable = false;
-  services.prometheus.exporters.smartctl.devices = [
-    "${config.disko.devices.disk.disk1.device};cciss,0"
-    "${config.disko.devices.disk.disk2.device};cciss,1"
-  ];
-
   systemd.network.networks."30-ens10f3" = values.defaultNetworkConfig // {
     matchConfig.Name = "ens10f3";
     address = with values.hosts.bicep; [ (ipv4 + "/25") (ipv6 + "/64") ]
