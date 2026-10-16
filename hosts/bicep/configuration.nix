@@ -26,14 +26,6 @@
     ssacli
   ];
 
-  services.smartd = {
-    autodetect = false;
-    devices = [
-      { device = config.disko.devices.disk.disk1.device; options = "-d cciss,0"; }
-      { device = config.disko.devices.disk.disk2.device; options = "-d cciss,1"; }
-    ];
-  };
-
   services.emergency-access-ramdisk.enable = true;
 
   # This seemingly causes the raid controller to lock up at the moment.
