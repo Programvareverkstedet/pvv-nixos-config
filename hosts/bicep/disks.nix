@@ -84,8 +84,12 @@ in
                   (subvolume "/var/log" [ "compress=zstd" "noatime" "noexec" "nosuid" "nodev" ])
 
                   (subvolume "/var/lib" [ "compress=zstd" "noatime" "nosuid" "nodev" ])
+
+                  # NOTE: btrfs ignores nodatacow/compress per subvolume, only the first mount's options apply.
+                  #       see the +C options below, as a workaround.
                   (subvolume "/var/lib/postgresql" [ "nodatacow" "noatime" "noexec" "nosuid" "nodev" ])
                   (subvolume "/var/lib/mysql" [ "nodatacow" "noatime" "noexec" "nosuid" "nodev"  ])
+
                   (subvolume "/var/lib/matrix-synapse" [ "compress=zstd" "noatime" "noexec" "nosuid" "nodev" ])
                   (subvolume "/var/lib/redis" [ "compress=zstd" "noatime" "noexec" "nosuid" "nodev" ])
 
@@ -98,5 +102,10 @@ in
         };
       };
     };
+  };
+
+  systemd.tmpfiles.settings."10-btrfs-nocow" = {
+    "/var/lib/postgresql".h.argument = "+C";
+    "/var/lib/mysql".h.argument = "+C";
   };
 }
