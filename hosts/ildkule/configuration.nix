@@ -23,7 +23,6 @@
   boot.loader.grub.enable = true;
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.tmp.cleanOnBoot = true;
-  zramSwap.enable = true;
 
   # Openstack Neutron and systemd-networkd are not best friends, use something else:
   systemd.network.enable = lib.mkForce false;
