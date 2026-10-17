@@ -51,12 +51,14 @@ in
       # Checkpointing:
       checkpoint_timeout = "15 min";
       checkpoint_completion_target = 0.9;
-      max_wal_size = "1024 MB";
+      max_wal_size = "8 GB";
       min_wal_size = "512 MB";
 
       # WAL writing
-      wal_compression = true;
+      wal_compression = "zstd";
       wal_buffers = -1;
+      # NOTE: default 200ms
+      wal_writer_delay = "1s";
 
       # Background writer
       bgwriter_delay = "200ms";
