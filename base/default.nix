@@ -62,7 +62,8 @@
   boot.loader.systemd-boot.enable = lib.mkDefault true;
   boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
 
-  zramSwap.enable = lib.mkDefault true;
+  zramSwap.enable = lib.mkDefault (config.swapDevices == [ ]);
+  boot.zswap.enable = lib.mkDefault (config.swapDevices != [ ]);
 
   services.btrfs.autoScrub.enable = lib.mkDefault (lib.any ({ fsType, ... }: fsType == "btrfs") (lib.attrValues config.fileSystems));
 
