@@ -125,11 +125,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787805502,
-        "narHash": "sha256-G5vLRXp/fJV69+h5acDb380rzxjcIeyuL+xf37Nl2Ls=",
+        "lastModified": 1792259729,
+        "narHash": "sha256-w0iRiR451bV9mdA6bq8B2Qlf9l9sENjK7YZq6g6nAOU=",
         "ref": "main",
-        "rev": "47a625ce6cfb119e0ee9d7516b0ec17631efca56",
-        "revCount": 38,
+        "rev": "fffb59fc15add3e7407dda58548eb196ea849503",
+        "revCount": 43,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Grzegorz/gergle.git"
       },
