@@ -11,6 +11,8 @@
     (import ./disks.nix { inherit lib; device = "/dev/disk/by-id/ata-KINGSTON_SA400S37480G_50026B749D1448C1"; })
   ] ++ lib.optionals (lupineName == "lupine-3") [
     (import ./disks.nix { inherit lib; device = "/dev/disk/by-id/ata-SK_hynix_SC300_M.2_2280_256GB_FI62N00731070261Q"; })
+  ] ++ lib.optionals (lupineName == "lupine-2") [
+    (import ./disks.nix { inherit lib; device = "/dev/disk/by-id/ata-SanDisk_X400_M.2_2280_128GB_163735424394"; })
   ] ++ lib.optionals (lupineName == "lupine-1") [
     (import ./disks.nix { inherit lib; device = "/dev/disk/by-id/ata-LITEON_CV3-8D128-11_SATA_128GB_TW0WVD60LOH006BP0NTY"; })
   ];
