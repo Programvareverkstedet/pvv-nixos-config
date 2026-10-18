@@ -89,6 +89,8 @@ in {
         DISABLE_REGISTRATION = true;
         ENABLE_NOTIFY_MAIL = true;
         AUTO_WATCH_NEW_REPOS = false;
+        REQUIRE_SIGNIN_VIEW = "expensive"; #scraping hurts lets turn off the worst offenders.
+
       };
       admin.DEFAULT_EMAIL_NOTIFICATIONS = "onmention";
 
