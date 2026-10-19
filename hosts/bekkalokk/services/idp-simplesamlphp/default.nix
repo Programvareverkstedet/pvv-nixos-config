@@ -192,6 +192,10 @@ in
       wants = [ "memcached.service" ];
     };
 
+    services.nginx.appendHttpConfig = ''
+      limit_req_zone $cookie_SimpleSAMLSessionID zone=idp_session:10m rate=30r/m;
+    '';
+
     services.nginx.virtualHosts."idp.pvv.ntnu.no" = {
       forceSSL = true;
       enableACME = true;
@@ -205,6 +209,9 @@ in
 
           extraConfig = ''
             location ~ ^/(?<phpfile>.+?\.php)(?<pathinfo>/.*)?$ {
+              limit_req zone=idp_session burst=10 nodelay;
+              limit_req_status 429;
+
               include ${pkgs.nginx}/conf/fastcgi_params;
               fastcgi_pass unix:${config.services.phpfpm.pools.idp.socket};
               fastcgi_param SCRIPT_FILENAME ${package}/share/php/simplesamlphp/public/$phpfile;
