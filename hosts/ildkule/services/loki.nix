@@ -116,6 +116,8 @@ in {
         per_stream_rate_limit_burst = "64MB";
 
         retention_period = "${toString (40 * 24)}h";
+
+        max_query_series = 50000;
       };
 
       compactor = {
