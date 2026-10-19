@@ -117,7 +117,7 @@ in {
 
         retention_period = "${toString (40 * 24)}h";
 
-        max_query_series = 50000;
+        max_query_series = 5000;
       };
 
       compactor = {
@@ -137,6 +137,12 @@ in {
       #   alertmanager_url = "http://localhost:9093";
       # };
     };
+  };
+
+  # NOTE: loki idles at around 0.5 - 1 GB by default, don't let it go too far...
+  systemd.services.loki.serviceConfig = {
+    MemoryHigh = "4G";
+    MemoryMax = "6G";
   };
 
   services.fluent-bit.settings = {
