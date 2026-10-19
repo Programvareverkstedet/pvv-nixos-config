@@ -5,6 +5,7 @@ let
   sshPort  = 2222;
 
   rateLimitListFile = "/var/lib/gitea-blocklists/nginx.conf";
+  fingerprintBlockListFile = "/var/lib/gitea-blocklists/fingerprints.conf";
 in {
   imports = [
     ./customization
@@ -226,13 +227,24 @@ in {
     }
     limit_req_zone $gitea_ratelimit_group zone=gitea_ratelimit_groups:1m rate=1r/s;
 
+    map "${lib.concatStringsSep "\\n" [
+      "proto:$server_protocol"
+      "lang:$http_accept_language"
+      "enc:$http_accept_encoding"
+      "fetch:$http_sec_fetch_mode"
+      "ua:$http_user_agent"
+    ]}" $gitea_blocked_fingerprint {
+      default "";
+      include ${fingerprintBlockListFile};
+    }
+
     proxy_cache_path /var/cache/nginx/gitea-assets levels=1:2 keys_zone=gitea_assets:10m max_size=1g inactive=7d use_temp_path=off;
     proxy_cache_path /var/cache/nginx/gitea-authcheck levels=1:2 keys_zone=gitea_authcheck:10m max_size=64m inactive=10m use_temp_path=off;
   '';
 
   # Mutable list of address ranges to rate limit. Equals group names are treated as a single group.
-  # Format is: `<CIDR> <group name>;`
-  # e.g. `2a10:7b00::/29 rapidseedbox;`
+  # Format is: `<CIDR> <group name>;` e.g.
+  #   `2a10:7b00::/29 rapidseedbox;`
   systemd.tmpfiles.settings."10-gitea-blocklists" = {
     ${dirOf rateLimitListFile}.d = {
       user = "root";
@@ -244,6 +256,17 @@ in {
       group = "root";
       mode = "0644";
     };
+
+    # Mutable list of request fingerprints to block.
+    # Use `(?m)` for `^`/`$` to match a single field, `(?ms)` with `\A(?=.*^...$)` lookaheads to match several.
+    # Format is: `"~<regex>" <name>;`, e.g.
+    #   `"~(?m)^ua:Lightpanda/" lightpanda;`
+    #   `"~(?ms)\A(?=.*^lang:zh-CN,zh;q=0\.9,en;q=0\.8$)(?=.*^enc:gzip, deflate$)(?=.*^fetch:$)" zh-python;`
+    ${fingerprintBlockListFile}.f = {
+      user = "root";
+      group = "root";
+      mode = "0644";
+    };
   };
 
   services.nginx.virtualHosts."${domain}" = {
@@ -251,9 +274,8 @@ in {
     enableACME = true;
     kTLS = true;
 
-    # If you are running a scraper, please set a proper User-Agent header and respect the robots.txt rules.
     extraConfig = ''
-      if ($http_user_agent ~ "^Lightpanda/") {
+      if ($gitea_blocked_fingerprint) {
         return 403;
       }
     '';
