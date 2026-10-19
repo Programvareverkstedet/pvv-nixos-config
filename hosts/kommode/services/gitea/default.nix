@@ -226,6 +226,14 @@ in {
     forceSSL = true;
     enableACME = true;
     kTLS = true;
+
+    # If you are running a scraper, please set a proper User-Agent header and respect the robots.txt rules.
+    extraConfig = ''
+      if ($http_user_agent ~ "^Lightpanda/") {
+        return 403;
+      }
+    '';
+
     locations = {
       "/" = {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
