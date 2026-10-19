@@ -93,7 +93,8 @@ let
           --replace-warn '$SAML_DATABASE_DSN' '"pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=idp"' \
           --replace-warn '$SAML_DATABASE_USERNAME' '"idp"' \
           --replace-warn '$SAML_DATABASE_PASSWORD' 'file_get_contents("${config.sops.secrets."idp/postgres_password".path}")' \
-          --replace-warn '$CACHE_DIRECTORY' '/var/cache/idp'
+          --replace-warn '$CACHE_DIRECTORY' '/var/cache/idp' \
+          --replace-warn '$MEMCACHED_SOCKET' '/run/memcached/memcached.sock'
       '';
 
       "modules/authpwauth/src/Auth/Source/PwAuth.php" = ./authpwauth.php;
@@ -155,9 +156,17 @@ in
       };
     };
 
+    services.memcached = {
+      enable = true;
+      enableUnixSocket = true;
+      user = "idp";
+      maxMemory = 256;
+    };
+
     services.phpfpm.pools.idp = {
       user = "idp";
       group = "idp";
+      phpPackage = pkgs.php.withExtensions ({ enabled, all }: enabled ++ [ all.memcached ]);
       settings = let
         listenUser = config.services.nginx.user;
         listenGroup = config.services.nginx.group;
@@ -178,8 +187,9 @@ in
     };
 
     systemd.services."phpfpm-idp" = {
-      after = [ "sops-install-secrets.service" ];
+      after = [ "sops-install-secrets.service" "memcached.service" ];
       requires = [ "sops-install-secrets.service" ];
+      wants = [ "memcached.service" ];
     };
 
     services.nginx.virtualHosts."idp.pvv.ntnu.no" = {

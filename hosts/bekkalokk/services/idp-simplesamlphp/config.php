@@ -773,8 +773,8 @@ $config = [
      *
      */
     'memcache_store.servers' => [
-        [
-            ['hostname' => 'localhost'],
+        'idp' => [
+            ['hostname' => '$MEMCACHED_SOCKET'],
         ],
     ],
 
@@ -1187,7 +1187,7 @@ $config = [
      *
      * The default datastore is 'phpsession'.
      */
-    'store.type'                    => 'sql',
+    'store.type'                    => 'memcache',
 
     /*
      * The DSN the sql datastore should connect to.
