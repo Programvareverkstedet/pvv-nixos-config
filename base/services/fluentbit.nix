@@ -36,6 +36,7 @@ in
             tag = "journal.*";
 
             db = "/var/lib/fluent-bit/journal.db";
+            "db.sync" = "off";
             read_from_tail = true;
             strip_underscores = true;
             lowercase = true;
