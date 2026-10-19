@@ -246,7 +246,7 @@ in {
 
       # Throttle per-IP access to commits, raws, blames, etc.
       # This should help mitigate bot abuse to some extent.
-      "~ ^/[^/]+/[^/]+/(src|raw|commits|commit|blame|archive)/" = {
+      "~ ^/[^/]+/[^/]+/(src|raw|commits|commit|blame|archive|issues|pulls)(/|$)" = {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
         extraConfig = ''
           auth_request /_gitea_is_authenticated;
