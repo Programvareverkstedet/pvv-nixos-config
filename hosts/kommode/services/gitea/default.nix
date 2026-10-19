@@ -3,6 +3,8 @@ let
   cfg = config.services.gitea;
   domain = "git.pvv.ntnu.no";
   sshPort  = 2222;
+
+  rateLimitListFile = "/var/lib/gitea-blocklists/nginx.conf";
 in {
   imports = [
     ./customization
@@ -218,9 +220,31 @@ in {
   services.nginx.appendHttpConfig = ''
     limit_req_zone $binary_remote_addr zone=gitea_scrapers:64m rate=1r/s;
 
+    geo $gitea_ratelimit_group {
+      default "";
+      include ${rateLimitListFile};
+    }
+    limit_req_zone $gitea_ratelimit_group zone=gitea_ratelimit_groups:1m rate=1r/s;
+
     proxy_cache_path /var/cache/nginx/gitea-assets levels=1:2 keys_zone=gitea_assets:10m max_size=1g inactive=7d use_temp_path=off;
     proxy_cache_path /var/cache/nginx/gitea-authcheck levels=1:2 keys_zone=gitea_authcheck:10m max_size=64m inactive=10m use_temp_path=off;
   '';
+
+  # Mutable list of address ranges to rate limit. Equals group names are treated as a single group.
+  # Format is: `<CIDR> <group name>;`
+  # e.g. `2a10:7b00::/29 rapidseedbox;`
+  systemd.tmpfiles.settings."10-gitea-blocklists" = {
+    ${dirOf rateLimitListFile}.d = {
+      user = "root";
+      group = "root";
+      mode = "0755";
+    };
+    ${rateLimitListFile}.f = {
+      user = "root";
+      group = "root";
+      mode = "0644";
+    };
+  };
 
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
@@ -239,12 +263,16 @@ in {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
         extraConfig = ''
           client_max_body_size 512M;
+          limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
+          limit_req_status 429;
         '';
       };
 
       "/assets/" = {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
         extraConfig = ''
+          limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
+          limit_req_status 429;
           proxy_cache gitea_assets;
           proxy_cache_valid 200 302 6h;
           proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
@@ -266,6 +294,7 @@ in {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
         extraConfig = ''
           limit_req zone=gitea_scrapers burst=5 nodelay;
+          limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
           limit_req_status 429;
         '';
       };
