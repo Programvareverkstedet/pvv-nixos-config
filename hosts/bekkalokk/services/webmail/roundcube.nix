@@ -1,6 +1,4 @@
 { config, pkgs, lib, ... }:
-
-with lib;
 let
   cfg = config.services.roundcube;
   domain = "webmail.pvv.ntnu.no";
@@ -45,7 +43,7 @@ in
       $config['mail_domain'] = "pvv.ntnu.no";
       $config['smtp_user'] = "%u";
       $config['support_url'] = "";
-      $config['des_key'] = "${config.sops.secrets."roundcube/des_key".path}";
+      $config['des_key'] = trim(file_get_contents('${config.sops.secrets."roundcube/des_key".path}'));
     '';
   };
 
