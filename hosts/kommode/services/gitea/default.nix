@@ -290,6 +290,11 @@ in {
         '';
       };
 
+      "= /-/ws" = {
+        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        proxyWebsockets = true;
+      };
+
       "/assets/" = {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
         extraConfig = ''
