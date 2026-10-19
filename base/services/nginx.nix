@@ -18,10 +18,50 @@
     '';
 
     appendHttpConfig = ''
-      log_format vhost_combined '$host $remote_addr - $remote_user [$time_local] '
-                                 '"$request" $status $body_bytes_sent '
-                                 '"$http_referer" "$http_user_agent"';
-      access_log /var/log/nginx/access.log vhost_combined;
+      # i.e. if `$request_method` == "", it's likely just bogus bytes and we add the
+      # entire request to the $log_invalid_request field in the json output.
+      map $request_method $log_invalid_request {
+        "" $request;
+        default "";
+      }
+
+      # Only log whether or not the request had cookies, not the cookies themselves.
+      map $http_cookie $log_has_cookie {
+        "" "0";
+        default "1";
+      }
+
+      log_format vhost_json escape=json '${builtins.toJSON {
+        time = "$time_local";
+        vhost = "$host";
+        remote = "$remote_addr";
+        user = "$remote_user";
+        method = "$request_method";
+        path = "$request_uri";
+        protocol = "$server_protocol";
+        invalid_request = "$log_invalid_request";
+        status = "$status";
+        bytes = "$body_bytes_sent";
+        referer = "$http_referer";
+        agent = "$http_user_agent";
+
+        # Client fingerprinting
+        sec_ch_ua = "$http_sec_ch_ua";
+        sec_fetch_site = "$http_sec_fetch_site";
+        sec_fetch_mode = "$http_sec_fetch_mode";
+        sec_fetch_dest = "$http_sec_fetch_dest";
+        accept_language = "$http_accept_language";
+        accept_encoding = "$http_accept_encoding";
+        has_cookie = "$log_has_cookie";
+        connection_requests = "$connection_requests";
+        ssl_protocol = "$ssl_protocol";
+
+        # Performance and rate limiting
+        request_time = "$request_time";
+        upstream_response_time = "$upstream_response_time";
+        limit_req_status = "$limit_req_status";
+      }}';
+      access_log /var/log/nginx/access.log vhost_json;
       error_log /var/log/nginx/error.log;
     '';
   };
@@ -65,8 +105,7 @@
   services.fluent-bit.settings.parsers = lib.mkIf (config.services.nginx.enable && config.services.fluent-bit.enable) [
     {
       name = "nginx_access";
-      format = "regex";
-      regex = ''^(?<vhost>[^ ]*) (?<remote>[^ ]*) - (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?) +\S*)?" (?<status>[^ ]*) (?<bytes>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$'';
+      format = "json";
       time_key = "time";
       time_format = "%d/%b/%Y:%H:%M:%S %z";
       time_keep = false;
@@ -74,7 +113,20 @@
     {
       name = "nginx_error";
       format = "regex";
-      regex = ''^(?<time>\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}) \[(?<level>\w+)\] (?<pid>\d+)#(?<tid>\d+): \*(?<cid>\d+)? (?<message>.*?)(?:, client: [^,]+)?(?:, server: (?<vhost>[^,]+))?(?:,.*)?$'';
+      regex = "^${lib.concatStringsSep " " [
+        "(?<time>[^ ]+ [^ ]+)"
+        "\\[(?<level>[^\\]]+)\\]"
+      ]}${lib.concatStrings [
+        "(?: (?<pid>\\d+)#(?<tid>\\d+):)?"
+        "(?: \\*(?<cid>\\d+))?"
+        "(?: (?<message>.*?))?"
+        "(?:, client: (?<client>[^,]+))?"
+        "(?:, server: (?<vhost>[^,]+))?"
+        "(?:, request: \"(?<request>[^\"]*)\")?"
+        "(?:, upstream: \"(?<upstream>[^\"]*)\")?"
+        "(?:, host: \"(?<host>[^\"]*)\")?"
+        "(?:, referrer: \"(?<referrer>[^\"]*)\")?"
+      ]}$";
       time_key = "time";
       time_format = "%Y/%m/%d %H:%M:%S";
       time_keep = false;
