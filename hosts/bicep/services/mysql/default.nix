@@ -2,6 +2,14 @@
 let
   cfg = config.services.mysql;
   innodbBufferPoolMB = 128;
+  keyBufferMB = 128;
+  ariaPagecacheMB = 128;
+
+  # NOTE: there is some slight memory overhead needed in order to use preallocated hugepages.
+  # Run:
+  #   `sudo grep -B1 'KernelPageSize: *2048 kB' /proc/$(systemctl show -p MainPID --value mysql.service)/smaps | grep '^Size'`
+  # And sum together the values, and divide by 2048 to get the total page count.
+  largePagesOverheadMB = 16;
 in
 {
   imports = [
@@ -31,6 +39,8 @@ in
 
         # Memory settings
         innodb_buffer_pool_size = "${toString innodbBufferPoolMB}M";
+        key_buffer_size = "${toString keyBufferMB}M";
+        aria_pagecache_buffer_size = "${toString ariaPagecacheMB}M";
         "large-pages" = 1;
 
         # This was needed in order to be able to use all of the old users
@@ -59,7 +69,10 @@ in
   };
 
   boot.kernel.hugepages.reservations.mysql = lib.mkIf cfg.enable (
-    builtins.ceil (innodbBufferPoolMB / config.boot.kernel.hugepages.size)
+    builtins.ceil (
+      (innodbBufferPoolMB + keyBufferMB + ariaPagecacheMB + largePagesOverheadMB)
+      / (config.boot.kernel.hugepages.size * 1.0)
+    )
   );
 
   networking.firewall.allowedTCPPorts = lib.mkIf cfg.enable [ 3306 ];
