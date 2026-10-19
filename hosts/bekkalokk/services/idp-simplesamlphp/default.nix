@@ -172,8 +172,9 @@ in
         listenGroup = config.services.nginx.group;
       in {
         "pm" = "dynamic";
-        "pm.max_children" = 4;
-        "pm.max_requests" = 500;
+        "pm.max_children" = 8;
+        "pm.max_requests" = 5000;
+        "request_terminate_timeout" = "30s";
         "pm.start_servers" = 2;
         "pm.min_spare_servers" = 2;
         "pm.max_spare_servers" = 4;
