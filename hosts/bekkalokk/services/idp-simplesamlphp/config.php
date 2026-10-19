@@ -498,7 +498,7 @@ $config = [
     /*
      * True or false if you would like a persistent database connection
      */
-    'database.persistent' => false,
+    'database.persistent' => true,
 
     /*
      * Database secondary configuration is optional as well. If you are only
