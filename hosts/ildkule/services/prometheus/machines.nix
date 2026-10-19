@@ -19,6 +19,7 @@
     "lupine-3"
     "lupine-4"
     "lupine-5"
+    "skrot"
     "temmie"
     "wenche"
   ];
@@ -34,6 +35,7 @@
     "lupine-3"
     "lupine-4"
     "lupine-5"
+    "skrot"
   ];
 
   defaultNodeExporterPort = 9100;
