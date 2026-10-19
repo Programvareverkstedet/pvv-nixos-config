@@ -201,6 +201,8 @@ in {
       # Debugging
       $wgShowExceptionDetails = false;
       $wgShowIPinHeader = false;
+      $wgDebugLogGroups['exception'] = 'php://stderr';
+      $wgDebugLogGroups['fatal'] = 'php://stderr';
 
       # Offload background jobs to the external job runner service
       $wgJobRunRate = 0;
