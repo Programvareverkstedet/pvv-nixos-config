@@ -3,6 +3,9 @@ let
   cfg = config.services.postgresql;
 
   sharedBuffersMB = 8192;
+
+  # NOTE: `SHOW shared_memory_size` -> 8477MB, seems to need some extra overhead.
+  sharedMemoryOverheadMB = 300;
 in
 {
   imports = [
@@ -98,7 +101,7 @@ in
   };
 
   boot.kernel.hugepages.reservations.postgresql = lib.mkIf cfg.enable (
-    builtins.ceil (sharedBuffersMB / config.boot.kernel.hugepages.size)
+    builtins.ceil ((sharedBuffersMB + sharedMemoryOverheadMB) / (config.boot.kernel.hugepages.size * 1.0))
   );
 
   systemd.services.postgresql-setup = lib.mkIf cfg.enable {
