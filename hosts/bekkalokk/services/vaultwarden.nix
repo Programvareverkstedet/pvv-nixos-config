@@ -4,7 +4,6 @@ let
   domain = "pw.pvv.ntnu.no";
   address = "127.0.1.2";
   port = 3011;
-  wsPort = 3012;
 in {
   sops.secrets."vaultwarden/rsa_key.pem" = {
     owner = "vaultwarden";
@@ -41,10 +40,6 @@ in {
       ROCKET_ADDRESS = address;
       ROCKET_PORT = port;
 
-      WEBSOCKET_ENABLED = true;
-      WEBSOCKET_ADDRESS = address;
-      WEBSOCKET_PORT = wsPort;
-
       SIGNUPS_ALLOWED = true;
       SIGNUPS_VERIFY = true;
       SIGNUPS_DOMAINS_WHITELIST = "pvv.ntnu.no";
@@ -76,14 +71,6 @@ in {
     '';
 
     locations."/" = {
-      proxyPass = "http://${address}:${toString port}";
-      proxyWebsockets = true;
-    };
-    locations."/notifications/hub" = {
-      proxyPass = "http://${address}:${toString wsPort}";
-      proxyWebsockets = true;
-    };
-    locations."/notifications/hub/negotiate" = {
       proxyPass = "http://${address}:${toString port}";
       proxyWebsockets = true;
     };
