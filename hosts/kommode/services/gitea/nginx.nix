@@ -165,7 +165,7 @@ in
         '';
       };
 
-      "/metrics" = {
+      "= /metrics" = {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
         extraConfig = ''
           allow ${values.hosts.ildkule.ipv4}/32;
