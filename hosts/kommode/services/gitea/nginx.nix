@@ -69,7 +69,18 @@ in
     kTLS = true;
 
     locations = let
+      # NOTE: `satisfy any` is a bit weird, the auth requests and stuff behind will be evaluated
+      #       before the `deny all` takes effect. Don't trust the order of directives as stated.
+      #       Also note that the `deny all` is technically never reached because `auth_request`
+      #       returns 401/403 before `deny all` becomes relevant.
       unauthenticatedFallback = fallback: ''
+        satisfy any;
+        allow ${values.ipv4-space};
+        allow ${values.ipv6-space};
+        allow ${values.ntnu.ipv4-space};
+        allow ${values.ntnu.ipv6-space};
+        deny all;
+
         auth_request /_gitea_is_authenticated;
         error_page 401 403 = ${fallback};
       '';
