@@ -22,6 +22,10 @@
     efiSupport = false;
   };
 
+  boot.blacklistedKernelModules = [
+    "hpsa"
+  ];
+
   services.emergency-access-ramdisk.enable = true;
 
   systemd.network.networks."30-ens10f3" = values.defaultNetworkConfig // {
