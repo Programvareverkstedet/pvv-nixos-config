@@ -274,16 +274,35 @@ in {
     enableACME = true;
     kTLS = true;
 
-    extraConfig = ''
-      if ($gitea_blocked_fingerprint) {
-        return 403;
-      }
-    '';
+    locations = let
+      unauthenticatedFallback = fallback: ''
+        auth_request /_gitea_is_authenticated;
+        error_page 401 403 = ${fallback};
+      '';
 
-    locations = {
+      fingerprintBlock = ''
+        if ($gitea_blocked_fingerprint) {
+          return 403;
+        }
+      '';
+
+      assetCacheConfig = ''
+        proxy_cache gitea_assets;
+        proxy_cache_valid 200 302 6h;
+        proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
+        add_header X-Cache-Status $upstream_cache_status;
+      '';
+    in {
       "/" = {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
         extraConfig = ''
+          client_max_body_size 512M;
+        '' + unauthenticatedFallback "@gitea_unauthenticated";
+      };
+
+      "@gitea_unauthenticated" = {
+        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        extraConfig = fingerprintBlock + ''
           client_max_body_size 512M;
           limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
           limit_req_status 429;
@@ -297,13 +316,14 @@ in {
 
       "/assets/" = {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
-        extraConfig = ''
+        extraConfig = assetCacheConfig + unauthenticatedFallback "@gitea_unauthenticated_assets";
+      };
+
+      "@gitea_unauthenticated_assets" = {
+        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        extraConfig = fingerprintBlock + assetCacheConfig + ''
           limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
           limit_req_status 429;
-          proxy_cache gitea_assets;
-          proxy_cache_valid 200 302 6h;
-          proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
-          add_header X-Cache-Status $upstream_cache_status;
         '';
       };
 
@@ -311,15 +331,12 @@ in {
       # This should help mitigate bot abuse to some extent.
       "~ ^/[^/]+/[^/]+/(src|raw|commits|commit|blame|archive|issues|pulls)(/|$)" = {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
-        extraConfig = ''
-          auth_request /_gitea_is_authenticated;
-          error_page 401 = @gitea_scrape_limited;
-        '';
+        extraConfig = unauthenticatedFallback "@gitea_scrape_limited";
       };
 
       "@gitea_scrape_limited" = {
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
-        extraConfig = ''
+        extraConfig = fingerprintBlock + ''
           limit_req zone=gitea_scrapers burst=5 nodelay;
           limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
           limit_req_status 429;
@@ -338,6 +355,8 @@ in {
           proxy_cache gitea_authcheck;
           proxy_cache_key $http_cookie;
           proxy_cache_valid 200 401 30s;
+          proxy_cache_bypass $http_authorization;
+          proxy_no_cache $http_authorization;
         '';
       };
 
