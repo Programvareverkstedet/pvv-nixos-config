@@ -22,10 +22,6 @@
     efiSupport = false;
   };
 
-  environment.systemPackages = with pkgs; [
-    ssacli
-  ];
-
   services.emergency-access-ramdisk.enable = true;
 
   systemd.network.networks."30-ens10f3" = values.defaultNetworkConfig // {

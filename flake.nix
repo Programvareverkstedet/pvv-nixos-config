@@ -98,7 +98,6 @@
             "nvidia-x11"
             "nvidia-settings"
             "nvidia-kernel-modules"
-            "ssacli"
           ];
       });
 
@@ -132,7 +131,6 @@
                 "nvidia-x11"
                 "nvidia-settings"
                 "nvidia-kernel-modules"
-                "ssacli"
               ];
             overlays =
               (lib.optionals enableDefaults [
@@ -217,9 +215,6 @@
               mjolnir = prev.mjolnir.override {
                 nodejs = prev.nodejs_22;
               };
-            })
-            (final: prev: {
-              inherit (self.packages.x86_64-linux) ssacli;
             })
           ];
         };
@@ -380,8 +375,6 @@
           simplesamlphp = pkgs.callPackage ./packages/simplesamlphp {};
 
           bluemap = pkgs.callPackage ./packages/bluemap.nix {};
-
-          ssacli = pkgs.callPackage ./packages/ssacli.nix {};
         }
         //
         # Mediawiki extensions
