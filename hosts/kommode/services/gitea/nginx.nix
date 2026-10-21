@@ -8,7 +8,12 @@ let
 in
 {
   services.nginx.appendHttpConfig = ''
-    limit_req_zone $binary_remote_addr zone=gitea_scrapers:64m rate=1r/s;
+    # Group IPv6 clients by /64, IPv4 clients by /32.
+    map $binary_remote_addr $gitea_scraper_key {
+      "~(?s)^(?<prefix>.{8}).{8}$" $prefix;
+      default $binary_remote_addr;
+    }
+    limit_req_zone $gitea_scraper_key zone=gitea_scrapers:64m rate=1r/s;
 
     geo $gitea_ratelimit_group {
       default "";
