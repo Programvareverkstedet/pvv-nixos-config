@@ -160,6 +160,7 @@ in
           proxy_cache gitea_authcheck;
           proxy_cache_key $http_cookie;
           proxy_cache_valid 200 401 30s;
+          proxy_cache_lock on;
           proxy_cache_bypass $http_authorization;
           proxy_no_cache $http_authorization;
         '';
