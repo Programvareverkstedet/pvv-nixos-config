@@ -2,17 +2,38 @@
 {
   disko.devices = {
     disk = {
-      sda = {
+      boot = {
         type = "disk";
-        device = "/dev/sda";
+        device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1";
+        content = {
+          type = "gpt";
+          partitions = {
+            ESP = {
+              name = "ESP";
+              label = "ESP";
+              size = "100%";
+              type = "EF00";
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot";
+                mountOptions = [ "umask=0077" ];
+              };
+            };
+          };
+        };
+      };
+
+      root = {
+        type = "disk";
+        device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0";
         content = {
           type = "gpt";
           partitions = {
             root = {
               name = "root";
               label = "root";
-              start = "1MiB";
-              end = "-5G";
+              size = "100%";
               content = {
                 type = "btrfs";
                 extraArgs = [ "-f" ]; # Override existing partition
@@ -36,28 +57,6 @@
                 # swap.swapfile.size = "4G";
                 mountpoint = "/";
                 mountOptions = [ "relatime" "space_cache=v2" ];
-              };
-            };
-
-            swap = {
-              name = "swap";
-              label = "swap";
-              start = "-5G";
-              end = "-1G";
-              content.type = "swap";
-            };
-
-            ESP = {
-              name = "ESP";
-              label = "ESP";
-              start = "-1G";
-              end = "100%";
-              type = "EF00";
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = [ "umask=0077" ];
               };
             };
           };
