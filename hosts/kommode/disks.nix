@@ -38,7 +38,7 @@
                 type = "btrfs";
                 extraArgs = [ "-f" ]; # Override existing partition
                 subvolumes = let
-                  makeSnapshottable = subvolPath: mountOptions: let
+                  subvolume = subvolPath: mountOptions: let
                     name = lib.replaceString "/" "_" subvolPath;
                   in {
                     "@rootfs${name}/active" = {
@@ -51,8 +51,9 @@
                     };
                   };
                 in { }
-                // (makeSnapshottable "/var/lib/gitea" [ "compress=zstd:15" "space_cache=v2" "noatime" ])
-                // (makeSnapshottable "/var/lib/gitea-web" [ "compress=zstd:15" "space_cache=v2" "noatime" ]);
+                // (subvolume "/var/lib/gitea" [ "compress=zstd:15" "space_cache=v2" "noatime" ])
+                // (subvolume "/var/lib/gitea-web" [ "compress=zstd:15" "space_cache=v2" "noatime" ])
+                // (subvolume "/var/log" [ "compress=zstd" "noatime" "noexec" "nosuid" "nodev" ]);
 
                 # swap.swapfile.size = "4G";
                 mountpoint = "/";
