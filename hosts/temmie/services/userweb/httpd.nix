@@ -283,11 +283,22 @@ in
             SetHandler application/x-httpd-php-source
             Require all denied
         </FilesMatch>
+
+        <FilesMatch "\.(php[34578]?|pht|phtml|pl|cgi)[.~!_#-]">
+            Require all denied
+        </FilesMatch>
+
         <FilesMatch "\.pl$">
             SetHandler modperl
             PerlResponseHandler ModPerl::Registry
             Options +ExecCGI
         </FilesMatch>
+
+        <DirectoryMatch "/(uploads?|sites/[^/]+/files)(/|$)">
+            <FilesMatch "\.(php[34578]?|pht|phtml|pl|cgi)$">
+                Require all denied
+            </FilesMatch>
+        </DirectoryMatch>
       '';
     };
   };
