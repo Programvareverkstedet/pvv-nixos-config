@@ -4,6 +4,8 @@ let
   letters = [ "a" "b" "c" "d" "h" "i" "j" "k" "l" "m" "z" ];
 in
 {
+  boot.supportedFilesystems.nfs = true;
+
   systemd.targets."pvv-homedirs" = {
     description = "PVV Homedir Partitions";
     requires = map (l: "pvv-homedir-create-uidmapped-bindmounts@${l}.service") letters;
