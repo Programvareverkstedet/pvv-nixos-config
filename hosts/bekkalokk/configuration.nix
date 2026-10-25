@@ -12,6 +12,7 @@
     ./services/idp-simplesamlphp
     ./services/kerberos.nix
     ./services/mediawiki
+    ./services/nettsiden-ssg.nix
     ./services/nginx.nix
     ./services/phpfpm.nix
     ./services/prometheus-phpfpm-exporter.nix

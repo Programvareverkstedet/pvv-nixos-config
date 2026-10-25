@@ -118,6 +118,24 @@
         "type": "github"
       }
     },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "gergle": {
       "inputs": {
         "nixpkgs": [
@@ -265,6 +283,28 @@
         "ref": "main",
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Projects/minecraft-kartverket.git"
+      }
+    },
+    "nettsiden-ssg": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792898092,
+        "narHash": "sha256-utUnGCtdvfCKmLB1wfdfWAHf3DVGkeHhnI0KRWMPXGE=",
+        "ref": "main",
+        "rev": "0c5702027962c575a83dd08e0f819a989da70760",
+        "revCount": 26,
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/nettsiden-ssg.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://git.pvv.ntnu.no/Projects/nettsiden-ssg.git"
       }
     },
     "nix-gitea-themes": {
@@ -447,6 +487,7 @@
         "matrix-next": "matrix-next",
         "minecraft-heatmap": "minecraft-heatmap",
         "minecraft-kartverket": "minecraft-kartverket",
+        "nettsiden-ssg": "nettsiden-ssg",
         "nix-gitea-themes": "nix-gitea-themes",
         "nix-topology": "nix-topology",
         "nixpkgs": "nixpkgs",
@@ -586,6 +627,21 @@
         "owner": "Mic92",
         "ref": "master",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
         "type": "github"
       }
     },

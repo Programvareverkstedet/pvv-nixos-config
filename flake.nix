@@ -17,6 +17,9 @@
     pvv-nettsiden.url = "git+https://git.pvv.ntnu.no/Projects/nettsiden.git?ref=main";
     pvv-nettsiden.inputs.nixpkgs.follows = "nixpkgs";
 
+    nettsiden-ssg.url = "git+https://git.pvv.ntnu.no/Projects/nettsiden-ssg.git?ref=main";
+    nettsiden-ssg.inputs.nixpkgs.follows = "nixpkgs";
+
     pvv-calendar-bot.url = "git+https://git.pvv.ntnu.no/Projects/calendar-bot.git?ref=main";
     pvv-calendar-bot.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -229,6 +232,7 @@
           ];
           modules = [
             inputs.pvv-nettsiden.nixosModules.default
+            inputs.nettsiden-ssg.nixosModules.default
             inputs.qotd.nixosModules.default
           ];
         };
