@@ -62,6 +62,13 @@ in
         "www2.pvv.ntnu.no"
       ];
 
+      servedDirs = [
+        {
+          urlPath = "/environment";
+          dir = mcfg.environmentListing;
+        }
+      ];
+
       extraConfig = ''
         <Directory "${pkgs.emptyDirectory}">
           Require all denied

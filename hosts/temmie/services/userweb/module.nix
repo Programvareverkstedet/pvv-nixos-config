@@ -106,6 +106,17 @@ in
         ];
       };
     };
+
+    environmentListing = lib.mkOption {
+      type = lib.types.package;
+      readOnly = true;
+      default = pkgs.runCommand "userweb-environment-listing" { } ''
+        ${cfg.python3.env}/bin/python3 '${./environment_listing.py}' \
+          --store-dir '${builtins.storeDir}' \
+          --fhs-env '${cfg.fhsEnv}' \
+          --out "$out"
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
