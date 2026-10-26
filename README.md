@@ -22,7 +22,7 @@ repository unless you have already done so. After that, checkout the branch you 
 
 ```bash
 # Run this while in the pvv-nixos-config directory
-sudo nixos-rebuild switch --update-input nixpkgs --update-input nixpkgs-unstable --no-write-lock-file --refresh --flake .# --upgrade
+sudo nixos-rebuild switch --refresh --no-write-lock-file --flake .#
 ```
 
 This will rebuild the NixOS system on the current branch and switch the system configuration to reflect the new changes.

@@ -161,7 +161,7 @@ nix build .#
 If you ever want to reset a machine to the `main` branch, you can do so by running:
 
 ```bash
-nixos-rebuild switch --update-input nixpkgs --update-input nixpkgs-unstable --no-write-lock-file --refresh --upgrade --flake git+https://git.pvv.ntnu.no/Drift/pvv-nixos-config.git
+nixos-rebuild switch --refresh --no-write-lock-file --flake git+https://git.pvv.ntnu.no/Drift/pvv-nixos-config.git
 ```
 
 This will ignore the current branch and just pull the latest `main` from the git repository directly from gitea.
