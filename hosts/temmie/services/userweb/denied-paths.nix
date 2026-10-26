@@ -1,12 +1,15 @@
 { ... }:
 {
   services.pvv-userweb.deniedDirectories = [
+    # Version control
+
     "\\.git"
     "\\.hg"
     "\\.svn"
     "\\.ssh"
     "\\.bzr"
     "\\.venv"
+    "\\.env"
     "\\.jj"
     "\\.pijul"
     "\\.sl"
@@ -16,17 +19,42 @@
     "SCCS"
     "BitKeeper"
 
-    "\\.Trash(-[0-9]+)?"
+    # Misc
 
     "\\.aws"
+    "\\.azure"
+    "\\.cargo"
+    "\\.chef"
     "\\.circleci"
     "\\.claude"
     "\\.composer"
+    "\\.continue"
+    "\\.cursor"
+    "\\.dbeaver"
+    "\\.devcontainer"
+    "\\.digitalocean"
     "\\.docker"
+    "\\.gcp"
     "\\.gem"
+    "\\.github"
+    "\\.heroku"
     "\\.idea"
+    "\\.ipython"
+    "\\.jupyter"
+    "\\.keys"
     "\\.kube"
+    "\\.m2"
+    "\\.netlify"
+    "\\.npm"
+    "\\.nuget"
+    "\\.oci"
+    "\\.op"
+    "\\.prisma"
+    "\\.putty"
+    "\\.registry"
+    "\\.streamlit"
     "\\.terraform"
+    "\\.vercel"
     "\\.vscode"
     "\\.vscode-server"
 
@@ -45,6 +73,10 @@
 
     "__pycache__"
 
+    # Backup and temporary dirs
+
+    "\\.Trash(-[0-9]+)?"
+
     ".*\\.bak"
     ".*\\.bak.*"
     ".*\\.bkp"
@@ -54,21 +86,61 @@
   ];
 
   services.pvv-userweb.deniedFiles = [
-    ".env"
-    ".env.*"
-    ".envs"
-    ".envs.*"
-    ".envrc"
+    # Version control
 
-    ".git"
+    # .git
+    # .git-credentials
+    # .gitignore
+    # .gitmodules
+    # .gitkeep
+    # .gitattributes
+    # .gitconfig
+    # .gitlab-ci.yml
+    ".git*"
     ".fslckout"
     "_FOSSIL_"
 
-    ".git-credentials"
+    # Logs
+
+    "*.log"
+    "error_log"
+
+    # Modules and libraries
+
+    "*.inc"
+    "*.pm"
+
+    # Configuration and history files
+
+    ".*_history"
+    ".zhistory"
+    ".histfile"
+    ".netrc"
+    ".my.cnf"
+    ".pypirc"
+    ".s3cfg"
+    ".fetchmailrc"
+    ".muttrc"
+
+    "Dockerfile"
+    "docker-compose.y*ml"
+    ".travis.yml"
+    "composer.json"
+    "composer.lock"
+    "package.json"
+    "web.config"
+    "wp-config.txt"
     ".npmrc"
-    ".DS_Store"
+
+    # Keys and secrets
+
+    ".env*"
+    "*.env"
+
     "auth.json"
     "credentials"
+    "*htpasswd*"
+    ".pgpass"
     "secrets.json"
     "secrets.y*ml"
 
@@ -78,6 +150,7 @@
     "id_ed25519"
 
     "*.pem"
+    "*.key"
     "*.ppk"
     "*.p12"
     "*.pfx"
@@ -88,33 +161,15 @@
     "*.tfstate"
     "*.tfvars"
 
-    ".*_history"
-    ".zhistory"
-    ".histfile"
-    ".netrc"
-    ".pgpass"
-    ".my.cnf"
-    ".pypirc"
-    ".s3cfg"
-    ".fetchmailrc"
-    ".muttrc"
-
-    "*.swp"
-    "*.swo"
-    "*.swn"
-    "*~"
-
-    "*.old"
-    "*.orig"
-    "*.save"
-    "*.tmp"
-    "*.rej"
+    # Database files and SQL dumps/scripts
 
     "*.db"
     "*.db-journal"
     "*.db-shm"
     "*.db-wal"
     "*.sql"
+    "*.sql.*"
+    "*.sqlitedb"
     "*.sqlite"
     "*.sqlite3"
     "*.sqlite-journal"
@@ -126,24 +181,7 @@
     "*.mdb"
     "*.accdb"
 
-    "*.log"
-    "error_log"
-
-    "*.inc"
-    "*.pm"
-    "sess_*"
-    ".nfs*"
-    "core"
-    "core.[0-9]*"
-
-    "Dockerfile"
-    "docker-compose.y*ml"
-    ".gitlab-ci.yml"
-    ".travis.yml"
-    "composer.json"
-    "composer.lock"
-    "package.json"
-    "web.config"
+    # Backup and temporary files
 
     "*.bak"
     "*.bak*"
@@ -151,6 +189,28 @@
     "*.bkp*"
     "*.backup"
     "*.backup*"
+    "*.back"
+    "*.bk"
+
+    "*.old"
+    "*.orig"
+    "*.save"
+    "*.tmp"
+    "*.rej"
+
+    ".DS_Store"
+    "*.swp"
+    "*.swo"
+    "*.swn"
+    "*~"
+    "#*#"
+
+    "sess_*"
+    ".nfs*"
+    "core"
+    "core.[0-9]*"
+
+    # Lock files
 
     "*.lck"
     "*.lock"
