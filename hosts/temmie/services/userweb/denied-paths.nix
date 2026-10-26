@@ -146,10 +146,13 @@
     "secrets.json"
     "secrets.y*ml"
 
-    "id_rsa"
     "id_dsa"
     "id_ecdsa"
     "id_ed25519"
+    "id_ed25519_sk"
+    "id_icdsa_sk"
+    "id_mldsa44_ed25519"
+    "id_rsa"
 
     "*.pem"
     "*.key"
