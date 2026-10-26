@@ -1,5 +1,6 @@
 {
   imports = [
+    ./denied-paths.nix
     ./fluentbit.nix
     ./httpd.nix
     ./log-processor.nix

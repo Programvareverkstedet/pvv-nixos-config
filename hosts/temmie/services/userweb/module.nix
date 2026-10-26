@@ -21,6 +21,24 @@ in
       readOnly = true;
     };
 
+    deniedDirectories = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      description = ''
+        List of regexes, matched against path components through `<DirectoryMatch "/''${d}(/|$)">`.
+        All matching directores will be denied access.
+      '';
+      default = [ ];
+    };
+
+    deniedFiles = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      description = ''
+        List of wildcard patterns, matched against the file basename through `<Files "''${f}">`.
+        All matching files will be denied access.
+      '';
+      default = [ ];
+    };
+
     packages = lib.mkOption {
       type = lib.types.listOf lib.types.package;
       default = _: [ ];
@@ -116,6 +134,11 @@ in
           --fhs-env '${cfg.fhsEnv}' \
           --php '${cfg.php.env}/bin/php' \
           --out "$out"
+
+        cp '${pkgs.writers.writeJSON "denied-paths.json" {
+          directories = cfg.deniedDirectories;
+          files = cfg.deniedFiles;
+        }}' "$out/denied-paths.json"
       '';
     };
   };

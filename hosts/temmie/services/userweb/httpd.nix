@@ -122,170 +122,18 @@ in
           <DirectoryMatch "/${d}(/|$)">
             Require all denied
           </DirectoryMatch>
-        '') [
-          "\\.git"
-          "\\.hg"
-          "\\.svn"
-          "\\.ssh"
-          "\\.bzr"
-          "\\.venv"
-          "\\.jj"
-          "\\.pijul"
-          "\\.sl"
-          "_darcs"
-          "CVS"
-          "RCS"
-          "SCCS"
-          "BitKeeper"
+        '') mcfg.deniedDirectories}
 
-          "\\.Trash(-[0-9]+)?"
-
-          "\\.aws"
-          "\\.circleci"
-          "\\.claude"
-          "\\.composer"
-          "\\.docker"
-          "\\.gem"
-          "\\.idea"
-          "\\.kube"
-          "\\.terraform"
-          "\\.vscode"
-          "\\.vscode-server"
-
-          "\\.cache"
-          "\\.config"
-          "\\.gnupg"
-          "\\.irssi"
-          "\\.mozilla"
-          "\\.password-store"
-          "\\.purple"
-          "\\.thunderbird"
-          "\\.weechat"
-
-          "vendor/htmlawed"
-          "vendor/phpunit"
-
-          "__pycache__"
-
-          ".*\\.bak"
-          ".*\\.bak.*"
-          ".*\\.bkp"
-          ".*\\.bkp.*"
-          ".*\\.backup"
-          ".*\\.backup.*"
-        ]}
-
-        ${lib.concatMapStringsSep "\n" (d: ''
-          <Files "${d}">
+        ${lib.concatMapStringsSep "\n" (f: ''
+          <Files "${f}">
             Require all denied
           </Files>
-        '') [
-          ".env"
-          ".env.*"
-          ".envs"
-          ".envs.*"
-          ".envrc"
-
-          ".git"
-          ".fslckout"
-          "_FOSSIL_"
-
-          ".git-credentials"
-          ".npmrc"
-          ".DS_Store"
-          "auth.json"
-          "credentials"
-          "secrets.json"
-          "secrets.y*ml"
-
-          "id_rsa"
-          "id_dsa"
-          "id_ecdsa"
-          "id_ed25519"
-
-          "*.pem"
-          "*.ppk"
-          "*.p12"
-          "*.pfx"
-          "*.jks"
-          "*.keystore"
-          "*.kdbx"
-          "*.ovpn"
-          "*.tfstate"
-          "*.tfvars"
-
-          ".*_history"
-          ".zhistory"
-          ".histfile"
-          ".netrc"
-          ".pgpass"
-          ".my.cnf"
-          ".pypirc"
-          ".s3cfg"
-          ".fetchmailrc"
-          ".muttrc"
-
-          "*.swp"
-          "*.swo"
-          "*.swn"
-          "*~"
-
-          "*.old"
-          "*.orig"
-          "*.save"
-          "*.tmp"
-          "*.rej"
-
-          "*.db"
-          "*.db-journal"
-          "*.db-shm"
-          "*.db-wal"
-          "*.sql"
-          "*.sqlite"
-          "*.sqlite3"
-          "*.sqlite-journal"
-          "*.sqlite-shm"
-          "*.sqlite-wal"
-          "*.sqlite3-journal"
-          "*.sqlite3-shm"
-          "*.sqlite3-wal"
-          "*.mdb"
-          "*.accdb"
-
-          "*.log"
-          "error_log"
-
-          "*.inc"
-          "*.pm"
-          "sess_*"
-          ".nfs*"
-          "core"
-          "core.[0-9]*"
-
-          "Dockerfile"
-          "docker-compose.y*ml"
-          ".gitlab-ci.yml"
-          ".travis.yml"
-          "composer.json"
-          "composer.lock"
-          "package.json"
-          "web.config"
-
-          "*.bak"
-          "*.bak*"
-          "*.bkp"
-          "*.bkp*"
-          "*.backup"
-          "*.backup*"
-
-          "*.lck"
-          "*.lock"
-          "LCK..*"
-        ]}
+        '') mcfg.deniedFiles}
 
         <FilesMatch ".+\.ph(p[34578]?|t|tml)$">
             SetHandler application/x-httpd-php
         </FilesMatch>
+
         <FilesMatch ".+\.phps$">
             SetHandler application/x-httpd-php-source
             Require all denied
