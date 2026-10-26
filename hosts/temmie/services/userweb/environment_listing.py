@@ -4,6 +4,7 @@ import json
 import os
 import platform
 import re
+import subprocess
 import sys
 from pathlib import Path
 from typing import NamedTuple
@@ -113,10 +114,44 @@ def list_python_modules() -> dict[str, Package]:
     return packages
 
 
+def list_php_modules(store_dir: Path, php: Path) -> dict[str, Package]:
+    def run_php(*args: str) -> str:
+        return subprocess.run(
+            [php, *args],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+
+    version, *compiled_in = run_php(
+        "-n",
+        "-r",
+        "echo PHP_VERSION, PHP_EOL, implode(PHP_EOL, get_loaded_extensions());",
+    ).splitlines()
+    packages = {"php": Package(version, compiled_in)}
+
+    for ini_file in run_php("-r", "echo php_ini_scanned_files();").split(","):
+        for match in re.finditer(
+            r"^extension=(.+)$",
+            Path(ini_file.strip()).read_text(),
+            re.MULTILINE,
+        ):
+            path = Path(match[1])
+            # NOTE: skip builtin extensions, listed under the `php` package.
+            if path.stem.lower() not in map(str.lower, compiled_in):
+                add(
+                    packages,
+                    *parse_store_path(store_dir, path),
+                    path.stem,
+                )
+    return packages
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--store-dir", type=Path, required=True)
     parser.add_argument("--fhs-env", type=Path, required=True)
+    parser.add_argument("--php", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
 
@@ -134,6 +169,11 @@ def main() -> None:
     render_as_json_file(
         args.out / "python3-modules.json",
         list_python_modules(),
+        key="modules",
+    )
+    render_as_json_file(
+        args.out / "php-modules.json",
+        list_php_modules(args.store_dir, args.php),
         key="modules",
     )
 

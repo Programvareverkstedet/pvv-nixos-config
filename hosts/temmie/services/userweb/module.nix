@@ -114,6 +114,7 @@ in
         ${cfg.python3.env}/bin/python3 '${./environment_listing.py}' \
           --store-dir '${builtins.storeDir}' \
           --fhs-env '${cfg.fhsEnv}' \
+          --php '${cfg.php.env}/bin/php' \
           --out "$out"
       '';
     };
