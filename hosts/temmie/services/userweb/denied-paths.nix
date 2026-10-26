@@ -3,21 +3,18 @@
   services.pvv-userweb.deniedDirectories = [
     # Version control
 
-    "\\.git"
-    "\\.hg"
-    "\\.svn"
-    "\\.ssh"
-    "\\.bzr"
-    "\\.venv"
-    "\\.env"
-    "\\.jj"
-    "\\.pijul"
-    "\\.sl"
-    "_darcs"
+    "BitKeeper"
     "CVS"
     "RCS"
     "SCCS"
-    "BitKeeper"
+    "\\.bzr"
+    "\\.git"
+    "\\.hg"
+    "\\.jj"
+    "\\.pijul"
+    "\\.sl"
+    "\\.svn"
+    "_darcs"
 
     # Misc
 
@@ -34,6 +31,7 @@
     "\\.devcontainer"
     "\\.digitalocean"
     "\\.docker"
+    "\\.env"
     "\\.gcp"
     "\\.gem"
     "\\.github"
@@ -52,8 +50,10 @@
     "\\.prisma"
     "\\.putty"
     "\\.registry"
+    "\\.ssh"
     "\\.streamlit"
     "\\.terraform"
+    "\\.venv"
     "\\.vercel"
     "\\.vscode"
     "\\.vscode-server"
@@ -71,6 +71,8 @@
     "vendor/htmlawed"
     "vendor/phpunit"
 
+    "\\.AppleDouble"
+    "__MACOSX"
     "__pycache__"
 
     # Backup and temporary dirs
@@ -198,7 +200,6 @@
     "*.tmp"
     "*.rej"
 
-    ".DS_Store"
     "*.swp"
     "*.swo"
     "*.swn"
@@ -215,5 +216,10 @@
     "*.lck"
     "*.lock"
     "LCK..*"
+
+    # Metadata files
+
+    ".DS_Store"
+    "._*"
   ];
 }
