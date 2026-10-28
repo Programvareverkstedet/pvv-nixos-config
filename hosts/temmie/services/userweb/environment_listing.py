@@ -38,7 +38,7 @@ def parse_store_path(store_dir: Path, path: Path) -> tuple[str, str]:
     package, version = (
         (match[1], re.compile(r"-[a-z]+$").sub("", match[2])) if match else (name, "")
     )
-    return re.compile(r"^python[0-9.]+-").sub("", package), version
+    return re.compile(r"^(perl|python)[0-9.]+-").sub("", package), version
 
 
 def render_as_json_file(
@@ -114,6 +114,39 @@ def list_python_modules() -> dict[str, Package]:
     return packages
 
 
+def list_perl_modules(store_dir: Path, perl: Path) -> dict[str, Package]:
+    inc = subprocess.run(
+        [perl, "-e", r"print join(qq(\n), grep { !ref } @INC)"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    inc = [Path(directory) for directory in inc if Path(directory).is_dir()]
+
+    packages = {}
+    seen = set()
+    for directory in inc:
+        for root, _, files in os.walk(directory, followlinks=True):
+            for file in files:
+                if not file.endswith(".pm"):
+                    continue
+                path = Path(root) / file
+                prefix = max(
+                    (d for d in inc if path.is_relative_to(d)),
+                    key=lambda d: len(d.parts),
+                )
+                module = "::".join(path.relative_to(prefix).with_suffix("").parts)
+                if module in seen:
+                    continue
+                seen.add(module)
+                add(
+                    packages,
+                    *parse_store_path(store_dir, path),
+                    module,
+                )
+    return packages
+
+
 def list_php_modules(store_dir: Path, php: Path) -> dict[str, Package]:
     def run_php(*args: str) -> str:
         return subprocess.run(
@@ -151,6 +184,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--store-dir", type=Path, required=True)
     parser.add_argument("--fhs-env", type=Path, required=True)
+    parser.add_argument("--perl", type=Path, required=True)
     parser.add_argument("--php", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
@@ -169,6 +203,11 @@ def main() -> None:
     render_as_json_file(
         args.out / "python3-modules.json",
         list_python_modules(),
+        key="modules",
+    )
+    render_as_json_file(
+        args.out / "perl-modules.json",
+        list_perl_modules(args.store_dir, args.perl),
         key="modules",
     )
     render_as_json_file(
