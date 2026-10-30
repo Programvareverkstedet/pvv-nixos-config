@@ -1,12 +1,14 @@
 { config, fp, pkgs, values, ... }:
 {
   imports = [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      (fp /base)
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    (fp /base)
 
-      ./services/grzegorz.nix
-    ];
+    ./services/grzegorz.nix
+  ];
+
+  hardware.graphics.extraPackages = [ pkgs.intel-vaapi-driver ];
 
   systemd.network.networks."30-eno1" = values.defaultNetworkConfig // {
     matchConfig.Name = "eno1";
