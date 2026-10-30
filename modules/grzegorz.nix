@@ -14,7 +14,14 @@ in {
     enableSway = true;
     enablePipewire = true;
 
-    mpvPackage = unstablePkgs.mpv;
+    mpv.package = unstablePkgs.mpv;
+
+    # Prefer H.264 at 1080p or lower
+    mpv.settings.default.ytdl-format = lib.concatStringsSep "/" [
+      "bestvideo[height<=?1080][vcodec^=avc1]+bestaudio"
+      "bestvideo[height<=?1080][vcodec!~='vp0?9']+bestaudio"
+      "best"
+    ];
   };
 
   systemd.user.services.restart-greg-ng = {

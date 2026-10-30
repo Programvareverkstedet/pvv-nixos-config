@@ -5,7 +5,7 @@
       ./hardware-configuration.nix
       (fp /base)
 
-      (fp /modules/grzegorz.nix)
+      ./services/grzegorz.nix
     ];
 
   systemd.network.networks."30-eno1" = values.defaultNetworkConfig // {
