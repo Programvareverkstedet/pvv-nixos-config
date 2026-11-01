@@ -140,6 +140,27 @@ in
     kTLS = true;
     forceSSL = true;
     enableACME = true;
-    locations."/".proxyPass = "http://localhost:${cfg.socket}";
+    locations = let
+      metricsOnly = ''
+        allow 127.0.0.1;
+        allow ::1;
+        allow ${values.hosts.ildkule.ipv4};
+        allow ${values.hosts.ildkule.ipv6};
+        deny all;
+      '';
+    in {
+      "/".proxyPass = "http://localhost:${cfg.socket}";
+
+      "^~ /api/message".return = "403";
+
+      "= /metrics" = {
+        proxyPass = "http://localhost:${cfg.socket}";
+        extraConfig = metricsOnly;
+      };
+      "= /api/stats" = {
+        proxyPass = "http://localhost:${cfg.socket}";
+        extraConfig = metricsOnly;
+      };
+    };
   };
 }
