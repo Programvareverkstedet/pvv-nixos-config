@@ -44,11 +44,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793443887,
-        "narHash": "sha256-VJmfzZcdM3bA0ihHj3yt4ppYyfs4FDvZF2eExT0La5M=",
+        "lastModified": 1793856800,
+        "narHash": "sha256-MUaai9t3QdOqRDUq5PWUF/2GLJwe2hxNCGnFzKcDmJg=",
         "ref": "main",
-        "rev": "b5ef2bb604ea761f7914c5167b2efffdba3bf943",
-        "revCount": 1085,
+        "rev": "9aa6f2793ce40aa18653ffd2ae9bc630df7ce7fa",
+        "revCount": 1097,
         "type": "git",
         "url": "https://git.pvv.ntnu.no/Drift/delete-your-element.git"
       },
