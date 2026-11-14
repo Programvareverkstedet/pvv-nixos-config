@@ -80,9 +80,9 @@ in
           "${lib.getExe' pkgs.coreutils "shred"} -u ${inputDir}/passwd ${inputDir}/group"
 
           ":${lib.getExe pkgs.gnused} -i '$ a\\\\root:x:0:0:System administrator:/root:/run/current-system/sw/bin/bash' ${wipDir}/passwd"
-          ":${lib.getExe pkgs.gnused} -i '$ a\\\\wwwrun:x:54:54:Apache httpd user:/var/empty:/run/current-system/sw/bin/bash' ${wipDir}/passwd"
+          ":${lib.getExe pkgs.gnused} -i '$ a\\\\wwwrun:x:33:33:Apache httpd user:/var/empty:/run/current-system/sw/bin/bash' ${wipDir}/passwd"
           ":${lib.getExe pkgs.gnused} -i '$ a\\\\root:x:0:' ${wipDir}/group"
-          ":${lib.getExe pkgs.gnused} -i '$ a\\\\wwwrun:x:54:' ${wipDir}/group"
+          ":${lib.getExe pkgs.gnused} -i '$ a\\\\wwwrun:x:33:' ${wipDir}/group"
 
           "+${lib.getExe' pkgs.coreutils "install"} -m644 -o root -g root -t '${outputDir}' ${wipDir}/passwd ${wipDir}/group"
           "${lib.getExe' pkgs.coreutils "shred"} -u ${wipDir}/passwd ${wipDir}/group"
