@@ -194,16 +194,32 @@ in
       "pvv-homedirs.target"
       "httpd-log-processor@access.socket"
       "httpd-log-processor@error.socket"
+      "httpd-passwd-sync.service"
+      "systemd-resolved.service"
     ];
     requires = [
       "pvv-homedirs.target"
       "httpd-log-processor@access.socket"
       "httpd-log-processor@error.socket"
     ];
+    wants = [
+      "httpd-passwd-sync.service"
+      "systemd-resolved.service"
+    ];
+    partOf = [ "systemd-resolved.service" ];
     requiredBy = [ "userweb.target" ];
 
     environment = {
       PATH = lib.mkForce "/usr/bin";
+
+      # NOTE: NSS usually just asks nscd/nsncd, but since that's not available in the sandbox,
+      #       we need glibc to talk with systemd directly. In order not to recompile glibc and
+      #       the entire world that follow, we just inject the required library via LD_LIBRARY_PATH.
+      LD_LIBRARY_PATH = lib.makeLibraryPath [
+        (pkgs.linkFarm "userweb-nss-resolve" {
+          "lib/libnss_resolve.so.2" = "${lib.getLib config.systemd.package}/lib/libnss_resolve.so.2";
+        })
+      ];
     };
 
     serviceConfig = {
@@ -259,7 +275,26 @@ in
         "/etc"
         "/dev/null"
         "/var/lib/acme"
-        "/var/run/nscd"
+
+        "${pkgs.writeText "userweb-httpd-nsswitch.conf" ''
+          passwd:    files
+          group:     files
+          shadow:    files
+
+          hosts:     resolve [!UNAVAIL=return] files dns
+          networks:  files
+
+          ethers:    files
+          services:  files
+          protocols: files
+          rpc:       files
+        ''}:/etc/nsswitch.conf"
+        "/run/systemd/resolve/io.systemd.Resolve"
+        "/run/systemd/resolve/stub-resolv.conf"
+
+        "/var/lib/httpd-passwd-sync/passwd:/etc/passwd"
+        "/var/lib/httpd-passwd-sync/group:/etc/group"
+
         "${mcfg.fhsEnv}/bin:/bin"
         "${mcfg.fhsEnv}/sbin:/sbin"
         "${mcfg.fhsEnv}/lib:/lib"
