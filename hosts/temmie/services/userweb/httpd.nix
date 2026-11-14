@@ -80,7 +80,7 @@ in
         ErrorLog "/run/httpd-log-processor-error.fifo"
         ScriptLog "${cfg.logDir}/cgi.log"
 
-        UserDir ${lib.concatMapStringsSep " " (l: "/home/pvv/${l}/*/web-docs") mcfg.homeLetters}
+        UserDir web-docs
 
         UserDir disabled root
         UserDir disabled pvv
