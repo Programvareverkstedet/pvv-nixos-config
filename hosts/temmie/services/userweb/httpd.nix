@@ -20,7 +20,7 @@ in
     phpPackage = mcfg.php.env;
     phpOptions = mcfg.php.options;
 
-    # NOTE: we include our own `mod_perl` in `extraModules` instead.
+    # NOTE: Perl scripts run as plain CGI scripts, using the perl env from FHS.
     enablePerl = false;
 
     # NOTE: we include `mod_userdir` in `extraModules` and configure this in `extraConfig` ourselves.
@@ -30,21 +30,6 @@ in
     extraModules = [
       "systemd"
       "userdir"
-      {
-        name = "perl";
-        path = let
-          mod_perl = pkgs.symlinkJoin {
-            name = "userweb_modperl_with_custom_perl_env";
-            ignoreCollisions = true;
-            paths = [
-              (pkgs.apacheHttpdPackages.mod_perl.override {
-                apacheHttpd = cfg.package.out;
-              })
-              mcfg.perl.env
-            ];
-          };
-        in "${mod_perl}/modules/mod_perl.so";
-      }
     ];
 
     logPerVirtualHost = false;
@@ -141,12 +126,6 @@ in
 
         <FilesMatch "\.(php[34578]?|pht|phtml|pl|cgi)[.~!_#-]">
             Require all denied
-        </FilesMatch>
-
-        <FilesMatch "\.pl$">
-            SetHandler modperl
-            PerlResponseHandler ModPerl::Registry
-            Options +ExecCGI
         </FilesMatch>
 
         <DirectoryMatch "/(uploads?|sites/[^/]+/files)(/|$)">
