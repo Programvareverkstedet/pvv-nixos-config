@@ -142,15 +142,18 @@ in
     443
   ];
 
-  # socket activation comes in v2.5
-  # systemd.sockets.httpd = {
-  #   wantedBy = [ "sockets.target" ];
-  #   description = "HTTPD socket";
-  #   listenStreams = [
-  #     "0.0.0.0:80"
-  #     "0.0.0.0:443"
-  #   ];
-  # };
+  systemd.sockets.httpd = {
+    description = "HTTPD socket";
+    wantedBy = [ "sockets.target" ];
+    requiredBy = [ "userweb.target" ];
+    listenStreams = [
+      "80"
+      "443"
+    ];
+    socketConfig = {
+      Slice = "system-userweb.slice";
+    };
+  };
 
   # NOTE: 54 -> 33, this is the UID/GID we used for www-data on tom in the past.
   #       Any files accessed by or created by httpd will do so over NFS with this
@@ -175,8 +178,10 @@ in
       "httpd-log-processor@error.socket"
       "httpd-passwd-sync.service"
       "systemd-resolved.service"
+      "httpd.socket"
     ];
     requires = [
+      "httpd.socket"
       "pvv-homedirs.target"
       "httpd-log-processor@access.socket"
       "httpd-log-processor@error.socket"
@@ -213,13 +218,12 @@ in
       LogsDirectory = [ "httpd" ];
       LogsDirectoryMode = "0750";
 
-      AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ] ++ lib.optionals mcfg.debugMode [ "CAP_SYS_PTRACE" ];
-      CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ] ++ lib.optionals mcfg.debugMode [ "CAP_SYS_PTRACE" ];
+      AmbientCapabilities = lib.mkForce (lib.optionals mcfg.debugMode [ "CAP_SYS_PTRACE" ]);
+      CapabilityBoundingSet = if mcfg.debugMode then [ "CAP_SYS_PTRACE" ] else [ "" ];
       LockPersonality = !mcfg.debugMode;
       PrivateDevices = true;
       PrivateTmp = true;
-      # NOTE: this removes CAP_NET_BIND_SERVICE...
-      # PrivateUsers = true;
+      PrivateUsers = "full";
       ProtectClock = true;
       ProtectControlGroups = true;
       ProtectHome = "tmpfs";
@@ -237,10 +241,6 @@ in
       RestrictRealtime = true;
       RestrictSUIDSGID = true;
       SocketBindDeny = "any";
-      SocketBindAllow = [
-        "tcp:80"
-        "tcp:443"
-      ];
       SystemCallArchitectures = "native";
       SystemCallFilter = lib.mkIf (!mcfg.debugMode) [ "@system-service" ];
       UMask = "0027";
