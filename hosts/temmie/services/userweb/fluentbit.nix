@@ -15,7 +15,7 @@ in {
     {
       name = "apache_error";
       format = "regex";
-      regex = ''^\[(?<time>[^\]]+)\] \[(?<module>[^:\]]+):(?<level>[^\]]+)\] \[pid (?<pid>\d+)(?::tid (?<tid>\d+))?\](?: \[client (?<client>[^\]]+)\])? (?<message>.*)$'';
+      regex = ''^\[(?<time>[^\]]+)\] \[(?<module>[^:\]]+):(?<level>[^\]]+)\] \[pid (?<pid>\d+)(?::tid (?<tid>\d+))?\](?: \[(?:client|remote) (?<client>[^\]]+)\])? (?<message>.*)$'';
     }
     {
       name = "userweb_path";
@@ -141,6 +141,13 @@ in {
         set = [
           "job httpd-error"
         ];
+      }
+      {
+        name = "modify";
+        match = "httpd.error";
+        condition = "Key_does_not_exist level";
+        set = "level unknown";
+        rename = "log message";
       }
       {
         name = "modify";
