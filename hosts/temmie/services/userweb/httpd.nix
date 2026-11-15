@@ -70,7 +70,7 @@ in
         UserDir disabled root
         UserDir disabled pvv
 
-        AddHandler cgi-script .cgi
+        AddHandler cgi-script .cgi .pl .pm .py .sh .bash
 
         DirectoryIndex ${lib.concatStringsSep " " [
           "index.htm"
@@ -124,12 +124,12 @@ in
             Require all denied
         </FilesMatch>
 
-        <FilesMatch "\.(php[34578]?|pht|phtml|pl|cgi)[.~!_#-]">
+        <FilesMatch "\.(php[34578]?|pht|phtml|pl|pm|py|sh|bash|cgi)[.~!_#-]">
             Require all denied
         </FilesMatch>
 
         <DirectoryMatch "/(uploads?|sites/[^/]+/files)(/|$)">
-            <FilesMatch "\.(php[34578]?|pht|phtml|pl|cgi)$">
+            <FilesMatch "\.(php[34578]?|pht|phtml|pl|pm|py|sh|bash|cgi)$">
                 Require all denied
             </FilesMatch>
         </DirectoryMatch>
