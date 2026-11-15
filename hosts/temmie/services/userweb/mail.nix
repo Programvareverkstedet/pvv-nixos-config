@@ -34,7 +34,7 @@
               text = ''
                 args=("$@")
 
-                if [[ -z "$USERDIR_USER" ]] && [[ "$USERDIR_USER" != "pvv" ]]; then
+                if [[ -n "$USERDIR_USER" ]] && [[ "$USERDIR_USER" != "pvv" ]]; then
                     # Prepend -fusername to the argument list, so bounces go to the user
                     args=("-f$USERDIR_USER" "''${args[@]}")
                 fi
