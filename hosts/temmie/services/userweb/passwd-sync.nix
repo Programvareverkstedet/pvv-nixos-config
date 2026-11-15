@@ -72,8 +72,8 @@ in
 
               output-passwd = true;
 
-              ignore-user-file = toString ./ignore_user_file.txt;
-              ignore-group-file = toString ./ignore_group_file.txt;
+              ignore-user-file = "${./ignore_user_file.txt}";
+              ignore-group-file = "${./ignore_group_file.txt}";
             };
           in ''${lib.getExe pkgs.passwd2systemd-users} ${args}'')
 
