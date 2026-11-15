@@ -26,7 +26,7 @@ in
 
   systemd.targets."pvv-homedirs" = {
     description = "PVV Homedir Partitions";
-    requires = map (l: "pvv-homedir-create-uidmapped-bindmounts@${l}.service") letters;
+    # requires = map (l: "pvv-homedir-create-uidmapped-bindmounts@${l}.service") letters;
   };
 
   systemd.tmpfiles.settings."10-pvv-homedirs" = {
@@ -35,11 +35,11 @@ in
       group = "root";
       mode = "0755";
     };
-    "/run/pvvhome/by-uid".d = {
-      user = "root";
-      group = "root";
-      mode = "0755";
-    };
+    # "/run/pvvhome/by-uid".d = {
+    #   user = "root";
+    #   group = "root";
+    #   mode = "0755";
+    # };
   };
 
   systemd.mounts = map (l: {
