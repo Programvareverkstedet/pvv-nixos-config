@@ -84,14 +84,35 @@
       pkgs.nix.libs.nix-perl-bindings
 
       CGI
+      CGIFast
+      ClassAccessor
       DBDPg
       DBDSQLite
       DBDmysql
       DBI
+      DateTime
+      DigestSHA1
+      FCGI
+      FileFindRule
       Git
+      HTMLTemplate
+      IOSocketSSL
+      IOString
+      IOStringy
       ImageMagick
       JSON
+      JSONXS
+      LWP
+      LWPProtocolHttps
+      ListMoreUtils
+      MIMELite
+      MailTools
+      NetDNS
+      StringCRC32
+      Switch
       TemplateToolkit
+      XMLLibXML
+      XMLParser
     ];
 
     python3.packages = pythonPkgs: with pythonPkgs; [
