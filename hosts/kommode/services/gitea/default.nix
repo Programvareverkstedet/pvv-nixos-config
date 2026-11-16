@@ -45,7 +45,6 @@ in {
     # https://docs.gitea.com/administration/config-cheat-sheet
     settings = {
       server = {
-        DOMAIN   = domain;
         ROOT_URL = "https://${domain}/";
         PROTOCOL = "http+unix";
         SSH_PORT = sshPort;
