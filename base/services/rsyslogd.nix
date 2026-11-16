@@ -10,9 +10,9 @@ in
     '';
   };
 
-  services.journald.extraConfig = lib.mkIf cfg.enable ''
-    ForwardToSyslog=yes
-  '';
+  services.journald.settings.Journal = lib.mkIf cfg.enable {
+    ForwardToSyslog = "yes";
+  };
 
   systemd.services = lib.mkIf cfg.enable {
     "syslog".serviceConfig = {
