@@ -210,12 +210,6 @@
             inputs.pvv-calendar-bot.overlays.default
             inputs.minecraft-heatmap.overlays.default
             inputs.delete-your-element.overlays.default
-            (final: prev: {
-              # See https://git.pvv.ntnu.no/Drift/issues/issues/369
-              mjolnir = prev.mjolnir.override {
-                nodejs = prev.nodejs_22;
-              };
-            })
           ];
         };
         bekkalokk = stableNixosConfig "bekkalokk" {
