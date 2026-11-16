@@ -25,7 +25,7 @@ in
       custom_from
     ]);
 
-    dicts = with pkgs.aspellDicts; [ en en-computers nb nn fr de it ];
+    dicts = with pkgs.aspellDicts; [ en nb nn fr de it ];
     maxAttachmentSize = 20;
     hostName = domain;
 
