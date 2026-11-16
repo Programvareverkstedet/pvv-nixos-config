@@ -2,59 +2,54 @@
 let
   cfg = config.services.journald.remote;
   domainName = "journald.pvv.ntnu.no";
+  socketPath = "/run/systemd-journal-remote/journal-remote.sock";
 in
 {
-  security.acme.certs.${domainName} = {
-    webroot = "/var/lib/acme/acme-challenge/";
-    group = config.services.nginx.group;
+  services.journald.upload.enable = lib.mkForce false;
+
+  services.journald.remote = {
+    enable = true;
+    output = "/var/log/journal/remote/remote.journal";
+    settings.Remote.SplitMode = "none";
+  };
+
+  systemd.sockets."systemd-journal-remote" = {
+    listenStreams = lib.mkForce [
+      ""
+      socketPath
+    ];
+    socketConfig = {
+      SocketUser = "root";
+      SocketGroup = config.services.nginx.group;
+      SocketMode = "0660";
+    };
   };
 
   services.nginx = {
     enable = true;
     virtualHosts.${domainName} = {
       forceSSL = true;
-      useACMEHost = "${domainName}";
-      locations."/.well-known/".root = "/var/lib/acme/acme-challenge/";
-    };
-  };
+      enableACME = true;
+      kTLS = true;
 
-  services.journald.upload.enable = lib.mkForce false;
+      locations = {
+        "/".return = "403";
+        "= /upload" = {
+          proxyPass = "http://unix:${socketPath}:/upload";
+          extraConfig = ''
+            client_max_body_size 0;
+            proxy_request_buffering off;
 
-  services.journald.remote = {
-    enable = true;
-    settings.Remote = let
-      inherit (config.security.acme.certs.${domainName}) directory;
-    in {
-      ServerKeyFile = "/run/credentials/systemd-journal-remote.service/key.pem";
-      ServerCertificateFile = "/run/credentials/systemd-journal-remote.service/cert.pem";
-      TrustedCertificateFile = "-";
-    };
-  };
-
-  systemd.sockets."systemd-journal-remote" = {
-    socketConfig = {
-      IPAddressDeny = "any";
-      IPAddressAllow = [
-        "127.0.0.1"
-        "::1"
-        values.ipv4-space
-        values.ipv6-space
-        values.hosts.gluttony.ipv4
-        values.hosts.gluttony.ipv6
-      ];
-    };
-  };
-
-  networking.firewall.allowedTCPPorts = [ cfg.port ];
-
-  systemd.services."systemd-journal-remote" = {
-    serviceConfig = {
-      LoadCredential = let
-        inherit (config.security.acme.certs.${domainName}) directory;
-      in [
-        "key.pem:${directory}/key.pem"
-        "cert.pem:${directory}/cert.pem"
-      ];
+            allow 127.0.0.1;
+            allow ::1;
+            allow ${values.ipv4-space};
+            allow ${values.ipv6-space};
+            allow ${values.hosts.gluttony.ipv4};
+            allow ${values.hosts.gluttony.ipv6};
+            deny all;
+          '';
+        };
+      };
     };
   };
 }

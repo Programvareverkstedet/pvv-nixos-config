@@ -6,7 +6,7 @@ in
   services.journald.upload = {
     enable = lib.mkDefault true;
     settings.Upload = {
-      URL = "https://journald.pvv.ntnu.no:${toString config.services.journald.remote.port}";
+      URL = "https://journald.pvv.ntnu.no:443";
       ServerKeyFile = "-";
       ServerCertificateFile = "-";
       TrustedCertificateFile = config.security.pki.caBundle;
