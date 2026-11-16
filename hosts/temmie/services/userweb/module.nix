@@ -55,14 +55,20 @@ in
     };
 
     php.options = lib.mkOption {
-      type = lib.types.attrsOf lib.types.str;
+      type = with lib.types; attrsOf (
+        nullOr (oneOf [
+          bool
+          int
+          float
+          str
+        ])
+      );
       default = {
         display_errors = "Off";
         display_startup_errors = "Off";
         post_max_size = "40M";
         upload_max_filesize = "40M";
       };
-      apply = attrs: lib.concatStringsSep "\n" (lib.mapAttrsToList (k: v: "${k} = ${v}") attrs);
     };
 
     # https://nixos.org/manual/nixpkgs/stable/#ssec-php-user-guide-installing-with-extensions
@@ -71,7 +77,9 @@ in
       readOnly = true;
       default = pkgs.php.buildEnv {
         extensions = cfg.php.extensions;
-        extraConfig = cfg.php.options;
+        extraConfig = lib.generators.toKeyValue {
+          mkKeyValue = lib.generators.mkKeyValueDefault { } " = ";
+        } (lib.filterAttrs (_: v: v != null) cfg.php.options);
       };
     };
 
