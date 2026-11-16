@@ -1,7 +1,7 @@
 { config, lib, ... }:
 let
+  cfg = config.services.rustical;
   domain = "dav.pvv.ntnu.no";
-  port = 4000;
 in {
   sops.secrets."rustical/client_id" = {
     restartUnits = [ "rustical.service" ];
@@ -21,10 +21,7 @@ in {
     enable = true;
     environmentFiles = [ config.sops.templates."rustical/environment_file".path ];
     settings = {
-      http = {
-        host = "127.0.0.1";
-        port = port;
-      };
+      http.bind = "127.0.0.1:4000";
       oidc = {
         name = "PVV";
         issuer = "https://git.pvv.ntnu.no";
@@ -52,7 +49,7 @@ in {
     '';
 
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString port}";
+      proxyPass = "http://${cfg.settings.http.bind}";
       proxyWebsockets = true;
     };
   };
