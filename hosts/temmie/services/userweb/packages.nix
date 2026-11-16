@@ -81,7 +81,6 @@
       pkgs.exiftool
       pkgs.ikiwiki
       pkgs.irssi
-      pkgs.nix.libs.nix-perl-bindings
 
       CGI
       CGIFast
