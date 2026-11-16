@@ -54,7 +54,7 @@ in {
     services.phpfpm.pools.snappymail = {
       user = cfg.user;
       group = cfg.group;
-      phpOptions = generators.toKeyValue {} {
+      phpOptions = {
         upload_max_filesize = maxUploadSize;
         post_max_size = maxUploadSize;
         memory_limit = maxUploadSize;
@@ -102,4 +102,3 @@ in {
     };
   };
 }
-
