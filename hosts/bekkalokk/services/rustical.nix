@@ -1,7 +1,7 @@
 { config, lib, ... }:
 let
+  cfg = config.services.rustical;
   domain = "dav.pvv.ntnu.no";
-  port = 4000;
 in {
   sops.secrets."rustical/client_id" = {
     restartUnits = [ "rustical.service" ];
@@ -21,10 +21,7 @@ in {
     enable = true;
     environmentFiles = [ config.sops.templates."rustical/environment_file".path ];
     settings = {
-      http = {
-        host = "127.0.0.1";
-        port = port;
-      };
+      http.bind = "127.0.0.1:4000";
       oidc = {
         name = "PVV";
         issuer = "https://git.pvv.ntnu.no";
@@ -42,7 +39,7 @@ in {
     environment.NO_COLOR = "1";
   };
 
-  services.nginx.upstreams.rustical.servers."127.0.0.1:${toString port}" = { };
+  services.nginx.upstreams.rustical.servers."${cfg.settings.http.bind}" = { };
 
   services.nginx.virtualHosts."${domain}" = {
     enableACME = true;
