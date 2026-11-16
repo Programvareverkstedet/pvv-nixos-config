@@ -57,6 +57,8 @@ in
         address = "127.0.0.1";
         endpoint = "/metrics";
       };
+
+      encryption.username = "bot_admin";
     };
 
     # Module wants it even when not using pantalaimon
