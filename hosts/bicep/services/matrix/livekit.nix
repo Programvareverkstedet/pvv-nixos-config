@@ -4,22 +4,25 @@ let
   cfg = config.services.livekit;
 in
 {
-  sops.secrets."matrix/livekit/keyfile/lk-jwt-service" = {
+  sops.secrets."matrix/livekit/keyfile/pvv" = {
     sopsFile = fp /secrets/bicep/matrix.yaml;
-    key = "livekit/keyfile/lk-jwt-service";
+    key = "livekit/keyfile/pvv";
   };
   sops.secrets."matrix/livekit/keyfile/dodsorfas" = {
     sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "livekit/keyfile/dodsorfas";
   };
   sops.templates."matrix-livekit-keyfile" = {
-    restartUnits = [
-      "livekit.service"
-      "lk-jwt-service.service"
-    ];
+    restartUnits = [ "livekit.service" ];
     content = ''
-      lk-jwt-service: ${config.sops.placeholder."matrix/livekit/keyfile/lk-jwt-service"}
+      pvv: ${config.sops.placeholder."matrix/livekit/keyfile/pvv"}
       dodsorfas: ${config.sops.placeholder."matrix/livekit/keyfile/dodsorfas"}
+    '';
+  };
+  sops.templates."matrix-lk-jwt-keyfile" = {
+    restartUnits = [ "lk-jwt-service.service" ];
+    content = ''
+      pvv: ${config.sops.placeholder."matrix/livekit/keyfile/pvv"}
     '';
   };
 
@@ -54,7 +57,7 @@ in
   services.lk-jwt-service = lib.mkIf cfg.enable {
     enable = true;
     livekitUrl = "wss://${matrixDomain}/livekit/sfu";
-    keyFile = config.sops.templates."matrix-livekit-keyfile".path;
+    keyFile = config.sops.templates."matrix-lk-jwt-keyfile".path;
   };
 
   systemd.services.lk-jwt-service = lib.mkIf cfg.enable {
