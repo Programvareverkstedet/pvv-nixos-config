@@ -36,19 +36,6 @@ in {
 
       schema_config = {
         configs = [
-          # TODO: drop after start of november 2026,
-          #       roughly when the last boltdb data will
-          #       have been deleted by retention date.
-          {
-            from = "2022-12-01";
-            store = "boltdb-shipper";
-            object_store = "filesystem";
-            schema = "v11";
-            index = {
-              prefix = "index_";
-              period = "24h";
-            };
-          }
           {
             from = "2026-09-19";
             store = "tsdb";
