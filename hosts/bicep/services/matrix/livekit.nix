@@ -56,7 +56,7 @@ in
     after = [ "sops-install-secrets.service" ];
     requires = [ "sops-install-secrets.service" ];
 
-    environment.LIVEKIT_FULL_ACCESS_HOMESERVERS = builtins.concatStringsSep "," [ "pvv.ntnu.no" "dodsorf.as" ];
+    environment.LIVEKIT_FULL_ACCESS_HOMESERVERS = builtins.concatStringsSep "," [ "pvv.ntnu.no" ];
   };
 
   services.nginx.virtualHosts.${matrixDomain} = lib.mkIf cfg.enable {
