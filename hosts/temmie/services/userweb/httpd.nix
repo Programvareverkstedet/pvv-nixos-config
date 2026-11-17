@@ -28,6 +28,7 @@ in
 
     # TODO: mod_log_journald in v2.5
     extraModules = [
+      "remoteip"
       "systemd"
       "userdir"
     ];
@@ -40,8 +41,10 @@ in
     '';
 
     virtualHosts."temmie.pvv.ntnu.no" = {
-      forceSSL = true;
-      enableACME = true;
+      listen = [{
+        ip = "127.0.0.1";
+        port = mcfg.httpdPort;
+      }];
 
       serverAliases = [
         "www2.pvv.ntnu.no"
@@ -55,6 +58,13 @@ in
       ];
 
       extraConfig = ''
+        ServerName https://temmie.pvv.ntnu.no:443
+        UseCanonicalName Off
+
+        RemoteIPHeader X-Forwarded-For
+        RemoteIPInternalProxy 127.0.0.1
+        SetEnvIf X-Forwarded-Proto "^https$" HTTPS=on
+
         <Directory "${pkgs.emptyDirectory}">
           Require all denied
           LogLevel authz_core:crit
@@ -137,18 +147,12 @@ in
     };
   };
 
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
-
   systemd.sockets.httpd = {
     description = "HTTPD socket";
     wantedBy = [ "sockets.target" ];
     requiredBy = [ "userweb.target" ];
     listenStreams = [
-      "80"
-      "443"
+      "127.0.0.1:${toString mcfg.httpdPort}"
     ];
     socketConfig = {
       Slice = "system-userweb.slice";
@@ -253,7 +257,6 @@ in
         builtins.storeDir
         "/etc"
         "/dev/null"
-        "/var/lib/acme"
 
         "${pkgs.writeText "userweb-httpd-nsswitch.conf" ''
           passwd:    files

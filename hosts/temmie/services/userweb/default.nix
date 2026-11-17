@@ -6,6 +6,7 @@
     ./log-processor.nix
     ./mail.nix
     ./module.nix
+    ./nginx.nix
     ./packages.nix
     ./passwd-sync.nix
   ];

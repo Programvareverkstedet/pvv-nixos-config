@@ -10,6 +10,11 @@ in
 
     debugMode = lib.mkEnableOption "";
 
+    httpdPort = lib.mkOption {
+      type = lib.types.port;
+      default = 8080;
+    };
+
     apacheLogProcessorPackage = lib.mkOption {
       type = lib.types.package;
       default = pkgs.callPackage ./apache-log-processor { };
