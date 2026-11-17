@@ -43,6 +43,7 @@ in
       $config['mail_domain'] = "pvv.ntnu.no";
       $config['smtp_user'] = "%u";
       $config['support_url'] = "";
+      $config['log_logins'] = true;
       $config['des_key'] = trim(file_get_contents('${config.sops.secrets."roundcube/des_key".path}'));
     '';
   };
