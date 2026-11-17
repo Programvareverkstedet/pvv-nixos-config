@@ -9,5 +9,6 @@
   services.resolved = {
     enable = lib.mkDefault true;
     settings.Resolve.DNSSEC = false; # Supposdly this keeps breaking and the default is to allow downgrades anyways...
+    settings.Resolve.LLMNR = false;
   };
 }
