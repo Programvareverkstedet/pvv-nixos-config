@@ -14,9 +14,7 @@ in
     wantedBy = [ "sockets.target" ];
     socketConfig = {
       ListenStream = socketPath;
-      SocketGroup = if config.services.nginx.enable then config.services.nginx.group else
-                    if config.services.httpd.enable then config.services.httpd.group else
-                    "nobody";
+      SocketGroup = if config.services.nginx.enable then config.services.nginx.group else "nobody";
       SocketMode = "0660";
     };
   };
@@ -35,12 +33,6 @@ in
           ++ cfg.extraFlags;
         in lib.mkForce "${pkgs.prometheus-smartctl-exporter}/bin/smartctl_exporter ${lib.escapeShellArgs args}";
       };
-    };
-
-    httpd = lib.mkIf (cfg.enable && config.services.httpd.enable) {
-      after = [ "prometheus-smartctl-exporter.socket" ];
-      wants = [ "prometheus-smartctl-exporter.socket" ];
-      serviceConfig.BindPaths = [ "-${socketPath}" ];
     };
   };
 
@@ -63,19 +55,6 @@ in
           deny all;
         '';
       };
-    };
-  };
-
-  services.httpd = lib.mkIf (cfg.enable && config.services.httpd.enable) {
-    virtualHosts.${config.networking.fqdn}.locations."/prometheus-smartctl-exporter/metrics" = {
-      proxyPass = "unix:${socketPath}|http://localhost/metrics";
-
-      extraConfig = ''
-        Require ip 127.0.0.1
-        Require ip ::1
-        Require ip ${values.hosts.ildkule.ipv4}
-        Require ip ${values.hosts.ildkule.ipv6}
-      '';
     };
   };
 }
