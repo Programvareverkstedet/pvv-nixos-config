@@ -8,6 +8,10 @@ in
     sopsFile = fp /secrets/bicep/matrix.yaml;
     key = "livekit/keyfile/lk-jwt-service";
   };
+  sops.secrets."matrix/livekit/keyfile/dodsorfas" = {
+    sopsFile = fp /secrets/bicep/matrix.yaml;
+    key = "livekit/keyfile/dodsorfas";
+  };
   sops.templates."matrix-livekit-keyfile" = {
     restartUnits = [
       "livekit.service"
@@ -15,6 +19,7 @@ in
     ];
     content = ''
       lk-jwt-service: ${config.sops.placeholder."matrix/livekit/keyfile/lk-jwt-service"}
+      dodsorfas: ${config.sops.placeholder."matrix/livekit/keyfile/dodsorfas"}
     '';
   };
 
