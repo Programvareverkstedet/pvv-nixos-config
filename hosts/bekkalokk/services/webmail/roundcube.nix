@@ -19,11 +19,24 @@ in
     enable = true;
 
     package = pkgs.roundcube.withPlugins (plugins: with plugins; [
-      persistent_login
-      thunderbird_labels
       contextmenu
       custom_from
+      persistent_login
+      thunderbird_labels
     ]);
+
+    plugins = [
+      "contextmenu"
+      "custom_from"
+      "persistent_login"
+      "thunderbird_labels"
+
+      # Bundled with roundcube
+      "archive"
+      "attachment_reminder"
+      "vcard_attachments"
+      "zipdownload"
+    ];
 
     dicts = with pkgs.aspellDicts; [ en nb nn fr de it ];
     maxAttachmentSize = 20;
@@ -45,6 +58,7 @@ in
       $config['support_url'] = "";
       $config['log_logins'] = true;
       $config['des_key'] = trim(file_get_contents('${config.sops.secrets."roundcube/des_key".path}'));
+      $config['ifpl_use_auth_tokens'] = true;
     '';
   };
 
