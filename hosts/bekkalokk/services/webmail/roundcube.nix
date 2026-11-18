@@ -57,6 +57,8 @@ in
         smtp_host = "ssl://smtp.pvv.ntnu.no:465";
         mail_domain = "pvv.ntnu.no";
         log_logins = true;
+        session_samesite = "Strict";
+        trusted_host_patterns = [ domain ];
         des_key = phpFormat.lib.mkRaw "trim(file_get_contents('${config.sops.secrets."roundcube/des_key".path}'))";
         ifpl_use_auth_tokens = true;
       };
