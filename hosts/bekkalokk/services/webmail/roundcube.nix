@@ -48,10 +48,8 @@ in
     };
 
     extraConfig = ''
-      $config['default_host'] = "ssl://imap.pvv.ntnu.no";
-      $config['default_port'] = 993;
-      $config['smtp_server'] = "ssl://smtp.pvv.ntnu.no";
-      $config['smtp_port'] = 465;
+      $config['imap_host'] = "ssl://imap.pvv.ntnu.no:993";
+      $config['smtp_host'] = "ssl://smtp.pvv.ntnu.no:465";
       $config['mail_domain'] = "pvv.ntnu.no";
       $config['log_logins'] = true;
       $config['des_key'] = trim(file_get_contents('${config.sops.secrets."roundcube/des_key".path}'));
