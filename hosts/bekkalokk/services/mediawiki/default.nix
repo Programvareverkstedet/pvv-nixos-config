@@ -17,10 +17,10 @@
 
   simplesamlphpConfigOverrides = let
     inherit ((pkgs.formats.php { }).lib) mkRaw;
-    readSecret = name: mkRaw "file_get_contents('${config.sops.secrets.${name}.path}')";
+    readSecret = name: "file_get_contents('${config.sops.secrets.${name}.path}')";
     dsn = "pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=mediawiki_simplesamlphp";
     dbUser = "mediawiki_simplesamlphp";
-    dbPassword = readSecret "mediawiki/simplesamlphp/postgres_password";
+    dbPassword = mkRaw (readSecret "mediawiki/simplesamlphp/postgres_password");
   in (pkgs.formats.php { }).generate "mediawiki-simplesamlphp-config.php" {
     "admin.checkforupdates" = false;
 
@@ -30,8 +30,8 @@
     "technicalcontact_name" = "Drift";
     "technicalcontact_email" = "drift@pvv.ntnu.no";
 
-    "secretsalt" = readSecret "mediawiki/simplesamlphp/cookie_salt";
-    "auth.adminpassword" = readSecret "mediawiki/simplesamlphp/admin_password";
+    "secretsalt" = mkRaw (readSecret "mediawiki/simplesamlphp/cookie_salt");
+    "auth.adminpassword" = mkRaw (readSecret "mediawiki/simplesamlphp/admin_password");
 
     "trusted.url.domains" = [ "wiki.pvv.ntnu.no" ];
 
@@ -58,6 +58,7 @@
     };
 
     "assets" = {
+      "salt" = mkRaw "hash_hmac('sha256', 'assets.salt', ${readSecret "mediawiki/simplesamlphp/cookie_salt"})";
       "caching" = {
         "max_age" = 86400;
         "etag" = false;

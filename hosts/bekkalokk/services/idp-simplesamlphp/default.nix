@@ -132,6 +132,7 @@ let
     };
 
     "assets" = {
+      "salt" = mkRaw "hash_hmac('sha256', 'assets.salt', ${readSecret "idp/cookie_salt"})";
       "caching" = {
         "max_age" = 86400;
         "etag" = false;
