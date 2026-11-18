@@ -1,4 +1,4 @@
-{ lib, config, inputs, ... }:
+{ lib, config, pkgs, inputs, ... }:
 {
   nix = {
     gc = {
@@ -46,6 +46,18 @@
       "unstable=${inputs.nixpkgs-unstable}"
     ];
   };
+
+  systemd.services.nix-gc.serviceConfig.ExecStartPre = [
+    (lib.concatStringsSep " " [
+      "${lib.getExe' pkgs.findutils "find"}"
+      "/nix/var/nix/gcroots/auto"
+      "-maxdepth 1"
+      "-type l"
+      "( -lname */result -o -lname */result-* )"
+      "-printf 'Removing symlink %%l\\n'"
+      "-delete"
+    ])
+  ];
 
   # Make builds to be more likely killed than important services.
   # 100 is the default for user slices and 500 is systemd-coredumpd@
