@@ -35,7 +35,7 @@ in {
 
     package = pkgs.pvv-nettsiden.override {
       extra_files = {
-        "${pkgs.pvv-nettsiden.passthru.simplesamlphpPath}/metadata/saml20-idp-remote.php" = pkgs.writeText "pvv-nettsiden-saml20-idp-remote.php" (import ../idp-simplesamlphp/metadata.php.nix);
+        "${pkgs.pvv-nettsiden.passthru.simplesamlphpPath}/metadata/saml20-idp-remote.php" = (pkgs.formats.php { finalVariable = "metadata"; }).generate "pvv-nettsiden-saml20-idp-remote.php" (import ../idp-simplesamlphp/idp-remote-metadata.nix);
         "${pkgs.pvv-nettsiden.passthru.simplesamlphpPath}/config/authsources.php" = pkgs.writeText "pvv-nettsiden-authsources.php" ''
           <?php
           $config = array(

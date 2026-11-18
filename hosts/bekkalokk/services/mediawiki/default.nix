@@ -10,7 +10,7 @@
   simplesamlphp = pkgs.simplesamlphp;
 
   simplesamlphpMetadataDir = pkgs.linkFarm "mediawiki-simplesamlphp-metadata" {
-    "saml20-idp-remote.php" = pkgs.writeText "mediawiki-saml20-idp-remote.php" (import ../idp-simplesamlphp/metadata.php.nix);
+    "saml20-idp-remote.php" = (pkgs.formats.php { finalVariable = "metadata"; }).generate "mediawiki-saml20-idp-remote.php" (import ../idp-simplesamlphp/idp-remote-metadata.nix);
   };
 
   simplesamlphpConfigOverrides = let
