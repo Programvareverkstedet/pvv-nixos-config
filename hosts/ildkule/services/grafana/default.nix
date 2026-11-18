@@ -49,6 +49,7 @@ in {
       security = {
         disable_gravatar = true;
         cookie_secure = true;
+        cookie_samesite = "strict";
         secret_key = secretFile config.sops.secrets."keys/grafana/secret_key".path;
         admin_password = secretFile config.sops.secrets."keys/grafana/admin_password".path;
       };
