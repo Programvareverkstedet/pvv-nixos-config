@@ -118,9 +118,6 @@ let
     "session.cookie.secure" = true;
 
     "store.type" = "memcache";
-    "store.sql.dsn" = "pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=idp";
-    "store.sql.username" = "idp";
-    "store.sql.password" = mkRaw (readSecret "idp/postgres_password");
     "memcache_store.servers" = {
       "idp" = [
         { "hostname" = "/run/memcached/memcached.sock"; }
