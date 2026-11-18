@@ -104,6 +104,8 @@ let
 
     "trusted.url.domains" = [ "idp.pvv.ntnu.no" ];
 
+    "logging.processname" = "simplesamlphp-idp";
+
     "database.dsn" = "pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=idp";
     "database.username" = "idp";
     "database.password" = mkRaw (readSecret "idp/postgres_password");

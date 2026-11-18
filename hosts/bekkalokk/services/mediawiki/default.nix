@@ -35,13 +35,15 @@
 
     "trusted.url.domains" = [ "wiki.pvv.ntnu.no" ];
 
-    "module.enable" = {
-      "admin" = true;
-    };
+    "logging.processname" = "simplesamlphp-mediawiki";
 
     "database.dsn" = dsn;
     "database.username" = dbUser;
     "database.password" = dbPassword;
+
+    "module.enable" = {
+      "admin" = true;
+    };
 
     "session.cookie.secure" = true;
 
