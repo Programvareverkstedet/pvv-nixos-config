@@ -7,27 +7,56 @@
   # "mediawiki"
   group = config.users.users.${user}.group;
 
-  simplesamlphp = pkgs.simplesamlphp.override {
-    extra_files = {
-      "metadata/saml20-idp-remote.php" = pkgs.writeText "mediawiki-saml20-idp-remote.php" (import ../idp-simplesamlphp/metadata.php.nix);
+  simplesamlphp = pkgs.simplesamlphp;
 
-      "config/authsources.php" = ./simplesaml-authsources.php;
+  simplesamlphpMetadataDir = pkgs.linkFarm "mediawiki-simplesamlphp-metadata" {
+    "saml20-idp-remote.php" = pkgs.writeText "mediawiki-saml20-idp-remote.php" (import ../idp-simplesamlphp/metadata.php.nix);
+  };
 
-      "config/config.php" = pkgs.runCommandLocal "mediawiki-simplesamlphp-config.php" { } ''
-        cp ${./simplesaml-config.php} "$out"
+  simplesamlphpConfigOverrides = let
+    inherit ((pkgs.formats.php { }).lib) mkRaw;
+    readSecret = name: mkRaw "file_get_contents('${config.sops.secrets.${name}.path}')";
+    dsn = "pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=mediawiki_simplesamlphp";
+    dbUser = "mediawiki_simplesamlphp";
+    dbPassword = readSecret "mediawiki/simplesamlphp/postgres_password";
+  in (pkgs.formats.php { }).generate "mediawiki-simplesamlphp-config.php" {
+    "cachedir" = "/var/cache/mediawiki/idp";
+    "metadatadir" = "${simplesamlphpMetadataDir}";
 
-        substituteInPlace "$out" \
-          --replace-warn '$SAML_COOKIE_SECURE' 'true' \
-          --replace-warn '$SAML_COOKIE_SALT' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/cookie_salt".path}")' \
-          --replace-warn '$SAML_ADMIN_NAME' '"Drift"' \
-          --replace-warn '$SAML_ADMIN_EMAIL' '"drift@pvv.ntnu.no"' \
-          --replace-warn '$SAML_ADMIN_PASSWORD' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/admin_password".path}")' \
-          --replace-warn '$SAML_TRUSTED_DOMAINS' 'array( "wiki.pvv.ntnu.no" )' \
-          --replace-warn '$SAML_DATABASE_DSN' '"pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=mediawiki_simplesamlphp"' \
-          --replace-warn '$SAML_DATABASE_USERNAME' '"mediawiki_simplesamlphp"' \
-          --replace-warn '$SAML_DATABASE_PASSWORD' 'file_get_contents("${config.sops.secrets."mediawiki/simplesamlphp/postgres_password".path}")' \
-          --replace-warn '$CACHE_DIRECTORY' '/var/cache/mediawiki/idp'
-      '';
+    "technicalcontact_name" = "Drift";
+    "technicalcontact_email" = "drift@pvv.ntnu.no";
+
+    "secretsalt" = readSecret "mediawiki/simplesamlphp/cookie_salt";
+    "auth.adminpassword" = readSecret "mediawiki/simplesamlphp/admin_password";
+
+    "trusted.url.domains" = [ "wiki.pvv.ntnu.no" ];
+
+    "module.enable" = {
+      "admin" = true;
+    };
+
+    "database.dsn" = dsn;
+    "database.username" = dbUser;
+    "database.password" = dbPassword;
+
+    "session.cookie.secure" = true;
+
+    "store.type" = "sql";
+    "store.sql.dsn" = dsn;
+    "store.sql.username" = dbUser;
+    "store.sql.password" = dbPassword;
+
+    "language.available" = [
+      "en" "no" "nn" "se" "da" "de" "sv" "fi" "es" "ca" "fr" "it" "nl" "lb"
+      "cs" "sk" "sl" "lt" "hr" "hu" "pl" "pt" "pt-br" "tr" "ja" "zh" "zh-tw"
+      "ru" "et" "he" "id" "sr" "lv" "ro" "eu" "el" "af" "zu" "xh" "st"
+    ];
+
+    "assets" = {
+      "caching" = {
+        "max_age" = 86400;
+        "etag" = false;
+      };
     };
   };
 in {
@@ -361,6 +390,11 @@ in {
     serviceConfig = {
       UMask = lib.mkForce "0007";
     };
+  };
+
+  services.phpfpm.pools.mediawiki.phpEnv = lib.mkIf cfg.enable {
+    SIMPLESAMLPHP_CONFIG_OVERRIDES_FILE = "${simplesamlphpConfigOverrides}";
+    SIMPLESAMLPHP_AUTHSOURCES_FILE = "${./simplesaml-authsources.php}";
   };
 
   systemd.services.phpfpm-mediawiki = lib.mkIf cfg.enable {

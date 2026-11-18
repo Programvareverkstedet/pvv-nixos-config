@@ -18,86 +18,120 @@ let
 
   package = pkgs.simplesamlphp.override {
     extra_files = {
-      # NOTE: Using self signed certificate created 30. march 2024, with command:
-      # openssl req -newkey rsa:4096 -new -x509 -days 365 -nodes -out idp.crt -keyout idp.pem
-      "metadata/saml20-idp-hosted.php" = pkgs.writeText "saml20-idp-remote.php" ''
-        <?php
-        $metadata['https://idp.pvv.ntnu.no/'] = array(
-          'host' => '__DEFAULT__',
-          'privatekey' => '${config.sops.secrets."idp/privatekey".path}',
-          'certificate' => '${./idp.crt}',
-          'auth' => 'pwauth',
-        );
-        ?>
-      '';
-
-      "metadata/saml20-sp-remote.php" = pkgs.writeText "saml20-sp-remote.php" ''
-        <?php
-          ${ lib.pipe config.services.idp.sp-remote-metadata [
-            (map (url: ''
-              $metadata['${url}'] = [
-                'SingleLogoutService' => [
-                  [
-                    'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-                    'Location' => '${url}module.php/saml/sp/saml2-logout.php/default-sp',
-                  ],
-                  [
-                    'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
-                    'Location' => '${url}module.php/saml/sp/saml2-logout.php/default-sp',
-                  ],
-                ],
-                'AssertionConsumerService' => [
-                  [
-                    'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
-                    'Location' => '${url}module.php/saml/sp/saml2-acs.php/default-sp',
-                    'index' => 0,
-                  ],
-                  [
-                    'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact',
-                    'Location' => '${url}module.php/saml/sp/saml2-acs.php/default-sp',
-                    'index' => 1,
-                  ],
-                ],
-              ];
-            ''))
-            (lib.concatStringsSep "\n")
-          ]}
-        ?>
-      '';
-
-      "config/authsources.php" = pkgs.writeText "idp-authsources.php" ''
-        <?php
-          $config = array(
-            'admin' => array(
-              'core:AdminPassword'
-            ),
-            'pwauth' => array(
-              'authpwauth:PwAuth',
-              'pwauth_bin_path' => '${lib.getExe pwAuthScript}',
-              'mail_domain' => '@pvv.ntnu.no',
-            ),
-          );
-        ?>
-      '';
-
-      "config/config.php" = pkgs.runCommandLocal "simplesamlphp-config.php" { } ''
-        cp ${./config.php} "$out"
-
-        substituteInPlace "$out" \
-          --replace-warn '$SAML_COOKIE_SECURE' 'true' \
-          --replace-warn '$SAML_COOKIE_SALT' 'file_get_contents("${config.sops.secrets."idp/cookie_salt".path}")' \
-          --replace-warn '$SAML_ADMIN_NAME' '"Drift"' \
-          --replace-warn '$SAML_ADMIN_EMAIL' '"drift@pvv.ntnu.no"' \
-          --replace-warn '$SAML_ADMIN_PASSWORD' 'file_get_contents("${config.sops.secrets."idp/admin_password".path}")' \
-          --replace-warn '$SAML_TRUSTED_DOMAINS' 'array( "idp.pvv.ntnu.no" )' \
-          --replace-warn '$SAML_DATABASE_DSN' '"pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=idp"' \
-          --replace-warn '$SAML_DATABASE_USERNAME' '"idp"' \
-          --replace-warn '$SAML_DATABASE_PASSWORD' 'file_get_contents("${config.sops.secrets."idp/postgres_password".path}")' \
-          --replace-warn '$CACHE_DIRECTORY' '/var/cache/idp' \
-          --replace-warn '$MEMCACHED_SOCKET' '/run/memcached/memcached.sock'
-      '';
-
       "modules/authpwauth/src/Auth/Source/PwAuth.php" = ./authpwauth.php;
+    };
+  };
+
+  metadataDir = pkgs.linkFarm "idp-simplesamlphp-metadata" {
+    # NOTE: Using self signed certificate created 30. march 2024, with command:
+    # openssl req -newkey rsa:4096 -new -x509 -days 365 -nodes -out idp.crt -keyout idp.pem
+    "saml20-idp-hosted.php" = pkgs.writeText "saml20-idp-remote.php" ''
+      <?php
+      $metadata['https://idp.pvv.ntnu.no/'] = array(
+        'host' => '__DEFAULT__',
+        'privatekey' => '${config.sops.secrets."idp/privatekey".path}',
+        'certificate' => '${./idp.crt}',
+        'auth' => 'pwauth',
+      );
+      ?>
+    '';
+
+    "saml20-sp-remote.php" = pkgs.writeText "saml20-sp-remote.php" ''
+      <?php
+        ${ lib.pipe config.services.idp.sp-remote-metadata [
+          (map (url: ''
+            $metadata['${url}'] = [
+              'SingleLogoutService' => [
+                [
+                  'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+                  'Location' => '${url}module.php/saml/sp/saml2-logout.php/default-sp',
+                ],
+                [
+                  'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
+                  'Location' => '${url}module.php/saml/sp/saml2-logout.php/default-sp',
+                ],
+              ],
+              'AssertionConsumerService' => [
+                [
+                  'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+                  'Location' => '${url}module.php/saml/sp/saml2-acs.php/default-sp',
+                  'index' => 0,
+                ],
+                [
+                  'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact',
+                  'Location' => '${url}module.php/saml/sp/saml2-acs.php/default-sp',
+                  'index' => 1,
+                ],
+              ],
+            ];
+          ''))
+          (lib.concatStringsSep "\n")
+        ]}
+      ?>
+    '';
+  };
+
+  authsources = pkgs.writeText "idp-authsources.php" ''
+    <?php
+      $config = array(
+        'admin' => array(
+          'core:AdminPassword'
+        ),
+        'pwauth' => array(
+          'authpwauth:PwAuth',
+          'pwauth_bin_path' => '${lib.getExe pwAuthScript}',
+          'mail_domain' => '@pvv.ntnu.no',
+        ),
+      );
+    ?>
+  '';
+
+  configOverrides = let
+    inherit ((pkgs.formats.php { }).lib) mkRaw;
+    readSecret = name: "file_get_contents('${config.sops.secrets.${name}.path}')";
+  in (pkgs.formats.php { }).generate "idp-simplesamlphp-config.php" {
+    "baseurlpath" = "/";
+    "cachedir" = "/var/cache/idp";
+    "metadatadir" = "${metadataDir}";
+
+    "technicalcontact_name" = "Drift";
+    "technicalcontact_email" = "drift@pvv.ntnu.no";
+
+    "secretsalt" = mkRaw (readSecret "idp/cookie_salt");
+    "auth.adminpassword" = mkRaw (readSecret "idp/admin_password");
+
+    "trusted.url.domains" = [ "idp.pvv.ntnu.no" ];
+
+    "database.dsn" = "pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=idp";
+    "database.username" = "idp";
+    "database.password" = mkRaw (readSecret "idp/postgres_password");
+    "database.persistent" = true;
+
+    "enable.saml20-idp" = true;
+
+    "module.enable" = {
+      "admin" = true;
+      "authpwauth" = true;
+    };
+
+    "session.state.timeout" = 10 * 60;
+    "session.cookie.secure" = true;
+
+    "store.type" = "memcache";
+    "store.sql.dsn" = "pgsql:host=postgres.pvv.ntnu.no;port=5432;dbname=idp";
+    "store.sql.username" = "idp";
+    "store.sql.password" = mkRaw (readSecret "idp/postgres_password");
+    "memcache_store.servers" = {
+      "idp" = [
+        { "hostname" = "/run/memcached/memcached.sock"; }
+      ];
+    };
+
+    "assets" = {
+      "caching" = {
+        "max_age" = 86400;
+        "etag" = false;
+      };
     };
   };
 in
@@ -166,6 +200,10 @@ in
     services.phpfpm.pools.idp = {
       user = "idp";
       group = "idp";
+      phpEnv = {
+        SIMPLESAMLPHP_CONFIG_OVERRIDES_FILE = "${configOverrides}";
+        SIMPLESAMLPHP_AUTHSOURCES_FILE = "${authsources}";
+      };
       phpPackage = pkgs.php.withExtensions ({ enabled, all }: enabled ++ [ all.memcached ]);
       settings = let
         listenUser = config.services.nginx.user;
