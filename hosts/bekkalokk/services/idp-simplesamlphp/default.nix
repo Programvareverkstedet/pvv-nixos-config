@@ -117,6 +117,9 @@ let
     "session.state.timeout" = 10 * 60;
     "session.cookie.secure" = true;
 
+    "session.cookie.samesite" = "Lax";
+    "language.cookie.samesite" = "Lax";
+
     "store.type" = "memcache";
     "memcache_store.servers" = {
       "idp" = [

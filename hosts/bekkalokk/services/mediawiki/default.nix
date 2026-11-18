@@ -41,6 +41,9 @@
 
     "session.cookie.secure" = true;
 
+    "session.cookie.samesite" = "Lax";
+    "language.cookie.samesite" = "Lax";
+
     "store.type" = "sql";
     "store.sql.dsn" = dsn;
     "store.sql.username" = dbUser;
@@ -150,6 +153,8 @@ in {
     extraConfig = ''
       $wgServer = "https://wiki.pvv.ntnu.no";
       $wgLocaltimezone = "Europe/Oslo";
+
+      $wgCookieSameSite = "Lax";
 
       # Only allow login through SSO
       $wgEnableEmail = false;
