@@ -90,6 +90,8 @@ let
     inherit ((pkgs.formats.php { }).lib) mkRaw;
     readSecret = name: "file_get_contents('${config.sops.secrets.${name}.path}')";
   in (pkgs.formats.php { }).generate "idp-simplesamlphp-config.php" {
+    "admin.checkforupdates" = false;
+
     "baseurlpath" = "/";
     "cachedir" = "/var/cache/idp";
     "metadatadir" = "${metadataDir}";

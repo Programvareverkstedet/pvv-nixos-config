@@ -22,6 +22,8 @@
     dbUser = "mediawiki_simplesamlphp";
     dbPassword = readSecret "mediawiki/simplesamlphp/postgres_password";
   in (pkgs.formats.php { }).generate "mediawiki-simplesamlphp-config.php" {
+    "admin.checkforupdates" = false;
+
     "cachedir" = "/var/cache/mediawiki/idp";
     "metadatadir" = "${simplesamlphpMetadataDir}";
 
