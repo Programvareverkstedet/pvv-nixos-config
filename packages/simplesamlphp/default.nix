@@ -8,18 +8,18 @@
 
 php.buildComposerProject rec {
   pname = "simplesamlphp";
-  version = "2.5.0";
+  version = "2.5.4";
 
   src = fetchFromGitHub {
     owner = "simplesamlphp";
     repo = "simplesamlphp";
     tag = "v${version}";
-    hash = "sha256-Md07vWhB/5MDUH+SPQEs8PYiUrkEgAyqQl+LO+ap0Sw=";
+    hash = "sha256-99zWcwamT7xJardb+mXSZ9JS57O/wy9P03cx0AKVFT8=";
   };
 
   composerStrictValidation = false;
 
-  vendorHash = "sha256-GrEoGJXEyI1Ib+06GIuo5eRwxQ0UMKeX5RswShu2CHM=";
+  vendorHash = "sha256-7S3DK6n6t178udvobQ1HbCaSeaTvrdAEKYKD2vAj4wc=";
 
   # TODO: metadata could be fetched automagically with these:
   #   - https://simplesamlphp.org/docs/contrib_modules/metarefresh/simplesamlphp-automated_metadata.html
