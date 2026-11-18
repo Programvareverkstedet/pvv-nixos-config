@@ -46,12 +46,6 @@
     "store.sql.username" = dbUser;
     "store.sql.password" = dbPassword;
 
-    "language.available" = [
-      "en" "no" "nn" "se" "da" "de" "sv" "fi" "es" "ca" "fr" "it" "nl" "lb"
-      "cs" "sk" "sl" "lt" "hr" "hu" "pl" "pt" "pt-br" "tr" "ja" "zh" "zh-tw"
-      "ru" "et" "he" "id" "sr" "lv" "ro" "eu" "el" "af" "zu" "xh" "st"
-    ];
-
     "assets" = {
       "caching" = {
         "max_age" = 86400;
