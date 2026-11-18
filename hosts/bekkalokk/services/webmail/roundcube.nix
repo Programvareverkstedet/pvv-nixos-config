@@ -59,6 +59,8 @@ in
         log_logins = true;
         session_samesite = "Strict";
         trusted_host_patterns = [ domain ];
+        # NOTE: this should probably be default upstream.
+        cipher_method = "AES-256-CBC";
         des_key = phpFormat.lib.mkRaw "trim(file_get_contents('${config.sops.secrets."roundcube/des_key".path}'))";
         ifpl_use_auth_tokens = true;
       };
