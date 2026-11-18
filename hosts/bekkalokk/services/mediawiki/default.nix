@@ -9,6 +9,8 @@
 
   simplesamlphp = pkgs.simplesamlphp;
 
+  simplesamlphpMemcachedSocket = "/run/memcached-mediawiki/memcached.sock";
+
   simplesamlphpMetadataDir = pkgs.linkFarm "mediawiki-simplesamlphp-metadata" {
     "saml20-idp-remote.php" = (pkgs.formats.php { finalVariable = "metadata"; }).generate "mediawiki-saml20-idp-remote.php" (import ../idp-simplesamlphp/idp-remote-metadata.nix);
   };
@@ -44,10 +46,12 @@
     "session.cookie.samesite" = "Lax";
     "language.cookie.samesite" = "Lax";
 
-    "store.type" = "sql";
-    "store.sql.dsn" = dsn;
-    "store.sql.username" = dbUser;
-    "store.sql.password" = dbPassword;
+    "store.type" = "memcache";
+    "memcache_store.servers" = {
+      "mediawiki" = [
+        { "hostname" = simplesamlphpMemcachedSocket; }
+      ];
+    };
 
     "assets" = {
       "caching" = {
@@ -93,6 +97,7 @@ in {
   };
 
   services.mediawiki = {
+    phpPackage = pkgs.php.withExtensions ({ enabled, all }: enabled ++ [ all.memcached ]);
     enable = true;
     name = "Programvareverkstedet";
     passwordFile = config.sops.secrets."mediawiki/password".path;
@@ -397,10 +402,47 @@ in {
   };
 
   systemd.services.phpfpm-mediawiki = lib.mkIf cfg.enable {
-    after = [ "sops-install-secrets.service" ];
-    requires = [ "sops-install-secrets.service" ];
+    after = [
+      "sops-install-secrets.service"
+      "memcached-mediawiki.service"
+    ];
+    requires = [
+      "sops-install-secrets.service"
+      "memcached-mediawiki.service"
+    ];
     serviceConfig = {
       UMask = lib.mkForce "0007";
+    };
+  };
+
+  systemd.services.memcached-mediawiki = lib.mkIf cfg.enable {
+    description = "Memcached server for mediawiki's simplesamlphp";
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${lib.getExe pkgs.memcached} ${lib.cli.toCommandLineShellGNU { } {
+        unix-socket = simplesamlphpMemcachedSocket;
+        unix-mask = "0700";
+        memory-limit = 64;
+      }}";
+      User = user;
+      Group = group;
+      RuntimeDirectory = "memcached-mediawiki";
+      RuntimeDirectoryMode = "0700";
+
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      PrivateTmp = true;
+      PrivateDevices = true;
+      PrivateNetwork = true;
+      ProtectKernelTunables = true;
+      ProtectKernelModules = true;
+      ProtectControlGroups = true;
+      CapabilityBoundingSet = "";
+      NoNewPrivileges = true;
+      LockPersonality = true;
+      RestrictRealtime = true;
+      PrivateMounts = true;
+      MemoryDenyWriteExecute = true;
     };
   };
 
