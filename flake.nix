@@ -136,24 +136,6 @@
               (lib.optionals enableDefaults [
                 # Global overlays go here
                 inputs.roowho2.overlays.default
-                # NOTE: fixes https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities
-                #       drop once https://github.com/NixOS/nixpkgs/pull/589961 is backported
-                (final: prev: {
-                  nginxStable = prev.nginxStable.override {
-                    callPackage = _: args: extra:
-                      final.callPackage "${prev.path}/pkgs/servers/http/nginx/generic.nix" args (extra // {
-                        version = "1.30.7";
-                        hash = "sha256-JWW1yDcFDpWPcPsPc8SOK8pFQq00n9NW9G+wxyYQvG4=";
-                      });
-                  };
-                  nginxMainline = prev.nginxMainline.override {
-                    callPackage = _: args: extra:
-                      final.callPackage "${prev.path}/pkgs/servers/http/nginx/generic.nix" args (extra // {
-                        version = "1.31.9";
-                        hash = "sha256-oRxe7uLiV/RHjw5kn4SwBAeH0nfS0+UjOVKqa23LgK0=";
-                      });
-                  };
-                })
               ])
               ++ overlays;
           }
