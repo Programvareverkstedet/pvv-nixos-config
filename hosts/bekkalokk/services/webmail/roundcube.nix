@@ -47,13 +47,21 @@ in
       passwordFile = config.sops.secrets."roundcube/postgres_password".path;
     };
 
-    extraConfig = ''
-      $config['imap_host'] = "ssl://imap.pvv.ntnu.no:993";
-      $config['smtp_host'] = "ssl://smtp.pvv.ntnu.no:465";
-      $config['mail_domain'] = "pvv.ntnu.no";
-      $config['log_logins'] = true;
-      $config['des_key'] = trim(file_get_contents('${config.sops.secrets."roundcube/des_key".path}'));
-      $config['ifpl_use_auth_tokens'] = true;
+
+    extraConfig = let
+      phpFormat = pkgs.formats.php { };
+
+      # See https://github.com/roundcube/roundcubemail/blob/master/config/defaults.inc.php
+      settings = {
+        imap_host = "ssl://imap.pvv.ntnu.no:993";
+        smtp_host = "ssl://smtp.pvv.ntnu.no:465";
+        mail_domain = "pvv.ntnu.no";
+        log_logins = true;
+        des_key = phpFormat.lib.mkRaw "trim(file_get_contents('${config.sops.secrets."roundcube/des_key".path}'))";
+        ifpl_use_auth_tokens = true;
+      };
+    in ''
+      $config = array_merge($config, require '${phpFormat.generate "roundcube-pvv-config.php" settings}');
     '';
   };
 
