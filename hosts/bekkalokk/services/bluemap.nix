@@ -9,16 +9,10 @@ in {
     enableACME = true;
     forceSSL = true;
     kTLS = true;
-    http3 = true;
-    quic = true;
-    http3_hq = true;
     extraConfig = ''
       # Enabling QUIC 0-RTT
       ssl_early_data on;
-
-      quic_gso on;
       quic_retry on;
-      add_header Alt-Svc 'h3=":$server_port"; ma=86400';
     '';
     root = webExport;
     locations = {
@@ -45,6 +39,4 @@ in {
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH5jrqMovXlWaFWZAV/aKyQReHvUQp5kb+7Ja4gnevSr root@gluttony bluemap";
     };
   };
-
-  networking.firewall.allowedUDPPorts = [ 443 ];
 }
