@@ -313,8 +313,6 @@ in {
           fastcgi_index index.php;
           fastcgi_pass unix:${config.services.phpfpm.pools.mediawiki.socket};
 
-          limit_req zone=mediawiki_scrapers burst=30 nodelay;
-
           fastcgi_cache mediawiki;
           fastcgi_cache_key "$scheme$request_method$host$request_uri";
           fastcgi_cache_methods GET HEAD;
@@ -326,6 +324,7 @@ in {
           fastcgi_cache_lock on;
           add_header X-Cache-Status $upstream_cache_status;
         '';
+        rateLimits.mediawiki_scrapers = { };
       };
 
       # based on https://simplesamlphp.org/docs/stable/simplesamlphp-install.html#configuring-nginx
@@ -372,6 +371,7 @@ in {
   services.nginx.rateLimitZones.mediawiki_scrapers = {
     size = "10m";
     rate = "60r/m";
+    burst = 30;
     exempt.addresses = [
       values.ntnu.ipv4-space
       values.ntnu.ipv6-space
