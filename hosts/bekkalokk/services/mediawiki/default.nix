@@ -311,7 +311,9 @@ in {
       # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/web-apps/mediawiki.nix#L720
       #
       # TODO: rate limit more URLs: https://github.com/NixOS/infra/blob/3c20fcebc683c7515e8bde58256b609960047cad/terraform/wiki.tf
-      "~ ^/w/(index|load|api|thumb|opensearch_desc|rest|img_auth)\\.php$" = lib.mkForce {
+      "~ ^/w/(index|load|api|thumb|opensearch_desc|rest|img_auth)\\.php$" = let
+        loggedInVar = config.services.nginx.rateLimitZones.mediawiki_scrapers.exempt.cookieVar;
+      in lib.mkForce {
         extraConfig = ''
           rewrite ^/w/(.*) /$1 break;
           include ${pkgs.nginx}/conf/fastcgi.conf;
@@ -323,8 +325,8 @@ in {
           fastcgi_cache mediawiki;
           fastcgi_cache_key "$scheme$request_method$host$request_uri";
           fastcgi_cache_methods GET HEAD;
-          fastcgi_cache_bypass $mediawiki_cache_bypass;
-          fastcgi_no_cache $mediawiki_cache_bypass;
+          fastcgi_cache_bypass ${loggedInVar};
+          fastcgi_no_cache ${loggedInVar};
           fastcgi_cache_valid 200 1h;
           fastcgi_cache_use_stale error timeout updating http_500 http_503;
           fastcgi_cache_background_update on;
@@ -371,34 +373,21 @@ in {
   };
 
   services.nginx.commonHttpConfig = lib.mkIf cfg.enable ''
-    # mediawiki_authenticated is true if we are logged in.
-    map $http_cookie $mediawiki_authenticated {
-      default 0;
-      "~*(?i)(session|token|userid|username)=" 1;
-    }
-
-    # mediawiki_scraper_key is empty if we are logged in.
-    map $mediawiki_authenticated $mediawiki_scraper_key {
-      0 $binary_remote_subnet;
-      1 "";
-    }
-
-    # mediawiki_cache_bypass is true we are authenticated.
-    map $mediawiki_authenticated $mediawiki_cache_bypass {
-      0 0;
-      1 1;
-    }
-
     fastcgi_cache_path /var/cache/nginx/mediawiki levels=1:2 keys_zone=mediawiki:20m max_size=1g inactive=1d use_temp_path=off;
   '';
 
   services.nginx.rateLimitZones.mediawiki_scrapers = {
-    key = "$mediawiki_scraper_key";
     size = "10m";
     rate = "60r/m";
     exempt.addresses = [
       values.ntnu.ipv4-space
       values.ntnu.ipv6-space
+    ];
+    exempt.cookies = map (suffix: "${cfg.database.name}${suffix}") [
+      "_session"
+      "UserID"
+      "UserName"
+      "Token"
     ];
   };
 
