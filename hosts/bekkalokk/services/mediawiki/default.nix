@@ -373,7 +373,7 @@ in {
 
     # mediawiki_scraper_key is empty if we are logged in.
     map $mediawiki_authenticated $mediawiki_scraper_key {
-      0 $binary_remote_addr;
+      0 $binary_remote_subnet;
       1 "";
     }
 
@@ -383,11 +383,16 @@ in {
       1 1;
     }
 
-    limit_req_zone $mediawiki_scraper_key zone=mediawiki_scrapers:10m rate=60r/m;
     limit_req_status 429;
 
     fastcgi_cache_path /var/cache/nginx/mediawiki levels=1:2 keys_zone=mediawiki:20m max_size=1g inactive=1d use_temp_path=off;
   '';
+
+  services.nginx.rateLimitZones.mediawiki_scrapers = {
+    key = "$mediawiki_scraper_key";
+    size = "10m";
+    rate = "60r/m";
+  };
 
   systemd.services.mediawiki-init = lib.mkIf cfg.enable {
     after = [ "sops-install-secrets.service" ];

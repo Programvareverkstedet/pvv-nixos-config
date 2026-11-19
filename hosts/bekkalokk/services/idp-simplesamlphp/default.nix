@@ -232,9 +232,11 @@ in
       wants = [ "memcached.service" ];
     };
 
-    services.nginx.appendHttpConfig = ''
-      limit_req_zone $cookie_SimpleSAMLSessionID zone=idp_session:10m rate=30r/m;
-    '';
+    services.nginx.rateLimitZones.idp_session = {
+      key = "$cookie_SimpleSAMLSessionID";
+      size = "10m";
+      rate = "30r/m";
+    };
 
     services.nginx.virtualHosts."idp.pvv.ntnu.no" = {
       forceSSL = true;

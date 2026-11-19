@@ -8,18 +8,10 @@ let
 in
 {
   services.nginx.appendHttpConfig = ''
-    # Group IPv6 clients by /64, IPv4 clients by /32.
-    map $binary_remote_addr $gitea_scraper_key {
-      "~(?s)^(?<prefix>.{8}).{8}$" $prefix;
-      default $binary_remote_addr;
-    }
-    limit_req_zone $gitea_scraper_key zone=gitea_scrapers:64m rate=1r/s;
-
     geo $gitea_ratelimit_group {
       default "";
       include ${rateLimitListFile};
     }
-    limit_req_zone $gitea_ratelimit_group zone=gitea_ratelimit_groups:1m rate=1r/s;
 
     map "${lib.concatStringsSep "\\n" [
       "proto:$server_protocol"
@@ -35,6 +27,18 @@ in
     proxy_cache_path /var/cache/nginx/gitea-assets levels=1:2 keys_zone=gitea_assets:10m max_size=1g inactive=7d use_temp_path=off;
     proxy_cache_path /var/cache/nginx/gitea-authcheck levels=1:2 keys_zone=gitea_authcheck:10m max_size=64m inactive=10m use_temp_path=off;
   '';
+
+  services.nginx.rateLimitZones = {
+    gitea_scrapers = {
+      size = "64m";
+      rate = "1r/s";
+    };
+    gitea_ratelimit_groups = {
+      key = "$gitea_ratelimit_group";
+      size = "1m";
+      rate = "1r/s";
+    };
+  };
 
   # Mutable list of address ranges to rate limit. Equals group names are treated as a single group.
   # Format is: `<CIDR> <group name>;` e.g.
