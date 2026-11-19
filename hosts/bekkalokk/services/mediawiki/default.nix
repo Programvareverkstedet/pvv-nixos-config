@@ -9,7 +9,7 @@
 
   simplesamlphp = pkgs.simplesamlphp;
 
-  simplesamlphpMemcachedSocket = "/run/memcached-mediawiki/memcached.sock";
+  memcachedSocket = "/run/memcached-mediawiki/memcached.sock";
 
   simplesamlphpMetadataDir = pkgs.linkFarm "mediawiki-simplesamlphp-metadata" {
     "saml20-idp-remote.php" = (pkgs.formats.php { finalVariable = "metadata"; }).generate "mediawiki-saml20-idp-remote.php" (import ../idp-simplesamlphp/idp-remote-metadata.nix);
@@ -53,7 +53,7 @@
     "store.type" = "memcache";
     "memcache_store.servers" = {
       "mediawiki" = [
-        { "hostname" = simplesamlphpMemcachedSocket; }
+        { "hostname" = memcachedSocket; }
       ];
     };
 
@@ -241,6 +241,10 @@ in {
       # Offload background jobs to the external job runner service
       $wgJobRunRate = 0;
 
+      # Store sessions in memcached so they survive php-fpm restarts
+      $wgMemCachedServers = [ "${memcachedSocket}" ];
+      $wgSessionCacheType = 'memcached-pecl';
+
       # Enable caching for nginx
       $wgUseCdn = true;
       $wgCdnMaxAge = 3600;
@@ -420,11 +424,11 @@ in {
   };
 
   systemd.services.memcached-mediawiki = lib.mkIf cfg.enable {
-    description = "Memcached server for mediawiki's simplesamlphp";
+    description = "Memcached server for mediawiki and its simplesamlphp";
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       ExecStart = "${lib.getExe pkgs.memcached} ${lib.cli.toCommandLineShellGNU { } {
-        unix-socket = simplesamlphpMemcachedSocket;
+        unix-socket = memcachedSocket;
         unix-mask = "0700";
         memory-limit = 64;
       }}";
