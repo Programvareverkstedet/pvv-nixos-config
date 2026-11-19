@@ -68,6 +68,17 @@ in
             IP addresses/CIDR ranges that are not rate limited by this zone.
           '';
         };
+
+        exempt.cookies = lib.mkOption {
+          type = lib.types.listOf (lib.types.strMatching "[A-Za-z0-9_]+");
+          default = [ ];
+          example = [ "SESSIONID" ];
+          description = ''
+            If any of the listed cookies are present in a request, it will be exempted from this zone's rate limiting.
+
+            Even if it is easy to spoof, it *should* work against the scraper hordes.
+          '';
+        };
       };
     }));
   };
@@ -85,13 +96,33 @@ in
 
     (let
       renderZone = zone: let
-        exemptVar = "$rate_limit_exempt_${zone.name}";
-        keyVar = "$rate_limit_key_${zone.name}";
+        hasAddresses = zone.exempt.addresses != [ ];
+        hasCookies = zone.exempt.cookies != [ ];
 
-        exemptGeo = ''
-          geo ${exemptVar} {
+        keyVar = "$rate_limit_key_${zone.name}";
+        exemptVar = "$rate_limit_exempt_${zone.name}";
+
+        exemptAddressVar = if hasCookies then "$rate_limit_exempt_address_${zone.name}" else exemptVar;
+        exemptCookieVar = if hasAddresses then "$rate_limit_exempt_cookie_${zone.name}" else exemptVar;
+
+        exemptAddressGeo = ''
+          geo ${exemptAddressVar} {
             default 0;
           ${lib.concatMapStringsSep "\n" (address: "  ${address} 1;") zone.exempt.addresses}
+          }
+        '';
+
+        exemptCookieMap = ''
+          map "${lib.concatMapStrings (cookie: "$cookie_${cookie}") zone.exempt.cookies}" ${exemptCookieVar} {
+            "" 0;
+            default 1;
+          }
+        '';
+
+        exemptAnyMap = ''
+          map "${exemptAddressVar}${exemptCookieVar}" ${exemptVar} {
+            "~1" 1;
+            default 0;
           }
         '';
 
@@ -106,13 +137,17 @@ in
           limit_req_zone ${key} zone=${zone.name}:${zone.size} rate=${zone.rate};
         '';
       in
-        if zone.exempt.addresses == [ ]
+        if !hasAddresses && !hasCookies
         then limitReqZone zone.key
-        else lib.concatStringsSep "\n" [
-          exemptGeo
-          exemptKeyMap
-          (limitReqZone keyVar)
-        ];
+        else lib.concatStringsSep "\n" (
+          lib.optional hasAddresses exemptAddressGeo
+          ++ lib.optional hasCookies exemptCookieMap
+          ++ lib.optional (hasAddresses && hasCookies) exemptAnyMap
+          ++ [
+            exemptKeyMap
+            (limitReqZone keyVar)
+          ]
+        );
     in lib.mkIf (cfg.rateLimitZones != { }) (lib.pipe cfg.rateLimitZones [
       lib.attrValues
       (map renderZone)
