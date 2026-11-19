@@ -1,0 +1,53 @@
+From d4a2bfc68d9471d1adbacbda3fe5b2ccba2537e4 Mon Sep 17 00:00:00 2001
+From: h7x4 <h7x4@nani.wtf>
+Date: Thu, 19 Nov 2026 18:07:08 +0900
+Subject: [PATCH] composer.lock: bump saml2-legacy to avoid bug
+
+See:
+
+- https://github.com/simplesamlphp/simplesamlphp/issues/2693
+- https://github.com/simplesamlphp/simplesamlphp/issues/2694
+---
+ composer.lock | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/composer.lock b/composer.lock
+index e4007e8f4..53a72afd3 100644
+--- a/composer.lock
++++ b/composer.lock
+@@ -1299,16 +1299,16 @@
+         },
+         {
+             "name": "simplesamlphp/saml2-legacy",
+-            "version": "v4.20.5",
++            "version": "v4.20.8",
+             "source": {
+                 "type": "git",
+                 "url": "https://github.com/simplesamlphp/saml2-legacy.git",
+-                "reference": "5ee746a66ef827c7e06fe24fbb1e1789d567f6aa"
++                "reference": "eda9093ea84f901700bd2279e986056f8ba8a93b"
+             },
+             "dist": {
+                 "type": "zip",
+-                "url": "https://api.github.com/repos/simplesamlphp/saml2-legacy/zipball/5ee746a66ef827c7e06fe24fbb1e1789d567f6aa",
+-                "reference": "5ee746a66ef827c7e06fe24fbb1e1789d567f6aa",
++                "url": "https://api.github.com/repos/simplesamlphp/saml2-legacy/zipball/eda9093ea84f901700bd2279e986056f8ba8a93b",
++                "reference": "eda9093ea84f901700bd2279e986056f8ba8a93b",
+                 "shasum": ""
+             },
+             "require": {
+@@ -1351,9 +1351,9 @@
+             ],
+             "description": "SAML2 PHP library from SimpleSAMLphp",
+             "support": {
+-                "source": "https://github.com/simplesamlphp/saml2-legacy/tree/v4.20.5"
++                "source": "https://github.com/simplesamlphp/saml2-legacy/tree/v4.20.8"
+             },
+-            "time": "2026-11-05T20:40:01+00:00"
++            "time": "2026-11-17T22:31:56+00:00"
+         },
+         {
+             "name": "simplesamlphp/simplesamlphp-assets-base",
+-- 
+2.54.0
+

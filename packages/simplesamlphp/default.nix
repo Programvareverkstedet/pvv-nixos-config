@@ -17,9 +17,13 @@ php.buildComposerProject rec {
     hash = "sha256-99zWcwamT7xJardb+mXSZ9JS57O/wy9P03cx0AKVFT8=";
   };
 
+  patches = [
+    ./0001-composer.lock-bump-saml2-legacy-to-avoid-bug.patch
+  ];
+
   composerStrictValidation = false;
 
-  vendorHash = "sha256-7S3DK6n6t178udvobQ1HbCaSeaTvrdAEKYKD2vAj4wc=";
+  vendorHash = "sha256-4Dx056pjuFkFBX7PbU5/EkhIaoVTJXHiZlIo2IG40GI=";
 
   # TODO: metadata could be fetched automagically with these:
   #   - https://simplesamlphp.org/docs/contrib_modules/metarefresh/simplesamlphp-automated_metadata.html
