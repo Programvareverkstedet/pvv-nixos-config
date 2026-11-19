@@ -30,7 +30,7 @@
     ./services/irqbalance.nix
     ./services/journald-upload.nix
     ./services/logrotate.nix
-    ./services/nginx.nix
+    ./services/nginx
     ./services/nullmailer.nix
     ./services/openssh.nix
     ./services/polkit.nix

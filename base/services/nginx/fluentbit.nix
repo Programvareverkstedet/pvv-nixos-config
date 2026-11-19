@@ -1,106 +1,54 @@
 { config, lib, values, ... }:
 {
-  services.nginx = {
-    recommendedTlsSettings = true;
-    recommendedProxySettings = true;
-    recommendedOptimisation = true;
-    recommendedGzipSettings = true;
+  # Configure nginx to log a whole bunch of extra stuff as JSON,
+  # which can be parsed and sent as structured logs by fluent-bit.
+  services.nginx.appendHttpConfig = ''
+    # i.e. if `$request_method` == "", it's likely just bogus bytes and we add the
+    # entire request to the $log_invalid_request field in the json output.
+    map $request_method $log_invalid_request {
+      "" $request;
+      default "";
+    }
 
-    appendConfig = ''
-      # pcre_jit on;
-      worker_processes auto;
-      worker_rlimit_nofile 100000;
-    '';
-    eventsConfig = ''
-      worker_connections 2048;
-      use epoll;
-      # multi_accept on;
-    '';
+    # Only log whether or not the request had cookies, not the cookies themselves.
+    map $http_cookie $log_has_cookie {
+      "" "0";
+      default "1";
+    }
 
-    appendHttpConfig = ''
-      # i.e. if `$request_method` == "", it's likely just bogus bytes and we add the
-      # entire request to the $log_invalid_request field in the json output.
-      map $request_method $log_invalid_request {
-        "" $request;
-        default "";
-      }
+    log_format vhost_json escape=json '${builtins.toJSON {
+      time = "$time_local";
+      vhost = "$host";
+      remote = "$remote_addr";
+      user = "$remote_user";
+      method = "$request_method";
+      path = "$request_uri";
+      protocol = "$server_protocol";
+      invalid_request = "$log_invalid_request";
+      status = "$status";
+      bytes = "$body_bytes_sent";
+      referer = "$http_referer";
+      agent = "$http_user_agent";
 
-      # Only log whether or not the request had cookies, not the cookies themselves.
-      map $http_cookie $log_has_cookie {
-        "" "0";
-        default "1";
-      }
+      # Client fingerprinting
+      sec_ch_ua = "$http_sec_ch_ua";
+      sec_fetch_site = "$http_sec_fetch_site";
+      sec_fetch_mode = "$http_sec_fetch_mode";
+      sec_fetch_dest = "$http_sec_fetch_dest";
+      accept_language = "$http_accept_language";
+      accept_encoding = "$http_accept_encoding";
+      has_cookie = "$log_has_cookie";
+      connection_requests = "$connection_requests";
+      ssl_protocol = "$ssl_protocol";
 
-      log_format vhost_json escape=json '${builtins.toJSON {
-        time = "$time_local";
-        vhost = "$host";
-        remote = "$remote_addr";
-        user = "$remote_user";
-        method = "$request_method";
-        path = "$request_uri";
-        protocol = "$server_protocol";
-        invalid_request = "$log_invalid_request";
-        status = "$status";
-        bytes = "$body_bytes_sent";
-        referer = "$http_referer";
-        agent = "$http_user_agent";
-
-        # Client fingerprinting
-        sec_ch_ua = "$http_sec_ch_ua";
-        sec_fetch_site = "$http_sec_fetch_site";
-        sec_fetch_mode = "$http_sec_fetch_mode";
-        sec_fetch_dest = "$http_sec_fetch_dest";
-        accept_language = "$http_accept_language";
-        accept_encoding = "$http_accept_encoding";
-        has_cookie = "$log_has_cookie";
-        connection_requests = "$connection_requests";
-        ssl_protocol = "$ssl_protocol";
-
-        # Performance and rate limiting
-        request_time = "$request_time";
-        upstream_response_time = "$upstream_response_time";
-        limit_req_status = "$limit_req_status";
-      }}';
-      access_log /var/log/nginx/access.log vhost_json;
-      error_log /var/log/nginx/error.log;
-    '';
-  };
-
-  systemd.services.nginx.serviceConfig = lib.mkIf config.services.nginx.enable {
-    LimitNOFILE = 65536;
-    # We use jit my dudes
-    MemoryDenyWriteExecute = lib.mkForce false;
-    # What the fuck do we use that where the defaults are not enough???
-    SystemCallFilter = lib.mkForce null;
-  };
-
-  services.nginx.virtualHosts = lib.mkIf config.services.nginx.enable {
-    "_" = {
-      listen = [
-        {
-          addr = "0.0.0.0";
-          extraParameters = [
-            "default_server"
-            # Seemingly the default value of net.core.somaxconn
-            "backlog=4096"
-            "deferred"
-          ];
-        }
-        {
-          addr = "[::0]";
-          extraParameters = [
-            "default_server"
-            "backlog=4096"
-            "deferred"
-          ];
-        }
-      ];
-    };
-  };
-
-  networking.firewall.allowedTCPPorts = lib.mkIf config.services.nginx.enable [ 80 443 ];
-
-  services.logrotate.settings.nginx.rotate = lib.mkIf config.services.nginx.enable 5;
+      # Performance and rate limiting
+      request_time = "$request_time";
+      upstream_response_time = "$upstream_response_time";
+      limit_req_status = "$limit_req_status";
+    }}';
+    access_log /var/log/nginx/access.log vhost_json;
+    error_log /var/log/nginx/error.log;
+  '';
 
   services.fluent-bit.settings.parsers = lib.mkIf (config.services.nginx.enable && config.services.fluent-bit.enable) [
     {
