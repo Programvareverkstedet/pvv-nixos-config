@@ -130,10 +130,6 @@ in {
       "pm.min_spare_servers" = 2;
       "pm.max_spare_servers" = 4;
 
-      "catch_workers_output" = true;
-      "php_admin_flag[log_errors]" = true;
-      # "php_admin_value[error_log]" = "stderr";
-
       # to accept *.html file
       "security.limit_extensions" = "";
     };

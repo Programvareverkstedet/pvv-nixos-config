@@ -223,10 +223,6 @@ in
         "pm.max_spare_servers" = 4;
         "listen.owner" = listenUser;
         "listen.group" = listenGroup;
-
-        "catch_workers_output" = true;
-        "php_admin_flag[log_errors]" = true;
-        # "php_admin_value[error_log]" = "stderr";
       };
     };
 
