@@ -390,6 +390,10 @@ in {
     key = "$mediawiki_scraper_key";
     size = "10m";
     rate = "60r/m";
+    exempt.addresses = [
+      values.ntnu.ipv4-space
+      values.ntnu.ipv6-space
+    ];
   };
 
   systemd.services.mediawiki-init = lib.mkIf cfg.enable {
