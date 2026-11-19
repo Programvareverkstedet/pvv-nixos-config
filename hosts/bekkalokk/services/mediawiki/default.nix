@@ -244,6 +244,7 @@ in {
       # Store sessions in memcached so they survive php-fpm restarts
       $wgMemCachedServers = [ "${memcachedSocket}" ];
       $wgSessionCacheType = 'memcached-pecl';
+      $wgObjectCacheSessionExpiry = 7 * 24 * 60 * 60; # 7 days
 
       # Enable caching for nginx
       $wgUseCdn = true;
