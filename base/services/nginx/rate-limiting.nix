@@ -13,7 +13,7 @@ in
         rate = "1r/s";
       };
     };
-    type = lib.types.attrsOf (lib.types.submodule ({ name, ... }: {
+    type = lib.types.attrsOf (lib.types.submodule ({ name, config, ... }: {
       options = {
         name = lib.mkOption {
           type = lib.types.strMatching "[A-Za-z0-9_]+";
@@ -69,6 +69,16 @@ in
           '';
         };
 
+        exempt.addressVar = lib.mkOption {
+          type = lib.types.str;
+          readOnly = true;
+          default = "$rate_limit_exempt_address_${config.name}";
+          defaultText = lib.literalExpression ''"$rate_limit_exempt_address_<name>"'';
+          description = ''
+            Name of nginx variable containing `1` or `0` if the request's address is exempt or not.
+          '';
+        };
+
         exempt.cookies = lib.mkOption {
           type = lib.types.listOf (lib.types.strMatching "[A-Za-z0-9_]+");
           default = [ ];
@@ -77,6 +87,26 @@ in
             If any of the listed cookies are present in a request, it will be exempted from this zone's rate limiting.
 
             Even if it is easy to spoof, it *should* work against the scraper hordes.
+          '';
+        };
+
+        exempt.cookieVar = lib.mkOption {
+          type = lib.types.str;
+          readOnly = true;
+          default = "$rate_limit_exempt_cookie_${config.name}";
+          defaultText = lib.literalExpression ''"$rate_limit_exempt_cookie_<name>"'';
+          description = ''
+            Name of nginx variable containing `1` or `0` if the request's cookies are exempt or not.
+          '';
+        };
+
+        exempt.anyVar = lib.mkOption {
+          type = lib.types.str;
+          readOnly = true;
+          default = "$rate_limit_exempt_${config.name}";
+          defaultText = lib.literalExpression ''"$rate_limit_exempt_<name>"'';
+          description = ''
+            Name of nginx variable containing `1` or `0` if the request is exempt by any rule.
           '';
         };
       };
@@ -100,34 +130,33 @@ in
         hasCookies = zone.exempt.cookies != [ ];
 
         keyVar = "$rate_limit_key_${zone.name}";
-        exemptVar = "$rate_limit_exempt_${zone.name}";
-
-        exemptAddressVar = if hasCookies then "$rate_limit_exempt_address_${zone.name}" else exemptVar;
-        exemptCookieVar = if hasAddresses then "$rate_limit_exempt_cookie_${zone.name}" else exemptVar;
 
         exemptAddressGeo = ''
-          geo ${exemptAddressVar} {
+          geo ${zone.exempt.addressVar} {
             default 0;
           ${lib.concatMapStringsSep "\n" (address: "  ${address} 1;") zone.exempt.addresses}
           }
         '';
 
         exemptCookieMap = ''
-          map "${lib.concatMapStrings (cookie: "$cookie_${cookie}") zone.exempt.cookies}" ${exemptCookieVar} {
+          map "${lib.concatMapStrings (cookie: "$cookie_${cookie}") zone.exempt.cookies}" ${zone.exempt.cookieVar} {
             "" 0;
             default 1;
           }
         '';
 
         exemptAnyMap = ''
-          map "${exemptAddressVar}${exemptCookieVar}" ${exemptVar} {
+          map "${lib.concatStrings (
+            lib.optional hasAddresses zone.exempt.addressVar
+            ++ lib.optional hasCookies zone.exempt.cookieVar
+          )}" ${zone.exempt.anyVar} {
             "~1" 1;
             default 0;
           }
         '';
 
         exemptKeyMap = ''
-          map ${exemptVar} ${keyVar} {
+          map ${zone.exempt.anyVar} ${keyVar} {
             1 "";
             default ${zone.key};
           }
@@ -142,8 +171,8 @@ in
         else lib.concatStringsSep "\n" (
           lib.optional hasAddresses exemptAddressGeo
           ++ lib.optional hasCookies exemptCookieMap
-          ++ lib.optional (hasAddresses && hasCookies) exemptAnyMap
           ++ [
+            exemptAnyMap
             exemptKeyMap
             (limitReqZone keyVar)
           ]
