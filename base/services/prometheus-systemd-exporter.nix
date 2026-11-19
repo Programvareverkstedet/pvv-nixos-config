@@ -11,6 +11,8 @@ in
     extraFlags = [
       "--systemd.collector.enable-restart-count"
       "--systemd.collector.enable-ip-accounting"
+    ] ++ lib.optionals config.services.resolved.enable [
+      "--systemd.collector.enable-resolved"
     ];
   };
 
