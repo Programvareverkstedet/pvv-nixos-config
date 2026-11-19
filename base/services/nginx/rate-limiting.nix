@@ -55,6 +55,14 @@ in
            Specify requests per second (`r/s`) or minute (`r/m`).
           '';
         };
+        burst = lib.mkOption {
+          type = lib.types.ints.unsigned;
+          default = 0;
+          example = 10;
+          description = ''
+            Number of requests a key may spike beyond the rate before being limited.
+          '';
+        };
 
         exempt.addresses = lib.mkOption {
           type = lib.types.listOf lib.types.str;
@@ -112,6 +120,58 @@ in
       };
     }));
   };
+
+  options.services.nginx.virtualHosts = lib.mkOption {
+    type = lib.types.attrsOf (lib.types.submodule {
+      options.locations = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.submodule ({ config, ... }: {
+          options.rateLimits = lib.mkOption {
+            type = lib.types.attrsOf (lib.types.submodule {
+              options.burst = lib.mkOption {
+                type = lib.types.nullOr lib.types.ints.unsigned;
+                default = null;
+                description = "Override the zone's `burst` value for this location.";
+              };
+            });
+            default = { };
+            example = {
+              scrapers = { };
+              other_zone = { burst = 5; };
+            };
+            description = ''
+              Rate limit zones to apply to this location.
+            '';
+          };
+
+          config.extraConfig = lib.mkIf (config.rateLimits != { }) (lib.pipe config.rateLimits [
+            (lib.mapAttrsToList (zone: limit: let
+              burst = if limit.burst != null then limit.burst else cfg.rateLimitZones.${zone}.burst or 0;
+            in "limit_req zone=${zone} burst=${toString burst} nodelay;"))
+            lib.concatLines
+          ]);
+        }));
+      };
+    });
+  };
+
+  config.assertions = lib.pipe cfg.virtualHosts [
+    lib.attrsToList
+
+    (lib.concatMap ({ name, value }: map (location: {
+      vhostName = name;
+      locationName = location.name;
+      location = location.value;
+    }) (lib.attrsToList value.locations)))
+
+    (lib.concatMap ({ vhostName, locationName, location }: map (zone: {
+      inherit vhostName locationName zone;
+    }) (lib.attrNames location.rateLimits)))
+
+    (map ({ vhostName, locationName, zone }: {
+      assertion = cfg.rateLimitZones ? ${zone};
+      message = "services.nginx.virtualHosts.${vhostName}.locations.\"${locationName}\".rateLimits lists unknown zone `${zone}`.";
+    }))
+  ];
 
   config.services.nginx.appendHttpConfig = lib.mkMerge [
     ''
