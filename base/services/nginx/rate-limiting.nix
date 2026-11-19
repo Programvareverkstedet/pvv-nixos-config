@@ -55,6 +55,19 @@ in
            Specify requests per second (`r/s`) or minute (`r/m`).
           '';
         };
+
+        exempt.addresses = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+          example = [
+            "192.0.2.1"
+            "198.51.100.0/24"
+            "2001:db8::/32"
+          ];
+          description = ''
+            IP addresses/CIDR ranges that are not rate limited by this zone.
+          '';
+        };
       };
     }));
   };
@@ -70,9 +83,40 @@ in
       limit_req_status 429;
     ''
 
-    (lib.mkIf (cfg.rateLimitZones != { }) (lib.pipe cfg.rateLimitZones [
-      (lib.mapAttrsToList (_: zone: "limit_req_zone ${zone.key} zone=${zone.name}:${zone.size} rate=${zone.rate};"))
-      lib.concatLines
+    (let
+      renderZone = zone: let
+        exemptVar = "$rate_limit_exempt_${zone.name}";
+        keyVar = "$rate_limit_key_${zone.name}";
+
+        exemptGeo = ''
+          geo ${exemptVar} {
+            default 0;
+          ${lib.concatMapStringsSep "\n" (address: "  ${address} 1;") zone.exempt.addresses}
+          }
+        '';
+
+        exemptKeyMap = ''
+          map ${exemptVar} ${keyVar} {
+            1 "";
+            default ${zone.key};
+          }
+        '';
+
+        limitReqZone = key: ''
+          limit_req_zone ${key} zone=${zone.name}:${zone.size} rate=${zone.rate};
+        '';
+      in
+        if zone.exempt.addresses == [ ]
+        then limitReqZone zone.key
+        else lib.concatStringsSep "\n" [
+          exemptGeo
+          exemptKeyMap
+          (limitReqZone keyVar)
+        ];
+    in lib.mkIf (cfg.rateLimitZones != { }) (lib.pipe cfg.rateLimitZones [
+      lib.attrValues
+      (map renderZone)
+      lib.concatStrings
       lib.mkAfter
     ]))
   ];
