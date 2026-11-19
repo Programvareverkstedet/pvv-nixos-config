@@ -17,6 +17,10 @@
     (import ./disks.nix { inherit lib; device = "/dev/disk/by-id/ata-LITEON_CV3-8D128-11_SATA_128GB_TW0WVD60LOH006BP0NTY"; })
   ];
 
+  services.prometheus.exporters.node.disabledCollectors = lib.mkIf (lib.elem lupineName [ "lupine-1" "lupine-2" ]) [
+    "thermal_zone"
+  ];
+
   sops.defaultSopsFile = fp /secrets/lupine/lupine.yaml;
 
   boot.binfmt.emulatedSystems = [
