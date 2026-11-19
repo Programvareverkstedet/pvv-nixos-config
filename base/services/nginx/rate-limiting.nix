@@ -13,8 +13,19 @@ in
         rate = "1r/s";
       };
     };
-    type = lib.types.attrsOf (lib.types.submodule {
+    type = lib.types.attrsOf (lib.types.submodule ({ name, ... }: {
       options = {
+        name = lib.mkOption {
+          type = lib.types.strMatching "[A-Za-z0-9_]+";
+          default = name;
+          defaultText = lib.literalExpression "<name>";
+          description = ''
+            Name of the zone.
+
+            Will be used as `limit_req zone=<name>`.
+          '';
+        };
+
         key = lib.mkOption {
           type = lib.types.str;
           default = "$binary_remote_subnet";
@@ -26,7 +37,7 @@ in
           '';
         };
         size = lib.mkOption {
-          type = lib.types.str;
+          type = lib.types.strMatching "[0-9]+[kKmM]?";
           default = "10m";
           description = ''
             Size of the shared memory zone.
@@ -35,7 +46,7 @@ in
           '';
         };
         rate = lib.mkOption {
-          type = lib.types.str;
+          type = lib.types.strMatching "[0-9]+r/[sm]";
           default = "1r/s";
           example = "30r/m";
           description = ''
@@ -45,7 +56,7 @@ in
           '';
         };
       };
-    });
+    }));
   };
 
   config.services.nginx.appendHttpConfig = lib.mkMerge [
@@ -60,7 +71,7 @@ in
     ''
 
     (lib.mkIf (cfg.rateLimitZones != { }) (lib.pipe cfg.rateLimitZones [
-      (lib.mapAttrsToList (name: zone: "limit_req_zone ${zone.key} zone=${name}:${zone.size} rate=${zone.rate};"))
+      (lib.mapAttrsToList (_: zone: "limit_req_zone ${zone.key} zone=${zone.name}:${zone.size} rate=${zone.rate};"))
       lib.concatLines
       lib.mkAfter
     ]))
