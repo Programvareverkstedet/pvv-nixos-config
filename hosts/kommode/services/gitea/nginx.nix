@@ -32,11 +32,13 @@ in
     gitea_scrapers = {
       size = "64m";
       rate = "1r/s";
+      burst = 5;
     };
     gitea_ratelimit_groups = {
       key = "$gitea_ratelimit_group";
       size = "1m";
       rate = "1r/s";
+      burst = 10;
     };
   };
 
@@ -113,8 +115,8 @@ in
         proxyPass = "http://gitea";
         extraConfig = fingerprintBlock + ''
           client_max_body_size 512M;
-          limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
         '';
+        rateLimits.gitea_ratelimit_groups = { };
       };
 
       "= /-/ws" = {
@@ -129,9 +131,8 @@ in
 
       "@gitea_unauthenticated_assets" = {
         proxyPass = "http://gitea";
-        extraConfig = fingerprintBlock + assetCacheConfig + ''
-          limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
-        '';
+        extraConfig = fingerprintBlock + assetCacheConfig;
+        rateLimits.gitea_ratelimit_groups = { };
       };
 
       # Throttle per-IP access to commits, raws, blames, etc.
@@ -143,10 +144,11 @@ in
 
       "@gitea_scrape_limited" = {
         proxyPass = "http://gitea";
-        extraConfig = fingerprintBlock + ''
-          limit_req zone=gitea_scrapers burst=5 nodelay;
-          limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
-        '';
+        extraConfig = fingerprintBlock;
+        rateLimits = {
+          gitea_scrapers = { };
+          gitea_ratelimit_groups = { };
+        };
       };
 
       # This is only used for rate limiting, so we ignore the Cache-Control header,
