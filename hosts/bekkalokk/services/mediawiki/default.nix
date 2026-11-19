@@ -383,8 +383,6 @@ in {
       1 1;
     }
 
-    limit_req_status 429;
-
     fastcgi_cache_path /var/cache/nginx/mediawiki levels=1:2 keys_zone=mediawiki:20m max_size=1g inactive=1d use_temp_path=off;
   '';
 

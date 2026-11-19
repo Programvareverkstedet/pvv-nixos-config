@@ -55,6 +55,8 @@ in
         "~(?s)^(?<prefix>.{8}).{8}$" $prefix;
         default $binary_remote_addr;
       }
+
+      limit_req_status 429;
     ''
 
     (lib.mkIf (cfg.rateLimitZones != { }) (lib.pipe cfg.rateLimitZones [

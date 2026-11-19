@@ -252,7 +252,6 @@ in
           extraConfig = ''
             location ~ ^/(?<phpfile>.+?\.php)(?<pathinfo>/.*)?$ {
               limit_req zone=idp_session burst=10 nodelay;
-              limit_req_status 429;
 
               include ${pkgs.nginx}/conf/fastcgi_params;
               fastcgi_pass unix:${config.services.phpfpm.pools.idp.socket};

@@ -114,7 +114,6 @@ in
         extraConfig = fingerprintBlock + ''
           client_max_body_size 512M;
           limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
-          limit_req_status 429;
         '';
       };
 
@@ -132,7 +131,6 @@ in
         proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
         extraConfig = fingerprintBlock + assetCacheConfig + ''
           limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
-          limit_req_status 429;
         '';
       };
 
@@ -148,7 +146,6 @@ in
         extraConfig = fingerprintBlock + ''
           limit_req zone=gitea_scrapers burst=5 nodelay;
           limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
-          limit_req_status 429;
         '';
       };
 
