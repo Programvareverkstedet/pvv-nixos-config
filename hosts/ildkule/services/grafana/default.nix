@@ -77,12 +77,16 @@ in {
           type = "prometheus";
           url = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
           isDefault = true;
+          jsonData.manageAlerts = false;
         }
         {
           name = "Ildkule loki";
           uid = "ildkule-loki";
           type = "loki";
           url = "http://${config.services.loki.configuration.server.http_listen_address}:${toString config.services.loki.configuration.server.http_listen_port}";
+          # NOTE: it might be valuable turning this on again in the future if we need more efficient log alert queries,
+          #       but for now it's neater to keep all alert logic in one place.
+          jsonData.manageAlerts = false;
         }
       ];
       dashboards.settings.providers = [
