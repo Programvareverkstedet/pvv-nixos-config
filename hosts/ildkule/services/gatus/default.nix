@@ -13,6 +13,8 @@ in
     enable = true;
 
     settings = {
+      metrics = true;
+
       web = {
         address = "127.0.0.1";
         port = 19283;
@@ -202,7 +204,15 @@ in
     forceSSL = true;
     kTLS = true;
     locations."/".proxyPass = "http://localhost:${toString cfg.settings.web.port}";
+    locations."= /metrics".return = "404";
   };
+
+  services.prometheus.scrapeConfigs = lib.mkIf cfg.enable [{
+    job_name = "gatus";
+    static_configs = [{
+      targets = [ "${cfg.settings.web.address}:${toString cfg.settings.web.port}" ];
+    }];
+  }];
 
   services.fluent-bit.settings = {
     parsers = [
