@@ -12,12 +12,15 @@ let
     summary,
     description ? null,
     noDataState ? "NoData",
+    annotations ? { },
   }: {
     inherit uid title for noDataState;
     condition = "B";
     execErrState = "Error";
     labels = { inherit severity; };
-    annotations = { inherit summary; } // lib.optionalAttrs (description != null) { inherit description; };
+    annotations = { inherit summary; }
+      // lib.optionalAttrs (description != null) { inherit description; }
+      // annotations;
     data = [
       {
         refId = "A";
@@ -71,6 +74,13 @@ in
           severity = "critical";
           summary = "{{ $labels.hostname }} is down";
           description = "node-exporter on {{ $labels.instance }} has not been scrapable for 5 minutes.";
+          annotations.dashboard_url = lib.concatStrings [
+            "https://grafana.pvv.ntnu.no/d/rYdddlPWk/node-exporter-full"
+            "?var-job={{ $labels.job }}"
+            "&var-nodename={{ $labels.hostname }}"
+            "&var-node={{ $labels.instance }}"
+            "&from=now-6h&to=now"
+          ];
         })
       ])
 
