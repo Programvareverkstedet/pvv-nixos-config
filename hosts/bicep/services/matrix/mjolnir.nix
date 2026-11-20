@@ -57,6 +57,13 @@ in
         address = "127.0.0.1";
         endpoint = "/metrics";
       };
+
+      health.healthz = {
+        enabled = true;
+        port = 6792;
+        address = "127.0.0.1";
+        endpoint = "/healthz";
+      };
     };
 
     # Module wants it even when not using pantalaimon
@@ -67,6 +74,17 @@ in
   services.nginx.virtualHosts."matrix.pvv.ntnu.no" = lib.mkIf config.services.mjolnir.enable {
     locations."/prometheus-mjolnir/metrics" = {
       proxyPass = "http://127.0.0.1:${toString cfg.settings.health.openMetrics.port}/metrics";
+      extraConfig = ''
+        allow 127.0.0.1;
+        allow ::1;
+        allow ${values.hosts.ildkule.ipv4};
+        allow ${values.hosts.ildkule.ipv6};
+        deny all;
+      '';
+    };
+
+    locations."/mjolnir/healthz" = {
+      proxyPass = "http://127.0.0.1:${toString cfg.settings.health.healthz.port}${cfg.settings.health.healthz.endpoint}";
       extraConfig = ''
         allow 127.0.0.1;
         allow ::1;

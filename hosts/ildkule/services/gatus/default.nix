@@ -161,6 +161,11 @@ in
             "[BODY].ok == true"
           ];
         })
+        (mkService "Matrix Mjolnir" "https://matrix.pvv.ntnu.no/mjolnir/healthz" // {
+          conditions = [
+            "[STATUS] == 200"
+          ];
+        })
         (mkService "Matrix OOYE" "https://ooye.pvv.ntnu.no/api/stats" // {
           conditions = [
             "[STATUS] == 200"
