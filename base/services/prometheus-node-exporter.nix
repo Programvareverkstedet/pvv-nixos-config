@@ -8,7 +8,14 @@ in
     enable = lib.mkDefault true;
     listenAddress = "127.0.0.1";
     port = 9100;
-    enabledCollectors = [ "systemd" ];
+
+    enabledCollectors = [
+      "ethtool"
+      "processes"
+      "softirqs"
+      "systemd"
+      "tcpstat"
+    ];
   };
 
   # https://github.com/NixOS/nixpkgs/issues/510379
