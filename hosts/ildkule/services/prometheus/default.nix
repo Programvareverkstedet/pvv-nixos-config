@@ -15,6 +15,7 @@ in {
     ./mysqld.nix
     ./phpfpm.nix
     ./postgres.nix
+    ./prometheus.nix
   ];
 
   services.prometheus = {
