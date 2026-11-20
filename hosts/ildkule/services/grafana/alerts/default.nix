@@ -60,6 +60,14 @@ let
     folder = "Infrastructure";
     interval = "1m";
   };
+
+  nodeDashboardUrl = lib.concatStrings [
+    "https://grafana.pvv.ntnu.no/d/rYdddlPWk/node-exporter-full"
+    "?var-job={{ $labels.job }}"
+    "&var-nodename={{ $labels.hostname }}"
+    "&var-node={{ $labels.instance }}"
+    "&from=now-6h&to=now"
+  ];
 in
 {
   services.grafana.provision.alerting.rules.settings = {
@@ -74,13 +82,34 @@ in
           severity = "critical";
           summary = "{{ $labels.hostname }} is down";
           description = "node-exporter on {{ $labels.instance }} has not been scrapable for 5 minutes.";
-          annotations.dashboard_url = lib.concatStrings [
-            "https://grafana.pvv.ntnu.no/d/rYdddlPWk/node-exporter-full"
-            "?var-job={{ $labels.job }}"
-            "&var-nodename={{ $labels.hostname }}"
-            "&var-node={{ $labels.instance }}"
-            "&from=now-6h&to=now"
-          ];
+          annotations.dashboard_url = nodeDashboardUrl;
+        })
+        (mkPromAlert {
+          uid = "host-high-cpu";
+          title = "Host high CPU load";
+          expr = let
+            ignoreHosts = [
+              "gluttony"
+              "lupine-1"
+              "lupine-2"
+              "lupine-3"
+              "lupine-4"
+              "lupine-5"
+              "wenche"
+            ];
+            selector = ''hostname!~"${lib.concatStringsSep "|" ignoreHosts}"'';
+          in ''
+            1 - (
+              sum by (hostname, instance, job) (rate(node_cpu_seconds_total{mode=~"idle|iowait", ${selector}}[5m]))
+              /
+              count by (hostname, instance, job) (node_cpu_seconds_total{mode="idle", ${selector}})
+            )
+          '';
+          threshold = { type = "gt"; params = [ 0.8 ]; };
+          for = "10m";
+          summary = "{{ $labels.hostname }} CPU load is {{ humanizePercentage $values.A.Value }}";
+          description = "CPU load on {{ $labels.hostname }} has been above 80% for 10 minutes.";
+          annotations.dashboard_url = nodeDashboardUrl;
         })
       ])
 
