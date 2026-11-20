@@ -21,6 +21,10 @@ in
 
   systemd.services = lib.mkIf cfg.enable {
     "prometheus-smartctl-exporter" = {
+      wantedBy = lib.mkForce [ ];
+      requires = [ "prometheus-smartctl-exporter.socket" ];
+      after = [ "prometheus-smartctl-exporter.socket" ];
+
       unitConfig.ConditionVirtualization = "no";
       serviceConfig = {
         Slice = "system-monitoring.slice";

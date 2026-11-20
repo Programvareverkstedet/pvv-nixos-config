@@ -27,6 +27,10 @@ in
 
   systemd.services = lib.mkIf cfg.enable {
     "prometheus-systemd-exporter" = {
+      wantedBy = lib.mkForce [ ];
+      requires = [ "prometheus-systemd-exporter.socket" ];
+      after = [ "prometheus-systemd-exporter.socket" ];
+
       serviceConfig = {
         Slice = "system-monitoring.slice";
         ExecStart = lib.mkForce "${pkgs.prometheus-systemd-exporter}/bin/systemd_exporter --web.systemd-socket ${lib.escapeShellArgs cfg.extraFlags}";

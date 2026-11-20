@@ -30,6 +30,10 @@ in
 
   systemd.services = lib.mkIf cfg.enable {
     "prometheus-node-exporter" = {
+      wantedBy = lib.mkForce [ ];
+      requires = [ "prometheus-node-exporter.socket" ];
+      after = [ "prometheus-node-exporter.socket" ];
+
       serviceConfig = {
         Slice = "system-monitoring.slice";
         ExecStart = let
