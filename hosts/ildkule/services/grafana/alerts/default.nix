@@ -1,4 +1,8 @@
 { lib, ... }:
+# NOTE: go check these resources:
+# - https://samber.github.io/awesome-prometheus-alerts
+# - https://github.com/search?q=lang%3Anix+provision.alerting&type=code
+# - https://grafana.com/docs/grafana/latest/alerting/
 let
   mkAlert = {
     uid,
