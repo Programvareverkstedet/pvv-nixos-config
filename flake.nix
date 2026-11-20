@@ -65,8 +65,6 @@
     self,
     nixpkgs,
     nixpkgs-unstable,
-    sops-nix,
-    disko,
     ...
   } @ inputs: let
     inherit (nixpkgs) lib;
@@ -184,7 +182,7 @@
                 configurationPath
               ]
               ++ (lib.optionals enableDefaults [
-                sops-nix.nixosModules.sops
+                inputs.sops-nix.nixosModules.sops
                 inputs.roowho2.nixosModules.default
                 self.nixosModules.emergency-access-ramdisk
                 self.nixosModules.python-http-handlers
