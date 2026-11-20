@@ -68,6 +68,8 @@ let
     "&var-node={{ $labels.instance }}"
     "&from=now-6h&to=now"
   ];
+
+  excludeHosts = hosts: lib.optionalString (hosts != [ ]) ''hostname!~"${lib.concatStringsSep "|" hosts}"'';
 in
 {
   services.grafana.provision.alerting.rules.settings = {
@@ -97,7 +99,7 @@ in
               "lupine-5"
               "wenche"
             ];
-            selector = ''hostname!~"${lib.concatStringsSep "|" ignoreHosts}"'';
+            selector = excludeHosts ignoreHosts;
           in ''
             1 - (
               sum by (hostname, instance, job) (rate(node_cpu_seconds_total{mode=~"idle|iowait", ${selector}}[5m]))
@@ -109,6 +111,31 @@ in
           for = "10m";
           summary = "{{ $labels.hostname }} CPU load is {{ humanizePercentage $values.A.Value }}";
           description = "CPU load on {{ $labels.hostname }} has been above 80% for 10 minutes.";
+          annotations.dashboard_url = nodeDashboardUrl;
+        })
+        (mkPromAlert {
+          uid = "host-network-saturated";
+          title = "Host network saturated";
+          expr = let
+            ignoreHosts = [
+              "gluttony"
+              "wenche"
+            ];
+            capacityBytes = "125e6"; # 1 Gbit/s
+            rate = metric: ''
+              sum by (hostname, instance, job, device) (
+                rate(${metric}{device=~"en.*|eth.*", ${excludeHosts ignoreHosts}}[30m])
+              ) / ${capacityBytes}
+            '';
+          in ''
+            label_replace(${rate "node_network_receive_bytes_total"}, "direction", "rx", "", "")
+            or
+            label_replace(${rate "node_network_transmit_bytes_total"}, "direction", "tx", "", "")
+          '';
+          threshold = { type = "gt"; params = [ 0.8 ]; };
+          for = "30m";
+          summary = "Network saturated on {{ $labels.hostname }}[{{ $labels.direction }}]: {{ humanizePercentage $values.A.Value }} of 1 Gbit/s";
+          description = "Avg {{ $labels.direction }} {{ $labels.device }} has been above 80% of link capacity for an hour.";
           annotations.dashboard_url = nodeDashboardUrl;
         })
       ])
