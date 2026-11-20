@@ -136,6 +136,16 @@
               (lib.optionals enableDefaults [
                 # Global overlays go here
                 inputs.roowho2.overlays.default
+                (final: prev: {
+                  inherit (import nixpkgs-unstable (
+                    if localSystem != crossSystem
+                    then {
+                      inherit localSystem crossSystem;
+                    }
+                    else {
+                      system = crossSystem;
+                    })) mjolnir;
+                })
               ])
               ++ overlays;
           }
