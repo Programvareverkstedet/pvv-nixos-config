@@ -1,6 +1,8 @@
 { config, lib, pkgs, values, ... }: let
   cfg = config.services.grafana;
 in {
+  imports = [ ./alerts ];
+
   sops.secrets = let
     owner = "grafana";
     group = "grafana";
