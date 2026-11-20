@@ -1,5 +1,6 @@
 { config, lib, pkgs, values, ... }: let
   cfg = config.services.grafana;
+  grafanaMetricsPort = 9002;
 in {
   imports = [ ./alerts ];
 
@@ -209,6 +210,19 @@ in {
 
   systemd.services.nginx.serviceConfig.SupplementaryGroups = [ "grafana" ];
 
+  services.nginx.virtualHosts."grafana-metrics" = {
+    listen = [ { addr = "127.0.0.1"; port = grafanaMetricsPort; } ];
+    locations."= /metrics".proxyPass = "http://unix:${cfg.settings.server.socket}:";
+    locations."/".return = "404";
+  };
+
+  services.prometheus.scrapeConfigs = [{
+    job_name = "grafana";
+    static_configs = [{
+      targets = [ "127.0.0.1:${toString grafanaMetricsPort}" ];
+    }];
+  }];
+
   services.nginx.virtualHosts.${cfg.settings.server.domain} = {
     enableACME = true;
     forceSSL = true;
@@ -222,6 +236,8 @@ in {
           proxy_buffer_size 1024k;
         '';
       };
+
+      "= /metrics".return = "404";
 
       "/rss-proxy/ntnu-it-status" = {
         proxyPass = "https://status.it.ntnu.no/history.rss";
