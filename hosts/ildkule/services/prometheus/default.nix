@@ -2,6 +2,7 @@
   stateDir = "/data/monitoring/prometheus";
 in {
   imports = [
+    ./blackbox.nix
     ./dibbler.nix
     ./exim.nix
     ./gitea.nix
