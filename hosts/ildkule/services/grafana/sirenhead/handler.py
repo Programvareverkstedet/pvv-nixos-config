@@ -29,15 +29,58 @@ class UnixHTTPConnection(http.client.HTTPConnection):
         self.sock.connect(self.socket_path)
 
 
+COLORS = {
+    "resolved": "#56a64b",
+    "warning": "#f09939",
+    "critical": "#f3422e",
+}
+
+
+def format_alert(alert: dict[str, Any]) -> tuple[str, str]:
+    labels = alert.get("labels", {})
+    name = labels.get("alertname", "unknown alert")
+    summary = alert.get("annotations", {}).get("summary", "")
+    severity = labels.get("severity", "unknown")
+    resolved = alert.get("status") == "resolved"
+
+    tag = "RESOLVED" if resolved else severity.upper()
+    color = COLORS.get("resolved" if resolved else severity, "#808080")
+    links = ", ".join(
+        f'<a href="{html.escape(url)}">{text}</a>'
+        for text, url in [
+            (
+                "📉 How it's going",
+                alert.get(
+                    "panelURL",
+                    alert.get(
+                        "dashboardURL", "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    ),
+                ),
+            ),
+            ("📐 Alert Rule", alert.get("generatorURL")),
+            ("🔕 Ti still", alert.get("silenceURL")),
+        ]
+        if url
+    )
+
+    plain = f"[{tag}] {name}: {summary}"
+    formatted = (
+        f'<font color="{color}"><b>[{tag}]</b></font> '
+        f"{html.escape(name)}: {html.escape(summary)} ({links})"
+    )
+    return plain, formatted
+
+
 def format_message(alert: dict[str, Any]) -> dict[str, str]:
-    title = alert.get("title", "Grafana Alert!")
-    message = alert.get("message", "").strip()
-    lines = html.escape(message).replace("\n", "<br>\n")
+    plain, formatted = zip(
+        *map(format_alert, alert.get("alerts", [])),
+        strict=True,
+    )
     return {
         "msgtype": "m.text",
-        "body": f"{title}\n\n{message}".strip(),
+        "body": "\n".join(["🚨 ALERT 🚨", *plain]),
         "format": "org.matrix.custom.html",
-        "formatted_body": f"<h1>{html.escape(title)}</h1>\n{lines}",
+        "formatted_body": "<br>\n".join(["<b>🚨 ALERT 🚨</b>", *formatted]),
     }
 
 
