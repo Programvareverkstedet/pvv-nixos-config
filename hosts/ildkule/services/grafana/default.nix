@@ -105,6 +105,10 @@ in {
           name = "Blackbox Exporter";
           type = "file";
           url = "https://grafana.com/api/dashboards/14928/revisions/6/download";
+
+          # NOTE: see https://github.com/grafana/grafana/issues/10786
+          # patched with
+          #   sed 's/"\${DS_PROMETHEUS}"/{"type": "prometheus", "uid": "ildkule-prometheus"}/g'
           options.path = dashboards/blackbox.json;
         }
         {

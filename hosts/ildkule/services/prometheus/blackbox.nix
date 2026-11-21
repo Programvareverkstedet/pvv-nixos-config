@@ -162,6 +162,7 @@ in
           replacement = job.targetFormat or "$1";
         }
         { source_labels = [ "__param_target" ]; target_label = "instance"; }
+        { source_labels = [ "__param_target" ]; target_label = "target"; }
         { target_label = "__address__"; replacement = "${cfg.listenAddress}:${toString cfg.port}"; }
       ];
     }) scrapingJobs;

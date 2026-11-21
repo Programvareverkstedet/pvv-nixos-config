@@ -70,7 +70,7 @@
   "links": [],
   "panels": [
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -174,7 +174,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -270,7 +270,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -367,7 +367,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -446,7 +446,7 @@
       "type": "stat"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -542,7 +542,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -626,7 +626,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -712,7 +712,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -790,7 +790,7 @@
       "type": "stat"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -881,7 +881,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -979,7 +979,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1075,7 +1075,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1274,7 +1274,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
         "definition": "label_values(probe_success, target)",
         "description": null,
         "error": null,
@@ -1300,7 +1300,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {"type": "prometheus", "uid": "ildkule-prometheus"},
         "definition": "label_values(probe_http_duration_seconds, phase)",
         "description": null,
         "error": null,
