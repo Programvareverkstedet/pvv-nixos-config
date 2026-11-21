@@ -7,6 +7,32 @@ let
     "shark"
   ];
 
+  # Non-NixOS host to ping
+  extraIcmpHosts = [
+    "ambidextrous"
+    "balduzius"
+    "blossom"
+    "bubbles"
+    "buskerud"
+    "buttercup"
+    "demiurgen"
+    "dvask"
+    "hildring"
+    "innovation"
+    "isvegg"
+    "kana"
+    "knutsen"
+    "microbel"
+    "mirage"
+    "orchid"
+    "principal"
+    "sleipner"
+    "smask"
+    "sunset"
+    "tom"
+    "wegonke"
+  ];
+
   extraCertDomains = [
     "isvegg.pvv.ntnu.no"
   ];
@@ -21,6 +47,15 @@ let
   hasTLS = v:
     (v.forceSSL || v.addSSL || v.onlySSL)
     && (v.enableACME || v.useACMEHost != null);
+
+  icmpTargets = lib.pipe nixosHosts [
+    lib.attrNames
+    (hosts: hosts ++ extraIcmpHosts)
+    (map (hostname: {
+      target = "${hostname}.pvv.ntnu.no";
+      labels = { inherit hostname; };
+    }))
+  ];
 
   httpsVhosts = lib.pipe nixosHosts [
     (lib.mapAttrs (_: nixosConfig: nixosConfig.config.services.nginx.virtualHosts))
@@ -50,6 +85,15 @@ let
   ];
 
   scrapingJobs = {
+    icmp = {
+      interval = "30s";
+      module = {
+        prober = "icmp";
+        timeout = "5s";
+      };
+      targets = icmpTargets;
+    };
+
     https = {
       interval = "1m";
       targetFormat = "https://$1/";
