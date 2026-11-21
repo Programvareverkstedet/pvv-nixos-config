@@ -33,11 +33,18 @@ let
     "wegonke"
   ];
 
-  # These have no AAAA record
   ipv4OnlyIcmpHosts = [
+    # These have no AAAA record
     "balduzius"
     "dvask"
     "knutsen"
+
+    # These have broken IPv6 for some reason
+    "ambidextrous"
+    "buskerud"
+    "gluttony"
+    "ildkule"
+    "kana"
   ];
 
   extraCertTargets = {
