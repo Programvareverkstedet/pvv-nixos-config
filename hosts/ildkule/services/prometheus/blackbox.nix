@@ -29,7 +29,7 @@ let
     "sleipner"
     "smask"
     "sunset"
-    "tom"
+    # "tom"
     "wegonke"
   ];
 
