@@ -1,6 +1,7 @@
 { config, lib, ... }:
 let
   cfg = config.services.gatus;
+  cfgTuwunel = config.services.matrix-tuwunel;
 in
 {
   imports = [
@@ -9,8 +10,20 @@ in
     ./mariadb-checker.nix
   ];
 
+  sops.secrets."keys/tuwunel/elgato/access_token" = {
+    restartUnits = [ "gatus.service" ];
+  };
+
+  sops.templates."gatus.env" = {
+    restartUnits = [ "gatus.service" ];
+    content = ''
+      MATRIX_ACCESS_TOKEN=${config.sops.placeholder."keys/tuwunel/elgato/access_token"}
+    '';
+  };
+
   services.gatus = {
     enable = true;
+    environmentFile = config.sops.templates."gatus.env".path;
 
     settings = {
       metrics = true;
@@ -23,6 +36,14 @@ in
       storage = {
         type = "sqlite";
         path = "/var/lib/gatus/data.db";
+      };
+
+      alerting.matrix = {
+        server-url = "http://127.0.0.1:${toString (lib.head cfgTuwunel.settings.global.port)}";
+        access-token = "$MATRIX_ACCESS_TOKEN";
+        # #grafana:alerts.pvv.ntnu.no
+        internal-room-id = "!hrLcMhBaGzNkiRSXKKxrugXiluXN8044FjIFwjZqFD4";
+        default-alert.send-on-resolved = true;
       };
 
       ui = {
@@ -44,6 +65,7 @@ in
 
         mkWebsite = name: url: {
           inherit name url;
+          alerts = [{ type = "matrix"; }];
           group = "Websites";
           method = "GET";
           conditions = [
@@ -53,6 +75,7 @@ in
 
         mkService = name: url: {
           inherit name url;
+          alerts = [{ type = "matrix"; }];
           group = "Services";
           conditions = [
             "[CONNECTED] == true"
