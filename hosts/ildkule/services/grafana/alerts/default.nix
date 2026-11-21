@@ -76,8 +76,8 @@
       interval = "1m";
     };
 
-    nodeJobs = ''job=~"nixos-node|non-nixos-node"'';
-    hostDown = ''max by (hostname) (up{job=~"nixos-node|non-nixos-node|nixos-systemd|nixos-smartctl"}) == 0'';
+    icmpJobs = ''job=~"blackbox-icmp4|blackbox-icmp6"'';
+    hostDown = ''max by (hostname) (probe_success{${icmpJobs}}) == 0'';
 
     excludeHosts = hosts: lib.optionalString (hosts != [ ]) ''hostname!~"${lib.concatStringsSep "|" hosts}"'';
   };

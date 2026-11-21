@@ -29,9 +29,6 @@ let
     sql = ''job="sql_exporter"'';
   };
 
-  # TODO: it would be better to determine if host is down by scraping
-  #       gatus' ICMP metrics instead.
-  #
   # This creates an alert for a single exporter. If the whole host is down,
   # host-down reports it instead.
   mkExporterDownAlert = name: jobs: mkPromAlert {

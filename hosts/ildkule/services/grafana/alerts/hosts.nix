@@ -1,6 +1,12 @@
 { config, lib, ... }:
 let
-  inherit (config.lib.grafana.alerts) mkPromAlert mkGroup excludeHosts nodeJobs hostDown;
+  inherit (config.lib.grafana.alerts) mkPromAlert mkGroup excludeHosts icmpJobs hostDown;
+
+  icmpDashboardUrl = lib.concatStrings [
+    "https://grafana.pvv.ntnu.no/d/pS6ZuGV7z/prometheus-blackbox-exporter"
+    "?var-target={{ $labels.hostname }}.pvv.ntnu.no"
+    "&from=now-6h&to=now"
+  ];
 
   nodeDashboardUrl = lib.concatStrings [
     "https://grafana.pvv.ntnu.no/d/rYdddlPWk/node-exporter-full"
@@ -9,6 +15,24 @@ let
     "&var-node={{ $labels.instance }}"
     "&from=now-6h&to=now"
   ];
+
+  mkHostUnreachableAlert = version: mkPromAlert {
+    uid = "host-ipv${toString version}-unreachable";
+    title = "Host unreachable over IPv${toString version}";
+    expr = ''
+      probe_success{job="blackbox-icmp${toString version}"}
+        unless on (hostname) (${hostDown})
+    '';
+    threshold = { type = "lt"; params = [ 1 ]; };
+    noDataState = "OK";
+    summary = "{{ $labels.hostname }} is unreachable over IPv${toString version}";
+    description = ''
+      {{ $labels.hostname }} (IPv${toString version}) unpingable for 5 minutes.
+
+      Still answers to the other kind, so the host is probably still up.
+    '';
+    annotations.dashboard_url = icmpDashboardUrl;
+  };
 in
 {
   services.grafana.provision.alerting.rules.settings.groups = [
@@ -16,18 +40,16 @@ in
       (mkPromAlert {
         uid = "host-down";
         title = "Host down";
-        expr = ''
-          up{${nodeJobs}}
-            and on (hostname) (${hostDown})
-        '';
+        expr = ''max by (hostname) (probe_success{${icmpJobs}})'';
         threshold = { type = "lt"; params = [ 1 ]; };
         noDataState = "OK";
         severity = "critical";
         summary = "{{ $labels.hostname }} is down";
-        description = "None of the exporters on {{ $labels.hostname }} have been scrapable for 5 minutes.";
-        annotations.dashboard_url = nodeDashboardUrl;
+        description = "{{ $labels.hostname }} unpingable on both IPv4 and IPv6 for 5 minutes.";
+        annotations.dashboard_url = icmpDashboardUrl;
       })
-
+      (mkHostUnreachableAlert 4)
+      (mkHostUnreachableAlert 6)
       (mkPromAlert {
         uid = "host-high-cpu";
         title = "Host high CPU load";
