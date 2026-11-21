@@ -7,6 +7,7 @@
 #
 {
   imports = [
+    ./certificates.nix
     ./hosts.nix
     ./mail.nix
     ./postgres.nix
