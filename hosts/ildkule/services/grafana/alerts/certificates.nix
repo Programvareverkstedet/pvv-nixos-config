@@ -25,6 +25,16 @@ in
       (mkExpiryAlert { days = 3; severity = "critical"; })
       (mkExpiryAlert { days = 2; severity = "critical"; })
       (mkExpiryAlert { days = 1; severity = "critical"; })
+
+      (mkPromAlert {
+        uid = "certificates-acme-renewal-failed";
+        title = "ACME renewal failed";
+        expr = ''systemd_unit_state{name=~"acme-.+\\.service", state="failed"}'';
+        for = "15m";
+        noDataState = "OK";
+        summary = "{{ $labels.name }} failed on {{ $labels.hostname }}";
+        description = "Check `journalctl -eu {{ $labels.name }}` on {{ $labels.hostname }}.";
+      })
     ])
   ];
 }
