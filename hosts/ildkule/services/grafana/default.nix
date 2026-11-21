@@ -102,6 +102,12 @@ in {
           options.path = dashboards/node-exporter-full.json;
         }
         {
+          name = "Blackbox Exporter";
+          type = "file";
+          url = "https://grafana.com/api/dashboards/14928/revisions/6/download";
+          options.path = dashboards/blackbox.json;
+        }
+        {
           name = "Matrix Synapse";
           type = "file";
           url = "https://github.com/element-hq/synapse/raw/refs/heads/develop/contrib/grafana/synapse.json";
