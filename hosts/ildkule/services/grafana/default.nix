@@ -2,7 +2,10 @@
   cfg = config.services.grafana;
   grafanaMetricsPort = 9002;
 in {
-  imports = [ ./alerts ];
+  imports = [
+    ./alerts
+    ./sirenhead
+  ];
 
   sops.secrets = let
     owner = "grafana";
