@@ -98,7 +98,7 @@ in {
         {
           name = "Node Exporter Full";
           type = "file";
-          url = "https://grafana.com/api/dashboards/1860/revisions/42/download";
+          url = "https://grafana.com/api/dashboards/1860/revisions/46/download";
           options.path = dashboards/node-exporter-full.json;
         }
         {
