@@ -13,6 +13,10 @@
     address = with values.hosts.georg; [ (ipv4 + "/25") (ipv6 + "/64") ];
   };
 
+  environment.systemPackages = [
+    pkgs.firefox
+  ];
+
   services.spotifyd = {
     enable = true;
     settings.global = {
