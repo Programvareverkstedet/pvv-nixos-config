@@ -36,7 +36,7 @@ let
   httpsTargets = lib.pipe httpsVhosts [
     (lib.filter (v: !(lib.elem v.vhost httpsIgnoredVhosts)))
     (map (v: {
-      target = "https://${v.vhost}/";
+      target = v.vhost;
       labels = { inherit (v) hostname vhost; };
     }))
   ];
@@ -52,6 +52,7 @@ let
   scrapingJobs = {
     https = {
       interval = "1m";
+      targetFormat = "https://$1/";
       module = {
         prober = "http";
         timeout = "10s";
@@ -94,6 +95,15 @@ in
         targets = [ t.target ];
         inherit (t) labels;
       }) job.targets;
+      relabel_configs = [
+        {
+          source_labels = [ "__address__" ];
+          target_label = "__param_target";
+          replacement = job.targetFormat or "$1";
+        }
+        { source_labels = [ "__param_target" ]; target_label = "instance"; }
+        { target_label = "__address__"; replacement = "${cfg.listenAddress}:${toString cfg.port}"; }
+      ];
     }) scrapingJobs;
   in lib.mkIf cfg.enable scrapeCfgs;
 }
