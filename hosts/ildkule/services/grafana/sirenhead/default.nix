@@ -18,11 +18,13 @@ in
         "access_token:${config.sops.secrets."keys/tuwunel/sirenhead/access_token".path}"
       ];
       SupplementaryGroups = [ cfgTuwunel.group ];
-      Environment = [
-        "TUWUNEL_SOCKET=${cfgTuwunel.settings.global.unix_socket_path}"
-        "ROOM_ID=!hrLcMhBaGzNkiRSXKKxrugXiluXN8044FjIFwjZqFD4"
-      ];
     };
     handler = builtins.readFile ./handler.py;
+  };
+
+  systemd.services.${config.services.python-http-handlers.sirenhead.name}.environment = {
+    TUWUNEL_SOCKET = cfgTuwunel.settings.global.unix_socket_path;
+    # #grafana:alerts.pvv.ntnu.no
+    ROOM_ID = "!hrLcMhBaGzNkiRSXKKxrugXiluXN8044FjIFwjZqFD4";
   };
 }

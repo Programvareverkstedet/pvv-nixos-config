@@ -1,8 +1,8 @@
-{ config, values, ... }:
+{ config, lib, values, ... }:
 let
   cfg = config.services.matrix-tuwunel;
   domain = "alerts.pvv.ntnu.no";
-  socketPath = "/run/tuwunel/tuwunel.sock";
+  socketPath = "/run/tuwunel.sock";
 in
 {
   services.matrix-tuwunel = {
@@ -43,6 +43,19 @@ in
         client = "https://${domain}";
         server = "${domain}:443";
       };
+    };
+  };
+
+  systemd.sockets.tuwunel = {
+    wantedBy = [ "sockets.target" ];
+    listenStreams = [
+      socketPath
+      "127.0.0.1:${toString (lib.head cfg.settings.global.port)}"
+    ];
+    socketConfig = {
+      SocketUser = cfg.user;
+      SocketGroup = cfg.group;
+      SocketMode = "0660";
     };
   };
 
