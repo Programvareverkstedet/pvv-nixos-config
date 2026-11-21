@@ -180,6 +180,12 @@ in
             "[STATUS] == 200"
           ];
         })
+        (mkService "Tuwunel" "https://alerts.pvv.ntnu.no/_matrix/client/versions" // {
+          method = "GET";
+          conditions = [
+            "[STATUS] == 200"
+          ];
+        })
         (mkService "Minecraft" "http://localhost:1337" // {
           conditions = [
             "[STATUS] == 200"
