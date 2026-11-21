@@ -33,6 +33,13 @@ let
     "wegonke"
   ];
 
+  # These have no AAAA record
+  ipv4OnlyIcmpHosts = [
+    "balduzius"
+    "dvask"
+    "knutsen"
+  ];
+
   extraCertTargets = {
     isvegg = [
       "isvegg.pvv.ntnu.no:443"
@@ -59,14 +66,11 @@ let
     (v.forceSSL || v.addSSL || v.onlySSL)
     && (v.enableACME || v.useACMEHost != null);
 
-  icmpTargets = lib.pipe nixosHosts [
-    lib.attrNames
-    (hosts: hosts ++ extraIcmpHosts)
-    (map (hostname: {
-      target = "${hostname}.pvv.ntnu.no";
-      labels = { inherit hostname; };
-    }))
-  ];
+  icmpHosts = lib.attrNames nixosHosts ++ extraIcmpHosts;
+  mkIcmpTargets = map (hostname: {
+    target = "${hostname}.pvv.ntnu.no";
+    labels = { inherit hostname; };
+  });
 
   httpsVhosts = lib.pipe nixosHosts [
     (lib.mapAttrs (_: nixosConfig: nixosConfig.config.services.nginx.virtualHosts))
@@ -101,13 +105,30 @@ let
   ];
 
   scrapingJobs = {
-    icmp = {
+    icmp4 = {
       interval = "30s";
       module = {
         prober = "icmp";
         timeout = "5s";
+        icmp = {
+          preferred_ip_protocol = "ip4";
+          ip_protocol_fallback = false;
+        };
       };
-      targets = icmpTargets;
+      targets = mkIcmpTargets icmpHosts;
+    };
+
+    icmp6 = {
+      interval = "30s";
+      module = {
+        prober = "icmp";
+        timeout = "5s";
+        icmp = {
+          preferred_ip_protocol = "ip6";
+          ip_protocol_fallback = false;
+        };
+      };
+      targets = mkIcmpTargets (lib.subtractLists ipv4OnlyIcmpHosts icmpHosts);
     };
 
     https = {
