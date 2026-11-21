@@ -33,8 +33,15 @@ let
     "wegonke"
   ];
 
-  extraCertDomains = [
-    "isvegg.pvv.ntnu.no"
+  extraCertTargets = [
+    "isvegg.pvv.ntnu.no:443"
+    
+    "mail.pvv.ntnu.no:465"
+    "imap.pvv.ntnu.no:993"
+    "pop.pvv.ntnu.no:995"
+    
+    # list.pvv.ntnu.no does not have a valid cert
+    # "list.pvv.ntnu.no:443"
   ];
 
   # Hosts that don't respond 200 on /
@@ -81,7 +88,7 @@ let
       target = "${v.name}:443";
       labels = { inherit (v) hostname vhost; };
     }))
-    (targets: targets ++ map (name: { target = "${name}:443"; labels = { }; }) extraCertDomains)
+    (targets: targets ++ map (target: { inherit target; labels = { }; }) extraCertTargets)
   ];
 
   scrapingJobs = {
