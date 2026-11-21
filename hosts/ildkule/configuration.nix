@@ -15,6 +15,7 @@
     ./services/grafana
     ./services/journald-remote.nix
     ./services/loki.nix
+    ./services/tuwunel.nix
     ./services/nginx
     ./services/prometheus
     ./services/scrutiny.nix
