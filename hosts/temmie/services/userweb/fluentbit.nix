@@ -183,6 +183,7 @@ in {
         "job"
       ];
 
+      retry_limit = "no_limits";
       "storage.total_limit_size" = "256M";
     }];
   };

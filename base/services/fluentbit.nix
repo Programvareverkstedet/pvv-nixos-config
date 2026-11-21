@@ -149,6 +149,7 @@ in
             # line_format = "key_value";
             # drop_single_key = true;
 
+            retry_limit = "no_limits";
             "storage.total_limit_size" = "256M";
           }];
         };
