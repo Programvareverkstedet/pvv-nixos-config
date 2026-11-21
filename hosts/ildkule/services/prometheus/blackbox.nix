@@ -33,16 +33,20 @@ let
     "wegonke"
   ];
 
-  extraCertTargets = [
-    "isvegg.pvv.ntnu.no:443"
-    
-    "mail.pvv.ntnu.no:465"
-    "imap.pvv.ntnu.no:993"
-    "pop.pvv.ntnu.no:995"
-    
-    # list.pvv.ntnu.no does not have a valid cert
-    # "list.pvv.ntnu.no:443"
-  ];
+  extraCertTargets = {
+    isvegg = [
+      "isvegg.pvv.ntnu.no:443"
+    ];
+
+    microbel = [
+      "mail.pvv.ntnu.no:465"
+      "imap.pvv.ntnu.no:993"
+      "pop.pvv.ntnu.no:995"
+
+      # list.pvv.ntnu.no does not have a valid cert
+      # "list.pvv.ntnu.no:443"
+    ];
+  };
 
   # Hosts that don't respond 200 on /
   httpsIgnoredVhosts = [
@@ -88,7 +92,12 @@ let
       target = "${v.name}:443";
       labels = { inherit (v) hostname vhost; };
     }))
-    (targets: targets ++ map (target: { inherit target; labels = { }; }) extraCertTargets)
+    (targets: targets ++
+      lib.concatLists (lib.mapAttrsToList (hostname: map (target: {
+        inherit target;
+        labels = { inherit hostname; };
+      })) extraCertTargets)
+    )
   ];
 
   scrapingJobs = {
