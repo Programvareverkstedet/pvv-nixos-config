@@ -29,7 +29,20 @@
     "i686-linux"
   ];
 
-  systemd.network = if (lupineName != "lupine-5")
+  systemd.network = lib.mkMerge [
+    {
+      # Podman/netavark manage these. networkd/resolved complain unless we leave them alone.
+      networks."05-podman-unmanaged" = {
+        matchConfig.Name = "podman*";
+        linkConfig.Unmanaged = true;
+      };
+      networks."05-veth-unmanaged" = {
+        matchConfig.Name = "veth*";
+        linkConfig.Unmanaged = true;
+      };
+    }
+
+    (if (lupineName != "lupine-5")
     then {
       networks."30-enp0s31f6" =  (values.defaultNetworkConfig // {
         matchConfig.Name = "enp0s31f6";
@@ -87,7 +100,8 @@
       wait-online = {
         anyInterface = true;
       };
-    };
+    })
+  ];
 
   # Don't change (even during upgrades) unless you know what you are doing.
   # See https://search.nixos.org/options?show=system.stateVersion
