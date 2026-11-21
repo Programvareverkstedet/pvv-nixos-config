@@ -24,7 +24,7 @@
         receiver = "matrix";
         group_by = [ "grafana_folder" "alertname" ];
         group_wait = "30s";
-        group_interval = "5m";
+        group_interval = "30s";
         repeat_interval = "12h";
       }];
     };
