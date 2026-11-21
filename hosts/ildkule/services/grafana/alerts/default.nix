@@ -8,6 +8,7 @@
 {
   imports = [
     ./certificates.nix
+    ./exporters.nix
     ./hosts.nix
     ./mail.nix
     ./postgres.nix
@@ -74,6 +75,9 @@
       folder = "Infrastructure";
       interval = "1m";
     };
+
+    nodeJobs = ''job=~"nixos-node|non-nixos-node"'';
+    hostDown = ''max by (hostname) (up{job=~"nixos-node|non-nixos-node|nixos-systemd|nixos-smartctl"}) == 0'';
 
     excludeHosts = hosts: lib.optionalString (hosts != [ ]) ''hostname!~"${lib.concatStringsSep "|" hosts}"'';
   };

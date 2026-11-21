@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  inherit (config.lib.grafana.alerts) mkPromAlert mkGroup excludeHosts;
+  inherit (config.lib.grafana.alerts) mkPromAlert mkGroup excludeHosts nodeJobs hostDown;
 
   nodeDashboardUrl = lib.concatStrings [
     "https://grafana.pvv.ntnu.no/d/rYdddlPWk/node-exporter-full"
@@ -9,28 +9,6 @@ let
     "&var-node={{ $labels.instance }}"
     "&from=now-6h&to=now"
   ];
-
-  nodeJobs = ''job=~"nixos-node|non-nixos-node"'';
-  hostJobs = ''job=~"nixos-node|non-nixos-node|nixos-systemd|nixos-smartctl"'';
-  hostDown = ''max by (hostname) (up{${hostJobs}}) == 0'';
-
-  # TODO: it would be better to determine if host is down by scraping
-  #       gatus' ICMP metrics instead.
-  #
-  # This creates an alert for a single exporter. If all exporters go down
-  # at once, we assume the entire host is down instead.
-  mkExporterDownAlert = { uid, name, selector }: mkPromAlert {
-    inherit uid;
-    title = "${name} down";
-    expr = ''
-      up{${selector}}
-        unless on (hostname) (${hostDown})
-    '';
-    threshold = { type = "lt"; params = [ 1 ]; };
-    noDataState = "OK";
-    summary = "${name} on {{ $labels.hostname }} is down";
-    description = "{{ $labels.instance }} ({{ $labels.job }}) unreachable for 5 minutes.";
-  };
 in
 {
   services.grafana.provision.alerting.rules.settings.groups = [
@@ -48,24 +26,6 @@ in
         summary = "{{ $labels.hostname }} is down";
         description = "None of the exporters on {{ $labels.hostname }} have been scrapable for 5 minutes.";
         annotations.dashboard_url = nodeDashboardUrl;
-      })
-
-      (mkExporterDownAlert {
-        uid = "host-node-exporter-down";
-        name = "node-exporter";
-        selector = nodeJobs;
-      })
-
-      (mkExporterDownAlert {
-        uid = "host-systemd-exporter-down";
-        name = "systemd-exporter";
-        selector = ''job="nixos-systemd"'';
-      })
-
-      (mkExporterDownAlert {
-        uid = "host-smartctl-exporter-down";
-        name = "smartctl-exporter";
-        selector = ''job="nixos-smartctl"'';
       })
 
       (mkPromAlert {
