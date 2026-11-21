@@ -59,6 +59,11 @@ in
     };
   };
 
+  systemd.services.tuwunel = {
+    requires = [ "tuwunel.socket" ];
+    after = [ "tuwunel.socket" ];
+  };
+
   users.users.nginx.extraGroups = [ cfg.group ];
 
   services.nginx.virtualHosts.${domain} = {
