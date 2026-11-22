@@ -6,6 +6,13 @@ let
 
   # NOTE: `SHOW shared_memory_size` -> 8477MB, seems to need some extra overhead.
   sharedMemoryOverheadMB = 300;
+
+  allowedRemoteRanges = [
+    values.ipv4-space
+    values.ipv6-space
+    "${values.hosts.ildkule.ipv4}/32"
+    "${values.hosts.ildkule.ipv6}/128"
+  ];
 in
 {
   imports = [
@@ -20,12 +27,7 @@ in
     enableTCPIP = true;
 
     # NOTE: md5 accepts both md5 and scram-sha-256
-    authentication = ''
-      host all all ${values.ipv4-space} md5
-      host all all ${values.ipv6-space} md5
-      host all all ${values.hosts.ildkule.ipv4}/32 md5
-      host all all ${values.hosts.ildkule.ipv6}/32 md5
-    '';
+    authentication = lib.concatMapStringsSep "\n" (range: "host all all ${range} md5") allowedRemoteRanges;
 
     # Hilsen https://pgconfigurator.cybertec-postgresql.com/
     settings = {
@@ -119,6 +121,9 @@ in
         "cert:/etc/certs/postgres.crt"
         "key:/etc/certs/postgres.key"
       ];
+
+      IPAddressDeny = "any";
+      IPAddressAllow = [ "localhost" ] ++ allowedRemoteRanges;
     };
   };
 
