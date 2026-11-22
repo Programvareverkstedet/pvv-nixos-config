@@ -45,8 +45,24 @@ in
         inherit subject;
         summary = "Less than 20% of endurance left.";
       })
-    ])
 
-    # TODO: we're missing a lot here: https://git.pvv.ntnu.no/Drift/issues/issues/692
+      (mkPromAlert {
+        uid = "smart-unreadable-sectors";
+        title = "Disk has unreadable sectors";
+        expr = withDiskInfo ''
+          max by (hostname, device) (
+            smartctl_device_attribute{
+              attribute_value_type="raw",
+              attribute_name=~"Current_Pending_Sector|Offline_Uncorrectable"
+            }
+          )
+        '';
+        threshold = { type = "gt"; params = [ 0 ]; };
+        severity = "critical";
+        inherit subject;
+      })
+
+      # TODO: we're missing a lot here: https://git.pvv.ntnu.no/Drift/issues/issues/692
+    ])
   ];
 }
