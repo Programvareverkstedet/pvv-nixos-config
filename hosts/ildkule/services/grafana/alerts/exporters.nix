@@ -39,7 +39,6 @@ let
         unless on (hostname) (${hostDown})
     '';
     threshold = { type = "lt"; params = [ 1 ]; };
-    noDataState = "OK";
     subject = "{{ $labels.instance }} ({{ $labels.job }})";
     summary = "Unscrapeable for 5 minutes, but the host still answers ping.";
   };
@@ -52,7 +51,6 @@ let
         unless on (hostname) (${hostDown})
     '';
     threshold = { type = "lt"; params = [ 1 ]; };
-    noDataState = "OK";
     subject = "{{ $labels.instance }}";
     summary = "Unscrapeable for 5 minutes, but the host still answers ping.";
   };
@@ -68,7 +66,6 @@ in
           title = "Blackbox exporter down";
           expr = ''max(up{job=~"blackbox-.*"})'';
           threshold = { type = "lt"; params = [ 1 ]; };
-          noDataState = "OK";
           summary = "All blackbox probes unreachable for 5 minutes.";
         })
       ]

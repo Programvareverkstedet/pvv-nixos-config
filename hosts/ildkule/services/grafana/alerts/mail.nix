@@ -26,7 +26,6 @@ in
           ))
         '';
         threshold = { type = "gt"; params = [ 400 ]; };
-        noDataState = "OK";
         for = "0s";
         description = "A user may be sending spam, or the mail server may be bugging out.";
       })

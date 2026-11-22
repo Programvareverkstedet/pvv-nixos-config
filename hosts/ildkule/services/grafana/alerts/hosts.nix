@@ -24,7 +24,6 @@ let
         unless on (hostname) (${hostDown})
     '';
     threshold = { type = "lt"; params = [ 1 ]; };
-    noDataState = "OK";
     subject = "{{ $labels.hostname }}";
     summary = let
       opp = if version == 4 then 6 else 4;
@@ -40,7 +39,6 @@ in
         title = "Host down";
         expr = ''max by (hostname) (probe_success{${icmpJobs}})'';
         threshold = { type = "lt"; params = [ 1 ]; };
-        noDataState = "OK";
         severity = "critical";
         subject = "{{ $labels.hostname }}";
         summary = "Unpingable on both IPv4 and IPv6 for 5 minutes.";

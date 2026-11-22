@@ -39,7 +39,7 @@
       dashboardUrl ? null,
 
       # Whether no data from the query should be treated as an alert state.
-      noDataState ? "NoData",
+      noDataState ? "OK",
       labels ? { },
       annotations ? { },
     }:
