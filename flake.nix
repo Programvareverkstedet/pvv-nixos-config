@@ -230,6 +230,7 @@
             inputs.qotd.overlays.default
           ];
           modules = [
+            inputs.disko.nixosModules.disko
             inputs.pvv-nettsiden.nixosModules.default
             inputs.qotd.nixosModules.default
           ];
