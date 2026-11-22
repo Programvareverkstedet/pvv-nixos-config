@@ -92,7 +92,8 @@
 
     mkGroup = name: rules: {
       orgId = 1;
-      inherit name rules;
+      inherit name;
+      rules = lib.flatten rules;
       folder = "Infrastructure";
       interval = "1m";
     };

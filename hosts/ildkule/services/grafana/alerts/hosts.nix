@@ -131,9 +131,7 @@ in
         dashboardUrl = nodeDashboardUrl;
       })
 
-      (mkPromAlert {
-        uid = "disk-almost-full";
-        title = "Disk almost full";
+      (let
         expr = ''
           max by (hostname, device) (
             1 - (
@@ -143,16 +141,31 @@ in
             )
           )
         '';
-        threshold = { type = "gt"; params = [ 0.9 ]; };
-        for = "15m";
-        subject = "{{ $labels.device }} on {{ $labels.hostname }}";
-        summary = "Over 90% full for 15 minutes.";
-        dashboardUrl = nodeDashboardUrl;
-      })
+      in [
+        (mkPromAlert {
+          uid = "disk-almost-full";
+          title = "Disk almost full";
+          inherit expr;
+          threshold = { type = "gt"; params = [ 0.9 ]; };
+          for = "15m";
+          subject = "{{ $labels.device }} on {{ $labels.hostname }}";
+          summary = "Over 90% full for 15 minutes.";
+          dashboardUrl = nodeDashboardUrl;
+        })
 
-      (mkPromAlert {
-        uid = "disk-inodes-almost-exhausted";
-        title = "Disk inodes almost exhausted";
+        (mkPromAlert {
+          uid = "disk-full";
+          title = "Disk full";
+          inherit expr;
+          threshold = { type = "gt"; params = [ 0.99 ]; };
+          severity = "critical";
+          subject = "{{ $labels.device }} on {{ $labels.hostname }}";
+          summary = "Over 99% full for 5 minutes.";
+          dashboardUrl = nodeDashboardUrl;
+        })
+      ])
+
+      (let
         expr = ''
           max by (hostname, device) (
             1 - (
@@ -162,12 +175,29 @@ in
             )
           )
         '';
-        threshold = { type = "gt"; params = [ 0.9 ]; };
-        for = "15m";
-        subject = "{{ $labels.device }} on {{ $labels.hostname }}";
-        summary = "Over 90% of inodes in use for 15 minutes.";
-        dashboardUrl = nodeDashboardUrl;
-      })
+      in [
+        (mkPromAlert {
+          uid = "disk-inodes-almost-exhausted";
+          title = "Disk inodes almost exhausted";
+          inherit expr;
+          threshold = { type = "gt"; params = [ 0.9 ]; };
+          for = "15m";
+          subject = "{{ $labels.device }} on {{ $labels.hostname }}";
+          summary = "Over 90% of inodes in use for 15 minutes.";
+          dashboardUrl = nodeDashboardUrl;
+        })
+
+        (mkPromAlert {
+          uid = "disk-inodes-exhausted";
+          title = "Disk inodes exhausted";
+          inherit expr;
+          threshold = { type = "gt"; params = [ 0.99 ]; };
+          severity = "critical";
+          subject = "{{ $labels.device }} on {{ $labels.hostname }}";
+          summary = "Over 99% of inodes in use for 5 minutes.";
+          dashboardUrl = nodeDashboardUrl;
+        })
+      ])
     ])
   ];
 }
