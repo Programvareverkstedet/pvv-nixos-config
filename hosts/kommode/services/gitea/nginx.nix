@@ -136,7 +136,7 @@ in
 
       # Throttle per-IP access to commits, raws, blames, etc.
       # This should help mitigate bot abuse to some extent.
-      "~ ^/[^/]+/[^/]+/(src|raw|commits|commit|blame|archive|issues|pulls)(/|$)" = {
+      "~ ^/[^/]+/[^/]+/(src|raw|commits|commit|blame|archive|issues|pulls|compare)(/|$)" = {
         proxyPass = "http://gitea";
         extraConfig = unauthenticatedFallback "@gitea_scrape_limited";
       };
@@ -198,6 +198,7 @@ in
           "/*/*/commit/*"
           "/*/*/commits/*"
           "/*/*/blame/*"
+          "/*/*/compare/*"
           "/*/*/raw/*"
           "/*/*/issues?*"
           "/*/*/pulls?*"
