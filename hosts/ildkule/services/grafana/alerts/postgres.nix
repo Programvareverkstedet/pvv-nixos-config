@@ -22,6 +22,7 @@ in
         '';
         threshold = { type = "gt"; params = [ 0.8 ]; };
         for = "15m";
+        labels.hostname = "bicep";
         summary = "More than 80% of non-superuser connection slots are in use.";
       })
 
@@ -35,6 +36,7 @@ in
         threshold = { type = "lt"; params = [ 1 ]; };
         for = "1m";
         severity = "critical";
+        labels.hostname = "bicep";
         summary = "All non-superuser connection slots are in use, so new connections are refused.";
       })
 
@@ -49,6 +51,7 @@ in
         threshold = { type = "gt"; params = [ 1800 ]; };
         for = "0s";
         subject = "{{ $labels.datname }}";
+        labels.hostname = "bicep";
         description = "Someone left a transaction idling for a long time, this prevents vacuuming and holds locks.";
       })
     ])
