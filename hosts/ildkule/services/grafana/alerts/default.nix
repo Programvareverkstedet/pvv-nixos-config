@@ -97,6 +97,7 @@
       interval = "1m";
     };
 
+    nodeJobs = ''job=~"nixos-node|non-nixos-node"'';
     icmpJobs = ''job=~"blackbox-icmp4|blackbox-icmp6"'';
     hostDown = ''max by (hostname) (probe_success{${icmpJobs}}) == 0'';
 

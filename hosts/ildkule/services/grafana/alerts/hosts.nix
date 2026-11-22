@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  inherit (config.lib.grafana.alerts) mkPromAlert mkGroup excludeHosts icmpJobs hostDown;
+  inherit (config.lib.grafana.alerts) mkPromAlert mkGroup excludeHosts nodeJobs icmpJobs hostDown;
 
   icmpDashboardUrl = lib.concatStrings [
     "https://grafana.pvv.ntnu.no/d/pS6ZuGV7z/prometheus-blackbox-exporter"
@@ -14,6 +14,12 @@ let
     "&var-nodename={{ $labels.hostname }}"
     "&var-node={{ $labels.instance }}"
     "&from=now-6h&to=now"
+  ];
+
+  computeHosts = [
+    "gluttony"
+    "lupine-.+"
+    "wenche"
   ];
 
   mkHostUnreachableAlert = version: mkPromAlert {
@@ -50,16 +56,7 @@ in
         uid = "host-high-cpu";
         title = "Host high CPU load";
         expr = let
-          ignoreHosts = [
-            "gluttony"
-            "lupine-1"
-            "lupine-2"
-            "lupine-3"
-            "lupine-4"
-            "lupine-5"
-            "wenche"
-          ];
-          selector = excludeHosts ignoreHosts;
+          selector = excludeHosts computeHosts;
         in ''
           1 - (
             sum by (hostname, instance, job) (rate(node_cpu_seconds_total{mode=~"idle|iowait", ${selector}}[5m]))
@@ -97,6 +94,40 @@ in
         for = "30m";
         subject = "{{ $labels.device }} ({{ $labels.direction }}) on {{ $labels.hostname }}";
         summary = "Averaged above 80% of link capacity for an hour.";
+        dashboardUrl = nodeDashboardUrl;
+      })
+
+      (mkPromAlert {
+        uid = "host-memory-high";
+        title = "Host memory usage high";
+        expr = ''
+          1 - (
+            node_memory_MemAvailable_bytes{${nodeJobs}, ${excludeHosts computeHosts}}
+            /
+            node_memory_MemTotal_bytes
+          )
+        '';
+        threshold = { type = "gt"; params = [ 0.9 ]; };
+        for = "15m";
+        subject = "{{ $labels.hostname }}";
+        summary = "Over 90% of memory in use for 15 minutes.";
+        dashboardUrl = nodeDashboardUrl;
+      })
+
+      (mkPromAlert {
+        uid = "host-swap-high";
+        title = "Host swap usage high";
+        expr = ''
+          1 - (
+            node_memory_SwapFree_bytes{${nodeJobs}, ${excludeHosts computeHosts}}
+            /
+            (node_memory_SwapTotal_bytes > 0)
+          )
+        '';
+        threshold = { type = "gt"; params = [ 0.9 ]; };
+        for = "15m";
+        subject = "{{ $labels.hostname }}";
+        summary = "Over 90% of swap in use for 15 minutes.";
         dashboardUrl = nodeDashboardUrl;
       })
 
