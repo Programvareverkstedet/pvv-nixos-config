@@ -31,7 +31,6 @@ let
     # Broken IPv6 for unknown reasons
     "ambidextrous"
     "buskerud"
-    "gluttony"
     "kana"
   ];
 
