@@ -26,6 +26,12 @@
         group_wait = "30s";
         group_interval = "30s";
         repeat_interval = "12h";
+        routes = [{
+          object_matchers = [[ "notify" "=" "once" ]];
+          # I think grafana has no way to say "never repeat", so
+          # we just set a big ass eternity here.
+          repeat_interval = "999w";
+        }];
       }];
     };
   };

@@ -14,6 +14,7 @@ let
     threshold = { type = "lt"; params = [ days ]; };
     for = "1h";
     noDataState = "OK";
+    labels.notify = "once";
     summary = "Certificate for {{ $labels.instance }} expires in {{ humanize $values.A.Value }} days";
     description = "Check the acme renewal unit or certbot to see if it's spitting errors";
   };
@@ -21,10 +22,8 @@ in
 {
   services.grafana.provision.alerting.rules.settings.groups = [
     (mkGroup "certificates" [
-      (mkExpiryAlert { days = 14; severity = "warning"; })
-      (mkExpiryAlert { days = 3; severity = "critical"; })
-      (mkExpiryAlert { days = 2; severity = "critical"; })
-      (mkExpiryAlert { days = 1; severity = "critical"; })
+      (mkExpiryAlert { days = 28; severity = "warning"; })
+      (mkExpiryAlert { days = 7; severity = "critical"; })
 
       (mkPromAlert {
         uid = "certificates-acme-renewal-failed";

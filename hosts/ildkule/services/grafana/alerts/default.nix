@@ -27,12 +27,13 @@
       summary,
       description ? null,
       noDataState ? "NoData",
+      labels ? { },
       annotations ? { },
     }: {
       inherit uid title for noDataState;
       condition = "B";
       execErrState = "Error";
-      labels = { inherit severity; };
+      labels = { inherit severity; } // labels;
       annotations = { inherit summary; }
         // lib.optionalAttrs (description != null) { inherit description; }
         // annotations;
