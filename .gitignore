@@ -5,4 +5,4 @@ result*
 *.qcow2
 
 # Python
-___pycache__/
+__pycache__/
