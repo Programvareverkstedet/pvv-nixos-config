@@ -9,7 +9,6 @@ in
     upstreams.userweb-httpd.servers."127.0.0.1:${toString mcfg.httpdPort}" = { };
 
     virtualHosts."temmie.pvv.ntnu.no" = {
-      forceSSL = true;
       enableACME = true;
 
       serverAliases = [

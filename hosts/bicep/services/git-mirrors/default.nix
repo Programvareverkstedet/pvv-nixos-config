@@ -85,8 +85,6 @@ in
   };
 
   services.nginx.virtualHosts."mirrors.pvv.ntnu.no" = {
-    kTLS = true;
-    forceSSL = true;
     enableACME = true;
 
     locations."= /PVV-logo.png".alias = let

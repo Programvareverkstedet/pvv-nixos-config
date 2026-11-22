@@ -244,8 +244,6 @@ in {
 
   services.nginx.virtualHosts.${cfg.settings.server.domain} = {
     enableACME = true;
-    forceSSL = true;
-    kTLS = true;
     locations = {
       "/" = {
         proxyPass = "http://grafana";

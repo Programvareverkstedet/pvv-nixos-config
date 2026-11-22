@@ -154,9 +154,7 @@ in {
   services.nginx.upstreams.loki.servers."${cfg.configuration.server.http_listen_address}:${toString cfg.configuration.server.http_listen_port}" = { };
 
   services.nginx.virtualHosts."loki.pvv.ntnu.no" = {
-    forceSSL = true;
     enableACME = true;
-    kTLS = true;
 
     locations = {
       "/".return = "403";

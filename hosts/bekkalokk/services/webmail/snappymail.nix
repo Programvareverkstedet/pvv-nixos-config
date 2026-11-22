@@ -10,9 +10,7 @@ in {
   };
 
   services.nginx.virtualHosts.${cfg.hostname} = {
-    forceSSL = true;
     enableACME = true;
-    kTLS = true;
   };
 
   services.rsync-pull-targets = {

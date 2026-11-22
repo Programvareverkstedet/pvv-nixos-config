@@ -48,9 +48,7 @@ in
     };
 
     virtualHosts.${config.networking.fqdn} = lib.mkIf config.services.nginx.enable {
-      forceSSL = true;
       enableACME = true;
-      kTLS = true;
 
       locations."/prometheus-smartctl-exporter/metrics" = {
         proxyPass = "http://prometheus-smartctl-exporter/metrics";

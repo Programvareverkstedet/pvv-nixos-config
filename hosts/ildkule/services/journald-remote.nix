@@ -31,9 +31,7 @@ in
     upstreams.journald-remote.servers."unix:${socketPath}" = { };
 
     virtualHosts.${domainName} = {
-      forceSSL = true;
       enableACME = true;
-      kTLS = true;
       # https://github.com/systemd/systemd/issues/39166
       http2 = false;
 

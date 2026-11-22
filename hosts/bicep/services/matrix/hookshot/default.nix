@@ -197,7 +197,6 @@ in
   services.nginx.upstreams.hookshot-webhooks.servers."${webhookListenAddress}:${toString webhookListenPort}" = { };
 
   services.nginx.virtualHosts."hookshot.pvv.ntnu.no" = {
-    kTLS = true;
     enableACME = true;
     addSSL = true;
     locations."/" = {

@@ -70,9 +70,7 @@ in
   services.nginx.upstreams.gitea.servers."unix:${cfg.settings.server.HTTP_ADDR}" = { };
 
   services.nginx.virtualHosts."${domain}" = {
-    forceSSL = true;
     enableACME = true;
-    kTLS = true;
 
     locations = let
       # NOTE: `satisfy any` is a bit weird, the auth requests and stuff behind will be evaluated

@@ -45,9 +45,7 @@ in {
   services.nginx.upstreams.rustical.servers."127.0.0.1:${toString port}" = { };
 
   services.nginx.virtualHosts."${domain}" = {
-    forceSSL = true;
     enableACME = true;
-    kTLS = true;
 
     extraConfig = ''
       client_max_body_size 128M;

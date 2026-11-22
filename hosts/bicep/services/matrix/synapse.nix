@@ -187,9 +187,6 @@ in {
 
   services.nginx.virtualHosts."matrix.pvv.ntnu.no" = lib.mkMerge [
   {
-    kTLS = true;
-  }
-  {
     locations."/_synapse/admin" = {
       proxyPass = "http://$synapse_backend";
       extraConfig = ''

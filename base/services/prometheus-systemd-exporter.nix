@@ -46,9 +46,7 @@ in
     };
 
     virtualHosts.${config.networking.fqdn} = lib.mkIf config.services.nginx.enable {
-      forceSSL = true;
       enableACME = true;
-      kTLS = true;
 
       locations."/prometheus-systemd-exporter/metrics" = {
         proxyPass = "http://prometheus-systemd-exporter/metrics";

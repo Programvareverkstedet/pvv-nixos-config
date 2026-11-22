@@ -164,9 +164,7 @@ in
       };
 
       virtualHosts.${config.networking.fqdn} = lib.mkIf config.services.nginx.enable {
-        forceSSL = true;
         enableACME = true;
-        kTLS = true;
 
         locations."/prometheus-fluent-bit-exporter/metrics" = {
           proxyPass = "http://fluent-bit/api/v2/metrics/prometheus";

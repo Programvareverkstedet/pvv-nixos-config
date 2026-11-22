@@ -139,8 +139,6 @@ in
   services.nginx.upstreams.out-of-your-element.servers."127.0.0.1:${cfg.socket}" = { };
 
   services.nginx.virtualHosts."ooye.pvv.ntnu.no" = {
-    kTLS = true;
-    forceSSL = true;
     enableACME = true;
     locations = let
       metricsOnly = ''

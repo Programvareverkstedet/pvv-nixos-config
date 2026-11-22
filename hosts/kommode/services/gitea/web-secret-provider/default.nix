@@ -120,8 +120,6 @@ in
 
   users.users.nginx.extraGroups = [ "gitea-web" ];
   services.nginx.virtualHosts.${domain} = {
-    kTLS = true;
-    forceSSL = true;
     enableACME = true;
     root = "/var/lib/gitea-web/web";
   };

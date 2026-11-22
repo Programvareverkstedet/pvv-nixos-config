@@ -241,9 +241,7 @@ in
     services.nginx.upstreams.phpfpm-idp.servers."unix:${config.services.phpfpm.pools.idp.socket}" = { };
 
     services.nginx.virtualHosts."idp.pvv.ntnu.no" = {
-      forceSSL = true;
       enableACME = true;
-      kTLS = true;
       root = "${package}/share/php/simplesamlphp/public";
       locations =  {
         # based on https://simplesamlphp.org/docs/stable/simplesamlphp-install.html#configuring-nginx

@@ -301,8 +301,6 @@ in {
   };
 
   services.nginx.virtualHosts."wiki.pvv.ntnu.no" = lib.mkIf cfg.enable {
-    kTLS = true;
-    forceSSL = true;
     enableACME = true;
     locations =  {
       "= /wiki/Main_Page" = lib.mkForce {
@@ -371,7 +369,6 @@ in {
       '';
     };
   };
-
 
   services.nginx.commonHttpConfig = lib.mkIf cfg.enable ''
     # mediawiki_authenticated is true if we are logged in.

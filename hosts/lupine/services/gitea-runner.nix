@@ -134,9 +134,7 @@ in
     };
 
     virtualHosts.${config.networking.fqdn} = lib.mkIf config.services.nginx.enable {
-      forceSSL = true;
       enableACME = true;
-      kTLS = true;
 
       locations."/gitea-runner/metrics" = {
         proxyPass = "http://gitea-runner-metrics/metrics";

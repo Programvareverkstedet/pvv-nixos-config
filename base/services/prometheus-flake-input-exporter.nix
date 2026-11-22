@@ -25,9 +25,7 @@ in
     enable = lib.mkDefault true;
 
     virtualHosts.${config.networking.fqdn} = lib.mkIf config.services.nginx.enable {
-      forceSSL = true;
       enableACME = true;
-      kTLS = true;
 
       locations."/prometheus-nixos-flake-input-exporter/metrics" = {
         root = "${folder}/share";

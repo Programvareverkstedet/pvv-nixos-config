@@ -52,12 +52,7 @@ in {
 
   services.nginx.virtualHosts = {
     ${config.networking.fqdn} = {
-      # NOTE: this overrides the default config in base/services/nginx.nix
-      addSSL = false;
-      forceSSL = true;
       enableACME = true;
-
-      kTLS = true;
 
       serverAliases = [
         "${machine}.pvv.org"
@@ -102,9 +97,7 @@ in {
     };
 
     "${machine}-backend.pvv.ntnu.no" = {
-      forceSSL = true;
       enableACME = true;
-      kTLS = true;
       serverAliases = [
         "${machine}-backend.pvv.org"
       ];
@@ -126,9 +119,7 @@ in {
     };
 
     "${machine}-old.pvv.ntnu.no" = {
-      forceSSL = true;
       enableACME = true;
-      kTLS = true;
       serverAliases = [
         "${machine}-old.pvv.org"
       ];

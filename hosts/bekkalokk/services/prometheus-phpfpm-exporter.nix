@@ -65,9 +65,7 @@ in
     upstreams.prometheus-php-fpm-exporter.servers."${cfg.listenAddress}:${toString cfg.port}" = { };
 
     virtualHosts."www.pvv.ntnu.no" = lib.mkIf config.services.nginx.enable {
-      forceSSL = true;
       enableACME = true;
-      kTLS = true;
 
       locations."/prometheus-php-fpm-exporter/metrics" = {
         proxyPass = "http://prometheus-php-fpm-exporter/metrics";

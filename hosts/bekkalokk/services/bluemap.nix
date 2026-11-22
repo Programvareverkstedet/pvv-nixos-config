@@ -7,8 +7,6 @@ in {
 
   services.nginx.virtualHosts."minecraft.pvv.ntnu.no" = {
     enableACME = true;
-    forceSSL = true;
-    kTLS = true;
     extraConfig = ''
       # Enabling QUIC 0-RTT
       ssl_early_data on;

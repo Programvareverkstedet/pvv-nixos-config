@@ -47,7 +47,6 @@ in
       passwordFile = config.sops.secrets."roundcube/postgres_password".path;
     };
 
-
     extraConfig = let
       phpFormat = pkgs.formats.php { };
 
@@ -84,7 +83,6 @@ in
   services.nginx.upstreams.phpfpm-roundcube.servers."unix:${config.services.phpfpm.pools.roundcube.socket}" = { };
 
   services.nginx.virtualHosts.${domain} = {
-    kTLS = true;
     # NOTE: it is important that this location keeps the same name as upstream:
     # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/mail/roundcube.nix#L195
     locations."~* \\.php(/|$)".extraConfig = lib.mkForce ''

@@ -21,9 +21,7 @@
     upstreams.harmonia.servers."unix:/run/harmonia.sock" = { };
 
     virtualHosts.${config.networking.fqdn} = {
-      forceSSL = true;
       enableACME = true;
-      kTLS = true;
 
       locations."/" = {
         proxyPass = "http://harmonia/";

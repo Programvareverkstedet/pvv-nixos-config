@@ -17,8 +17,6 @@ in
 
   services.nginx.virtualHosts."alps.pvv.ntnu.no" = lib.mkIf cfg.enable {
     enableACME = true;
-    forceSSL = true;
-    kTLS = true;
     locations."/" = {
       proxyPass = "http://alps";
     };
