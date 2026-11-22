@@ -16,6 +16,7 @@ let
     "gitea"
     "gitea-runner"
     "grafana"
+    "home-assistant"
     "livekit"
     "loki"
     "matrix-ooye"

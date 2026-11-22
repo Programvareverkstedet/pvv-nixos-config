@@ -7,6 +7,7 @@ in {
     ./exim.nix
     ./gitea.nix
     ./gitea-runner.nix
+    ./home-assistant.nix
     ./loki.nix
     ./machines.nix
     ./matrix-livekit.nix
@@ -21,6 +22,7 @@ in {
 
   services.prometheus = {
     enable = true;
+    checkConfig = "syntax-only";
 
     listenAddress = "127.0.0.1";
     port = 9001;
