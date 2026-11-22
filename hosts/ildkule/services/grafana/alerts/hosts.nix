@@ -213,6 +213,38 @@ in
           dashboardUrl = nodeDashboardUrl;
         })
       ])
+
+      (mkPromAlert {
+        uid = "host-conntrack-high";
+        title = "Host conntrack table filling up";
+        expr = ''
+          node_nf_conntrack_entries{${nodeJobs}}
+          /
+          node_nf_conntrack_entries_limit
+        '';
+        threshold = { type = "gt"; params = [ 0.8 ]; };
+        for = "10m";
+        subject = "{{ $labels.hostname }}";
+        summary = "Conntrack table over 80% full for 10 minutes.";
+        dashboardUrl = nodeDashboardUrl;
+      })
+
+      (mkPromAlert {
+        uid = "host-conntrack-full";
+        title = "Host conntrack table full";
+        expr = ''
+          sum by (hostname, instance, job) (
+              increase(node_nf_conntrack_stat_early_drop{${nodeJobs}}[10m])
+            + increase(node_nf_conntrack_stat_drop{${nodeJobs}}[10m])
+            - increase(node_nf_conntrack_stat_insert_failed{${nodeJobs}}[10m])
+          )
+        '';
+        threshold = { type = "gt"; params = [ 0 ]; };
+        for = "0s";
+        subject = "{{ $labels.hostname }}";
+        summary = "Conntrack table full, connections are being dropped.";
+        dashboardUrl = nodeDashboardUrl;
+      })
     ])
   ];
 }
