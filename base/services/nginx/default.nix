@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 {
   imports = [
     ./fluentbit.nix
@@ -38,6 +38,8 @@
 
   config = {
     services.nginx = {
+      package = lib.mkDefault pkgs.nginxMainline;
+
       recommendedTlsSettings = true;
       recommendedProxySettings = true;
       recommendedOptimisation = true;
