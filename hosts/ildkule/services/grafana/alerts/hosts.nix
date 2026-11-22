@@ -136,14 +136,36 @@ in
         title = "Disk almost full";
         expr = ''
           max by (hostname, device) (
-            1 - node_filesystem_avail_bytes{fstype=~"ext[234]|btrfs|vfat"}
-              / node_filesystem_size_bytes
+            1 - (
+              node_filesystem_avail_bytes{fstype=~"ext[234]|btrfs|vfat"}
+              /
+              node_filesystem_size_bytes
+            )
           )
         '';
         threshold = { type = "gt"; params = [ 0.9 ]; };
         for = "15m";
         subject = "{{ $labels.device }} on {{ $labels.hostname }}";
         summary = "Over 90% full for 15 minutes.";
+        dashboardUrl = nodeDashboardUrl;
+      })
+
+      (mkPromAlert {
+        uid = "disk-inodes-almost-exhausted";
+        title = "Disk inodes almost exhausted";
+        expr = ''
+          max by (hostname, device) (
+            1 - (
+              node_filesystem_files_free{${nodeJobs}, fstype=~"ext[234]"}
+              /
+              node_filesystem_files
+            )
+          )
+        '';
+        threshold = { type = "gt"; params = [ 0.9 ]; };
+        for = "15m";
+        subject = "{{ $labels.device }} on {{ $labels.hostname }}";
+        summary = "Over 90% of inodes in use for 15 minutes.";
         dashboardUrl = nodeDashboardUrl;
       })
     ])
