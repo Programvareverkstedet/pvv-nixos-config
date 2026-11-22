@@ -25,13 +25,11 @@ let
     '';
     threshold = { type = "lt"; params = [ 1 ]; };
     noDataState = "OK";
-    summary = "{{ $labels.hostname }} is unreachable over IPv${toString version}";
-    description = ''
-      {{ $labels.hostname }} (IPv${toString version}) unpingable for 5 minutes.
-
-      Still answers to the other kind, so the host is probably still up.
-    '';
-    annotations.dashboard_url = icmpDashboardUrl;
+    subject = "{{ $labels.hostname }}";
+    summary = let
+      opp = if version == 4 then 6 else 4;
+    in "Unpingable over IPv${toString version} for 5 minutes, still answers IPv${toString opp}.";
+    dashboardUrl = icmpDashboardUrl;
   };
 in
 {
@@ -44,9 +42,9 @@ in
         threshold = { type = "lt"; params = [ 1 ]; };
         noDataState = "OK";
         severity = "critical";
-        summary = "{{ $labels.hostname }} is down";
-        description = "{{ $labels.hostname }} unpingable on both IPv4 and IPv6 for 5 minutes.";
-        annotations.dashboard_url = icmpDashboardUrl;
+        subject = "{{ $labels.hostname }}";
+        summary = "Unpingable on both IPv4 and IPv6 for 5 minutes.";
+        dashboardUrl = icmpDashboardUrl;
       })
       (mkHostUnreachableAlert 4)
       (mkHostUnreachableAlert 6)
@@ -73,9 +71,9 @@ in
         '';
         threshold = { type = "gt"; params = [ 0.8 ]; };
         for = "10m";
-        summary = "{{ $labels.hostname }} CPU load is {{ humanizePercentage $values.A.Value }}";
-        description = "CPU load on {{ $labels.hostname }} has been above 80% for 10 minutes.";
-        annotations.dashboard_url = nodeDashboardUrl;
+        subject = "{{ $labels.hostname }}";
+        summary = "Above 80% for 10 minutes.";
+        dashboardUrl = nodeDashboardUrl;
       })
 
       (mkPromAlert {
@@ -99,9 +97,9 @@ in
         '';
         threshold = { type = "gt"; params = [ 0.8 ]; };
         for = "30m";
-        summary = "Network saturated on {{ $labels.hostname }}[{{ $labels.direction }}]: {{ humanizePercentage $values.A.Value }} of 1 Gbit/s";
-        description = "Avg {{ $labels.direction }} {{ $labels.device }} has been above 80% of link capacity for an hour.";
-        annotations.dashboard_url = nodeDashboardUrl;
+        subject = "{{ $labels.device }} ({{ $labels.direction }}) on {{ $labels.hostname }}";
+        summary = "Averaged above 80% of link capacity for an hour.";
+        dashboardUrl = nodeDashboardUrl;
       })
 
       (mkPromAlert {
@@ -115,7 +113,9 @@ in
         '';
         threshold = { type = "gt"; params = [ 0.9 ]; };
         for = "15m";
-        summary = "{{ $labels.device }} on {{ $labels.hostname }} is {{ humanizePercentage $values.A.Value }} full";
+        subject = "{{ $labels.device }} on {{ $labels.hostname }}";
+        summary = "Over 90% full for 15 minutes.";
+        dashboardUrl = nodeDashboardUrl;
       })
     ])
   ];

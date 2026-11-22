@@ -22,8 +22,7 @@ in
         '';
         threshold = { type = "gt"; params = [ 0.8 ]; };
         for = "15m";
-        summary = "Postgres is using {{ humanizePercentage $values.A.Value }} of its connections";
-        description = "New connections may be refused, find out who's opening all the connections and why.";
+        summary = "More than 80% of non-superuser connection slots are in use.";
       })
 
       (mkPromAlert {
@@ -36,8 +35,7 @@ in
         threshold = { type = "lt"; params = [ 1 ]; };
         for = "1m";
         severity = "critical";
-        summary = "Postgres is refusing new connections";
-        description = "All non-superuser connection slots are in use.";
+        summary = "All non-superuser connection slots are in use, so new connections are refused.";
       })
 
       (mkPromAlert {
@@ -50,7 +48,7 @@ in
         '';
         threshold = { type = "gt"; params = [ 1800 ]; };
         for = "0s";
-        summary = "Transaction in {{ $labels.datname }} has been open and idle for {{ humanizeDuration $values.A.Value }}";
+        subject = "{{ $labels.datname }}";
         description = "Someone left a transaction idling for a long time, this prevents vacuuming and holds locks.";
       })
     ])

@@ -11,7 +11,6 @@ in
         expr = "exim_queue";
         threshold = { type = "gt"; params = [ 500 ]; };
         for = "30m";
-        summary = "{{ $values.A.Value }} messages in exim queue";
         description = "Mail is piling up, is email transport broken or are remote servers rejecting mail?";
       })
 
@@ -29,7 +28,6 @@ in
         threshold = { type = "gt"; params = [ 400 ]; };
         noDataState = "OK";
         for = "0s";
-        summary = "{{ $values.A.Value }} outbound mail deliveries in the last hour";
         description = "A user may be sending spam, or the mail server may be bugging out.";
       })
     ])

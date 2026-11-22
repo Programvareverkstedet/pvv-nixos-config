@@ -15,7 +15,7 @@ let
     for = "0s";
     noDataState = "OK";
     labels.notify = "once";
-    summary = "Certificate for {{ $labels.instance }} expires in {{ humanize $values.A.Value }} days";
+    subject = "{{ $labels.instance }}";
     description = "Check the acme renewal unit or certbot to see if it's spitting errors";
   };
 in
@@ -31,7 +31,7 @@ in
         expr = ''systemd_unit_state{name=~"acme-.+\\.service", state="failed"}'';
         for = "15m";
         noDataState = "OK";
-        summary = "{{ $labels.name }} failed on {{ $labels.hostname }}";
+        subject = "{{ $labels.name }} on {{ $labels.hostname }}";
         description = "Check `journalctl -eu {{ $labels.name }}` on {{ $labels.hostname }}.";
       })
     ])

@@ -40,8 +40,8 @@ let
     '';
     threshold = { type = "lt"; params = [ 1 ]; };
     noDataState = "OK";
-    summary = "${name} on {{ $labels.hostname }} is down";
-    description = "{{ $labels.instance }} ({{ $labels.job }}) unreachable for 5 minutes.";
+    subject = "{{ $labels.instance }} ({{ $labels.job }})";
+    summary = "Unscrapeable for 5 minutes, but the host still answers ping.";
   };
 
   mkServiceExporterDownAlert = name: selector: mkPromAlert {
@@ -53,8 +53,8 @@ let
     '';
     threshold = { type = "lt"; params = [ 1 ]; };
     noDataState = "OK";
-    summary = "${name} exporter at {{ $labels.instance }} is down";
-    description = "{{ $labels.instance }} ({{ $labels.job }}) unreachable for 5 minutes.";
+    subject = "{{ $labels.instance }}";
+    summary = "Unscrapeable for 5 minutes, but the host still answers ping.";
   };
 in
 {
@@ -69,8 +69,7 @@ in
           expr = ''max(up{job=~"blackbox-.*"})'';
           threshold = { type = "lt"; params = [ 1 ]; };
           noDataState = "OK";
-          summary = "Blackbox exporter is down";
-          description = "All blackbox probes unreachable for 5 minutes.";
+          summary = "All blackbox probes unreachable for 5 minutes.";
         })
       ]
     ))

@@ -24,17 +24,37 @@
       threshold ? { type = "gt"; params = [ 0 ]; },
       for ? "5m",
       severity ? "warning",
-      summary,
+
+      # Should contain dynamically rendered parts pointing at which instance is affected
+      subject ? null,
+
+      # Should contain a brief description of the problem.
+      # Preferably accurately what the alert monitors, rather than what it might (or mightn not) imply.
+      summary ? null,
+
+      # Should contain speculation about what might be wrong and where to go looking.
       description ? null,
+
+      # If overridden, point to a dashboard that might help give a broader picture of the alert.
+      dashboardUrl ? null,
+
+      # Whether no data from the query should be treated as an alert state.
       noDataState ? "NoData",
       labels ? { },
       annotations ? { },
-    }: {
+    }:
+    assert (lib.elem severity [ "critical" "warning" ]);
+    assert (lib.elem noDataState [ "NoData" "OK" "Alerting" ]);
+    assert (lib.elem threshold.type [ "gt" "lt" "eq" ]);
+    {
       inherit uid title for noDataState;
       condition = "B";
       execErrState = "Error";
       labels = { inherit severity; } // labels;
-      annotations = { inherit summary; }
+      annotations =
+           lib.optionalAttrs (dashboardUrl != null) { inherit dashboardUrl; }
+        // lib.optionalAttrs (summary != null) { inherit summary; }
+        // lib.optionalAttrs (subject != null) { inherit subject; }
         // lib.optionalAttrs (description != null) { inherit description; }
         // annotations;
       data = [

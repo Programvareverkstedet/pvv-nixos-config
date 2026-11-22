@@ -38,35 +38,40 @@ COLORS = {
 
 def format_alert(alert: dict[str, Any]) -> tuple[str, str]:
     labels = alert.get("labels", {})
+    annotations = alert.get("annotations", {})
     name = labels.get("alertname", "unknown alert")
-    summary = alert.get("annotations", {}).get("summary", "")
+    subject = annotations.get("subject")
     severity = labels.get("severity", "unknown")
     resolved = alert.get("status") == "resolved"
 
     tag = "RESOLVED" if resolved else severity.upper()
     color = COLORS.get("resolved" if resolved else severity, "#808080")
+    dashboard_url = next(
+        filter(
+            None,
+            [
+                annotations.get("dashboardUrl"),
+                alert.get("panelURL"),
+                alert.get("dashboardURL"),
+            ],
+        ),
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    )
     links = ", ".join(
         f'<a href="{html.escape(url)}">{text}</a>'
         for text, url in [
-            (
-                "📉 How it's going",
-                alert.get(
-                    "panelURL",
-                    alert.get(
-                        "dashboardURL", "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                    ),
-                ),
-            ),
+            ("📉 How it's going", dashboard_url),
             ("📐 Alert Rule", alert.get("generatorURL")),
-            ("🔕 Ti still", alert.get("silenceURL")),
+            ("🔕 Ti still", None if resolved else alert.get("silenceURL")),
         ]
         if url
     )
 
-    plain = f"[{tag}] {name}: {summary}"
+    headline = f"{name}: {subject}" if subject else name
+    plain = f"[{tag}] {headline}"
     formatted = (
         f'<font color="{color}"><b>[{tag}]</b></font> '
-        f"{html.escape(name)}: {html.escape(summary)} ({links})"
+        f"{html.escape(headline)} ({links})"
     )
     return plain, formatted
 
