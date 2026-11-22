@@ -35,12 +35,23 @@ COLORS = {
     "critical": "#f3422e",
 }
 
+# Grafana might send these if an alert is marked with a strict noDataState.
+# In this case, the dynamically rendered subject doesn't make sense, since
+# it's not instance specific, so we replace its garbage output with these.
+META_ALERTS = {
+    "DatasourceNoData": "no data",
+    "DatasourceError": "query error",
+}
+
 
 def format_alert(alert: dict[str, Any]) -> tuple[str, str]:
     labels = alert.get("labels", {})
     annotations = alert.get("annotations", {})
     name = labels.get("alertname", "unknown alert")
     subject = annotations.get("subject")
+    if name in META_ALERTS:
+        subject = META_ALERTS[name]
+        name = labels.get("rulename", name)
     severity = labels.get("severity", "unknown")
     resolved = alert.get("status") == "resolved"
 
