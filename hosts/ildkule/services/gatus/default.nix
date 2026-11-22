@@ -232,7 +232,7 @@ in
     enableACME = true;
     forceSSL = true;
     kTLS = true;
-    locations."/".proxyPass = "http://localhost:${toString cfg.settings.web.port}";
+    locations."/".proxyPass = "http://${cfg.settings.web.address}:${toString cfg.settings.web.port}";
     locations."= /metrics".return = "404";
   };
 

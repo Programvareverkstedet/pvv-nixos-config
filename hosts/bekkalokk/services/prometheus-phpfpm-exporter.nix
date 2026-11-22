@@ -68,7 +68,7 @@ in
       kTLS = true;
 
       locations."/prometheus-php-fpm-exporter/metrics" = {
-        proxyPass = "http://localhost:${toString cfg.port}/metrics";
+        proxyPass = "http://${cfg.listenAddress}:${toString cfg.port}/metrics";
 
         extraConfig = ''
           allow 127.0.0.1;

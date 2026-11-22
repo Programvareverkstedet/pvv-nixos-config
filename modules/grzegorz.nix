@@ -8,7 +8,7 @@ in {
   services.greg-ng = {
     enable = true;
     settings.server = {
-      host = "localhost";
+      host = "127.0.0.1";
       port = 31337;
     };
     enableSway = true;
@@ -31,7 +31,7 @@ in {
 
   services.grzegorz-webui = {
     enable = true;
-    listenAddr = "localhost";
+    listenAddr = "127.0.0.1";
     listenPort = 42069;
     listenWebsocketPort = 42042;
     hostName = "${machine}-old.pvv.ntnu.no";

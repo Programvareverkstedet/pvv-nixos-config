@@ -69,12 +69,12 @@ in
 
   services.nginx.virtualHosts.${matrixDomain} = lib.mkIf cfg.enable {
     locations."^~ /livekit/jwt/" = {
-      proxyPass = "http://localhost:${toString config.services.lk-jwt-service.port}/";
+      proxyPass = "http://127.0.0.1:${toString config.services.lk-jwt-service.port}/";
     };
 
     # TODO: load balance to multiple livekit ingress/egress workers
     locations."^~ /livekit/sfu/" = {
-      proxyPass = "http://localhost:${toString config.services.livekit.settings.port}/";
+      proxyPass = "http://127.0.0.1:${toString config.services.livekit.settings.port}/";
       proxyWebsockets = true;
       extraConfig = ''
         proxy_send_timeout 120;

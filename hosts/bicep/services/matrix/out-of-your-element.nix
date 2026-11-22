@@ -149,16 +149,16 @@ in
         deny all;
       '';
     in {
-      "/".proxyPass = "http://localhost:${cfg.socket}";
+      "/".proxyPass = "http://127.0.0.1:${cfg.socket}";
 
       "^~ /api/message".return = "403";
 
       "= /metrics" = {
-        proxyPass = "http://localhost:${cfg.socket}";
+        proxyPass = "http://127.0.0.1:${cfg.socket}";
         extraConfig = metricsOnly;
       };
       "= /api/stats" = {
-        proxyPass = "http://localhost:${cfg.socket}";
+        proxyPass = "http://127.0.0.1:${cfg.socket}";
         extraConfig = metricsOnly;
       };
     };
