@@ -65,18 +65,31 @@
         }
 
         quic_gso on;
+        quic_host_key /var/lib/nginx/quic_host_key;
 
         ssl_session_cache shared:tls_sessions:64m;
         ssl_conf_command NumTickets 1;
       '';
     };
 
-    systemd.services.nginx.serviceConfig = lib.mkIf config.services.nginx.enable {
-      LimitNOFILE = 65536;
-      # We use jit my dudes
-      MemoryDenyWriteExecute = lib.mkForce false;
-      # What the fuck do we use that where the defaults are not enough???
-      SystemCallFilter = lib.mkForce null;
+    systemd.services.nginx = lib.mkIf config.services.nginx.enable {
+      preStart = lib.mkBefore ''
+        if [ ! -s /var/lib/nginx/quic_host_key ]; then
+          (umask 077; head -c 32 /dev/urandom > /var/lib/nginx/quic_host_key.tmp)
+          mv /var/lib/nginx/quic_host_key.tmp /var/lib/nginx/quic_host_key
+        fi
+      '';
+
+      serviceConfig = {
+        LimitNOFILE = 65536;
+        # We use jit my dudes
+        MemoryDenyWriteExecute = lib.mkForce false;
+        # What the fuck do we use that where the defaults are not enough???
+        SystemCallFilter = lib.mkForce null;
+
+        StateDirectory = "nginx";
+        StateDirectoryMode = "0700";
+      };
     };
 
     services.nginx.virtualHosts = lib.mkIf config.services.nginx.enable {
