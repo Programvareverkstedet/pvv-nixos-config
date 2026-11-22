@@ -64,6 +64,8 @@
           default "";
         }
 
+        add_header_inherit merge;
+
         quic_gso on;
         quic_host_key /var/lib/nginx/quic_host_key;
 
