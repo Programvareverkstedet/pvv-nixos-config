@@ -106,6 +106,18 @@
             ];
           }
         ]) config.services.nginx.defaultListenAddresses;
+
+        locations."/".return = "444";
+      };
+
+      # The blackbox exporter on ildkule wants to probe this
+      ${config.networking.fqdn}.locations."/" = lib.mkDefault {
+        extraConfig = ''
+          location = / {
+            return 204;
+          }
+          return 404;
+        '';
       };
     };
 
