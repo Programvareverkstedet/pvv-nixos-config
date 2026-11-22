@@ -22,11 +22,26 @@ let
     "wenche"
   ];
 
+  ipv4OnlyIcmpHosts = [
+    # No AAAA record
+    "balduzius"
+    "dvask"
+    "knutsen"
+
+    # Broken IPv6 for unknown reasons
+    "ambidextrous"
+    "buskerud"
+    "gluttony"
+    "kana"
+  ];
+
   mkHostUnreachableAlert = version: mkPromAlert {
     uid = "host-ipv${toString version}-unreachable";
     title = "Host unreachable over IPv${toString version}";
-    expr = ''
-      probe_success{job="blackbox-icmp${toString version}"}
+    expr = let
+      selector = lib.optionalString (version == 6) ", ${excludeHosts ipv4OnlyIcmpHosts}";
+    in ''
+      probe_success{job="blackbox-icmp${toString version}"${selector}}
         unless on (hostname) (${hostDown})
     '';
     threshold = { type = "lt"; params = [ 1 ]; };

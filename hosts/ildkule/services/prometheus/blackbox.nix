@@ -33,20 +33,6 @@ let
     "wegonke"
   ];
 
-  ipv4OnlyIcmpHosts = [
-    # These have no AAAA record
-    "balduzius"
-    "dvask"
-    "knutsen"
-
-    # These have broken IPv6 for some reason
-    "ambidextrous"
-    "buskerud"
-    "gluttony"
-    "ildkule"
-    "kana"
-  ];
-
   extraCertTargets = {
     isvegg = [
       "isvegg.pvv.ntnu.no:443"
@@ -73,7 +59,7 @@ let
     (v.forceSSL || v.addSSL || v.onlySSL)
     && (v.enableACME || v.useACMEHost != null);
 
-  icmpHosts = lib.attrNames nixosHosts ++ extraIcmpHosts;
+  icmpHosts = lib.remove config.networking.hostName (lib.attrNames nixosHosts ++ extraIcmpHosts);
   mkIcmpTargets = map (hostname: {
     target = "${hostname}.pvv.ntnu.no";
     labels = { inherit hostname; };
@@ -135,7 +121,7 @@ let
           ip_protocol_fallback = false;
         };
       };
-      targets = mkIcmpTargets (lib.subtractLists ipv4OnlyIcmpHosts icmpHosts);
+      targets = mkIcmpTargets icmpHosts;
     };
 
     https = {
