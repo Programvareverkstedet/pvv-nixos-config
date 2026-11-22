@@ -9,6 +9,7 @@
   imports = [
     ./certificates.nix
     ./exporters.nix
+    ./fluent-bit.nix
     ./hosts.nix
     ./mail.nix
     ./postgres.nix
