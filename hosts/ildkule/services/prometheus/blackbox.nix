@@ -18,6 +18,7 @@ let
     "demiurgen"
     "dvask"
     "hildring"
+    "homeassistant"
     "innovation"
     "isvegg"
     "kana"
@@ -34,6 +35,10 @@ let
   ];
 
   extraCertTargets = {
+    homeassistant = [
+      "homeassistant.pvv.ntnu.no:8123"
+    ];
+
     isvegg = [
       "isvegg.pvv.ntnu.no:443"
     ];
@@ -43,6 +48,12 @@ let
       "imap.pvv.ntnu.no:993"
       "pop.pvv.ntnu.no:995"
       "list.pvv.org:443"
+    ];
+  };
+
+  extraHttpsTargets = {
+    homeassistant = [
+      "homeassistant.pvv.ntnu.no:8123"
     ];
   };
 
@@ -80,6 +91,12 @@ let
       target = v.vhost;
       labels = { inherit (v) hostname vhost; };
     }))
+    (targets: targets ++
+      lib.concatLists (lib.mapAttrsToList (hostname: map (target: {
+        inherit target;
+        labels = { inherit hostname; };
+      })) extraHttpsTargets)
+    )
   ];
 
   certificateTargets = lib.pipe httpsVhostNames [
