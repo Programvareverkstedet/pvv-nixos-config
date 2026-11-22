@@ -81,7 +81,19 @@ in
 
   # TODO: move this back to `webmail.pvv.ntnu.no/roundcube` subpath
 
+  services.nginx.upstreams.phpfpm-roundcube.servers."unix:${config.services.phpfpm.pools.roundcube.socket}" = { };
+
   services.nginx.virtualHosts.${domain} = {
     kTLS = true;
+    # NOTE: it is important that this location keeps the same name as upstream:
+    # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/mail/roundcube.nix#L195
+    locations."~* \\.php(/|$)".extraConfig = lib.mkForce ''
+      fastcgi_pass phpfpm-roundcube;
+      fastcgi_param PATH_INFO $fastcgi_path_info;
+      fastcgi_split_path_info ^(.+\.php)(/.+)$;
+      include ${config.services.nginx.package}/conf/fastcgi.conf;
+
+      client_max_body_size ${toString cfg.maxAttachmentSize};
+    '';
   };
 }

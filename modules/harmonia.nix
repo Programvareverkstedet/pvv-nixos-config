@@ -18,13 +18,15 @@
   services.nginx = {
     enable = true;
 
+    upstreams.harmonia.servers."unix:/run/harmonia.sock" = { };
+
     virtualHosts.${config.networking.fqdn} = {
       forceSSL = true;
       enableACME = true;
       kTLS = true;
 
       locations."/" = {
-        proxyPass = "http://unix:/run/harmonia.sock:/";
+        proxyPass = "http://harmonia/";
         extraConfig = ''
           allow 127.0.0.1;
           allow ::1;

@@ -28,6 +28,8 @@ in
 
   services.nginx = {
     enable = true;
+    upstreams.journald-remote.servers."unix:${socketPath}" = { };
+
     virtualHosts.${domainName} = {
       forceSSL = true;
       enableACME = true;
@@ -38,7 +40,7 @@ in
       locations = {
         "/".return = "403";
         "= /upload" = {
-          proxyPass = "http://unix:${socketPath}:/upload";
+          proxyPass = "http://journald-remote/upload";
           extraConfig = ''
             client_max_body_size 0;
             proxy_request_buffering off;

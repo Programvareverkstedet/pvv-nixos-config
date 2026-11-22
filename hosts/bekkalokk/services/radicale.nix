@@ -23,6 +23,8 @@ in {
     };
   };
 
+  services.nginx.upstreams.radicale.servers."127.0.0.1:${toString radicalePort}" = { };
+
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
     enableACME = true;
@@ -33,7 +35,7 @@ in {
     '';
 
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString radicalePort}";
+      proxyPass = "http://radicale";
       proxyWebsockets = true;
     };
   };

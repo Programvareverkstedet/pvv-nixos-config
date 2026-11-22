@@ -18,12 +18,14 @@ in
     };
   };
 
+  services.nginx.upstreams.scrutiny.servers."${cfg.settings.web.listen.host}:${toString cfg.settings.web.listen.port}" = { };
+
   services.nginx.virtualHosts."scrutiny.pvv.ntnu.no" = {
     kTLS = true;
     enableACME = true;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "http://${cfg.settings.web.listen.host}:${toString cfg.settings.web.listen.port}";
+      proxyPass = "http://scrutiny";
     };
 
     # TODO: allow website access to the outside world, but restrict input api

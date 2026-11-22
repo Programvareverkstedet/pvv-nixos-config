@@ -71,9 +71,14 @@ in
     pantalaimon.username = "bot_admin";
   };
 
+  services.nginx.upstreams = lib.mkIf config.services.mjolnir.enable {
+    mjolnir-metrics.servers."127.0.0.1:${toString cfg.settings.health.openMetrics.port}" = { };
+    mjolnir-healthz.servers."127.0.0.1:${toString cfg.settings.health.healthz.port}" = { };
+  };
+
   services.nginx.virtualHosts."matrix.pvv.ntnu.no" = lib.mkIf config.services.mjolnir.enable {
     locations."/prometheus-mjolnir/metrics" = {
-      proxyPass = "http://127.0.0.1:${toString cfg.settings.health.openMetrics.port}/metrics";
+      proxyPass = "http://mjolnir-metrics/metrics";
       extraConfig = ''
         allow 127.0.0.1;
         allow ::1;
@@ -84,7 +89,7 @@ in
     };
 
     locations."/mjolnir/healthz" = {
-      proxyPass = "http://127.0.0.1:${toString cfg.settings.health.healthz.port}${cfg.settings.health.healthz.endpoint}";
+      proxyPass = "http://mjolnir-healthz${cfg.settings.health.healthz.endpoint}";
       extraConfig = ''
         allow 127.0.0.1;
         allow ::1;

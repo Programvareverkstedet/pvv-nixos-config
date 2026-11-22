@@ -6,6 +6,8 @@ in
   services.nginx = lib.mkIf mcfg.enable {
     enable = true;
 
+    upstreams.userweb-httpd.servers."127.0.0.1:${toString mcfg.httpdPort}" = { };
+
     virtualHosts."temmie.pvv.ntnu.no" = {
       forceSSL = true;
       enableACME = true;
@@ -15,7 +17,7 @@ in
       ];
 
       locations."/" = {
-        proxyPass = "http://127.0.0.1:${toString mcfg.httpdPort}";
+        proxyPass = "http://userweb-httpd";
         extraConfig = ''
           # NOTE: should match `post_max_size`/`upload_max_filesize` in the PHP options.
           client_max_body_size 40M;

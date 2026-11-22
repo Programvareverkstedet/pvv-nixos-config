@@ -42,6 +42,8 @@ in {
     environment.NO_COLOR = "1";
   };
 
+  services.nginx.upstreams.rustical.servers."127.0.0.1:${toString port}" = { };
+
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
     enableACME = true;
@@ -52,7 +54,7 @@ in {
     '';
 
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString port}";
+      proxyPass = "http://rustical";
       proxyWebsockets = true;
     };
   };

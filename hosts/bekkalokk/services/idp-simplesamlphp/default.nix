@@ -238,6 +238,8 @@ in
       rate = "30r/m";
     };
 
+    services.nginx.upstreams.phpfpm-idp.servers."unix:${config.services.phpfpm.pools.idp.socket}" = { };
+
     services.nginx.virtualHosts."idp.pvv.ntnu.no" = {
       forceSSL = true;
       enableACME = true;
@@ -254,7 +256,7 @@ in
               limit_req zone=idp_session burst=10 nodelay;
 
               include ${pkgs.nginx}/conf/fastcgi_params;
-              fastcgi_pass unix:${config.services.phpfpm.pools.idp.socket};
+              fastcgi_pass phpfpm-idp;
               fastcgi_param SCRIPT_FILENAME ${package}/share/php/simplesamlphp/public/$phpfile;
               fastcgi_param SCRIPT_NAME /$phpfile;
               fastcgi_param PATH_INFO $pathinfo if_not_empty;

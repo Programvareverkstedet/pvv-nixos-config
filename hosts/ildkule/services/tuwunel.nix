@@ -66,19 +66,21 @@ in
 
   users.users.nginx.extraGroups = [ cfg.group ];
 
+  services.nginx.upstreams.tuwunel.servers."unix:${socketPath}" = { };
+
   services.nginx.virtualHosts.${domain} = {
     enableACME = true;
     locations = {
       "/".return = "404";
-      "= /".proxyPass = "http://unix:${socketPath}:";
+      "= /".proxyPass = "http://tuwunel";
       "/_matrix/" = {
-        proxyPass = "http://unix:${socketPath}:";
+        proxyPass = "http://tuwunel";
         extraConfig = ''
           client_max_body_size ${toString cfg.settings.global.max_request_size};
           proxy_buffering off;
         '';
       };
-      "/.well-known/matrix/".proxyPass = "http://unix:${socketPath}:";
+      "/.well-known/matrix/".proxyPass = "http://tuwunel";
     };
   };
 }

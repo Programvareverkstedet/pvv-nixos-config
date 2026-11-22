@@ -296,6 +296,10 @@ in {
 
   users.groups.mediawiki.members = lib.mkIf cfg.enable [ "nginx" ];
 
+  services.nginx.upstreams.phpfpm-mediawiki = lib.mkIf cfg.enable {
+    servers."unix:${config.services.phpfpm.pools.mediawiki.socket}" = { };
+  };
+
   services.nginx.virtualHosts."wiki.pvv.ntnu.no" = lib.mkIf cfg.enable {
     kTLS = true;
     forceSSL = true;
@@ -314,7 +318,7 @@ in {
           rewrite ^/w/(.*) /$1 break;
           include ${pkgs.nginx}/conf/fastcgi.conf;
           fastcgi_index index.php;
-          fastcgi_pass unix:${config.services.phpfpm.pools.mediawiki.socket};
+          fastcgi_pass phpfpm-mediawiki;
 
           limit_req zone=mediawiki_scrapers burst=30 nodelay;
 
@@ -339,7 +343,7 @@ in {
         extraConfig = ''
           location ~ ^/simplesaml/(?<phpfile>.+?\.php)(?<pathinfo>/.*)?$ {
             include ${pkgs.nginx}/conf/fastcgi_params;
-            fastcgi_pass unix:${config.services.phpfpm.pools.mediawiki.socket};
+            fastcgi_pass phpfpm-mediawiki;
             fastcgi_param SCRIPT_FILENAME ${simplesamlphp}/share/php/simplesamlphp/public/$phpfile;
 
             # Must be prepended with the baseurlpath

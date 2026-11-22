@@ -67,6 +67,8 @@ in
     };
   };
 
+  services.nginx.upstreams.gitea.servers."unix:${cfg.settings.server.HTTP_ADDR}" = { };
+
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
     enableACME = true;
@@ -103,14 +105,14 @@ in
       '';
     in {
       "/" = {
-        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        proxyPass = "http://gitea";
         extraConfig = ''
           client_max_body_size 512M;
         '' + unauthenticatedFallback "@gitea_unauthenticated";
       };
 
       "@gitea_unauthenticated" = {
-        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        proxyPass = "http://gitea";
         extraConfig = fingerprintBlock + ''
           client_max_body_size 512M;
           limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
@@ -118,17 +120,17 @@ in
       };
 
       "= /-/ws" = {
-        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        proxyPass = "http://gitea";
         proxyWebsockets = true;
       };
 
       "/assets/" = {
-        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        proxyPass = "http://gitea";
         extraConfig = assetCacheConfig + unauthenticatedFallback "@gitea_unauthenticated_assets";
       };
 
       "@gitea_unauthenticated_assets" = {
-        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        proxyPass = "http://gitea";
         extraConfig = fingerprintBlock + assetCacheConfig + ''
           limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
         '';
@@ -137,12 +139,12 @@ in
       # Throttle per-IP access to commits, raws, blames, etc.
       # This should help mitigate bot abuse to some extent.
       "~ ^/[^/]+/[^/]+/(src|raw|commits|commit|blame|archive|issues|pulls)(/|$)" = {
-        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        proxyPass = "http://gitea";
         extraConfig = unauthenticatedFallback "@gitea_scrape_limited";
       };
 
       "@gitea_scrape_limited" = {
-        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        proxyPass = "http://gitea";
         extraConfig = fingerprintBlock + ''
           limit_req zone=gitea_scrapers burst=5 nodelay;
           limit_req zone=gitea_ratelimit_groups burst=10 nodelay;
@@ -152,7 +154,7 @@ in
       # This is only used for rate limiting, so we ignore the Cache-Control header,
       # and cache the response for 30 seconds nonetheless.
       "= /_gitea_is_authenticated" = {
-        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}:/api/v1/user";
+        proxyPass = "http://gitea/api/v1/user";
         extraConfig = ''
           internal;
           proxy_pass_request_body off;
@@ -168,7 +170,7 @@ in
       };
 
       "= /metrics" = {
-        proxyPass = "http://unix:${cfg.settings.server.HTTP_ADDR}";
+        proxyPass = "http://gitea";
         extraConfig = ''
           allow ${values.hosts.ildkule.ipv4}/32;
           allow ${values.hosts.ildkule.ipv6}/128;

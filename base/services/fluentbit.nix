@@ -159,13 +159,17 @@ in
     services.nginx = lib.mkIf cfg.enable {
       enable = lib.mkDefault true;
 
+      upstreams.fluent-bit = lib.mkIf config.services.nginx.enable {
+        servers."127.0.0.1:${toString cfg.settings.service.http_port}" = { };
+      };
+
       virtualHosts.${config.networking.fqdn} = lib.mkIf config.services.nginx.enable {
         forceSSL = true;
         enableACME = true;
         kTLS = true;
 
         locations."/prometheus-fluent-bit-exporter/metrics" = {
-          proxyPass = "http://127.0.0.1:${toString cfg.settings.service.http_port}/api/v2/metrics/prometheus";
+          proxyPass = "http://fluent-bit/api/v2/metrics/prometheus";
           recommendedProxySettings = true;
 
           extraConfig = ''

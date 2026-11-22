@@ -71,6 +71,8 @@ in {
     };
 
     services.nginx = mkIf (cfg.hostname != null) {
+      upstreams.phpfpm-snappymail.servers."unix:${config.services.phpfpm.pools.snappymail.socket}" = { };
+
       virtualHosts."${cfg.hostname}" = {
         locations."/".extraConfig = ''
           index index.php;
@@ -85,7 +87,7 @@ in {
           include ${config.services.nginx.package}/conf/fastcgi_params;
 
           fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
-          fastcgi_pass unix:${config.services.phpfpm.pools.snappymail.socket};
+          fastcgi_pass phpfpm-snappymail;
         '';
         extraConfig = ''
           client_max_body_size ${maxUploadSize};

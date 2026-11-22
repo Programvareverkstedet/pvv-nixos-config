@@ -227,9 +227,11 @@ in {
 
   systemd.services.nginx.serviceConfig.SupplementaryGroups = [ "grafana" ];
 
+  services.nginx.upstreams.grafana.servers."unix:${cfg.settings.server.socket}" = { };
+
   services.nginx.virtualHosts."grafana-metrics" = {
     listen = [ { addr = "127.0.0.1"; port = grafanaMetricsPort; } ];
-    locations."= /metrics".proxyPass = "http://unix:${cfg.settings.server.socket}:";
+    locations."= /metrics".proxyPass = "http://grafana";
     locations."/".return = "404";
   };
 
@@ -246,7 +248,7 @@ in {
     kTLS = true;
     locations = {
       "/" = {
-        proxyPass = "http://unix:${cfg.settings.server.socket}:";
+        proxyPass = "http://grafana";
         proxyWebsockets = true;
         extraConfig = ''
           proxy_buffers 8 1024k;

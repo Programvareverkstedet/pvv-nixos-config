@@ -129,13 +129,17 @@ in
   services.nginx = {
     enable = lib.mkDefault true;
 
+    upstreams.gitea-runner-metrics = lib.mkIf config.services.nginx.enable {
+      servers."${cfg.settings.metrics.addr}" = { };
+    };
+
     virtualHosts.${config.networking.fqdn} = lib.mkIf config.services.nginx.enable {
       forceSSL = true;
       enableACME = true;
       kTLS = true;
 
       locations."/gitea-runner/metrics" = {
-        proxyPass = "http://${cfg.settings.metrics.addr}/metrics";
+        proxyPass = "http://gitea-runner-metrics/metrics";
 
         extraConfig = ''
           allow 127.0.0.1;

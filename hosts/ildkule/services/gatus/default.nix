@@ -228,11 +228,15 @@ in
 
   systemd.services.gatus.environment.GATUS_LOG_LEVEL = "WARN";
 
+  services.nginx.upstreams.gatus = lib.mkIf cfg.enable {
+    servers."${cfg.settings.web.address}:${toString cfg.settings.web.port}" = { };
+  };
+
   services.nginx.virtualHosts."status.pvv.ntnu.no" = lib.mkIf cfg.enable {
     enableACME = true;
     forceSSL = true;
     kTLS = true;
-    locations."/".proxyPass = "http://${cfg.settings.web.address}:${toString cfg.settings.web.port}";
+    locations."/".proxyPass = "http://gatus";
     locations."= /metrics".return = "404";
   };
 

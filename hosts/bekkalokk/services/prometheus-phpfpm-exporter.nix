@@ -62,13 +62,15 @@ in
   };
 
   services.nginx = lib.mkIf cfg.enable {
+    upstreams.prometheus-php-fpm-exporter.servers."${cfg.listenAddress}:${toString cfg.port}" = { };
+
     virtualHosts."www.pvv.ntnu.no" = lib.mkIf config.services.nginx.enable {
       forceSSL = true;
       enableACME = true;
       kTLS = true;
 
       locations."/prometheus-php-fpm-exporter/metrics" = {
-        proxyPass = "http://${cfg.listenAddress}:${toString cfg.port}/metrics";
+        proxyPass = "http://prometheus-php-fpm-exporter/metrics";
 
         extraConfig = ''
           allow 127.0.0.1;

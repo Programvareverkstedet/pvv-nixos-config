@@ -67,14 +67,20 @@ in
     environment.LIVEKIT_FULL_ACCESS_HOMESERVERS = builtins.concatStringsSep "," [ "pvv.ntnu.no" ];
   };
 
+  services.nginx.upstreams = lib.mkIf cfg.enable {
+    lk-jwt-service.servers."127.0.0.1:${toString config.services.lk-jwt-service.port}" = { };
+    livekit.servers."127.0.0.1:${toString config.services.livekit.settings.port}" = { };
+    livekit-metrics.servers."127.0.0.1:${toString cfg.settings.prometheus_port}" = { };
+  };
+
   services.nginx.virtualHosts.${matrixDomain} = lib.mkIf cfg.enable {
     locations."^~ /livekit/jwt/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.lk-jwt-service.port}/";
+      proxyPass = "http://lk-jwt-service/";
     };
 
     # TODO: load balance to multiple livekit ingress/egress workers
     locations."^~ /livekit/sfu/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.livekit.settings.port}/";
+      proxyPass = "http://livekit/";
       proxyWebsockets = true;
       extraConfig = ''
         proxy_send_timeout 120;
@@ -87,7 +93,7 @@ in
     };
 
     locations."/prometheus-livekit/metrics" = {
-      proxyPass = "http://127.0.0.1:${toString cfg.settings.prometheus_port}/metrics";
+      proxyPass = "http://livekit-metrics/metrics";
       extraConfig = ''
         allow 127.0.0.1;
         allow ::1;

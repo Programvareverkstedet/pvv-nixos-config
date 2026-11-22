@@ -61,6 +61,8 @@ in {
     requires = [ "sops-install-secrets.service" ];
   };
 
+  services.nginx.upstreams.vaultwarden.servers."${address}:${toString port}" = { };
+
   services.nginx.virtualHosts."${domain}" = {
     forceSSL = true;
     enableACME = true;
@@ -71,7 +73,7 @@ in {
     '';
 
     locations."/" = {
-      proxyPass = "http://${address}:${toString port}";
+      proxyPass = "http://vaultwarden";
       proxyWebsockets = true;
     };
   };

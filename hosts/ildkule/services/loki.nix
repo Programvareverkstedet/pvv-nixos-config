@@ -151,6 +151,8 @@ in {
     ];
   };
 
+  services.nginx.upstreams.loki.servers."${cfg.configuration.server.http_listen_address}:${toString cfg.configuration.server.http_listen_port}" = { };
+
   services.nginx.virtualHosts."loki.pvv.ntnu.no" = {
     forceSSL = true;
     enableACME = true;
@@ -159,7 +161,7 @@ in {
     locations = {
       "/".return = "403";
       "/loki/api/v1/push" = {
-        proxyPass = "http://${cfg.configuration.server.http_listen_address}:${toString cfg.configuration.server.http_listen_port}/loki/api/v1/push";
+        proxyPass = "http://loki/loki/api/v1/push";
         extraConfig = ''
           allow 127.0.0.1;
           allow ::1;
@@ -175,7 +177,7 @@ in {
         '';
       };
       "/ready" = {
-        proxyPass = "http://${cfg.configuration.server.http_listen_address}:${toString cfg.configuration.server.http_listen_port}/ready";
+        proxyPass = "http://loki/ready";
         extraConfig = ''
           allow 127.0.0.1;
           allow ::1;

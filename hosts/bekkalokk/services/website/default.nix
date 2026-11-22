@@ -144,6 +144,8 @@ in {
     useACMEHost = "www.pvv.ntnu.no";
   };
 
+  services.nginx.upstreams.tom.servers."tom.pvv.ntnu.no:443" = { };
+
   services.nginx.virtualHosts.${cfg.domainName} = {
     kTLS = true;
     locations = {
@@ -151,7 +153,8 @@ in {
       "^~ /~" = {
         extraConfig = ''
           proxy_redirect off;
-          proxy_pass https://tom.pvv.ntnu.no;
+          proxy_pass https://tom;
+          proxy_ssl_name tom.pvv.ntnu.no;
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

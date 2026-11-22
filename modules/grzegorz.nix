@@ -44,6 +44,12 @@ in {
   };
 
   services.nginx.enable = true;
+  services.nginx.upstreams = {
+    greg-ng.servers."${grg.settings.server.host}:${toString grg.settings.server.port}" = { };
+    grzegorz-webui.servers."${grgw.listenAddr}:${toString grgw.listenPort}" = { };
+    grzegorz-webui-websocket.servers."${grgw.listenAddr}:${toString grgw.listenWebsocketPort}" = { };
+  };
+
   services.nginx.virtualHosts = {
     ${config.networking.fqdn} = {
       # NOTE: this overrides the default config in base/services/nginx.nix
@@ -67,18 +73,18 @@ in {
       '';
 
       locations."/docs" = {
-        proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
+        proxyPass = "http://greg-ng";
         recommendedProxySettings = true;
       };
 
       locations."/api" = {
-        proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
+        proxyPass = "http://greg-ng";
         proxyWebsockets = true;
         recommendedProxySettings = true;
       };
 
       locations."/health" = {
-        proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
+        proxyPass = "http://greg-ng";
         recommendedProxySettings = true;
         extraConfig = ''
           # pvv
@@ -113,7 +119,7 @@ in {
       '';
 
       locations."/" = {
-        proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
+        proxyPass = "http://greg-ng";
         proxyWebsockets = true;
         recommendedProxySettings = true;
       };
@@ -137,21 +143,21 @@ in {
       '';
 
       locations."/" = {
-        proxyPass = "http://${grgw.listenAddr}:${toString grgw.listenPort}";
+        proxyPass = "http://grzegorz-webui";
         recommendedProxySettings = true;
       };
       # https://github.com/rawpython/remi/issues/216
       locations."/websocket" = {
-        proxyPass = "http://${grgw.listenAddr}:${toString grgw.listenWebsocketPort}";
+        proxyPass = "http://grzegorz-webui-websocket";
         proxyWebsockets = true;
         recommendedProxySettings = true;
       };
       locations."/api" = {
-        proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
+        proxyPass = "http://greg-ng";
         recommendedProxySettings = true;
       };
       locations."/docs" = {
-        proxyPass = "http://${grg.settings.server.host}:${toString grg.settings.server.port}";
+        proxyPass = "http://greg-ng";
         recommendedProxySettings = true;
       };
     };

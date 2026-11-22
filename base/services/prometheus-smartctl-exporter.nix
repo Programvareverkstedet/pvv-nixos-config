@@ -43,13 +43,17 @@ in
   services.nginx = lib.mkIf cfg.enable {
     enable = lib.mkDefault true;
 
+    upstreams.prometheus-smartctl-exporter = lib.mkIf config.services.nginx.enable {
+      servers."unix:${socketPath}" = { };
+    };
+
     virtualHosts.${config.networking.fqdn} = lib.mkIf config.services.nginx.enable {
       forceSSL = true;
       enableACME = true;
       kTLS = true;
 
       locations."/prometheus-smartctl-exporter/metrics" = {
-        proxyPass = "http://unix:${socketPath}:/metrics";
+        proxyPass = "http://prometheus-smartctl-exporter/metrics";
 
         extraConfig = ''
           allow 127.0.0.1;

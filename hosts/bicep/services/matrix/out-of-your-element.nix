@@ -136,6 +136,8 @@ in
     ];
   };
 
+  services.nginx.upstreams.out-of-your-element.servers."127.0.0.1:${cfg.socket}" = { };
+
   services.nginx.virtualHosts."ooye.pvv.ntnu.no" = {
     kTLS = true;
     forceSSL = true;
@@ -149,16 +151,16 @@ in
         deny all;
       '';
     in {
-      "/".proxyPass = "http://127.0.0.1:${cfg.socket}";
+      "/".proxyPass = "http://out-of-your-element";
 
       "^~ /api/message".return = "403";
 
       "= /metrics" = {
-        proxyPass = "http://127.0.0.1:${cfg.socket}";
+        proxyPass = "http://out-of-your-element";
         extraConfig = metricsOnly;
       };
       "= /api/stats" = {
-        proxyPass = "http://127.0.0.1:${cfg.socket}";
+        proxyPass = "http://out-of-your-element";
         extraConfig = metricsOnly;
       };
     };
