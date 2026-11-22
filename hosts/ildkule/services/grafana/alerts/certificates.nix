@@ -12,7 +12,7 @@ let
       (probe_ssl_last_chain_expiry_timestamp_seconds{${certificateJob}} - time()) / 86400
     '';
     threshold = { type = "lt"; params = [ days ]; };
-    for = "1h";
+    for = "0s";
     noDataState = "OK";
     labels.notify = "once";
     summary = "Certificate for {{ $labels.instance }} expires in {{ humanize $values.A.Value }} days";
