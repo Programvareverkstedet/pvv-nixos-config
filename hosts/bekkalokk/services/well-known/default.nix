@@ -17,6 +17,7 @@
       "^~ /.well-known/matrix/" = {
         extraConfig = ''
           proxy_set_header Host matrix.pvv.ntnu.no;
+          proxy_ssl_server_name on;
           proxy_pass https://matrix.pvv.ntnu.no/.well-known/matrix/;
         '';
       };
