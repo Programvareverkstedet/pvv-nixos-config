@@ -109,6 +109,7 @@ in
         (mkMachine "buttercup")
         (mkMachine "demiurgen")
         (mkMachine "hildring")
+        (mkMachine "homeassistant")
         (mkMachine "innovation")
         (mkMachine "isvegg")
         (mkMachine "knutsen")
@@ -150,6 +151,12 @@ in
           conditions = [
             "[STATUS] == 200"
             "[BODY].status == ok"
+          ];
+        })
+        (mkWebsite "Home Assistant" "https://homeassistant.pvv.ntnu.no:8123/auth/providers" // {
+          conditions = [
+            "[STATUS] == 200"
+            "len([BODY].providers) > 0"
           ];
         })
         (mkWebsite "IDP" "https://idp.pvv.ntnu.no")
