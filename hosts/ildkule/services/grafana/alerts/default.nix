@@ -12,6 +12,7 @@
     ./hosts.nix
     ./mail.nix
     ./postgres.nix
+    ./smart.nix
   ];
 
   lib.grafana.alerts = rec {
