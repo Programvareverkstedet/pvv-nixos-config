@@ -100,7 +100,7 @@
               "deferred"
             ];
           }
-        ]) [ "0.0.0.0" "[::0]" ];
+        ]) config.services.nginx.defaultListenAddresses;
       };
     };
 
