@@ -63,6 +63,9 @@
         }
 
         quic_gso on;
+
+        ssl_session_cache shared:tls_sessions:64m;
+        ssl_conf_command NumTickets 1;
       '';
     };
 
