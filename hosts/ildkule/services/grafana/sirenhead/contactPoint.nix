@@ -23,7 +23,7 @@
         orgId = 1;
         receiver = "matrix";
         group_by = [ "grafana_folder" "alertname" ];
-        group_wait = "30s";
+        group_wait = "1m";
         group_interval = "30s";
         repeat_interval = "12h";
         routes = [{
