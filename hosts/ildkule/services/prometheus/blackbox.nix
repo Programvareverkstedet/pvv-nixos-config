@@ -42,9 +42,7 @@ let
       "mail.pvv.ntnu.no:465"
       "imap.pvv.ntnu.no:993"
       "pop.pvv.ntnu.no:995"
-
-      # list.pvv.ntnu.no does not have a valid cert
-      # "list.pvv.ntnu.no:443"
+      "list.pvv.org:443"
     ];
   };
 
