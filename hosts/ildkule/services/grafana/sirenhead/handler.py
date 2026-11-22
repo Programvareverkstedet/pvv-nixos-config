@@ -71,26 +71,45 @@ def format_alert(alert: dict[str, Any]) -> tuple[str, str]:
     return plain, formatted
 
 
-def format_message(alert: dict[str, Any]) -> dict[str, str]:
-    plain, formatted = zip(
-        *map(format_alert, alert.get("alerts", [])),
-        strict=True,
-    )
+def is_critical(alert: dict[str, Any]) -> bool:
+    severity = alert.get("labels", {}).get("severity")
+    return alert.get("status") == "firing" and severity == "critical"
+
+
+def format_message(
+    alerts: list[dict[str, Any]],
+    msgtype: str,
+) -> dict[str, str]:
+    plain, formatted = map(list, zip(*map(format_alert, alerts), strict=True))
+    if msgtype == "m.text":
+        plain.insert(0, "🚨 ALERT 🚨")
+        formatted.insert(0, "<b>🚨 ALERT 🚨</b>")
     return {
-        "msgtype": "m.text",
-        "body": "\n".join(["🚨 ALERT 🚨", *plain]),
+        "msgtype": msgtype,
+        "body": "\n".join(plain),
         "format": "org.matrix.custom.html",
-        "formatted_body": "<br>\n".join(["<b>🚨 ALERT 🚨</b>", *formatted]),
+        "formatted_body": "<br>\n".join(formatted),
     }
 
 
-def send_alert(alert: dict[str, Any]) -> None:
+def format_messages(payload: dict[str, Any]) -> list[dict[str, str]]:
+    alerts = payload.get("alerts", [])
+    critical = [a for a in alerts if is_critical(a)]
+    rest = [a for a in alerts if not is_critical(a)]
+    return [
+        format_message(group, msgtype)
+        for group, msgtype in [(rest, "m.notice"), (critical, "m.text")]
+        if group
+    ]
+
+
+def send_message(content: dict[str, str]) -> None:
     path = f"/_matrix/client/v3/rooms/{quote(ROOM_ID, safe='')}/send/m.room.message/{uuid.uuid4().hex}"
     with closing(UnixHTTPConnection(TUWUNEL_SOCKET)) as conn:
         conn.request(
             "PUT",
             path,
-            json.dumps(format_message(alert)),
+            json.dumps(content),
             {
                 "Authorization": f"Bearer {ACCESS_TOKEN}",
                 "Content-Type": "application/json",
@@ -109,6 +128,7 @@ def send_alert(alert: dict[str, Any]) -> None:
 class Handler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         content = self.rfile.read(int(self.headers["Content-Length"]))
-        send_alert(json.loads(content))
+        for message in format_messages(json.loads(content)):
+            send_message(message)
         self.send_response(HTTPStatus.NO_CONTENT)
         self.end_headers()
