@@ -13,6 +13,7 @@
     ./hosts.nix
     ./mail.nix
     ./matrix-ooye.nix
+    ./matrix-synapse.nix
     ./postgres.nix
     ./smart.nix
   ];
