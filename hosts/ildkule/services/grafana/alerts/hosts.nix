@@ -214,6 +214,22 @@ in
       ])
 
       (mkPromAlert {
+        uid = "host-nfs-mount-broken";
+        title = "NFS mount broken";
+        expr = ''
+          count by (hostname, instance, job, device_error) (
+            node_filesystem_device_error{${nodeJobs}, fstype=~"nfs.*"} == 1
+          )
+        '';
+        threshold = { type = "gt"; params = [ 0 ]; };
+        for = "15m";
+        severity = "critical";
+        subject = "{{ $labels.hostname }} ({{ $labels.device_error }})";
+        summary = "NFS mounts have been erroring for 15 minutes.";
+        dashboardUrl = nodeDashboardUrl;
+      })
+
+      (mkPromAlert {
         uid = "host-conntrack-high";
         title = "Host conntrack table filling up";
         expr = ''
