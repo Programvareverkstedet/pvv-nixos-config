@@ -4,6 +4,7 @@ in {
   imports = [
     ./blackbox.nix
     ./dibbler.nix
+    ./dovecot.nix
     ./exim.nix
     ./gitea.nix
     ./gitea-runner.nix
