@@ -12,6 +12,7 @@
     ./fluent-bit.nix
     ./hosts.nix
     ./mail.nix
+    ./matrix-ooye.nix
     ./postgres.nix
     ./smart.nix
   ];
