@@ -41,6 +41,23 @@ in
         labels.hostname = "microbel";
         summary = "Fewer than 5 messages arrived in the last 6 hours.";
       })
+
+      (mkLokiAlert {
+        uid = "mail-incoming-queued-no-home";
+        title = "Incoming mail queued for unreachable home directories";
+        expr = ''
+          count by (host) (sum by (host, exim_recipient) (count_over_time(
+            {job="systemd-journal", host="microbel", syslog_identifier="exim4"}
+              | exim_type="delivery"
+              | exim_reason="no_home"
+            [1h]
+          )))
+        '';
+        threshold = { type = "gt"; params = [ 3 ]; };
+        for = "0s";
+        labels.hostname = "microbel";
+        summary = "Mail to 3+ users queued in an hour due to unreachable homedirs.";
+      })
     ])
   ];
 }
