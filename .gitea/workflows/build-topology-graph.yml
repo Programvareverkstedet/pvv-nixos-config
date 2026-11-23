@@ -10,9 +10,9 @@ jobs:
     - name: Install sudo
       run: apt-get install --update --assume-yes sudo
 
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
-    - uses: https://github.com/cachix/install-nix-action@v31
+    - uses: https://github.com/cachix/install-nix-action@v32
 
     - name: Build topology graph
       run: nix build .#topology -L
