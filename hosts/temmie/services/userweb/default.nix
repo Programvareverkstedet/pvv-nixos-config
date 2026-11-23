@@ -1,5 +1,6 @@
 {
   imports = [
+    ./audit.nix
     ./denied-paths.nix
     ./fluentbit.nix
     ./httpd.nix
