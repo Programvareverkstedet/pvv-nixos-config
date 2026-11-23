@@ -11,6 +11,7 @@ let
   };
 
   serviceExporters = lib.genAttrs [
+    "dovecot"
     "exim"
     "gatus"
     "gitea"
