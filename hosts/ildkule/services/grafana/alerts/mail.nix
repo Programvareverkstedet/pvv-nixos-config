@@ -31,6 +31,16 @@ in
         labels.hostname = "microbel";
         description = "A user may be sending spam, or the mail server may be bugging out.";
       })
+
+      (mkPromAlert {
+        uid = "mail-inbound-stalled";
+        title = "Inbound mail stalled";
+        expr = ''increase(exim_messages_total{flag="arrived"}[6h])'';
+        threshold = { type = "lt"; params = [ 5 ]; };
+        for = "0s";
+        labels.hostname = "microbel";
+        summary = "Fewer than 5 messages arrived in the last 6 hours.";
+      })
     ])
   ];
 }
