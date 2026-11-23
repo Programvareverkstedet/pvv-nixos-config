@@ -14,5 +14,12 @@ in
   ) ++ [
     # `listen()` is also sussy amogus
     "-a always,exit -F arch=b64 -S listen -F uid=${uid} -k userweb-bind"
-  ]);
+  ] ++ map
+    # catch `execve()` in dirs where haccars might try to drop some scripts.
+    (dir: "-a always,exit -F arch=b64 -F dir=${dir} -F perm=x -F uid=${uid} -k userweb-exec")
+    [
+      "/tmp"
+      "/var/tmp"
+    ]
+  );
 }
