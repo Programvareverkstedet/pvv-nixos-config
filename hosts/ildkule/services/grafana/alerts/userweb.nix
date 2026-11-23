@@ -92,6 +92,15 @@ in
           parent {{ $labels.audit_parent }}.
         '';
       })
+
+      (mkAuditAlert {
+        uid = "audit-userweb-secrets";
+        title = "Userweb touched a no-no file";
+        key = "userweb-secrets";
+        fields.audit_path = "PATH[0].name";
+        subject = "{{ $labels.audit_path }} on {{ $labels.host }}";
+        summary = "wwwrun tried to access {{ $labels.audit_path }} via {{ $labels.audit_exe }}.";
+      })
     ])
   ];
 }

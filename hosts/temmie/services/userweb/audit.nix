@@ -21,5 +21,12 @@ in
       "/tmp"
       "/var/tmp"
     ]
+  ++ map
+    # catch wwwrun trying to touch a bunch of no-no files.
+    (file: "-a always,exit -F arch=b64 -F path=${file} -F perm=rwa -F uid=${uid} -k userweb-secrets")
+    ([
+      "/etc/shadow"
+      "/etc/sudoers"
+    ] ++ lib.catAttrs "path" config.services.openssh.hostKeys)
   );
 }
