@@ -62,6 +62,25 @@ in
         inherit subject;
       })
 
+      (let
+        mkTemperatureAlert = { kind, rotational, limit }: mkPromAlert {
+          uid = "smart-${lib.toLower kind}-temperature-high";
+          title = "${kind} temperature high";
+          expr = withDiskInfo ''
+            smartctl_device_temperature{temperature_type="current"}
+              * on (hostname, device) group_left ()
+              max by (hostname, device) (node_disk_info{rotational="${toString rotational}"})
+          '';
+          threshold = { type = "gt"; params = [ limit ]; };
+          for = "15m";
+          inherit subject;
+          summary = "Above ${toString limit} °C for 15 minutes.";
+        };
+      in [
+        (mkTemperatureAlert { kind = "HDD"; rotational = 1; limit = 60; })
+        (mkTemperatureAlert { kind = "SSD"; rotational = 0; limit = 70; })
+      ])
+
       # TODO: we're missing a lot here: https://git.pvv.ntnu.no/Drift/issues/issues/692
     ])
   ];
