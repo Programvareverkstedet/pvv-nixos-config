@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
   inherit (config.lib.grafana.alerts) mkPromAlert mkGroup;
 
@@ -43,9 +43,16 @@ in
       (mkPromAlert {
         uid = "postgres-idle-transaction";
         title = "Postgres transaction left idle";
-        expr = ''
+        expr = let
+          ignoredDbs = [
+            "pvv_vv"
+          ];
+        in ''
           max by (server, datname) (
-            pg_stat_activity_max_tx_duration{state=~"idle in transaction.*"}
+            pg_stat_activity_max_tx_duration{
+              state=~"idle in transaction.*",
+              datname!~"${lib.concatStringsSep "|" ignoredDbs}"
+            }
           )
         '';
         threshold = { type = "gt"; params = [ 1800 ]; };
