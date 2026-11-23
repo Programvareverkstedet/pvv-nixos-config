@@ -16,6 +16,7 @@
     ./matrix-synapse.nix
     ./postgres.nix
     ./smart.nix
+    ./userweb.nix
   ];
 
   lib.grafana.alerts = rec {
