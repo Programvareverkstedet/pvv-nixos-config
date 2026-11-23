@@ -58,6 +58,17 @@ in
         labels.hostname = "microbel";
         summary = "Mail to 3+ users queued in an hour due to unreachable homedirs.";
       })
+
+      (mkPromAlert {
+        uid = "mail-imap-logins-stalled";
+        title = "IMAP/POP3 logins stalled";
+        expr = ''increase(dovecot_auth_successes_total[1h])'';
+        threshold = { type = "lt"; params = [ 10 ]; };
+        for = "0s";
+        severity = "critical";
+        labels.hostname = "microbel";
+        summary = "Less than 10 successful IMAP/POP3 logins in the last hour.";
+      })
     ])
   ];
 }
