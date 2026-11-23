@@ -29,6 +29,30 @@ in
             example = "/path/to/rsyncable/item";
           };
 
+          precreate = {
+            enable = lib.mkEnableOption "precreation of the directory with systemd-tmpfiles";
+
+            user = lib.mkOption {
+              type = lib.types.str;
+              default = submoduleArgs.config.user;
+              defaultText = lib.literalExpression "config.services.rsync-pull-targets.<name>.user";
+              example = "postgres";
+            };
+
+            group = lib.mkOption {
+              type = lib.types.str;
+              default = config.users.users.${submoduleArgs.config.precreate.user}.group;
+              defaultText = lib.literalExpression "config.users.users.\${config.services.rsync-pull-targets.<name>.precreate.user}.group";
+              example = "postgres";
+            };
+
+            mode = lib.mkOption {
+              type = lib.types.str;
+              default = "0700";
+              example = "0750";
+            };
+          };
+
           # TODO: handle autogeneration of keys
           # autoGenerateSSHKeypair = lib.mkOption {
           #   type = lib.types.bool;
@@ -122,6 +146,14 @@ in
     # ];
 
     services.openssh.enable = true;
+
+    systemd.tmpfiles.settings."10-rsync-pull-targets" = lib.pipe cfg.locations [
+      (lib.filterAttrs (_: value: value.enable && value.precreate.enable))
+      (lib.mapAttrs' (_: { location, precreate, ... }: lib.nameValuePair location {
+        d = { inherit (precreate) user group mode; };
+      }))
+    ];
+
     users.users = lib.pipe cfg.locations [
       (lib.filterAttrs (_: value: value.enable))
 
