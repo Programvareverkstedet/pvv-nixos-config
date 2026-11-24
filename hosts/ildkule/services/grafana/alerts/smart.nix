@@ -81,6 +81,20 @@ in
         (mkTemperatureAlert { kind = "SSD"; rotational = 0; limit = 70; })
       ])
 
+      (mkPromAlert {
+        uid = "smart-link-speed-degraded";
+        title = "Disk link speed degraded";
+        expr = withDiskInfo ''
+          smartctl_device_interface_speed{speed_type="current"}
+            /
+          ignoring (speed_type)
+            smartctl_device_interface_speed{speed_type="max"}
+        '';
+        threshold = { type = "lt"; params = [ 1 ]; };
+        inherit subject;
+        summary = "Link negotiated below the disk's maximum speed.";
+      })
+
       # TODO: we're missing a lot here: https://git.pvv.ntnu.no/Drift/issues/issues/692
     ])
   ];
