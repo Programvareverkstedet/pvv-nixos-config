@@ -91,10 +91,13 @@ in {
       scheme = "http";
       metrics_path = "/metrics";
       static_configs = [
-        (mkHostScrapeConfig "mirage" [ defaultNodeExporterPort ])
-        (mkHostScrapeConfig "sunset" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "demiurgen" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "isvegg" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "microbel" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "mirage" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "orchid" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "sunset" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "wegonke" [ defaultNodeExporterPort ])
       ];
     }
   ];
