@@ -65,7 +65,6 @@ in
 
         mkWebsite = name: url: {
           inherit name url;
-          alerts = [{ type = "matrix"; }];
           group = "Websites";
           method = "GET";
           conditions = [
@@ -75,7 +74,6 @@ in
 
         mkService = name: url: {
           inherit name url;
-          alerts = [{ type = "matrix"; }];
           group = "Services";
           conditions = [
             "[CONNECTED] == true"
@@ -123,13 +121,20 @@ in
         (mkMachine "principal")
         (mkMachine "sleipner")
         (mkMachine "smask")
-        (mkMachine "tom")
+        # (mkMachine "tom")
         (mkMachine "wegonke")
       ]) ++ [
-        (mkWebsite "Alps" "https://alps.pvv.ntnu.no")
-        (mkWebsite "Bluemap" "https://minecraft.pvv.ntnu.no")
-        (mkWebsite "Element Web" "https://chat.pvv.ntnu.no")
+        (mkWebsite "Alps" "https://alps.pvv.ntnu.no" // {
+          alerts = [{ type = "matrix"; }];
+        })
+        (mkWebsite "Bluemap" "https://minecraft.pvv.ntnu.no" // {
+          alerts = [{ type = "matrix"; }];
+        })
+        (mkWebsite "Element Web" "https://chat.pvv.ntnu.no" // {
+          alerts = [{ type = "matrix"; }];
+        })
         (mkWebsite "Gitea" "https://git.pvv.ntnu.no/api/healthz" // {
+          alerts = [{ type = "matrix"; }];
           conditions = [
             "[STATUS] == 200"
             "[BODY].status == pass"
@@ -159,11 +164,17 @@ in
             "len([BODY].providers) > 0"
           ];
         })
-        (mkWebsite "IDP" "https://idp.pvv.ntnu.no")
+        (mkWebsite "IDP" "https://idp.pvv.ntnu.no" // {
+          alerts = [{ type = "matrix"; }];
+        })
         (mkWebsite "Mailing Lists" "http://list.pvv.ntnu.no")
         (mkWebsite "Mapcrafter" "http://isvegg.pvv.ntnu.no/kart")
-        (mkWebsite "PVV-Nettsiden" "https://www.pvv.ntnu.no")
-        (mkWebsite "Roundcube" "https://webmail.pvv.ntnu.no/roundcube")
+        (mkWebsite "PVV-Nettsiden" "https://www.pvv.ntnu.no" // {
+          alerts = [{ type = "matrix"; }];
+        })
+        (mkWebsite "Roundcube" "https://webmail.pvv.ntnu.no/roundcube" // {
+          alerts = [{ type = "matrix"; }];
+        })
         (mkWebsite "Scrutiny" "https://scrutiny.pvv.ntnu.no/api/health" // {
           conditions = [
             "[STATUS] == 200"
@@ -172,22 +183,34 @@ in
         })
         (mkWebsite "Snappymail" "http://snappymail.pvv.ntnu.no")
         (mkWebsite "Userweb - Temmie" "https://temmie.pvv.ntnu.no/~oysteikt")
-        (mkWebsite "Userweb - Tom" "https://www.pvv.ntnu.no/~oysteikt")
-        (mkWebsite "Vaultwarden" "https://pw.pvv.ntnu.no/alive")
+        # (mkWebsite "Userweb - Tom" "https://www.pvv.ntnu.no/~oysteikt")
+        (mkWebsite "Vaultwarden" "https://pw.pvv.ntnu.no/alive" // {
+          alerts = [{ type = "matrix"; }];
+        })
         (mkWebsite "Wiki" "https://wiki.pvv.ntnu.no/w/api.php?action=query&format=json")
 
         # ----------------------------------------------------------------------------- #
 
-        (mkService "Email (IMAP)" "tls://mail.pvv.ntnu.no:993")
-        (mkService "Email (POP3)" "tls://mail.pvv.ntnu.no:995")
-        (mkService "Email (SMTP)" "starttls://mail.pvv.ntnu.no:587")
-        (mkService "Gitea SSH" "ssh://git.pvv.ntnu.no:2222")
+        (mkService "Email (IMAP)" "tls://mail.pvv.ntnu.no:993" // {
+          alerts = [{ type = "matrix"; }];
+        })
+        (mkService "Email (POP3)" "tls://mail.pvv.ntnu.no:995" // {
+          alerts = [{ type = "matrix"; }];
+        })
+        (mkService "Email (SMTP)" "starttls://mail.pvv.ntnu.no:587" // {
+          alerts = [{ type = "matrix"; }];
+        })
+        (mkService "Gitea SSH" "ssh://git.pvv.ntnu.no:2222" // {
+          alerts = [{ type = "matrix"; }];
+        })
         (mkService "Loki" "https://loki.pvv.ntnu.no/ready" // {
+          alerts = [{ type = "matrix"; }];
           conditions = [
             "[STATUS] == 200"
           ];
         })
         (mkService "MariaDB" "http://localhost:1339" // {
+          alerts = [{ type = "matrix"; }];
           conditions = [
             "[STATUS] == 200"
             "[BODY].ok == true"
@@ -199,12 +222,14 @@ in
           ];
         })
         (mkService "Matrix OOYE" "https://ooye.pvv.ntnu.no/api/stats" // {
+          alerts = [{ type = "matrix"; }];
           conditions = [
             "[STATUS] == 200"
             "[BODY].guilds > 0"
           ];
         })
         (mkService "Matrix Synapse" "https://matrix.pvv.ntnu.no/_matrix/client/versions" // {
+          alerts = [{ type = "matrix"; }];
           method = "GET";
           conditions = [
             "[STATUS] == 200"
@@ -217,12 +242,14 @@ in
           ];
         })
         (mkService "Minecraft" "http://localhost:1337" // {
+          alerts = [{ type = "matrix"; }];
           conditions = [
             "[STATUS] == 200"
             "[BODY].ok == true"
           ];
         })
         (mkService "PostgreSQL" "http://localhost:1338" // {
+          alerts = [{ type = "matrix"; }];
           conditions = [
             "[STATUS] == 200"
             "[BODY].ok == true"
