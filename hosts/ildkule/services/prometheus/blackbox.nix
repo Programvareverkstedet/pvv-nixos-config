@@ -23,6 +23,7 @@ let
     "isvegg"
     "kana"
     "knutsen"
+    "ludvigsen"
     "microbel"
     "mirage"
     "orchid"
@@ -33,6 +34,10 @@ let
     # "tom"
     "wegonke"
   ];
+
+  icmpHostnameOverrides = {
+    ludvigsen = "ludvigsen-tap.pvv.ntnu.no";
+  };
 
   extraCertTargets = {
     homeassistant = [
@@ -70,7 +75,7 @@ let
 
   icmpHosts = lib.remove config.networking.hostName (lib.attrNames nixosHosts ++ extraIcmpHosts);
   mkIcmpTargets = map (hostname: {
-    target = "${hostname}.pvv.ntnu.no";
+    target = icmpHostnameOverrides.${hostname} or "${hostname}.pvv.ntnu.no";
     labels = { inherit hostname; };
   });
 

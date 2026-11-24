@@ -27,6 +27,7 @@ let
     "balduzius"
     "dvask"
     "knutsen"
+    "ludvigsen"
 
     # Broken IPv6 for unknown reasons
     "ambidextrous"
