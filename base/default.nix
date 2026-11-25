@@ -103,6 +103,12 @@
 
   systemd.slices."system-monitoring" = {
     description = "Monitoring related services";
+    sliceConfig.ManagedOOMPreference = "omit";
+  };
+
+  systemd.oomd = {
+    enableSystemSlice = lib.mkDefault true;
+    enableUserSlices = lib.mkDefault true;
   };
 
   # users.mutableUsers = lib.mkDefault false;
