@@ -59,8 +59,13 @@
     ])
   ];
 
-  # Make builds to be more likely killed than important services.
-  # 100 is the default for user slices and 500 is systemd-coredumpd@
-  # We rather want a build to be killed than our precious user sessions as builds can be easily restarted.
-  systemd.services.nix-daemon.serviceConfig.OOMScoreAdjust = lib.mkDefault 250;
+  systemd.services.nix-daemon.serviceConfig = {
+    # Make builds to be more likely killed than important services.
+    # 100 is the default for user slices and 500 is systemd-coredumpd@
+    # We rather want a build to be killed than our precious user sessions as builds can be easily restarted.
+    OOMScoreAdjust = lib.mkDefault 250;
+    MemoryHigh = lib.mkDefault "70%";
+    MemoryMax = lib.mkDefault "85%";
+    OOMPolicy = lib.mkDefault "continue";
+  };
 }
