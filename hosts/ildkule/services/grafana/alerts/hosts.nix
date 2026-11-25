@@ -261,6 +261,28 @@ in
         summary = "Conntrack table full, connections are being dropped.";
         dashboardUrl = nodeDashboardUrl;
       })
+
+      (mkPromAlert {
+        uid = "host-ntp-unsynced";
+        title = "Host clock not synchronized";
+        expr = ''node_timex_sync_status{${nodeJobs}}'';
+        threshold = { type = "lt"; params = [ 1 ]; };
+        for = "15m";
+        subject = "{{ $labels.hostname }}";
+        summary = "Kernel says clock is unsynchronized for 15+ minutes.";
+        dashboardUrl = nodeDashboardUrl;
+      })
+
+      (mkPromAlert {
+        uid = "host-clock-offset-high";
+        title = "Host clock offset high";
+        expr = ''abs(node_timex_offset_seconds{${nodeJobs}})'';
+        threshold = { type = "gt"; params = [ 0.5 ]; };
+        for = "10m";
+        subject = "{{ $labels.hostname }}";
+        summary = "Kernel reported 0.5s clock skew for 10+ minutes.";
+        dashboardUrl = nodeDashboardUrl;
+      })
     ])
   ];
 }
