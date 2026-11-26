@@ -1,123 +1,97 @@
-{ config, ... }: let
+{ config, lib, ... }: let
   cfg = config.services.prometheus;
 
-  mkHostScrapeConfig = name: ports: {
-    labels.hostname = name;
-    targets = map (port: "${name}.pvv.ntnu.no:${toString port}") ports;
-  };
+  machines = let
+    mkNixos = machine: { nixos = true; os = "Linux"; } // machine;
+  in lib.mapAttrs
+    (name: machine: {
+      nixos = false;
+      # NOTE: VMs don't run smartctl-exporter
+      smartctl = false;
+      address = "${name}.pvv.ntnu.no";
+    } // machine)
+    {
+      bekkalokk = mkNixos { smartctl = true; };
+      bicep = mkNixos { smartctl = true; };
+      brzeczyszczykiewicz = mkNixos { smartctl = true; };
+      demiurgen.os = "Linux";
+      georg = mkNixos { smartctl = true; };
+      gluttony = mkNixos { };
+      ildkule = mkNixos { };
+      innovation = { os = "FreeBSD"; smartctl = true; };
+      isvegg.os = "Linux";
+      knutsen = { os = "FreeBSD"; smartctl = true; };
+      kommode = mkNixos { };
+      ludvigsen = { os = "FreeBSD"; smartctl = true; address = "ludvigsen-tap.pvv.ntnu.no"; };
+      lupine-1 = mkNixos { smartctl = true; };
+      lupine-2 = mkNixos { smartctl = true; };
+      lupine-3 = mkNixos { smartctl = true; };
+      lupine-4 = mkNixos { smartctl = true; };
+      lupine-5 = mkNixos { smartctl = true; };
+      microbel.os = "Linux";
+      mirage.os = "Linux";
+      orchid.os = "Linux";
+      skrot = mkNixos { smartctl = true; };
+      smask.os = "OpenBSD";
+      sunset.os = "Linux";
+      temmie = mkNixos { };
+      wegonke.os = "Linux";
+      wenche = mkNixos { };
+    };
 
-  nixosMachines = [
-    "ildkule"
-    "bekkalokk"
-    "bicep"
-    "brzeczyszczykiewicz"
-    "georg"
-    "gluttony"
-    "kommode"
-    "lupine-1"
-    "lupine-2"
-    "lupine-3"
-    "lupine-4"
-    "lupine-5"
-    "skrot"
-    "temmie"
-    "wenche"
+  mkStaticConfigs = port: pred: lib.pipe machines [
+    (lib.filterAttrs (_: pred))
+    (lib.mapAttrsToList (name: machine: {
+      labels = {
+        hostname = name;
+        inherit (machine) os;
+      };
+      targets = [ "${machine.address}:${toString port}" ];
+    }))
   ];
-
-  # NOTE: VMs don't run smartctl-exporter
-  smartMachines = [
-    "bekkalokk"
-    "bicep"
-    "brzeczyszczykiewicz"
-    "georg"
-    "lupine-1"
-    "lupine-2"
-    "lupine-3"
-    "lupine-4"
-    "lupine-5"
-    "skrot"
-  ];
-
-  defaultNodeExporterPort = 9100;
-  defaultSmartExporterPort = 9633;
 in {
   services.prometheus.scrapeConfigs = [
     {
       job_name = "nixos-node";
       scheme = "https";
       metrics_path = "/prometheus-node-exporter/metrics";
-      static_configs = map (name: {
-        labels.hostname = name;
-        targets = [ "${name}.pvv.ntnu.no:443" ];
-      }) nixosMachines;
+      static_configs = mkStaticConfigs 443 (machine: machine.nixos);
     }
     {
       job_name = "nixos-systemd";
       scheme = "https";
       metrics_path = "/prometheus-systemd-exporter/metrics";
-      static_configs = map (name: {
-        labels.hostname = name;
-        targets = [ "${name}.pvv.ntnu.no:443" ];
-      }) nixosMachines;
+      static_configs = mkStaticConfigs 443 (machine: machine.nixos);
     }
     {
       job_name = "nixos-smartctl";
       scheme = "https";
       metrics_path = "/prometheus-smartctl-exporter/metrics";
-      static_configs = map (name: {
-        labels.hostname = name;
-        targets = [ "${name}.pvv.ntnu.no:443" ];
-      }) smartMachines;
+      static_configs = mkStaticConfigs 443 (machine: machine.nixos && machine.smartctl);
     }
     {
       job_name = "nixos-flake-input";
       scheme = "https";
       metrics_path = "/prometheus-nixos-flake-input-exporter/metrics";
-      static_configs = map (name: {
-        labels.hostname = name;
-        targets = [ "${name}.pvv.ntnu.no:443" ];
-      }) nixosMachines;
+      static_configs = mkStaticConfigs 443 (machine: machine.nixos);
     }
     {
       job_name = "nixos-fluent-bit";
       scheme = "https";
       metrics_path = "/prometheus-fluent-bit-exporter/metrics";
-      static_configs = map (name: {
-        labels.hostname = name;
-        targets = [ "${name}.pvv.ntnu.no:443" ];
-      }) nixosMachines;
+      static_configs = mkStaticConfigs 443 (machine: machine.nixos);
     }
     {
       job_name = "non-nixos-node";
       scheme = "http";
       metrics_path = "/metrics";
-      static_configs = [
-        (mkHostScrapeConfig "demiurgen" [ defaultNodeExporterPort ])
-        (mkHostScrapeConfig "innovation" [ defaultNodeExporterPort ])
-        (mkHostScrapeConfig "isvegg" [ defaultNodeExporterPort ])
-        (mkHostScrapeConfig "knutsen" [ defaultNodeExporterPort ])
-        (mkHostScrapeConfig "ludvigsen" [ defaultNodeExporterPort ] // {
-          targets = [ "ludvigsen-tap.pvv.ntnu.no:${toString defaultNodeExporterPort}" ];
-        })
-        (mkHostScrapeConfig "microbel" [ defaultNodeExporterPort ])
-        (mkHostScrapeConfig "mirage" [ defaultNodeExporterPort ])
-        (mkHostScrapeConfig "orchid" [ defaultNodeExporterPort ])
-        (mkHostScrapeConfig "smask" [ defaultNodeExporterPort ])
-        (mkHostScrapeConfig "sunset" [ defaultNodeExporterPort ])
-        (mkHostScrapeConfig "wegonke" [ defaultNodeExporterPort ])
-      ];
+      static_configs = mkStaticConfigs 9100 (machine: !machine.nixos);
     }
     {
       job_name = "non-nixos-smartctl";
       scheme = "http";
       metrics_path = "/metrics";
-      static_configs = [
-        (mkHostScrapeConfig "innovation" [ defaultSmartExporterPort ])
-        (mkHostScrapeConfig "knutsen" [ defaultSmartExporterPort ])
-        (mkHostScrapeConfig "ludvigsen" [ defaultSmartExporterPort ] // {
-          targets = [ "ludvigsen-tap.pvv.ntnu.no:${toString defaultSmartExporterPort}" ];
-        })
-      ];
+      static_configs = mkStaticConfigs 9633 (machine: !machine.nixos && machine.smartctl);
     }
   ];
 }
