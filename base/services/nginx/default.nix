@@ -48,7 +48,7 @@
       enableQuicBPF = true;
 
       appendConfig = ''
-        pcre_jit on;
+        # pcre_jit on;
         worker_processes auto;
         worker_rlimit_nofile 100000;
       '';
