@@ -37,6 +37,7 @@ in
   systemd.services."backup-mysql" = lib.mkIf cfg.enable {
     description = "Backup MySQL data";
     requires = [ "mysql.service" ];
+    after = [ "mysql.service" ];
 
     path = with pkgs; [
       cfg.package
