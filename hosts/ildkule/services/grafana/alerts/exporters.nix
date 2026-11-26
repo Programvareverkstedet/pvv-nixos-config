@@ -5,7 +5,7 @@ let
   hostJobNames = {
     node-exporter = [ "nixos-node" "non-nixos-node" ];
     systemd-exporter = [ "nixos-systemd" ];
-    smartctl-exporter = [ "nixos-smartctl" ];
+    smartctl-exporter = [ "nixos-smartctl" "non-nixos-smartctl" ];
     fluent-bit = [ "nixos-fluent-bit" ];
     flake-input-exporter = [ "nixos-flake-input" ];
   };
