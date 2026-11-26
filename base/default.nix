@@ -103,7 +103,7 @@
 
   systemd.slices."system-monitoring" = {
     description = "Monitoring related services";
-    sliceConfig.ManagedOOMPreference = "omit";
+    sliceConfig.ManagedOOMPreference = "avoid";
   };
 
   systemd.oomd = {
