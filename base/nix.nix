@@ -13,6 +13,7 @@
       builders-use-substitutes = true;
       experimental-features = [ "nix-command" "flakes" "auto-allocate-uids" ];
       log-lines = 50;
+      timeout = 24 * 60 * 60;
       use-xdg-base-directories = true;
 
       extra-substituters = lib.optionals (!lib.elem config.networking.hostName [ "gluttony" "wenche" ]) [
@@ -58,6 +59,10 @@
       "-delete"
     ])
   ];
+
+  systemd.tmpfiles.settings."10-nix-stale-builds" = {
+    "/nix/var/nix/builds".e.age = "2d";
+  };
 
   nix.daemonIOSchedClass = lib.mkDefault "idle";
 
