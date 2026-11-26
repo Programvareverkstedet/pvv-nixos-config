@@ -64,6 +64,9 @@
 
       environment.NIX_REMOTE = "daemon";
 
+      startLimitBurst = 3;
+      startLimitIntervalSec = 24 * 60 * 60;
+
       serviceConfig = {
         Type = "oneshot";
         SyslogIdentifier = "nixos-build-all";
@@ -129,6 +132,7 @@
               echo "''${old_revisions:-(none)}"
               echo "New revisions:"
               echo "$revisions"
+              systemctl reset-failed nixos-build-all.service
               systemctl restart --no-block nixos-build-all.service
               echo "$revisions" > "$STATE_DIRECTORY/revisions"
             fi
