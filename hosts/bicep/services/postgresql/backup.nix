@@ -38,6 +38,7 @@ in
   systemd.services."backup-postgresql" = {
     description = "Backup PostgreSQL data";
     requires = [ "postgresql.service" ];
+    after = [ "postgresql.service" ];
 
     path = with pkgs; [
       coreutils
