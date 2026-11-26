@@ -37,6 +37,9 @@ in
       serviceConfig = {
         Slice = "system-monitoring.slice";
         ManagedOOMPreference = "avoid";
+        MemoryLow = "64M";
+        MemoryHigh = "192M";
+        MemoryMax = "256M";
         ExecStart = let
           args = lib.cli.toCommandLineShellGNU { } (
                (lib.listToAttrs (map (x: lib.nameValuePair "collector.${x}" true) cfg.enabledCollectors))

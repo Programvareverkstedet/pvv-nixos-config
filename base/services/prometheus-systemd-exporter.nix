@@ -34,6 +34,9 @@ in
       serviceConfig = {
         Slice = "system-monitoring.slice";
         ManagedOOMPreference = "avoid";
+        MemoryLow = "64M";
+        MemoryHigh = "192M";
+        MemoryMax = "256M";
         ExecStart = lib.mkForce "${pkgs.prometheus-systemd-exporter}/bin/systemd_exporter --web.systemd-socket ${lib.escapeShellArgs cfg.extraFlags}";
       };
     };
