@@ -119,17 +119,16 @@
         modules ? [],
         overlays ? [],
         enableDefaults ? true,
+        unfreePackages ? [],
         ...
       }: let
         commonPkgsConfig =
           {
             config.allowUnfreePredicate = pkg:
               builtins.elem (lib.getName pkg)
-              [
-                "nvidia-x11"
-                "nvidia-settings"
-                "nvidia-kernel-modules"
-              ];
+              ([
+                # Add globally allowed unfree packages
+              ] ++ unfreePackages);
             overlays =
               (lib.optionals enableDefaults [
                 # Global overlays go here
@@ -197,6 +196,7 @@
             "overlays"
             "specialArgs"
             "enableDefaults"
+            "unfreePackages"
           ])
         );
 
@@ -253,6 +253,11 @@
         };
         shark = stableNixosConfig "shark" {};
         wenche = stableNixosConfig "wenche" {
+          unfreePackages = [
+            "nvidia-x11"
+            "nvidia-settings"
+            "nvidia-kernel-modules"
+          ];
           modules = [ self.nixosModules.harmonia ];
         };
         temmie = stableNixosConfig "temmie" {
@@ -297,6 +302,10 @@
           ];
         };
         georg = stableNixosConfig "georg" {
+          unfreePackages = [
+            "firefox-bin"
+            "firefox-bin-unwrapped"
+          ];
           modules = [
             inputs.grzegorz-clients.nixosModules.grzegorz-webui
             inputs.gergle.nixosModules.default
