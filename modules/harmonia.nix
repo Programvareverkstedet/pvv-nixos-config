@@ -1,5 +1,8 @@
 { config, pkgs, values, inputs, lib, ... }:
 {
+  nix.daemonCPUSchedPolicy = "batch";
+  nix.daemonIOSchedClass = "best-effort";
+
   services.harmonia.cache = {
     enable = true;
     signKeyPaths = [ config.sops.secrets."harmonia/signing-key".path ];

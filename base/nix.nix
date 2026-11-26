@@ -59,6 +59,8 @@
     ])
   ];
 
+  nix.daemonIOSchedClass = lib.mkDefault "idle";
+
   systemd.services.nix-daemon.serviceConfig = {
     # Make builds to be more likely killed than important services.
     # 100 is the default for user slices and 500 is systemd-coredumpd@
