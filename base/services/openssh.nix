@@ -20,7 +20,10 @@
 
   systemd.slices.system.sliceConfig.MemoryMin = lib.mkDefault "50M";
   systemd.slices.system-sshd.sliceConfig.MemoryMin = lib.mkDefault "50M";
-  systemd.services."sshd@".serviceConfig.ManagedOOMPreference = lib.mkDefault "omit";
+  systemd.services."sshd@" = {
+    restartIfChanged = false;
+    serviceConfig.ManagedOOMPreference = lib.mkDefault "omit";
+  };
 
   services.fluent-bit.settings = {
     parsers = [
