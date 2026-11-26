@@ -87,12 +87,11 @@ in
         expr = withDiskInfo ''
           smartctl_device_interface_speed{speed_type="current"}
             /
-          ignoring (speed_type)
-            smartctl_device_interface_speed{speed_type="max"}
+          max_over_time(smartctl_device_interface_speed{speed_type="current"}[7d])
         '';
         threshold = { type = "lt"; params = [ 1 ]; };
         inherit subject;
-        summary = "Link negotiated below the disk's maximum speed.";
+        summary = "Link renegotiated below its speed from the last 7 days.";
       })
 
       # TODO: we're missing a lot here: https://git.pvv.ntnu.no/Drift/issues/issues/692
