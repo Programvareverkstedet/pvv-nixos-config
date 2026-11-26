@@ -9,7 +9,6 @@ in
 
   services.journald.remote = {
     enable = true;
-    listen = "http";
     output = "/var/log/journal/remote/remote.journal";
     settings.Remote.SplitMode = "none";
   };
