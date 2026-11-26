@@ -150,7 +150,7 @@ in
         expr = ''
           max by (hostname, device) (
             1 - (
-              node_filesystem_avail_bytes{fstype=~"ext[234]|btrfs|vfat"}
+              node_filesystem_avail_bytes{fstype=~"ext[234]|btrfs|vfat|ufs|msdosfs"}
               /
               node_filesystem_size_bytes
             )
@@ -184,7 +184,7 @@ in
         expr = ''
           max by (hostname, device) (
             1 - (
-              node_filesystem_files_free{${nodeJobs}, fstype=~"ext[234]"}
+              node_filesystem_files_free{${nodeJobs}, fstype=~"ext[234]|ufs"}
               /
               node_filesystem_files
             )
