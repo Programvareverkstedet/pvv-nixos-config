@@ -14,12 +14,12 @@
       bekkalokk = mkNixos { smartctl = true; };
       bicep = mkNixos { smartctl = true; };
       brzeczyszczykiewicz = mkNixos { smartctl = true; };
-      demiurgen.os = "Linux";
+      demiurgen = { os = "Linux"; smartctl = true; };
       georg = mkNixos { smartctl = true; };
       gluttony = mkNixos { };
       ildkule = mkNixos { };
       innovation = { os = "FreeBSD"; smartctl = true; };
-      isvegg.os = "Linux";
+      isvegg = { os = "Linux"; smartctl = true; };
       knutsen = { os = "FreeBSD"; smartctl = true; };
       kommode = mkNixos { };
       ludvigsen = { os = "FreeBSD"; smartctl = true; address = "ludvigsen-tap.pvv.ntnu.no"; };
@@ -28,14 +28,14 @@
       lupine-3 = mkNixos { smartctl = true; };
       lupine-4 = mkNixos { smartctl = true; };
       lupine-5 = mkNixos { smartctl = true; };
-      microbel.os = "Linux";
+      microbel = { os = "Linux"; smartctl = true; };
       mirage.os = "Linux";
-      orchid.os = "Linux";
+      orchid = { os = "Linux"; smartctl = true; };
       skrot = mkNixos { smartctl = true; };
       smask.os = "OpenBSD";
       sunset.os = "Linux";
       temmie = mkNixos { };
-      wegonke.os = "Linux";
+      wegonke = { os = "Linux"; smartctl = true; };
       wenche = mkNixos { };
     };
 
