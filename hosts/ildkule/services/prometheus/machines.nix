@@ -39,6 +39,7 @@
   ];
 
   defaultNodeExporterPort = 9100;
+  defaultSmartExporterPort = 9633;
 in {
   services.prometheus.scrapeConfigs = [
     {
@@ -92,13 +93,30 @@ in {
       metrics_path = "/metrics";
       static_configs = [
         (mkHostScrapeConfig "demiurgen" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "innovation" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "isvegg" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "knutsen" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "ludvigsen" [ defaultNodeExporterPort ] // {
+          targets = [ "ludvigsen-tap.pvv.ntnu.no:${toString defaultNodeExporterPort}" ];
+        })
         (mkHostScrapeConfig "microbel" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "mirage" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "orchid" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "smask" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "sunset" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "wegonke" [ defaultNodeExporterPort ])
+      ];
+    }
+    {
+      job_name = "non-nixos-smartctl";
+      scheme = "http";
+      metrics_path = "/metrics";
+      static_configs = [
+        (mkHostScrapeConfig "innovation" [ defaultSmartExporterPort ])
+        (mkHostScrapeConfig "knutsen" [ defaultSmartExporterPort ])
+        (mkHostScrapeConfig "ludvigsen" [ defaultSmartExporterPort ] // {
+          targets = [ "ludvigsen-tap.pvv.ntnu.no:${toString defaultSmartExporterPort}" ];
+        })
       ];
     }
   ];
