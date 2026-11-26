@@ -27,6 +27,7 @@ in
   config.systemd.services = lib.genAttrs pools (_: {
     serviceConfig = let
       caps = [
+        # TODO: do we need all of these?
         "CAP_NET_BIND_SERVICE"
         "CAP_SETGID"
         "CAP_SETUID"
@@ -36,30 +37,12 @@ in
         "CAP_DAC_OVERRIDE"
       ];
     in {
-      AmbientCapabilities = caps;
-      CapabilityBoundingSet = caps;
+      AmbientCapabilities = lib.mkForce caps;
+      CapabilityBoundingSet = lib.mkForce caps;
       DeviceAllow = [ "" ];
-      LockPersonality = true;
-      MemoryDenyWriteExecute = false;
-      NoNewPrivileges = true;
-      PrivateMounts = true;
-      ProtectClock = true;
-      ProtectControlGroups = true;
       ProtectHome = true;
-      ProtectHostname = true;
-      ProtectKernelLogs = true;
-      ProtectKernelModules = true;
-      ProtectKernelTunables = true;
-      RemoveIPC = true;
-      UMask = "0077";
-      RestrictNamespaces = "~mnt";
-      RestrictRealtime = true;
-      RestrictSUIDSGID = true;
-      SystemCallArchitectures = "native";
+      UMask = lib.mkOverride 90 "0077";
       KeyringMode = "private";
-      SystemCallFilter = [
-        "@system-service"
-      ];
     };
   });
 }
