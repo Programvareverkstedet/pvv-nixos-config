@@ -96,6 +96,7 @@ in {
         (mkHostScrapeConfig "microbel" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "mirage" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "orchid" [ defaultNodeExporterPort ])
+        (mkHostScrapeConfig "smask" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "sunset" [ defaultNodeExporterPort ])
         (mkHostScrapeConfig "wegonke" [ defaultNodeExporterPort ])
       ];
