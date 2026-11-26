@@ -27,6 +27,8 @@ in
     ]);
   };
 
+  systemd.services.nixos-upgrade.environment.NIX_REMOTE = "daemon";
+
   # workaround for https://github.com/NixOS/nix/issues/6895
   # via https://git.lix.systems/lix-project/lix/issues/400
   environment.etc = lib.mkIf (!config.virtualisation.isVmVariant && config.system.autoUpgrade.enable) {

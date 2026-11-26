@@ -59,6 +59,8 @@
         pkgs.gitMinimal
       ];
 
+      environment.NIX_REMOTE = "daemon";
+
       serviceConfig = {
         Type = "oneshot";
         SyslogIdentifier = "nixos-build-all";
