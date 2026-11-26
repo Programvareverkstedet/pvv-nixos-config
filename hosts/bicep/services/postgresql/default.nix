@@ -124,6 +124,8 @@ in
 
       IPAddressDeny = "any";
       IPAddressAllow = [ "localhost" ] ++ allowedRemoteRanges;
+
+      ManagedOOMPreference = "avoid";
     };
   };
 
