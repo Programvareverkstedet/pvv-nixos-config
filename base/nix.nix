@@ -68,6 +68,8 @@
     OOMScoreAdjust = lib.mkDefault 250;
     MemoryHigh = lib.mkDefault "70%";
     MemoryMax = lib.mkDefault "85%";
+    # Don't swap too much, it makes things reeeally slow.
+    MemorySwapMax = lib.mkDefault "10%";
     OOMPolicy = lib.mkDefault "continue";
   };
 }
