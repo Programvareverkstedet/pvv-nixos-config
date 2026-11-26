@@ -11,7 +11,13 @@
       allow-dirty = true;
       auto-allocate-uids = true;
       builders-use-substitutes = true;
-      experimental-features = [ "nix-command" "flakes" "auto-allocate-uids" ];
+      experimental-features = [
+        "auto-allocate-uids"
+        "cgroups"
+        "flakes"
+        "nix-command"
+      ];
+      use-cgroups = true;
       log-lines = 50;
       timeout = 24 * 60 * 60;
       use-xdg-base-directories = true;
