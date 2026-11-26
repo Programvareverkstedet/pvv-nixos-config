@@ -70,6 +70,19 @@ in {
       static_configs = mkStaticConfigs 443 (machine: machine.nixos && machine.smartctl);
     }
     {
+      job_name = "nixos-cadvisor";
+      scheme = "https";
+      metrics_path = "/prometheus-cadvisor/metrics";
+      static_configs = mkStaticConfigs 443 (machine: machine.nixos);
+      metric_relabel_configs = [
+        {
+          source_labels = [ "id" ];
+          regex = ".*/([^/]+)";
+          target_label = "unit";
+        }
+      ];
+    }
+    {
       job_name = "nixos-flake-input";
       scheme = "https";
       metrics_path = "/prometheus-nixos-flake-input-exporter/metrics";

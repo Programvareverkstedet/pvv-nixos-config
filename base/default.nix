@@ -24,6 +24,7 @@
     ./services/acme.nix
     ./services/auditd.nix
     ./services/auto-upgrade.nix
+    ./services/cadvisor.nix
     ./services/dbus.nix
     ./services/fluentbit.nix
     ./services/fwupd.nix
