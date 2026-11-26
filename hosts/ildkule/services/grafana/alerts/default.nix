@@ -45,16 +45,18 @@
 
       # Whether no data from the query should be treated as an alert state.
       noDataState ? "OK",
+
+      execErrState ? if for == "0s" then "KeepLast" else "Error",
       labels ? { },
       annotations ? { },
     }:
     assert (lib.elem severity [ "critical" "warning" ]);
     assert (lib.elem noDataState [ "NoData" "OK" "Alerting" ]);
+    assert (lib.elem execErrState [ "Error" "OK" "Alerting" "KeepLast" ]);
     assert (lib.elem threshold.type [ "gt" "lt" "eq" ]);
     {
-      inherit uid title for noDataState;
+      inherit uid title for noDataState execErrState;
       condition = "B";
-      execErrState = "Error";
       labels = { inherit severity; } // labels;
       annotations =
            lib.optionalAttrs (dashboardUrl != null) { inherit dashboardUrl; }
