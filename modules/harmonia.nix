@@ -62,7 +62,10 @@
         pkgs.gitMinimal
       ];
 
-      environment.NIX_REMOTE = "daemon";
+      environment = {
+        NIX_REMOTE = "daemon";
+        HOME = "%C/nixos-build-all";
+      };
 
       startLimitBurst = 3;
       startLimitIntervalSec = 24 * 60 * 60;
@@ -70,6 +73,7 @@
       serviceConfig = {
         Type = "oneshot";
         SyslogIdentifier = "nixos-build-all";
+        DynamicUser = true;
         CacheDirectory = "nixos-build-all";
         Restart = "on-failure";
         RestartSec = "1min";
@@ -88,7 +92,7 @@
             ]);
           in
           "${lib.getExe config.nix.package} build git+https://git.pvv.ntnu.no/Drift/pvv-nixos-config.git?ref=main#all-machines ${lib.escapeShellArgs buildAllFlags}";
-        ExecStartPost = lib.mkIf config.nix.gc.automatic "${config.systemd.package}/bin/systemctl start --no-block nix-gc.service";
+        ExecStartPost = lib.mkIf config.nix.gc.automatic "+${config.systemd.package}/bin/systemctl start --no-block nix-gc.service";
       };
     };
 
