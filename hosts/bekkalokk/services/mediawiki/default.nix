@@ -264,7 +264,7 @@ in {
 
       # EXT:Scribunto
       $wgScribuntoDefaultEngine = 'luastandalone';
-      $wgScribuntoEngineConf['luastandalone']['luaPath'] = '${pkgs.lua}/bin';
+      $wgScribuntoEngineConf['luastandalone']['luaPath'] = '${lib.getExe pkgs.lua}';
 
       # EXT:WikiEditor
       $wgWikiEditorRealtimePreview = true;
