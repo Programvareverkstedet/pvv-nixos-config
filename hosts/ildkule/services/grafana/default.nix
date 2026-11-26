@@ -153,7 +153,11 @@ in {
   };
 
   systemd.services.grafana = {
-    after = [ "sops-install-secrets.service" ];
+    after = [
+      "sops-install-secrets.service"
+      "loki.service"
+      "prometheus.service"
+    ];
     requires = [ "sops-install-secrets.service" ];
   };
 
