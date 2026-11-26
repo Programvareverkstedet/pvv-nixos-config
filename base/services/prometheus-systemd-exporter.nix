@@ -33,6 +33,7 @@ in
 
       serviceConfig = {
         Slice = "system-monitoring.slice";
+        ManagedOOMPreference = "avoid";
         ExecStart = lib.mkForce "${pkgs.prometheus-systemd-exporter}/bin/systemd_exporter --web.systemd-socket ${lib.escapeShellArgs cfg.extraFlags}";
       };
     };

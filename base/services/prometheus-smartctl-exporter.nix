@@ -28,6 +28,7 @@ in
       unitConfig.ConditionVirtualization = "no";
       serviceConfig = {
         Slice = "system-monitoring.slice";
+        ManagedOOMPreference = "avoid";
         ExecStart = let
           args = [
             "--web.systemd-socket"

@@ -91,6 +91,8 @@
 
         StateDirectory = "nginx";
         StateDirectoryMode = "0700";
+
+        ManagedOOMPreference = lib.mkDefault "avoid";
       };
     };
 

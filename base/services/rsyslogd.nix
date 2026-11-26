@@ -15,6 +15,9 @@ in
   '';
 
   systemd.services = lib.mkIf cfg.enable {
-    "syslog".serviceConfig.Slice = "system-monitoring.slice";
+    "syslog".serviceConfig = {
+      Slice = "system-monitoring.slice";
+      ManagedOOMPreference = "avoid";
+    };
   };
 }

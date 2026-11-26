@@ -110,6 +110,7 @@ in
   systemd.services.auditd.serviceConfig = {
     LogsDirectory = [ "laurel" ];
     Slice = "system-monitoring.slice";
+    ManagedOOMPreference = "avoid";
   };
 
   users.users.laurel = {

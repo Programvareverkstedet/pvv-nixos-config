@@ -8,5 +8,8 @@
     insertedDevicePolicy = "apply-policy";
   };
 
-  systemd.services.usbguard.serviceConfig.Slice = "system-monitoring.slice";
+  systemd.services.usbguard.serviceConfig = {
+    Slice = "system-monitoring.slice";
+    ManagedOOMPreference = "avoid";
+  };
 }

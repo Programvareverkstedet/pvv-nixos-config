@@ -187,6 +187,7 @@ in
 
       serviceConfig = {
         Slice = "system-monitoring.slice";
+        ManagedOOMPreference = "avoid";
         StateDirectory = "fluent-bit";
 
         # NOTE: This hardening might be way too strong for general purpose use, don't upstream this.

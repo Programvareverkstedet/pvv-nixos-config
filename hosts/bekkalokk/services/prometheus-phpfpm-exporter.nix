@@ -24,6 +24,7 @@ in
 
   systemd.services.prometheus-php-fpm-exporter.serviceConfig = {
     Slice = "system-monitoring.slice";
+    ManagedOOMPreference = "avoid";
     SupplementaryGroups = [ config.services.nginx.group ];
     RestrictAddressFamilies = lib.mkForce [
       "AF_INET"
