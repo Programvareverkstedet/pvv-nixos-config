@@ -83,6 +83,11 @@ lib.mergeAttrsList [
     hash = "sha256-IGQQVAx8/76ivHq9b97ec1AlFoqbRl7uhXhwoFimsG4=";
   })
   (mw-ext {
+    name = "TemplateSandbox";
+    commit = "e9bef0d00a5cacfe2519cca1315a51a7f4aca08e";
+    hash = "sha256-o5qyhc04kwrSzea6GG3bLubGMYhlIMIpA0kfArlP8z0=";
+  })
+  (mw-ext {
     name = "UserMerge";
     commit = "6c0d105e07538c34bfde989bd26fa1945f8d1b79";
     hash = "sha256-w058Ihk0I98hIG1tkVJGy1bzbv7XXyUksGexXgCN540=";

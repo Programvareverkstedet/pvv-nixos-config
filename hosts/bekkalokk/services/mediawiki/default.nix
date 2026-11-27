@@ -145,6 +145,7 @@ in {
         Scribunto
         SimpleSAMLphp
         TemplateData
+        TemplateSandbox
         TemplateStyles
         UserMerge
         VisualEditor
