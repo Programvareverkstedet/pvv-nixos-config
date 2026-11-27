@@ -60,11 +60,11 @@ in {
         admin_password = secretFile config.sops.secrets."keys/grafana/admin_password".path;
       };
 
-      rendering = {
-        server_url = "http://${config.services.grafana-image-renderer.settings.server.addr}/render";
-        callback_url = "https://grafana.pvv.ntnu.no/";
-        renderer_token = secretFile config.sops.secrets."keys/grafana/renderer_token".path;
-      };
+      # rendering = {
+      #   server_url = "http://${config.services.grafana-image-renderer.settings.server.addr}/render";
+      #   callback_url = "https://grafana.pvv.ntnu.no/";
+      #   renderer_token = secretFile config.sops.secrets."keys/grafana/renderer_token".path;
+      # };
 
       dashboards = {
         default_home_dashboard_path = toString dashboards/home.json;
@@ -167,10 +167,10 @@ in {
         name = "grafana_journal";
         format = "json";
       }
-      {
-        name = "grafana_image_renderer_logfmt";
-        format = "logfmt";
-      }
+      # {
+      #   name = "grafana_image_renderer_logfmt";
+      #   format = "logfmt";
+      # }
     ];
 
     pipeline.filters = lib.mkAfter (
@@ -185,49 +185,49 @@ in {
         }
 
         # grafan-image-renderer
-        {
-          name = "modify";
-          match = "journal.grafana-image-renderer.service";
-          remove = [ "level" ];
-        }
-        {
-          name = "parser";
-          match = "journal.grafana-image-renderer.service";
-          key_name = "message";
-          parser = "grafana_image_renderer_logfmt";
-          reserve_data = true;
-        }
+        # {
+        #   name = "modify";
+        #   match = "journal.grafana-image-renderer.service";
+        #   remove = [ "level" ];
+        # }
+        # {
+        #   name = "parser";
+        #   match = "journal.grafana-image-renderer.service";
+        #   key_name = "message";
+        #   parser = "grafana_image_renderer_logfmt";
+        #   reserve_data = true;
+        # }
       ]
-      ++ (lib.mapAttrsToList (k: v: {
-        name = "modify";
-        match = "journal.grafana-image-renderer.service";
-        condition = "Key_value_equals level ${k}";
-        set = "level ${v}";
-      }) {
-        ERROR = "error";
-        WARN = "warning";
-        INFO = "info";
-        DEBUG = "debug";
-      })
-      ++ [
-        {
-          name = "modify";
-          match = "journal.grafana-image-renderer.service";
-          add = [ "level info" ];
-        }
-      ]
+      # ++ (lib.mapAttrsToList (k: v: {
+      #   name = "modify";
+      #   match = "journal.grafana-image-renderer.service";
+      #   condition = "Key_value_equals level ${k}";
+      #   set = "level ${v}";
+      # }) {
+      #   ERROR = "error";
+      #   WARN = "warning";
+      #   INFO = "info";
+      #   DEBUG = "debug";
+      # })
+      # ++ [
+      #   {
+      #     name = "modify";
+      #     match = "journal.grafana-image-renderer.service";
+      #     add = [ "level info" ];
+      #   }
+      # ]
     );
   };
 
-  services.grafana-image-renderer = {
-    enable = true;
-  };
+  # services.grafana-image-renderer = {
+  #   enable = true;
+  # };
 
-  systemd.services.grafana-image-renderer = {
-    after = [ "sops-install-secrets.service" ];
-    requires = [ "sops-install-secrets.service" ];
-    serviceConfig.EnvironmentFile = config.sops.templates."grafana-image-renderer/environment".path;
-  };
+  # systemd.services.grafana-image-renderer = {
+  #   after = [ "sops-install-secrets.service" ];
+  #   requires = [ "sops-install-secrets.service" ];
+  #   serviceConfig.EnvironmentFile = config.sops.templates."grafana-image-renderer/environment".path;
+  # };
 
   systemd.services.nginx.serviceConfig.SupplementaryGroups = [ "grafana" ];
 
